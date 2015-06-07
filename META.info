@@ -1,0 +1,30 @@
+{
+    "name"        : "PDF::DOM",
+    "version"     : "0.1",
+    "description" : "PDF Document Object Model",
+    "depends"     : [ "PDF::Tools", "PDF::Grammar"  ],
+    "source-url"  : "git://github.com/p6-css/p6-PDF-Tools.git",
+    "provides"    : {
+
+        "PDF::DOM::Catalog" : "lib/PDF/DOM/Catalog.pm",
+        "PDF::DOM::Encoding" : "lib/PDF/DOM/Encoding.pm",
+        "PDF::DOM::Font" : "lib/PDF/DOM/Font.pm",
+        "PDF::DOM::Font::CIDFontType0" : "lib/PDF/DOM/Font/CIDFontType0.pm",
+        "PDF::DOM::Font::CIDFontType2" : "lib/PDF/DOM/Font/CIDFontType2.pm",
+        "PDF::DOM::Font::MMType1" : "lib/PDF/DOM/Font/MMType1.pm",
+        "PDF::DOM::Font::TrueType" : "lib/PDF/DOM/Font/TrueType.pm",
+        "PDF::DOM::Font::Type0" : "lib/PDF/DOM/Font/Type0.pm",
+        "PDF::DOM::Font::Type1" : "lib/PDF/DOM/Font/Type1.pm",
+        "PDF::DOM::Font::Type3" : "lib/PDF/DOM/Font/Type3.pm",
+        "PDF::DOM::Metadata::XML" : "lib/PDF/DOM/Metadata/XML.pm",
+        "PDF::DOM::OBJR" : "lib/PDF/DOM/OBJR.pm",
+        "PDF::DOM::Outlines" : "lib/PDF/DOM/Outlines.pm",
+        "PDF::DOM::OutputIntent" : "lib/PDF/DOM/OutputIntent.pm",
+        "PDF::DOM::OutputIntent::GTS_PDFX" : "lib/PDF/DOM/OutputIntent/GTS_PDFX.pm",
+        "PDF::DOM::Page" : "lib/PDF/DOM/Page.pm",
+        "PDF::DOM::Pages" : "lib/PDF/DOM/Pages.pm",
+        "PDF::DOM::XObject" : "lib/PDF/DOM/XObject.pm",
+        "PDF::DOM::XObject::Form" : "lib/PDF/DOM/XObject/Form.pm",
+        "PDF::DOM::XObject::Image" : "lib/PDF/DOM/XObject/Image.pm"
+    }
+}
