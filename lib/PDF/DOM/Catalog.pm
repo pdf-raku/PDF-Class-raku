@@ -14,7 +14,7 @@ class PDF::DOM::Catalog
     method Resources is rw { self<Resources> }
 
     method finish {
-        self<Pages>.finish;
+        self<Pages>.cb-finish;
     }
 
 }

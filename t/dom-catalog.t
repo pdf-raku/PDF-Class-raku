@@ -3,8 +3,8 @@ use Test;
 
 plan 7;
 
+use PDF::DOM;
 use PDF::Storage::IndObj;
-
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 

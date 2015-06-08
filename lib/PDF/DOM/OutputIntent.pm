@@ -1,6 +1,7 @@
 use v6;
 
 use PDF::Object::Dict;
+use PDF::DOM;
 
 # /Type /OutputIntent
 

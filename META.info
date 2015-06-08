@@ -6,6 +6,7 @@
     "source-url"  : "git://github.com/p6-css/p6-PDF-Tools.git",
     "provides"    : {
 
+        "PDF::DOM" : "lib/PDF/DOM.pm",
         "PDF::DOM::Catalog" : "lib/PDF/DOM/Catalog.pm",
         "PDF::DOM::Encoding" : "lib/PDF/DOM/Encoding.pm",
         "PDF::DOM::Font" : "lib/PDF/DOM/Font.pm",

@@ -11,8 +11,8 @@ use PDF::DOM::Font;
 
 class PDF::DOM::Page
     is PDF::Object::Dict
-    does PDF::DOM
-    does PDF::Object::Inheritance {
+    does PDF::Object::Inheritance
+    does PDF::DOM {
 
     method Parent is rw { self<Parent> }
     method Resources is rw { self<Resources> }

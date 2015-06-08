@@ -3,12 +3,12 @@ use Test;
 
 plan 24;
 
+use PDF::DOM::Page;
 use PDF::Storage::IndObj;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Reader;
-use PDF::DOM::Page;
 
 my $actions = PDF::Grammar::PDF::Actions.new;
 

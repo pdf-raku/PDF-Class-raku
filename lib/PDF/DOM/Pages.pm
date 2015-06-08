@@ -68,7 +68,7 @@ class PDF::DOM::Pages
         self.find-page($pos + 1)
     }
 
-    method finish {
+    method cb-finish {
         my $count = 0;
         my $kids = self.Kids;
         for $kids.keys {

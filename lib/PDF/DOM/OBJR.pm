@@ -1,8 +1,9 @@
 use v6;
 
 use PDF::Object::Dict;
+use PDF::DOM;
 
-# /Type /Pages - a node in the page tree
+# /Type /OBJR - a node in the page tree
 
 class PDF::DOM::OBJR
     is PDF::Object::Dict
