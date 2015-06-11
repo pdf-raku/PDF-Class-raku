@@ -17,6 +17,7 @@
         "PDF::DOM::Font::Type0" : "lib/PDF/DOM/Font/Type0.pm",
         "PDF::DOM::Font::Type1" : "lib/PDF/DOM/Font/Type1.pm",
         "PDF::DOM::Font::Type3" : "lib/PDF/DOM/Font/Type3.pm",
+        "PDF::DOM::FontDescriptor" : "lib/PDF/DOM/FontDescriptor.pm",
         "PDF::DOM::Metadata::XML" : "lib/PDF/DOM/Metadata/XML.pm",
         "PDF::DOM::OBJR" : "lib/PDF/DOM/OBJR.pm",
         "PDF::DOM::Outlines" : "lib/PDF/DOM/Outlines.pm",
