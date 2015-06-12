@@ -2,7 +2,7 @@
     "name"        : "PDF::DOM",
     "version"     : "0.1",
     "description" : "PDF Document Object Model",
-    "depends"     : [ "PDF::Tools", "PDF::Grammar"  ],
+    "depends"     : [ "PDF::Tools", "PDF::Grammar", "Font::AFM" ],
     "source-url"  : "git://github.com/p6-css/p6-PDF-Tools.git",
     "provides"    : {
 
@@ -27,6 +27,8 @@
         "PDF::DOM::Pages" : "lib/PDF/DOM/Pages.pm",
         "PDF::DOM::XObject" : "lib/PDF/DOM/XObject.pm",
         "PDF::DOM::XObject::Form" : "lib/PDF/DOM/XObject/Form.pm",
-        "PDF::DOM::XObject::Image" : "lib/PDF/DOM/XObject/Image.pm"
+        "PDF::DOM::XObject::Image" : "lib/PDF/DOM/XObject/Image.pm",
+
+        "PDF::DOM::Util::Font" : "lib/PDF/DOM/Util/Font.pm"        
     }
 }
