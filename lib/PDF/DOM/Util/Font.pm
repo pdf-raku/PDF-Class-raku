@@ -65,6 +65,18 @@ module PDF::DOM::Util::Font {
         :timesnewromanpsmt-italic<times-italic>,
     };
 
+    role Afm2Dom {
+
+        multi method to-dom('Font') {
+            { :Type( :name<Font> ), :Subtype( :name<Type1> ),
+              :BaseEncoding( :name<WinAnsiEncoding> ),
+              # todo /Encoding with differences between latin1 and WinsAnsiEncoding
+              :BaseFont( :name( self.FontName ) ),
+            }
+        }
+
+    }
+
     our proto sub core-font($) {*};
 
     multi sub core-font(Str $font-name where { stdFontMap{$font-name.lc}:exists }) {
@@ -73,7 +85,7 @@ module PDF::DOM::Util::Font {
 
     multi sub core-font(Str $font-name) is default {
         state %core-font-cache;
-        %core-font-cache{$font-name.lc} //= Font::AFM.core-font( $font-name );
+        %core-font-cache{$font-name.lc} //= (Font::AFM.metrics-class( $font-name ) but Afm2Dom).new;
     }
 
 }
