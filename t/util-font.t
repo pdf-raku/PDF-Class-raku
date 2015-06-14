@@ -38,7 +38,7 @@ for (win => :literal("Á®ÆØ"),
     my $literal = $fnt.encode( "Á®ÆØ");
 
     my $literal2 = $fnt.kern( "Á®ÆØ")[0];
-    is-deeply $literal, $expected, "font $enc kern";
+    is-deeply $literal2, $expected, "font $enc kern";
 }
 
 done;
