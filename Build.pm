@@ -18,7 +18,7 @@ class Build is Panda::Builder {
 
     method !save-glyph(Str $glyph-name, $chr, $ord, Hash :$encoding, Hash :$glyphs) {
 
-            $encoding{$glyph-name} //= $ord
+            $encoding{$glyph-name} //= $ord.chr
                 if $encoding.defined;
 
             # $chr.ord isn't unique? use NFD as index
@@ -56,7 +56,8 @@ class Build is Panda::Builder {
 
             my $chr = $<char>.Str;
 
-            for <std mac win pdf> Z=> @enc {
+            for :mac(@enc[1]),
+                :win(@enc[2]) {
                 my ($scheme, $byte) = .kv;
                 next unless $byte.defined;
                 my $enc = $encodings{$scheme} //= {}
@@ -83,7 +84,7 @@ class Build is Panda::Builder {
             #
             # This file was auto-generated
 
-            class PDF::Util::Font::Encodings {
+            class PDF::DOM::Util::Font::Encodings {
 
             --CODE-GEN--
 

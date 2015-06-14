@@ -2,6 +2,7 @@ use v6;
 use Font::AFM;
 
 module PDF::DOM::Util::Font {
+    use PDF::DOM::Util::Font::Encodings;
     # font aliases adapted from pdf.js/src/fonts.js
     BEGIN constant stdFontMap = {
 
@@ -67,6 +68,25 @@ module PDF::DOM::Util::Font {
 
     role Afm2Dom {
 
+        has $!glyphs;
+        has $!encoding;
+
+        method set-encoding( Str :$enc = 'win') {
+            given $enc {
+                when 'mac' {
+                    $!glyphs = $PDF::DOM::Util::Font::Encodings::mac-glyphs;
+                    $!encoding = $PDF::DOM::Util::Font::Encodings::mac-encoding;
+                }
+                when 'win' {
+                    $!glyphs = $PDF::DOM::Util::Font::Encodings::win-glyphs;
+                    $!encoding = $PDF::DOM::Util::Font::Encodings::win-encoding;
+                }
+                default { 
+                    die ":enc not 'win', 'mac': $_";
+                }
+            }
+        }
+
         multi method to-dom('Font') {
             { :Type( :name<Font> ), :Subtype( :name<Type1> ),
               :BaseEncoding( :name<WinAnsiEncoding> ),
@@ -75,17 +95,36 @@ module PDF::DOM::Util::Font {
             }
         }
 
+        method stringwidth($str, $pointsize=0, :$kern) {
+            nextwith( $str, $pointsize, :$kern, :$!glyphs);
+        }
+
+        method kern($str, $pointsize=0) {
+            nextwith( $str, $pointsize, :$!glyphs);
+        }
+
+        multi method encode(Str $s) {
+            :literal([~] $s.comb\
+                     .map({ $!glyphs{$_} })\
+                     .grep({ .defined })\
+                     .map({ $!encoding{$_} })\
+                     .grep({ .defined }));
+        }
+
     }
 
-    our proto sub core-font($) {*};
+    our proto sub core-font($, :$enc?) {*};
 
-    multi sub core-font(Str $font-name where { stdFontMap{$font-name.lc}:exists }) {
-        core-font( stdFontMap{$font-name.lc} );
+    multi sub core-font(Str $font-name where { stdFontMap{$font-name.lc}:exists }, :$enc) {
+        core-font( stdFontMap{$font-name.lc}, :$enc );
     }
 
-    multi sub core-font(Str $font-name) is default {
+    multi sub core-font(Str $font-name, :$enc is copy) is default {
+        $enc //= 'win';
         state %core-font-cache;
-        %core-font-cache{$font-name.lc} //= (Font::AFM.metrics-class( $font-name ) but Afm2Dom).new;
+        my $fnt = (%core-font-cache{$font-name.lc}{$enc} //= (Font::AFM.metrics-class( $font-name ) but Afm2Dom).new(:$enc));
+        $fnt.set-encoding(:$enc);
+        $fnt;
     }
 
 }
