@@ -100,7 +100,11 @@ module PDF::DOM::Util::Font {
         }
 
         method kern($str, $pointsize=0) {
-            nextwith( $str, $pointsize, :$!glyphs);
+            my $raw = callwith( $str, $pointsize, :$!glyphs);
+            [ $raw.map({
+                when Numeric {:num($_)}
+                default { self.encode($_) }
+            }) ];
         }
 
         multi method encode(Str $s) {

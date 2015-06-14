@@ -28,15 +28,17 @@ is $font.BaseFont, 'Helvetica-BoldOblique';
 my $tr-afm = PDF::DOM::Util::Font::core-font( 'Times-Roman' );
 is $tr-afm.stringwidth("RVX", :!kern), 2111, 'stringwidth :!kern';
 is $tr-afm.stringwidth("RVX", :kern), 2111 - 80, 'stringwidth :kern';
-is-deeply $tr-afm.kern("RVX" ), [["R", 667.0, -80], ["VX", 1444.0, 0]], '.kern(:kern)';
-is-deeply $tr-afm.kern("RVX", 12), [["R", 8.004, -0.96], ["VX", 17.328, 0]], '.kern(..., $w))';
+is-deeply $tr-afm.kern("RVX" ), [:literal<R>, :num(-80), :literal<VX>], '.kern(:kern)';
+is-deeply $tr-afm.kern("RVX", 12), [:literal<R>, :num(-0.96), :literal<VX>], '.kern(..., $w))';
 
 for (win => :literal("Á®ÆØ"),
      mac => :literal("ç¨®¯")) {
     my ($enc, $expected) = .kv;
     my $fnt = PDF::DOM::Util::Font::core-font( 'helvetica', :$enc );
     my $literal = $fnt.encode( "Á®ÆØ");
-    is-deeply $literal, $expected, "font $enc encoding";
+
+    my $literal2 = $fnt.kern( "Á®ÆØ")[0];
+    is-deeply $literal, $expected, "font $enc kern";
 }
 
 done;
