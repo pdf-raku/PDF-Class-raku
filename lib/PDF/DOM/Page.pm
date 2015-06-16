@@ -1,11 +1,14 @@
 use v6;
 
 use PDF::Object::Dict;
-use PDF::DOM;
+use PDF::Object::Stream;
 use PDF::Object::Inheritance;
+use PDF::DOM;
 use PDF::DOM::XObject::Image;
 use PDF::DOM::XObject::Form;
 use PDF::DOM::Font;
+use PDF::DOM::Util::Content;
+use PDF::Writer;
 
 # /Type /Page - describes a single PDF page
 
@@ -14,10 +17,23 @@ class PDF::DOM::Page
     does PDF::Object::Inheritance
     does PDF::DOM {
 
+    has PDF::DOM::Util::Content $.pretext = PDF::DOM::Util::Content.new; #| pretext text, etc
+    has PDF::DOM::Util::Content $.text    = PDF::DOM::Util::Content.new; #| new text
+
     method Parent is rw { self<Parent> }
     method Resources is rw { self<Resources> }
     method MediaBox is rw { self<MediaBox> }
     method Contents is rw { self<Contents> }
+
+    #| contents may either be a stream on an array of streams
+    method contents {
+        given $.Contents {
+            when !.defined   { [] }
+            when Array       { $_ }
+            when Hash | Pair { [$_] }
+            default { die "unexpected page content: {.perl}" }
+        }
+    }
 
     #| produce an XObject form for this page
     method to-xobject() {
@@ -68,4 +84,37 @@ class PDF::DOM::Page
         self.compose( :$name );
     }
 
+    method cb-finish {
+
+        if $!pretext.content || $!text.content {
+
+            # wrap existing and new content in g-save ... g-restore - for safety's sake
+            for $!pretext, $!text {
+                if .content {
+                    .g-save(:prepend);
+                    .g-restore;
+                }
+            }
+
+            my @contents = @$.contents;
+            if +@contents {
+                # wrap ex
+                $!pretext.g-save;
+                $!text.g-restore(:prepend);
+            }
+
+            my $writer = PDF::Writer.new;
+
+            @contents.unshift: PDF::Object::Stream.new( :encoded( $writer.write(:content($!pretext.content)) ) )
+                if $!pretext.content;
+
+            @contents.push: PDF::Object::Stream.new( :encoded( $writer.write(:content($!text.content)) ) )
+                if $!text.content;
+
+            self<Contents> = @contents.item;
+        }
+
+    }
+
 }
+

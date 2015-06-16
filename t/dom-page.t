@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 9;
+plan 16;
 
 use PDF::DOM;
 use PDF::Storage::IndObj;
@@ -36,5 +36,17 @@ is $page-obj.Parent, (:ind-ref[3, 0]), '$.Parent accessor';
 is $page-obj.Resources, { :Font{ :F1( :ind-ref[7, 0] )}, :ProcSet( :ind-ref[6, 0]) }, '$.Resources accessor';
 is-json-equiv $page-obj.MediaBox, [0, 0, 612, 792], '$.MediaBox accessor';
 is-deeply $page-obj.Contents, (:ind-ref[5, 0]), '$.Contents accessor';
+is-deeply $page-obj.contents, [:ind-ref[5, 0]], '$.contents accessor';
 is-deeply $ind-obj.ast, $ast, 'ast regeneration';
 
+$page-obj.text.content.push: ('Tj' => [ :literal('Hello, world!') ]);
+$page-obj.cb-finish;
+
+my $contents = $page-obj.Contents;
+isa-ok $contents, Array, 'finished Contents';
+is-deeply +$contents, 3, 'finished Contents count';
+
+isa-ok $contents[0], ::('PDF::Object::Stream'), 'finished Contents';
+is $contents[0].encoded, 'q', 'finished Contents pretext';
+is $contents[1], (:ind-ref[5, 0]), 'finished Contents existing text';
+is $contents[2].encoded.lines, ['Q', 'q', '(Hello, world!) Tj', 'Q'], 'finished Contents post-text';
