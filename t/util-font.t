@@ -12,8 +12,8 @@ my $ab-afm = PDF::DOM::Util::Font::core-font( 'Arial-Bold' );
 isa-ok $hb-afm, ::('Font::AFM'); 
 is $hb-afm.FontName, 'Helvetica-Bold', 'FontName';
 
-my $hbi-afm = PDF::DOM::Util::Font::core-font( 'Helvetica-BoldItalic' );
-is $hbi-afm.FontName, 'Helvetica-BoldOblique', 'FontName';
+my $hbi-afm = PDF::DOM::Util::Font::core-font( :font-family<Helvetica>, :font-weight<Bold>, :font-style<Italic> );
+is $hbi-afm.FontName, 'Helvetica-BoldOblique', ':font-family => FontName';
 
 my $hb-afm-again = PDF::DOM::Util::Font::core-font( 'Helvetica-Bold' );
 

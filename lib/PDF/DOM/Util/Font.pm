@@ -117,13 +117,28 @@ module PDF::DOM::Util::Font {
 
     }
 
-    our proto sub core-font($, :$enc?) {*};
+    our proto sub core-font(|c) {*};
 
-    multi sub core-font(Str $font-name where { stdFontMap{$font-name.lc}:exists }, :$enc) {
+    multi sub core-font( Str :$font-family!, Str :$font-weight?, Str :$font-style?, :$enc) {
+
+        my $bold = $font-weight && $font-weight ~~ m:i/bold|[6..9]00/
+            ?? 'bold' !! '';
+
+        # italic & oblique can be treated as synonyms for core fonts
+        my $italic = $font-style && $font-style ~~ m:i/italic|oblique/
+            ?? 'italic' !! '';
+
+       my $font-name = $font-family.subst(/['-'.*]? $/, '-' ~ $bold ~ $italic)
+            if $bold || $italic;
+
+        core-font( $font-name, :$enc );
+    }
+
+    multi sub core-font(Str $font-name! where { stdFontMap{$font-name.lc}:exists }, :$enc) {
         core-font( stdFontMap{$font-name.lc}, :$enc );
     }
 
-    multi sub core-font(Str $font-name, :$enc is copy) is default {
+    multi sub core-font(Str $font-name!, :$enc is copy) is default {
         $enc //= 'win';
         state %core-font-cache;
         my $fnt = (%core-font-cache{$font-name.lc}{$enc} //= (Font::AFM.metrics-class( $font-name ) but Afm2Dom).new(:$enc));
