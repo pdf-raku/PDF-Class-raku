@@ -128,8 +128,11 @@ module PDF::DOM::Util::Font {
         my $italic = $font-style && $font-style ~~ m:i/italic|oblique/
             ?? 'italic' !! '';
 
-       my $font-name = $font-family.subst(/['-'.*]? $/, '-' ~ $bold ~ $italic)
-            if $bold || $italic;
+        my $sfx = $bold || $italic
+            ?? '-' ~ $bold ~ $italic
+            !! '';
+
+        my $font-name = $font-family.subst(/['-'.*]? $/, $sfx );
 
         core-font( $font-name, :$enc );
     }
