@@ -4,11 +4,11 @@ class PDF::DOM::Util::Content {
     has @.content is rw;
 
      method g-save(Bool :$prepend) {
-         @!content."{$prepend ?? 'unshift' !! 'push'}"( 'q' => [] );
+         @!content."{$prepend ?? 'unshift' !! 'push'}"( 'q' );
      }
 
      method g-restore(Bool :$prepend) {
-         @!content."{$prepend ?? 'unshift' !! 'push'}"( 'Q' => [] );
+         @!content."{$prepend ?? 'unshift' !! 'push'}"( 'Q' );
      }
 
 }
