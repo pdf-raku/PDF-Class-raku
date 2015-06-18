@@ -1,14 +1,15 @@
 use v6;
 
 class PDF::DOM::Util::Content {
-    has @.content is rw;
+    has $.parent;
+    has @.ops is rw;
 
-     method g-save(Bool :$prepend) {
-         @!content."{$prepend ?? 'unshift' !! 'push'}"( 'q' );
+     method save(Bool :$prepend) {
+         @!ops."{$prepend ?? 'unshift' !! 'push'}"( 'q' );
      }
 
-     method g-restore(Bool :$prepend) {
-         @!content."{$prepend ?? 'unshift' !! 'push'}"( 'Q' );
+     method restore(Bool :$prepend) {
+         @!ops."{$prepend ?? 'unshift' !! 'push'}"( 'Q' );
      }
 
 }

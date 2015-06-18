@@ -17,8 +17,8 @@ class PDF::DOM::Page
     does PDF::Object::Inheritance
     does PDF::DOM {
 
-    has PDF::DOM::Util::Content $.pretext = PDF::DOM::Util::Content.new; #| pretext text, etc
-    has PDF::DOM::Util::Content $.text    = PDF::DOM::Util::Content.new; #| new text
+    has PDF::DOM::Util::Content $.pre-gfx = PDF::DOM::Util::Content.new( :parent(self) ); #| prepended graphics
+    has PDF::DOM::Util::Content $.gfx = PDF::DOM::Util::Content.new( :parent(self) ); #| appended graphics
 
     method Parent is rw { self<Parent> }
     method Resources is rw { self<Resources> }
@@ -86,30 +86,31 @@ class PDF::DOM::Page
 
     method cb-finish {
 
-        if $!pretext.content || $!text.content {
+        if $!pre-gfx.ops || $!gfx.ops {
 
-            # wrap existing and new content in g-save ... g-restore - for safety's sake
-            for $!pretext, $!text {
-                if .content {
-                    .g-save(:prepend);
-                    .g-restore;
+            # wrap new content in save ... restore - for safety's sake
+            for $!pre-gfx, $!gfx {
+                if .defined && .ops {
+                    .save(:prepend);
+                    .restore;
                 }
             }
 
+            # also wrap any existing content in save ... restore
             my @contents = @$.contents;
             if +@contents {
                 # wrap ex
-                $!pretext.g-save;
-                $!text.g-restore(:prepend);
+                $!pre-gfx.save;
+                $!gfx.restore(:prepend);
             }
 
             my $writer = PDF::Writer.new;
 
-            @contents.unshift: PDF::Object::Stream.new( :encoded( $writer.write(:content($!pretext.content)) ) )
-                if $!pretext.content;
+            @contents.unshift: PDF::Object::Stream.new( :encoded( $writer.write(:content($!pre-gfx.ops)) ) )
+                if $!pre-gfx.ops;
 
-            @contents.push: PDF::Object::Stream.new( :encoded( $writer.write(:content($!text.content)) ) )
-                if $!text.content;
+            @contents.push: PDF::Object::Stream.new( :encoded( $writer.write(:content($!gfx.ops)) ) )
+                if $!gfx.ops;
 
             self<Contents> = @contents.item;
         }

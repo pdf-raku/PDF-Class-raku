@@ -39,7 +39,7 @@ is-deeply $page-obj.Contents, (:ind-ref[5, 0]), '$.Contents accessor';
 is-deeply $page-obj.contents, [:ind-ref[5, 0]], '$.contents accessor';
 is-deeply $ind-obj.ast, $ast, 'ast regeneration';
 
-$page-obj.text.content.push: ('Tj' => [ :literal('Hello, world!') ]);
+$page-obj.gfx.ops.push: ('Tj' => [ :literal('Hello, world!') ]);
 $page-obj.cb-finish;
 
 my $contents = $page-obj.Contents;
