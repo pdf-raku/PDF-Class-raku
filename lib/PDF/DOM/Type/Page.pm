@@ -3,19 +3,19 @@ use v6;
 use PDF::Object::Dict;
 use PDF::Object::Stream;
 use PDF::Object::Inheritance;
-use PDF::DOM;
-use PDF::DOM::XObject::Image;
-use PDF::DOM::XObject::Form;
-use PDF::DOM::Font;
+use PDF::DOM::Type;
+use PDF::DOM::Type::XObject::Image;
+use PDF::DOM::Type::XObject::Form;
+use PDF::DOM::Type::Font;
 use PDF::DOM::Util::Content;
 use PDF::Writer;
 
 # /Type /Page - describes a single PDF page
 
-class PDF::DOM::Page
+class PDF::DOM::Type::Page
     is PDF::Object::Dict
     does PDF::Object::Inheritance
-    does PDF::DOM {
+    does PDF::DOM::Type {
 
     has PDF::DOM::Util::Content $.pre-gfx = PDF::DOM::Util::Content.new( :parent(self) ); #| prepended graphics
     has PDF::DOM::Util::Content $.gfx = PDF::DOM::Util::Content.new( :parent(self) ); #| appended graphics
@@ -39,22 +39,22 @@ class PDF::DOM::Page
     method to-xobject() {
         my $contents = self.Contents;
         my %params = $contents.get-stream();
-        my $xobject = PDF::DOM::XObject::Form.new( |%params );
+        my $xobject = PDF::DOM::Type::XObject::Form.new( |%params );
         $xobject.Resources = self.find-prop('Resources');
         $xobject.BBox = self.find-prop('MediaBox');
 
         $xobject;
     }
 
-    multi method register-resource( PDF::DOM::XObject::Form $object) {
+    multi method register-resource( PDF::DOM::Type::XObject::Form $object) {
         self!"register-resource"( $object, :base-name<Fm>, );
     }
 
-    multi method register-resource( PDF::DOM::XObject::Image $object) {
+    multi method register-resource( PDF::DOM::Type::XObject::Image $object) {
         self!"register-resource"( $object, :base-name<Im>, );
     }
 
-    multi method register-resource( PDF::DOM::Font $object) {
+    multi method register-resource( PDF::DOM::Type::Font $object) {
         self!"register-resource"( $object, :base-name<F>, );
     }
 

@@ -1,22 +1,22 @@
 use v6;
 
 use PDF::Object::Dict;
-use PDF::DOM;
-use PDF::DOM::Page;
+use PDF::DOM::Type;
+use PDF::DOM::Type::Page;
 use PDF::Object::Inheritance;
 
 # /Type /Pages - a node in the page tree
 
-class PDF::DOM::Pages
+class PDF::DOM::Type::Pages
     is PDF::Object::Dict
-    does PDF::DOM
+    does PDF::DOM::Type
     does PDF::Object::Inheritance {
 
     method Count is rw { self<Count> }
     method Kids is rw { self<Kids> }
 
     #| add new last page
-    method add-page( $page = PDF::DOM::Page.new ) {
+    method add-page( $page = PDF::DOM::Type::Page.new ) {
         my $sub-pages = self.Kids[*-1]
             if self.Kids;
 

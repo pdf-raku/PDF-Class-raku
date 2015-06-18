@@ -3,7 +3,7 @@ use Test;
 
 plan 24;
 
-use PDF::DOM::Page;
+use PDF::DOM::Type::Page;
 use PDF::Storage::IndObj;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
@@ -29,7 +29,7 @@ my $ind-obj = PDF::Storage::IndObj.new( |%$ast);
 is $ind-obj.obj-num, 3, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $pages-obj = $ind-obj.object;
-isa-ok $pages-obj, ::('PDF::DOM')::('Pages');
+isa-ok $pages-obj, ::('PDF::DOM::Type')::('Pages');
 is $pages-obj.Type, 'Pages', '$.Type accessor';
 is $pages-obj.Count, 2, '$.Count accessor';
 is-json-equiv $pages-obj.Kids, [ :ind-ref[4, 0], :ind-ref[5, 0] ], '$.Kids accessor';
@@ -61,7 +61,7 @@ is $pages[61].obj-num, 330, 'last page';
 is $pages[61].find-prop('Rotate'), 270, 'inheritance';
 
 lives-ok {$new-page = $pages.add-page}, 'add-page - lives';
-isa-ok $new-page, PDF::DOM::Page;
+isa-ok $new-page, PDF::DOM::Type::Page;
 is $pages.Count, 63, 'number of pages';
 is $pages[62].find-prop('Rotate'), 270, 'new page - inheritance';
 

@@ -2,7 +2,7 @@ use Test;
 use v6;
 
 use PDF::DOM::Util::Font;
-use PDF::DOM;
+use PDF::DOM::Type;
 
 my $hb-afm = PDF::DOM::Util::Font::core-font( 'Helvetica-Bold' );
 isa-ok $hb-afm, ::('Font::AFM'); 
@@ -22,7 +22,7 @@ ok $hb-afm-again === $hb-afm, 'font caching';
 my $dict = $hbi-afm.to-dom('Font');
 
 my $font = PDF::Object.compose( :$dict );
-isa-ok $font, ::('PDF::DOM::Font::Type1');
+isa-ok $font, ::('PDF::DOM::Type::Font::Type1');
 is $font.BaseFont, 'Helvetica-BoldOblique';
 
 my $tr-afm = PDF::DOM::Util::Font::core-font( 'Times-Roman' );

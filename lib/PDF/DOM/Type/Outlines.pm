@@ -1,13 +1,13 @@
 use v6;
 
 use PDF::Object::Dict;
-use PDF::DOM;
+use PDF::DOM::Type;
 
 # /Type /Outlines - the Outlines dictionary
 
-class PDF::DOM::Outlines
+class PDF::DOM::Type::Outlines
     is PDF::Object::Dict
-    does PDF::DOM {
+    does PDF::DOM::Type {
 
     method Count is rw { self<Count> }
     method First is rw { self<First> }

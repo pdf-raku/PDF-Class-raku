@@ -1,13 +1,13 @@
 use v6;
 
 use PDF::Object::Dict;
-use PDF::DOM;
+use PDF::DOM::Type;
 
 # /Type /FontDescriptor - the FontDescriptor dictionary
 
-class PDF::DOM::FontDescriptor
+class PDF::DOM::Type::FontDescriptor
     is PDF::Object::Dict
-    does PDF::DOM {
+    does PDF::DOM::Type {
 
     method FontName is rw { self<FontName> }
     method FontFamily is rw { self<FontFamily> }

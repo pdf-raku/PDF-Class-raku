@@ -1,14 +1,14 @@
 use v6;
 
 use PDF::Object::Stream;
-use PDF::DOM;
+use PDF::DOM::Type;
 
 # /Type /XObject - describes an abastract XObject. See also
-# PDF::DOM::XObject::Form, PDF::DOM::XObject::Image
+# PDF::DOM::Type::XObject::Form, PDF::DOM::Type::XObject::Image
 
-class PDF::DOM::XObject
+class PDF::DOM::Type::XObject
     is PDF::Object::Stream
-    does PDF::DOM {
+    does PDF::DOM::Type {
 
     method Resources is rw { self<Resources> }
     method BBox is rw { self<BBox> }

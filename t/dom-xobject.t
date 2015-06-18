@@ -3,7 +3,7 @@ use Test;
 
 plan 16;
 
-use PDF::DOM;
+use PDF::DOM::Type;
 use PDF::Storage::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
@@ -38,7 +38,7 @@ my $ind-obj = PDF::Storage::IndObj.new( |%$ast, :$input);
 is $ind-obj.obj-num, 6, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $xform-obj = $ind-obj.object;
-isa-ok $xform-obj, ::('PDF::DOM')::('XObject::Form');
+isa-ok $xform-obj, ::('PDF::DOM::Type')::('XObject::Form');
 is $xform-obj.Type, 'XObject', '$.Type accessor';
 is $xform-obj.Subtype, 'Form', '$.Subtype accessor';
 is-json-equiv $xform-obj.Resources, { :ProcSet( [ <PDF> ] ) }, '$.Resources accessor';
@@ -72,7 +72,7 @@ $ind-obj = PDF::Storage::IndObj.new( |%$ast, :$input);
 is $ind-obj.obj-num, 14, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $ximage-obj = $ind-obj.object;
-isa-ok $ximage-obj, ::('PDF::DOM')::('XObject::Image');
+isa-ok $ximage-obj, ::('PDF::DOM::Type')::('XObject::Image');
 is $ximage-obj.Type, 'XObject', '$.Type accessor';
 is $ximage-obj.Subtype, 'Image', '$.Subtype accessor';
 is-json-equiv $ximage-obj.ColorSpace, 'DeviceGray', '$.ColorSpace accessor';

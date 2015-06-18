@@ -3,7 +3,7 @@ use Test;
 
 plan 9;
 
-use PDF::DOM;
+use PDF::DOM::Type;
 use PDF::Storage::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
@@ -30,7 +30,7 @@ my $ind-obj = PDF::Storage::IndObj.new( |%$ast);
 my $object = $ind-obj.object;
 is $ind-obj.obj-num, 7, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
-isa-ok $object, ::('PDF::DOM')::('Font::Type1');
+isa-ok $object, ::('PDF::DOM::Type')::('Font::Type1');
 is $object.Type, 'Font', '$.Type accessor';
 is $object.Subtype, 'Type1', '$.Subype accessor';
 is $object.Name, 'F1', '$.Name accessor';

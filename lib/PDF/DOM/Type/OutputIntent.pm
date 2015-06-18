@@ -1,13 +1,13 @@
 use v6;
 
 use PDF::Object::Dict;
-use PDF::DOM;
+use PDF::DOM::Type;
 
 # /Type /OutputIntent
 
-class PDF::DOM::OutputIntent
+class PDF::DOM::Type::OutputIntent
     is PDF::Object::Dict
-    does PDF::DOM {
+    does PDF::DOM::Type {
 
     method S is rw { self<S> }
     method OutputCondition is rw { self<OutputCondition> }

@@ -3,7 +3,7 @@ use Test;
 
 plan 8;
 
-use PDF::DOM;
+use PDF::DOM::Type;
 use PDF::Storage::IndObj;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
@@ -23,7 +23,7 @@ my $ind-obj = PDF::Storage::IndObj.new( |%$ast);
 is $ind-obj.obj-num, 18, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $outlines-obj = $ind-obj.object;
-isa-ok $outlines-obj, ::('PDF::DOM')::('Outlines');
+isa-ok $outlines-obj, ::('PDF::DOM::Type')::('Outlines');
 is $outlines-obj.Type, 'Outlines', '$.Type accessor';
 is $outlines-obj.Count, 3, '$.Count accessor';
 is-deeply $outlines-obj.First, (:ind-ref[19, 0]), '$.First accessor';

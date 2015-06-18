@@ -3,7 +3,7 @@ use Test;
 
 plan 9;
 
-use PDF::DOM;
+use PDF::DOM::Type;
 use PDF::Storage::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
@@ -24,7 +24,7 @@ my $ind-obj = PDF::Storage::IndObj.new( |%$ast);
 is $ind-obj.obj-num, 236, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $font-descriptor-obj = $ind-obj.object;
-isa-ok $font-descriptor-obj, ::('PDF::DOM')::('FontDescriptor');
+isa-ok $font-descriptor-obj, ::('PDF::DOM::Type')::('FontDescriptor');
 is $font-descriptor-obj.Type, 'FontDescriptor', '$.Type accessor';
 is $font-descriptor-obj.FontFamily, 'Wingdings', '$.FontFamily accessor';
 is $font-descriptor-obj.Ascent, 898, '$.Ascent accessor';

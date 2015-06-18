@@ -1,13 +1,13 @@
 use v6;
 
 use PDF::Object::Dict;
-use PDF::DOM;
+use PDF::DOM::Type;
 
 # /Type /Catalog - usually the root object in a PDF
 
-class PDF::DOM::Catalog
+class PDF::DOM::Type::Catalog
     is PDF::Object::Dict
-    does PDF::DOM {
+    does PDF::DOM::Type {
 
     method Pages is rw { self<Pages> }
     method Outlines is rw { self<Outlines> }

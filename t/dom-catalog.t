@@ -3,7 +3,7 @@ use Test;
 
 plan 7;
 
-use PDF::DOM;
+use PDF::DOM::Type;
 use PDF::Storage::IndObj;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
@@ -29,7 +29,7 @@ my $ind-obj = PDF::Storage::IndObj.new( |%$ast);
 is $ind-obj.obj-num, 215, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $object = $ind-obj.object;
-isa-ok $object, ::('PDF::DOM')::('Catalog');
+isa-ok $object, ::('PDF::DOM::Type')::('Catalog');
 is $object<PageLayout>, 'OneColumn', 'dict lookup';
 is-deeply $object.Pages, (:ind-ref[212, 0]), '$.Pages accessor';
 is-deeply $object.Outlines, (:ind-ref[18, 0]), '$.Outlines accessor';

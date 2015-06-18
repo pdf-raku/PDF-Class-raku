@@ -1,20 +1,20 @@
 use v6;
 
 use PDF::Object::DOM;
-PDF::Object::DOM.install-handler('PDF::DOM');
+PDF::Object::DOM.install-handler('PDF::DOM::Type');
 
-# autoload from PDF::DOM
+# autoload from PDF::DOM::Type
 
-role PDF::DOM
+role PDF::DOM::Type
     does PDF::Object::DOM {
 
     #| enforce tie-ins between /Type, /Subtype & the class name. e.g.
-    #| PDF::DOM::Catalog should have /Type = /Catalog
+    #| PDF::DOM::Type::Catalog should have /Type = /Catalog
     method cb-setup-type( Hash $dict is rw ) {
         for self.^mro {
             my $class-name = .^name;
 
-            if $class-name ~~ /^ 'PDF::DOM::' (\w+) ['::' (\w+)]? $/ {
+            if $class-name ~~ /^ 'PDF::DOM::Type::' (\w+) ['::' (\w+)]? $/ {
                 my $type-name = ~$0;
 
                 if $dict<Type>:!exists {
