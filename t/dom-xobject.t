@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 16;
+plan 17;
 
 use PDF::DOM::Type;
 use PDF::Storage::IndObj;
@@ -44,6 +44,14 @@ is $xform-obj.Subtype, 'Form', '$.Subtype accessor';
 is-json-equiv $xform-obj.Resources, { :ProcSet( [ <PDF> ] ) }, '$.Resources accessor';
 is-json-equiv $xform-obj.BBox, [ 0, 0, 1000, 1000 ], '$.MediaBox accessor';
 is $xform-obj.encoded, "0 0 m\n0 1000 l\n1000 1000 l\n1000 0 l\nf", '$.encoded accessor';
+$xform-obj.gfx.ops.push: ('Tj' => [ :literal('Hello, world!') ]);
+$xform-obj.cb-finish;
+
+my $contents = $xform-obj.decoded;
+is-deeply [$contents.lines], [
+    'q 0 0 m', '0 1000 l', '1000 1000 l', '1000 0 l', 'f Q',
+    'q', '(Hello, world!) Tj', 'Q',
+    ], 'finished contents';
 
 $input = q:to"--END-OBJ--";
 14 0 obj

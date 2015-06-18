@@ -1,6 +1,6 @@
 use v6;
 
-class PDF::DOM::Util::Content {
+class PDF::DOM::Composition::Content {
     has $.parent;
     has @.ops is rw;
 

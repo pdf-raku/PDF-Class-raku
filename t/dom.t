@@ -106,6 +106,7 @@ is $oi-font-obj.RegistryName, 'http://www.color.org', 'OutputIntent RegistryName
 
 use PDF::DOM::Type::Page;
 use PDF::DOM::Type::XObject::Form;
+use PDF::DOM::Type::XObject::Image;
 my $new-page = PDF::DOM::Type::Page.new;
 my $xobject = PDF::DOM::Type::XObject::Form.new;
 

@@ -4,10 +4,8 @@ use PDF::Object::Dict;
 use PDF::Object::Stream;
 use PDF::Object::Inheritance;
 use PDF::DOM::Type;
-use PDF::DOM::Type::XObject::Image;
+use PDF::DOM::Composition;
 use PDF::DOM::Type::XObject::Form;
-use PDF::DOM::Type::Font;
-use PDF::DOM::Util::Content;
 use PDF::Writer;
 
 # /Type /Page - describes a single PDF page
@@ -15,15 +13,10 @@ use PDF::Writer;
 class PDF::DOM::Type::Page
     is PDF::Object::Dict
     does PDF::Object::Inheritance
-    does PDF::DOM::Type {
-
-    has PDF::DOM::Util::Content $.pre-gfx = PDF::DOM::Util::Content.new( :parent(self) ); #| prepended graphics
-    has PDF::DOM::Util::Content $.gfx = PDF::DOM::Util::Content.new( :parent(self) ); #| appended graphics
+    does PDF::DOM::Type
+    does PDF::DOM::Composition {
 
     method Parent is rw { self<Parent> }
-    method Resources is rw { self<Resources> }
-    method MediaBox is rw { self<MediaBox> }
-    method Contents is rw { self<Contents> }
 
     #| contents may either be a stream on an array of streams
     method contents {
@@ -40,48 +33,12 @@ class PDF::DOM::Type::Page
         my $contents = self.Contents;
         my %params = $contents.get-stream();
         my $xobject = PDF::DOM::Type::XObject::Form.new( |%params );
+        $xobject.pre-gfx.ops = self.pre-gfx.ops;
+        $xobject.gfx.ops = self.gfx.ops;
         $xobject.Resources = self.find-prop('Resources');
         $xobject.BBox = self.find-prop('MediaBox');
 
         $xobject;
-    }
-
-    multi method register-resource( PDF::DOM::Type::XObject::Form $object) {
-        self!"register-resource"( $object, :base-name<Fm>, );
-    }
-
-    multi method register-resource( PDF::DOM::Type::XObject::Image $object) {
-        self!"register-resource"( $object, :base-name<Im>, );
-    }
-
-    multi method register-resource( PDF::DOM::Type::Font $object) {
-        self!"register-resource"( $object, :base-name<F>, );
-    }
-
-    #| ensure that the object is registered as a page resource. Return a unique
-    #| name for it.
-    method !register-resource(PDF::Object $object, Str :$base-name = <Obj>, :$type = $object.Type) {
-        my $id = $object.id;
-        my $resources = self.find-prop('Resources')
-            // do {
-                self.Resources = {};
-                self.Resources
-        };
-
-        $resources{$type} //= {};
-
-        for $resources{$type}.keys {
-            my $xo-id = $resources{$type}{$_}.id;
-
-            # we've already got that object, thanks!
-            return $_
-                if $xo-id eq $id;
-        }
-
-        my $name = (1..*).map({$base-name ~ $_}).first({ $resources{$type}{$_}:!exists });
-        $resources{$type}{$name} = $object;
-
-        self.compose( :$name );
     }
 
     method cb-finish {
