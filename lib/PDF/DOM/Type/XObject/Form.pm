@@ -2,7 +2,6 @@ use v6;
 
 use PDF::DOM::Type::XObject;
 use PDF::DOM::Composition;
-use PDF::Writer;
 
 class PDF::DOM::Type::XObject::Form
     is PDF::DOM::Type::XObject
@@ -28,14 +27,12 @@ class PDF::DOM::Type::XObject::Form
                 $!gfx.restore(:prepend);
             }
 
-            my $writer = PDF::Writer.new;
-
             my $prepend = $!pre-gfx.ops
-                ?? $writer.write(:content($!pre-gfx.ops)) ~ "\n"
+                ?? $!pre-gfx.content ~ "\n"
                 !! '';
 
             my $append = $!gfx.ops
-                ?? "\n" ~ $writer.write(:content($!gfx.ops))
+                ?? "\n" ~ $!gfx.content
                 !! '';
 
             self.edit-stream(:$prepend, :$append)
