@@ -30,13 +30,15 @@ class PDF::DOM::Type::Page
 
     #| produce an XObject form for this page
     method to-xobject() {
-        my $contents = self.Contents;
-        my %params = $contents.get-stream();
-        my $xobject = PDF::DOM::Type::XObject::Form.new( |%params );
-        $xobject.pre-gfx.ops = self.pre-gfx.ops;
-        $xobject.gfx.ops = self.gfx.ops;
-        $xobject.Resources = self.find-prop('Resources');
-        $xobject.BBox = self.find-prop('MediaBox');
+        my $xobject = PDF::DOM::Type::XObject::Form.new();
+
+        $xobject.edit-stream( :append($.contents.map({.decoded}).join("\n")) );
+
+        $xobject.Resources = self.find-prop('Resources').clone;
+        $xobject.BBox = self.find-prop('MediaBox').clone;
+
+        $xobject.pre-gfx.ops = self.pre-gfx.ops.clone;
+        $xobject.gfx.ops = self.gfx.ops.clone;
 
         $xobject;
     }

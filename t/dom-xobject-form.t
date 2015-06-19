@@ -49,7 +49,7 @@ $xform-obj.cb-finish;
 
 my $contents = $xform-obj.decoded;
 is-deeply [$contents.lines], [
-    'q 0 0 m', '0 1000 l', '1000 1000 l', '1000 0 l', 'f Q',
+    'q', '0 0 m', '0 1000 l', '1000 1000 l', '1000 0 l', 'f', 'Q',
     'q', '(Hello, world!) Tj', 'Q',
     ], 'finished contents';
 

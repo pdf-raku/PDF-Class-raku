@@ -31,11 +31,11 @@ class PDF::DOM::Type::XObject::Form
             my $writer = PDF::Writer.new;
 
             my $prepend = $!pre-gfx.ops
-                ?? $writer.write(:content($!pre-gfx.ops)) ~ ' '
+                ?? $writer.write(:content($!pre-gfx.ops)) ~ "\n"
                 !! '';
 
             my $append = $!gfx.ops
-                ?? ' ' ~ $writer.write(:content($!gfx.ops))
+                ?? "\n" ~ $writer.write(:content($!gfx.ops))
                 !! '';
 
             self.edit-stream(:$prepend, :$append)
