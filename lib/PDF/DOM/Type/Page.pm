@@ -29,15 +29,25 @@ class PDF::DOM::Type::Page
 
     #| produce an XObject form for this page
     method to-xobject() {
-        my $xobject = PDF::DOM::Type::XObject::Form.new();
 
-        $xobject.edit-stream( :append([~] $.contents.map({.decoded})) );
+        my %dict = (Resources => self.find-prop('Resources').clone,
+                    BBox => self.find-prop('MediaBox').clone);
 
-        $xobject.Resources = self.find-prop('Resources').clone;
-        $xobject.BBox = self.find-prop('MediaBox').clone;
-
+        my $xobject = PDF::DOM::Type::XObject::Form.new(:%dict);
         $xobject.pre-gfx.ops = self.pre-gfx.ops.clone;
         $xobject.gfx.ops = self.gfx.ops.clone;
+
+        my $contents = $.contents;
+        $xobject.edit-stream( :append([~] $contents.map({.decoded})) );
+        if +$contents {
+            # inherit compression from the first stream segment
+            for $contents[0] {
+                $xobject<Filter> = .<Filter>.clone
+                    if .<Filter>:exists;
+                $xobject<DecodeParms> = .<DecodeParms>.clone
+                    if .<DecodeParms>:exists;
+            }
+        }
 
         $xobject;
     }
