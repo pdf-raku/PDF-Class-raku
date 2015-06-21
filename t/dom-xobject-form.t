@@ -42,7 +42,7 @@ isa-ok $xform-obj, ::('PDF::DOM::Type')::('XObject::Form');
 is $xform-obj.Type, 'XObject', '$.Type accessor';
 is $xform-obj.Subtype, 'Form', '$.Subtype accessor';
 is-json-equiv $xform-obj.Resources, { :ProcSet( [ <PDF> ] ) }, '$.Resources accessor';
-is-json-equiv $xform-obj.BBox, [ 0, 0, 1000, 1000 ], '$.MediaBox accessor';
+is-json-equiv $xform-obj.BBox, [ 0, 0, 1000, 1000 ], '$.BBox accessor';
 is $xform-obj.encoded, "0 0 m\n0 1000 l\n1000 1000 l\n1000 0 l\nf", '$.encoded accessor';
 $xform-obj.gfx.ops.push: ('Tj' => [ :literal('Hello, world!') ]);
 $xform-obj.cb-finish;
