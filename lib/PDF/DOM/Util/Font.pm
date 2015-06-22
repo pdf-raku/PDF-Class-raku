@@ -90,7 +90,6 @@ module PDF::DOM::Util::Font {
         multi method to-dom('Font') {
             { :Type( :name<Font> ), :Subtype( :name<Type1> ),
               :BaseEncoding( :name<WinAnsiEncoding> ),
-              # todo /Encoding with differences between latin1 and WinsAnsiEncoding
               :BaseFont( :name( self.FontName ) ),
             }
         }

@@ -56,7 +56,30 @@ class Build is Panda::Builder {
         }
     }
 
-    method !write-enc(Hash :$glyphs!, Hash :$encodings!) {
+    method !build-sym-enc(IO::Path $encoding-path, Str :$sym = 'sym', Hash :$glyphs! is rw, Hash :$encodings! is rw) {
+        my $encoding-io = $encoding-path;
+
+        die "unable to load encodings: $encoding-path"
+            unless $encoding-path ~~ :e;
+
+        for $encoding-path.lines {
+            next if /^ '#'/ || /^ $/;
+warn $_;
+            m:s/^ $<code-point>=[<xdigit>+] $<encoding>=[<xdigit>+] .*? $<glyph-name>=[\w+] $<comment>=['(' .*? ')']? $/
+               or do {
+                   warn "unable to parse encoding line: $_";
+                   next;
+               };
+
+            my $glyph-name = ~ $<glyph-name>;
+            my $char = :16( $<code-point>.Str ).chr;
+            my $byte = :16( $<encoding>.Str ).chr;
+            $glyphs{$sym}{$char} = $glyph-name;
+            $encodings{$sym}{$glyph-name} = $byte;
+        }
+    }
+
+    method !write-enc(Hash :$glyphs! is rw, Hash :$encodings! is rw) {
         my $lib-dir = $*SPEC.catdir('lib', 'PDF', 'DOM' , 'Util', 'Font');
         mkdir( $lib-dir, 0o755);
 
@@ -92,6 +115,8 @@ class Build is Panda::Builder {
             my $glyphs = {};
             my $encodings = {};
             self!"build-enc"("etc/encodings.txt".IO, :$glyphs, :$encodings);
+            self!"build-sym-enc"("etc/symbol.txt".IO, :$glyphs, :$encodings);
+            self!"build-sym-enc"("etc/zdingbat.txt".IO, :sym<zapf>, :$glyphs, :$encodings);
             self!"write-enc"(:$glyphs, :$encodings);
         }
     }
