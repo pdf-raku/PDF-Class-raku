@@ -98,15 +98,15 @@ module PDF::DOM::Util::Font {
 
         multi method to-dom('Font') {
             my %enc-name = :win<WinAnsiEncoding>, :mac<MacRomanEncoding>;
-            my $dom = { :Type( :name<Font> ), :Subtype( :name<Type1> ),
+            my $dict = { :Type( :name<Font> ), :Subtype( :name<Type1> ),
                         :BaseFont( :name( self.FontName ) ),
             };
 
             if my $name = %enc-name{self.enc} {
-                $dom<Encoding> = :$name;
+                $dict<Encoding> = :$name;
             }
 
-            $dom;
+            %( :$dict, :font-obj(self) )
         }
 
         method stringwidth($str, $pointsize=0, :$kern) {

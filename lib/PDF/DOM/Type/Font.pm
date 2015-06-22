@@ -9,6 +9,8 @@ class PDF::DOM::Type::Font
     is PDF::Object::Dict
     does PDF::DOM::Type {
 
+    has $.font-obj handles <encode decode>;
+
     method Name is rw { self<Name> }
     method BaseFont is rw { self<BaseFont> }
     method Encoding is rw { self<Encoding> }
