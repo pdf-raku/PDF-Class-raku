@@ -7,6 +7,7 @@ use PDF::DOM::Type;
 my $hb-afm = PDF::DOM::Util::Font::core-font( 'Helvetica-Bold' );
 isa-ok $hb-afm, ::('Font::AFM'); 
 is $hb-afm.FontName, 'Helvetica-Bold', 'FontName';
+is $hb-afm.enc, 'win', '.enc';
 
 my $ab-afm = PDF::DOM::Util::Font::core-font( 'Arial-Bold' );
 isa-ok $hb-afm, ::('Font::AFM'); 
@@ -23,7 +24,8 @@ my $dict = $hbi-afm.to-dom('Font');
 
 my $font = PDF::Object.compose( :$dict );
 isa-ok $font, ::('PDF::DOM::Type::Font::Type1');
-is $font.BaseFont, 'Helvetica-BoldOblique';
+is $font.BaseFont, 'Helvetica-BoldOblique', '.BaseFont';
+is $font.Encoding, 'WinAnsiEncoding', '.Encoding';
 
 my $tr-afm = PDF::DOM::Util::Font::core-font( 'Times-Roman' );
 is $tr-afm.stringwidth("RVX", :!kern), 2111, 'stringwidth :!kern';
@@ -40,5 +42,29 @@ for (win => :literal("Á®ÆØ"),
     my $literal2 = $fnt.kern("Á®ÆØ")[0];
     is-deeply $literal2, $expected, "font $enc kern";
 }
+
+my $zapf = PDF::DOM::Util::Font::core-font( 'ZapfDingbats' );
+isa-ok $zapf, ::('Font::Metrics::zapfdingbats');
+is $zapf.enc, 'zapf', '.enc';
+is $zapf.encode("♥♣✔"), "literal" => "ª¨4", '.encode(...)'; # /a110 /a112 /a20
+
+$dict = $zapf.to-dom('Font');
+
+my $zapf-font = PDF::Object.compose( :$dict );
+isa-ok $zapf-font, ::('PDF::DOM::Type::Font::Type1');
+is $zapf-font.BaseFont, 'ZapfDingbats', '.BaseFont';
+ok !$zapf-font.Encoding.defined, '!.Encoding';
+
+my $sym = PDF::DOM::Util::Font::core-font( 'Symbol' );
+isa-ok $sym, ::('Font::Metrics::symbol');
+is $sym.enc, 'sym', '.enc';
+is $sym.encode("ΑΒΓ"), "literal" => "ABG", '.encode(...)'; # /Alpha /Beta /Gamma
+
+$dict = $sym.to-dom('Font');
+
+my $sym-font = PDF::Object.compose( :$dict );
+isa-ok $sym-font, ::('PDF::DOM::Type::Font::Type1');
+is $sym-font.BaseFont, 'Symbol', '.BaseFont';
+ok !$sym-font.Encoding.defined, '!.Encoding';
 
 done;

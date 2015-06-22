@@ -68,11 +68,12 @@ module PDF::DOM::Util::Font {
 
     role Afm2Dom {
 
+        has $.enc;
         has $!glyphs;
         has $!encoding;
 
-        method set-encoding( Str :$enc = 'win') {
-            given $enc {
+        method set-encoding( Str :$!enc = 'win') {
+            given $!enc {
                 when 'mac' {
                     $!glyphs = $PDF::DOM::Util::Font::Encodings::mac-glyphs;
                     $!encoding = $PDF::DOM::Util::Font::Encodings::mac-encoding;
@@ -81,17 +82,31 @@ module PDF::DOM::Util::Font {
                     $!glyphs = $PDF::DOM::Util::Font::Encodings::win-glyphs;
                     $!encoding = $PDF::DOM::Util::Font::Encodings::win-encoding;
                 }
+                when 'sym' {
+                    $!glyphs = $PDF::DOM::Util::Font::Encodings::sym-glyphs;
+                    $!encoding = $PDF::DOM::Util::Font::Encodings::sym-encoding;
+                }
+                when 'zapf' {
+                    $!glyphs = $PDF::DOM::Util::Font::Encodings::zapf-glyphs;
+                    $!encoding = $PDF::DOM::Util::Font::Encodings::zapf-encoding;
+                }
                 default { 
-                    die ":enc not 'win', 'mac': $_";
+                    die ":enc not 'win', 'mac'. 'sym' or 'zapf': $_";
                 }
             }
         }
 
         multi method to-dom('Font') {
-            { :Type( :name<Font> ), :Subtype( :name<Type1> ),
-              :BaseEncoding( :name<WinAnsiEncoding> ),
-              :BaseFont( :name( self.FontName ) ),
+            my %enc-name = :win<WinAnsiEncoding>, :mac<MacRomanEncoding>;
+            my $dom = { :Type( :name<Font> ), :Subtype( :name<Type1> ),
+                        :BaseFont( :name( self.FontName ) ),
+            };
+
+            if my $name = %enc-name{self.enc} {
+                $dom<Encoding> = :$name;
             }
+
+            $dom;
         }
 
         method stringwidth($str, $pointsize=0, :$kern) {
@@ -136,16 +151,28 @@ module PDF::DOM::Util::Font {
         core-font( $font-name, :$enc );
     }
 
+   sub load-font($font-name, :$enc!) {
+        state %core-font-cache;
+        my $fnt = (%core-font-cache{$font-name.lc}{$enc} //= (Font::AFM.metrics-class( $font-name ) but Afm2Dom).new(:$enc));
+        $fnt.set-encoding(:$enc);
+        $fnt;
+   }
+
+    multi sub core-font(Str $font-name! where { $font-name ~~ m:i/^ ZapfDingbats $/ }) {
+        load-font( $font-name.lc, :enc<zapf> );
+    }
+
+    multi sub core-font(Str $font-name! where { $font-name ~~ m:i/^ Symbol $/ }) {
+        load-font( $font-name.lc, :enc<sym> );
+    }
+
     multi sub core-font(Str $font-name! where { stdFontMap{$font-name.lc}:exists }, :$enc) {
         core-font( stdFontMap{$font-name.lc}, :$enc );
     }
 
     multi sub core-font(Str $font-name!, :$enc is copy) is default {
         $enc //= 'win';
-        state %core-font-cache;
-        my $fnt = (%core-font-cache{$font-name.lc}{$enc} //= (Font::AFM.metrics-class( $font-name ) but Afm2Dom).new(:$enc));
-        $fnt.set-encoding(:$enc);
-        $fnt;
+        load-font( $font-name.lc, :$enc );
     }
 
 }
