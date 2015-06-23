@@ -2,6 +2,7 @@ use v6;
 
 use PDF::DOM::Composition::Content;
 use PDF::DOM::Type::XObject;
+use PDF::DOM::Util::Font;
 use PDF::DOM::Type::Font;
 
 #| this role is applied to PDF::DOM::Type::Pages and PDF::DOM::Type::XObject::Form
@@ -14,22 +15,57 @@ role PDF::DOM::Composition {
     method MediaBox is rw { self<MediaBox> }
     method Contents is rw { self<Contents> }
 
+    method core-font( *@arg, *%opt ) {
+        my $core-font = PDF::DOM::Util::Font::core-font( |@arg, |%opt );
+        my $res =self!"find-resource"(sub ($_){.isa(PDF::DOM::Type::Font) && .font-obj === $core-font}, :type<Font>)
+            // do {
+                my %params = $core-font.to-dom('Font');
+                my $new-obj = PDF::Object.compose( |%params );
+                self.register-resource( $new-obj );
+        };
+
+        $res.value;
+    }
+
+    method !find-resource( &match, Str :$type! ) {
+        my $resources = self.find-prop('Resources')
+            // return;
+
+        $resources = $resources{$type}
+            // return;
+
+        my $found;
+
+        for $resources.keys {
+            my $resource = $resources{$_};
+            if &match($resource) {
+                $found = $_ => $resource;
+                last;
+            }
+        }
+
+        $found;
+    }
+
     multi method register-resource( PDF::DOM::Type::XObject $object) {
         my $base-name = do given $object.Subtype {
             when 'Form'  {'Fm'}
             when 'Image' {'Im'}
             default {die "Unhandled XObject.Subtype: $_"}
         }
-        self!"register-resource"( $object, :$base-name, );
+        self!"add-resource"( $object, :$base-name, );
     }
 
     multi method register-resource( PDF::DOM::Type::Font $object) {
-        self!"register-resource"( $object, :base-name<F>, );
+        self!"add-resource"( $object, :base-name<F>, );
     }
 
     #| ensure that the object is registered as a page resource. Return a unique
     #| name for it.
-    method !register-resource(PDF::Object $object, Str :$base-name = <Obj>, :$type = $object.Type) {
+    method !add-resource(PDF::Object $object,
+                         Str :$base-name = <Obj>,
+                         :$type = $object.Type
+        --> Pair ) {
         my $id = $object.id;
         my $resources = self.find-prop('Resources')
             // do {
@@ -39,20 +75,10 @@ role PDF::DOM::Composition {
 
         $resources{$type} //= {};
 
-        my $resource = $resources{$type}.keys.first( -> $name {
-            my $xo-id = $resources{$type}{$name}.id;
-            # we've already got that object, thanks!
-            $xo-id eq $id;
-        });
+        my $name = (1..*).map({$base-name ~ $_}).first({ $resources{$type}{$_}:!exists });
+        $resources{$type}{$name} = $object;
 
-        $resource //= do {
-            my $name = (1..*).map({$base-name ~ $_}).first({ $resources{$type}{$_}:!exists });
-            $resources{$type}{$name} = $object;
-
-            self.compose( :$name );
-        };
-
-        $resource;
+        $name => $object;
     }
 
     method cb-finish {

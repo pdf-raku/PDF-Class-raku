@@ -9,7 +9,7 @@ use PDF::Storage::IndObj;
 use lib '.';
 use t::Object :to-obj;
 
-plan 34;
+plan 33;
 
 # crosschecks on /Type
 require ::('PDF::DOM::Type::Catalog');
@@ -111,22 +111,19 @@ my $new-page = PDF::DOM::Type::Page.new;
 my $xobject = PDF::DOM::Type::XObject::Form.new;
 
 my $fm1 = $new-page.register-resource( $xobject );
-is $fm1, 'Fm1', 'xobject form name';
+is-deeply $fm1, 'Fm1' => $xobject, 'xobject form name';
 
 my $object2 = PDF::DOM::Type::XObject::Form.new;
 my $object3 = PDF::DOM::Type::XObject::Image.new;
 my $object4 = PDF::DOM::Type::Font.new;
 my $fm2 = $new-page.register-resource( $object2 );
-is $fm2, 'Fm2', 'xobject form name';
+is-deeply $fm2, 'Fm2' => $object2, 'xobject form name';
 
 my $im1 = $new-page.register-resource( $object3 );
-is $im1, 'Im1', 'xobject form name';
+is-deeply $im1, 'Im1' => $object3, 'xobject form name';
 
 my $f1 = $new-page.register-resource( $object4 );
-is $f1, 'F1', 'font name';
-
-my $fm1-again = $new-page.register-resource( $xobject );
-is $fm1-again, $fm1, 'xobject form name, reregistered';
+is-deeply $f1, 'F1' => $object4, 'font name';
 
 is-json-equiv $new-page<Resources><XObject>, { :Fm1($xobject), :Fm2($object2), :Im1($object3) }, 'Resource XObject content';
 is-json-equiv $new-page<Resources><Font>, { :F1($object4) }, 'Resource Font content';

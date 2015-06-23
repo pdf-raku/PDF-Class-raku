@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 19;
+plan 25;
 
 use PDF::DOM::Type;
 use PDF::Storage::IndObj;
@@ -42,6 +42,16 @@ is-deeply $ind-obj.ast, $ast, 'ast regeneration';
 $page-obj.Contents = $dummy-stream;
 is-deeply $page-obj.Contents, ($dummy-stream), '$.Contents accessor';
 is-deeply $page-obj.contents, [$dummy-stream], '$.contents accessor';
+
+my $font = $page-obj.core-font( 'Helvetica' );
+isa-ok $font, ::('PDF::DOM::Type::Font::Type1');
+is $font.font-obj.FontName, 'Helvetica', '.FontName';
+my $font-again = $page-obj.core-font( 'Helvetica' );
+is-deeply $font-again, $font, 'core font caching';
+is-deeply [$page-obj.Resources<Font>.keys.sort], [<F1 F2>], 'font resource entries';
+my $font2 = $page-obj.core-font( :font-family<Helvetica>, :font-weight<bold> );
+is $font2.font-obj.FontName, 'Helvetica-Bold', '.FontName';
+is-deeply [$page-obj.Resources<Font>.keys.sort], [<F1 F2 F3>], 'font resource entries';
 
 $page-obj.gfx.ops.push: ('Tj' => [ :literal('Hello, world!') ]);
 $page-obj.cb-finish;
