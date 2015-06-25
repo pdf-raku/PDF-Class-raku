@@ -49,7 +49,7 @@ is $font.font-obj.FontName, 'Helvetica', '.FontName';
 my $font-again = $page-obj.core-font( 'Helvetica' );
 is-deeply $font-again, $font, 'core font caching';
 is-deeply [$page-obj.Resources<Font>.keys.sort], [<F1 F2>], 'font resource entries';
-my $font2 = $page-obj.core-font( :font-family<Helvetica>, :font-weight<bold> );
+my $font2 = $page-obj.core-font( :family<Helvetica>, :weight<bold> );
 is $font2.font-obj.FontName, 'Helvetica-Bold', '.FontName';
 is-deeply [$page-obj.Resources<Font>.keys.sort], [<F1 F2 F3>], 'font resource entries';
 

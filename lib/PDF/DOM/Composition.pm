@@ -17,30 +17,31 @@ role PDF::DOM::Composition {
 
     method core-font( *@arg, *%opt ) {
         my $core-font = PDF::DOM::Util::Font::core-font( |@arg, |%opt );
-        my $res =self!"find-resource"(sub ($_){.isa(PDF::DOM::Type::Font) && .font-obj === $core-font}, :type<Font>)
+        my $entry = self!"find-resource"(sub ($_){.isa(PDF::DOM::Type::Font) && .font-obj === $core-font}, :type<Font>)
             // do {
                 my %params = $core-font.to-dom('Font');
                 my $new-obj = PDF::Object.compose( |%params );
-                self.register-resource( $new-obj );
+                my $new-entry = self.register-resource( $new-obj );
+                $new-entry.value.key = $new-entry.key;
+                $new-entry;
         };
-
-        $res.value;
+        $entry.value;
     }
 
     method !find-resource( &match, Str :$type! ) {
         my $resources = self.find-prop('Resources')
-            // return;
-
-        $resources = $resources{$type}
-            // return;
+            // {};
 
         my $found;
 
-        for $resources.keys {
-            my $resource = $resources{$_};
-            if &match($resource) {
-                $found = $_ => $resource;
-                last;
+        if $resources = $resources{$type} {
+
+            for $resources.keys {
+                my $resource = $resources{$_};
+                if &match($resource) {
+                    $found = $_ => $resource;
+                    last;
+                }
             }
         }
 

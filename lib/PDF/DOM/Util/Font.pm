@@ -96,6 +96,12 @@ module PDF::DOM::Util::Font {
             }
         }
 
+        method height($pointsize) {
+            my $bbox = $.FontBBox;
+            my $height = $bbox[3] - $bbox[1];
+            $pointsize ?? $height * $pointsize / 1000 !! $height;
+        }
+
         multi method to-dom('Font') {
             my %enc-name = :win<WinAnsiEncoding>, :mac<MacRomanEncoding>;
             my $dict = { :Type( :name<Font> ), :Subtype( :name<Type1> ),
@@ -109,44 +115,36 @@ module PDF::DOM::Util::Font {
             %( :$dict, :font-obj(self) )
         }
 
-        method stringwidth($str, $pointsize=0, :$kern) {
+        method stringwidth(Str $str, Numeric $pointsize=0, Bool :$kern=False) {
             nextwith( $str, $pointsize, :$kern, :$!glyphs);
         }
 
-        method kern($str, $pointsize=0) {
-            my $raw = callwith( $str, $pointsize, :$!glyphs);
-            [ $raw.map({
-                when Numeric {:num($_)}
-                default { self.encode($_) }
-            }) ];
-        }
-
         multi method encode(Str $s) {
-            :literal([~] $s.comb\
-                     .map({ $!glyphs{$_} })\
-                     .grep({ .defined })\
-                     .map({ $!encoding{$_} })\
-                     .grep({ .defined }));
+            $s.comb\
+                .map({ $!glyphs{$_} })\
+                .grep({ .defined })\
+                .map({ $!encoding{$_} })\
+                .grep({ .defined });
         }
 
     }
 
     our proto sub core-font(|c) {*};
 
-    multi sub core-font( Str :$font-family!, Str :$font-weight?, Str :$font-style?, :$enc) {
+    multi sub core-font( Str :$family!, Str :$weight?, Str :$style?, :$enc) {
 
-        my $bold = $font-weight && $font-weight ~~ m:i/bold|[6..9]00/
+        my $bold = $weight && $weight ~~ m:i/bold|[6..9]00/
             ?? 'bold' !! '';
 
         # italic & oblique can be treated as synonyms for core fonts
-        my $italic = $font-style && $font-style ~~ m:i/italic|oblique/
+        my $italic = $style && $style ~~ m:i/italic|oblique/
             ?? 'italic' !! '';
 
         my $sfx = $bold || $italic
             ?? '-' ~ $bold ~ $italic
             !! '';
 
-        my $font-name = $font-family.subst(/['-'.*]? $/, $sfx );
+        my $font-name = $family.subst(/['-'.*]? $/, $sfx );
 
         core-font( $font-name, :$enc );
     }
