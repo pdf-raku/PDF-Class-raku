@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 25;
+plan 29;
 
 use PDF::DOM::Type;
 use PDF::Storage::IndObj;
@@ -18,7 +18,7 @@ my $input = q:to"--END-OBJ--";
   /Type /Page
   /Parent 3 0 R
   /Resources << /Font << /F1 7 0 R >>/ProcSet 6 0 R >>
-  /MediaBox [0 0 612 792]
+  /MediaBox [0 0 595 842]
 >>
 endobj
 --END-OBJ--
@@ -29,34 +29,45 @@ my $ast = $/.ast;
 my $ind-obj = PDF::Storage::IndObj.new( |%$ast);
 is $ind-obj.obj-num, 4, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
-my $page-obj = $ind-obj.object;
-isa-ok $page-obj, ::('PDF::DOM::Type')::('Page');
-is $page-obj.Type, 'Page', '$.Type accessor';
+my $page = $ind-obj.object;
+isa-ok $page, ::('PDF::DOM::Type')::('Page');
+is $page.Type, 'Page', '$.Type accessor';
 my $dummy-stream = PDF::Object::Stream.new( :decoded('%dummy stream') );
-is $page-obj.Parent, (:ind-ref[3, 0]), '$.Parent accessor';
-is $page-obj.Resources, { :Font{ :F1( :ind-ref[7, 0] )}, :ProcSet( :ind-ref[6, 0]) }, '$.Resources accessor';
-is-json-equiv $page-obj.MediaBox, [0, 0, 612, 792], '$.MediaBox accessor';
+is $page.Parent, (:ind-ref[3, 0]), '$.Parent accessor';
+is $page.Resources, { :Font{ :F1( :ind-ref[7, 0] )}, :ProcSet( :ind-ref[6, 0]) }, '$.Resources accessor';
 
 is-deeply $ind-obj.ast, $ast, 'ast regeneration';
 
-$page-obj.Contents = $dummy-stream;
-is-deeply $page-obj.Contents, ($dummy-stream), '$.Contents accessor';
-is-deeply $page-obj.contents, [$dummy-stream], '$.contents accessor';
+$page.Contents = $dummy-stream;
+is-deeply $page.Contents, ($dummy-stream), '$.Contents accessor';
+is-deeply $page.contents, [$dummy-stream], '$.contents accessor';
 
-my $font = $page-obj.core-font( 'Helvetica' );
+my $font = $page.core-font( 'Helvetica' );
 isa-ok $font, ::('PDF::DOM::Type::Font::Type1');
 is $font.font-obj.FontName, 'Helvetica', '.FontName';
-my $font-again = $page-obj.core-font( 'Helvetica' );
+my $font-again = $page.core-font( 'Helvetica' );
 is-deeply $font-again, $font, 'core font caching';
-is-deeply [$page-obj.Resources<Font>.keys.sort], [<F1 F2>], 'font resource entries';
-my $font2 = $page-obj.core-font( :family<Helvetica>, :weight<bold> );
+is-deeply [$page.Resources<Font>.keys.sort], [<F1 F2>], 'font resource entries';
+my $font2 = $page.core-font( :family<Helvetica>, :weight<bold> );
 is $font2.font-obj.FontName, 'Helvetica-Bold', '.FontName';
-is-deeply [$page-obj.Resources<Font>.keys.sort], [<F1 F2 F3>], 'font resource entries';
+is-deeply [$page.Resources<Font>.keys.sort], [<F1 F2 F3>], 'font resource entries';
 
-$page-obj.gfx.ops.push: ('Tj' => [ :literal('Hello, world!') ]);
-$page-obj.cb-finish;
+is-json-equiv $page.MediaBox, [0, 0, 595, 842], '$.MediaBox accessor';
+is-json-equiv $page.media-box, [0, 0, 595, 842], '$.media-box accessor';
 
-my $contents = $page-obj.Contents;
+$page<MediaBox>:delete;
+is-json-equiv $page.media-box, [0, 0, 612, 792], 'media-box - default';
+
+$page.media-box(150,200);
+is-json-equiv $page.media-box, [0, 0, 150, 200], 'media-box - 2 arg setter';
+
+$page.media-box(-3,-3,253,303);
+is-json-equiv $page.media-box, [-3, -3, 253, 303], 'media-box - 4 arg setter';
+
+$page.gfx.ops.push: ('Tj' => [ :literal('Hello, world!') ]);
+$page.cb-finish;
+
+my $contents = $page.Contents;
 isa-ok $contents, Array, 'finished Contents';
 is-deeply +$contents, 3, 'finished Contents count';
 
@@ -65,9 +76,9 @@ is $contents[0].decoded, "BT\nq\nET\n", 'finished Contents pretext';
 is $contents[1].decoded, '%dummy stream', 'finished Contents existing text';
 is-deeply [$contents[2].decoded.lines], ['', 'BT', 'Q', 'q', '(Hello, world!) Tj', 'Q', 'ET'], 'finished Contents post-text';
 
-my $xobject = $page-obj.to-xobject;
+my $xobject = $page.to-xobject;
 isa-ok $xobject, ::('PDF::DOM::Type::XObject::Form');
-is-deeply $xobject.BBox, $page-obj.MediaBox, 'xobject copied BBox';
+is-deeply $xobject.BBox, $page.MediaBox, 'xobject copied BBox';
 is-deeply [$xobject.decoded.lines], ['BT', 'q', 'ET',
                                      '%dummy stream',
                                      'BT', 'Q', 'q', '(Hello, world!) Tj', 'Q', 'ET' ], 'xobject decoded';

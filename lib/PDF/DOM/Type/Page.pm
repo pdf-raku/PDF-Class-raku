@@ -16,6 +16,20 @@ class PDF::DOM::Type::Page
     does PDF::DOM::Composition {
 
     method Parent is rw { self<Parent> }
+    method MediaBox is rw { self<MediaBox> }
+
+    multi method media-box(Numeric $lx!, Numeric $ly!, Numeric $ux!, Numeric $uy! ) {
+        self<MediaBox> = [$lx, $ly, $ux, $uy ]
+    }
+
+    multi method media-box(Numeric $ux!, Numeric $uy! ) {
+        self.media-box(0, 0, $ux, $uy)
+    }
+
+    multi method media-box() is default {
+        self.find-prop('MediaBox')
+            // [0, 0, 612, 792];
+    }
 
     #| contents may either be a stream on an array of streams
     method contents {

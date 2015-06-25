@@ -12,7 +12,6 @@ role PDF::DOM::Composition {
     has PDF::DOM::Composition::Content $.gfx     = PDF::DOM::Composition::Content.new( :parent(self) ); #| appended graphics
 
     method Resources is rw { self<Resources> }
-    method MediaBox is rw { self<MediaBox> }
     method Contents is rw { self<Contents> }
 
     method core-font( *@arg, *%opt ) {
