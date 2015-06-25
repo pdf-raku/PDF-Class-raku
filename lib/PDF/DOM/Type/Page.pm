@@ -56,31 +56,34 @@ class PDF::DOM::Type::Page
 
         if $!pre-gfx.ops || $!gfx.ops {
 
+            my $new-content;
             # wrap new content in save ... restore - for safety's sake
             for $!pre-gfx, $!gfx {
                 if .defined && .ops {
+                    $new-content = True;
                     .save(:prepend);
                     .restore;
                 }
             }
 
-            # also wrap any existing content in save ... restore
-            my @contents = @$.contents;
-            if +@contents {
-                # wrap ex
-                $!pre-gfx.save;
-                $!gfx.restore(:prepend);
+            if $new-content {
+                # also wrap any existing content in save ... restore
+                my @contents = @$.contents;
+                if +@contents {
+                    # wrap ex
+                    $!pre-gfx.save;
+                    $!gfx.restore(:prepend);
+                }
+
+                @contents.unshift: PDF::Object::Stream.new( :decoded( "BT\n" ~ $!pre-gfx.content ~ "\nET\n" ) )
+                    if $!pre-gfx.ops;
+
+                @contents.push: PDF::Object::Stream.new( :decoded( "\nBT\n" ~ $!gfx.content ~ "\nET" ) )
+                    if $!gfx.ops;
+
+                self<Contents> = @contents.item;
             }
-
-            @contents.unshift: PDF::Object::Stream.new( :decoded( $!pre-gfx.content ~ "\n" ) )
-                if $!pre-gfx.ops;
-
-            @contents.push: PDF::Object::Stream.new( :decoded( "\n" ~ $!gfx.content ) )
-                if $!gfx.ops;
-
-            self<Contents> = @contents.item;
         }
-
     }
 
 }

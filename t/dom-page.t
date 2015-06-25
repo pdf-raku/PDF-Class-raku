@@ -61,13 +61,15 @@ isa-ok $contents, Array, 'finished Contents';
 is-deeply +$contents, 3, 'finished Contents count';
 
 isa-ok $contents[0], ::('PDF::Object::Stream'), 'finished Contents';
-is $contents[0].decoded, "q\n", 'finished Contents pretext';
+is $contents[0].decoded, "BT\nq\nET\n", 'finished Contents pretext';
 is $contents[1].decoded, '%dummy stream', 'finished Contents existing text';
-is-deeply [$contents[2].decoded.lines], ['', 'Q', 'q', '(Hello, world!) Tj', 'Q'], 'finished Contents post-text';
+is-deeply [$contents[2].decoded.lines], ['', 'BT', 'Q', 'q', '(Hello, world!) Tj', 'Q', 'ET'], 'finished Contents post-text';
 
 my $xobject = $page-obj.to-xobject;
 isa-ok $xobject, ::('PDF::DOM::Type::XObject::Form');
 is-deeply $xobject.BBox, $page-obj.MediaBox, 'xobject copied BBox';
-is-deeply [$xobject.decoded.lines], ['q', '%dummy stream', 'Q', 'q', '(Hello, world!) Tj', 'Q' ], 'xobject decoded';
+is-deeply [$xobject.decoded.lines], ['BT', 'q', 'ET',
+                                     '%dummy stream',
+                                     'BT', 'Q', 'q', '(Hello, world!) Tj', 'Q', 'ET' ], 'xobject decoded';
 
 
