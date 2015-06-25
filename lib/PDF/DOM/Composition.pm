@@ -17,11 +17,11 @@ role PDF::DOM::Composition {
 
     method core-font( *@arg, *%opt ) {
         my $core-font = PDF::DOM::Util::Font::core-font( |@arg, |%opt );
-        my $entry = self!"find-resource"(sub ($_){.isa(PDF::DOM::Type::Font) && .font-obj === $core-font}, :type<Font>)
+        my Pair $entry = self!"find-resource"(sub ($_){.isa(PDF::DOM::Type::Font) && .font-obj === $core-font}, :type<Font>)
             // do {
                 my %params = $core-font.to-dom('Font');
                 my $new-obj = PDF::Object.compose( |%params );
-                my $new-entry = self.register-resource( $new-obj );
+                my Pair $new-entry = self.register-resource( $new-obj );
                 $new-entry.value.key = $new-entry.key;
                 $new-entry;
         };

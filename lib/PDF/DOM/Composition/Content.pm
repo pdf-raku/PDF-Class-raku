@@ -19,6 +19,8 @@ class PDF::DOM::Composition::Content {
                 Numeric :$font-size = 16;
                 Str :$align,
                 Bool :$dry-run = False,
+                Numeric :$top?,
+                Numeric :$left?,
                 *%etc,  #| :$kern, :$font-size, :$line-height, :$width, :$height
         ) {
 
@@ -29,8 +31,12 @@ class PDF::DOM::Composition::Content {
             && $text-block.width
             && $align eq 'left' | 'right' | 'center' | 'justify';
 
-        @!ops.push: ( 'Tf' => [ :name($font.key), :real($font-size) ] ), $text-block.content.list
-            unless $dry-run;
+        unless $dry-run {
+            @!ops.push: ( 'Tm' => [ :real($top//0), :real($left//0) ] )
+                if $top.defined || $left.defined;
+            @!ops.push: ( 'Tf' => [ :name($font.key), :real($font-size) ] );
+            @!ops.push: $text-block.content.list;
+        }
 
         return $text-block;
     }

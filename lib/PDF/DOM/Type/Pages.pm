@@ -74,7 +74,7 @@ class PDF::DOM::Type::Pages
         for $kids.keys {
             my $kid = $kids[$_];
             $kid.<Parent> //= self;
-            $kid.finish;
+            $kid.cb-finish;
             $count += $kid.can('Count') ?? $kid.Count !! 1;
         }
         self<Count> = $count;

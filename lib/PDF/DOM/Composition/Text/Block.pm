@@ -122,14 +122,11 @@ class PDF::DOM::Composition::Text::Block {
 
     method content {
 
-        my @content = $.lines.map({
-                ( .content(:$.font-size), 'T*')
-            });
+        :TL[ :real($!line-height) ],
+        $.lines.map({
+            ( .content(:$.font-size), 'T*')
+        });
 
-        @content.unshift( (:TL[ :real($!line-height) ] ) )
-            if +$.lines > 1;
-
-        @content;
     }
 
 }

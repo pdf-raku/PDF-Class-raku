@@ -2,6 +2,7 @@ use v6;
 
 use PDF::Object::Dict;
 use PDF::DOM::Type;
+use PDF::DOM::Type::Pages;
 
 # /Type /Catalog - usually the root object in a PDF
 
@@ -13,8 +14,19 @@ class PDF::DOM::Type::Catalog
     method Outlines is rw { self<Outlines> }
     method Resources is rw { self<Resources> }
 
-    method finish {
+    method cb-finish {
         self<Pages>.cb-finish;
+    }
+
+    method new() {
+        my $obj = callsame;
+
+        $obj<Pages> //= PDF::DOM::Type::Pages.new(
+            :dict{
+                :Resources{ :Procset[ :name<PDF>, :name<Text> ] },
+                });
+
+        $obj;
     }
 
 }
