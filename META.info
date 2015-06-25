@@ -29,6 +29,12 @@
         "PDF::DOM::XObject::Form" : "lib/PDF/DOM/XObject/Form.pm",
         "PDF::DOM::XObject::Image" : "lib/PDF/DOM/XObject/Image.pm",
 
+        "PDF::DOM::Composition" : "lib/PDF/DOM/Composition.pm",
+        "PDF::DOM::Composition::Content" : "lib/PDF/DOM/Composition/Content.pm",
+        "PDF::DOM::Composition::Text::Atom" : "lib/PDF/DOM/Composition/Text/Atom.pm",
+        "PDF::DOM::Composition::Text::Block" : "lib/PDF/DOM/Composition/Text/Block.pm",
+        "PDF::DOM::Composition::Text::Line" : "lib/PDF/DOM/Composition/Text/Line.pm",
+
         "PDF::DOM::Util::Font" : "lib/PDF/DOM/Util/Font.pm"        
     }
 }
