@@ -46,6 +46,7 @@ module PDF::DOM::Util::Font {
         :symbol-bolditalic<symbol>,
         :symbol-italic<symbol>,
 
+        :times<times-roman>,
         :timesnewroman<times-roman>,
         :timesnewroman-bold<times-bold>,
         :timesnewroman-bolditalic<times-bolditalic>,
