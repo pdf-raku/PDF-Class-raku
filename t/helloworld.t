@@ -1,11 +1,9 @@
 use v6;
 use Test;
 
-use PDF::DOM::Type::Catalog;
-use PDF::Storage::Serializer;
-use PDF::Writer;
+use PDF::DOM;
 
-my $pdf = PDF::DOM::Type::Catalog.new;
+my $pdf = PDF::DOM.new;
 my $page = $pdf.Pages.add-page;
 my $gfx = $page.gfx;
 my $header-font = $page.core-font( :family<Helvetica>, :weight<bold> );
@@ -27,14 +25,10 @@ for <left center right justify> -> $align {
     $gfx.text( $header, :font($header-font), :font-size(18), :$width, :$align);
     my $text-block = $gfx.text( $body, :$font, :$font-size, :$width, :$align, :kern);
     isa-ok $text-block, ::('PDF::DOM::Composition::Text::Block');
-$gfx.ops.push: 'T*';
+    $gfx.ops.push: 'T*';
 
 }
 
-my $body = PDF::Storage::Serializer.new.body($pdf);
-my $root = $body<trailer><dict><Root>;
-my $ast = :pdf{ :version(1.2), :$body };
-my $writer = PDF::Writer.new( :$root );
-ok 't/helloworld.pdf'.IO.spurt( $writer.write( $ast ), :enc<latin-1> ), 'hello world';
+ok $pdf.save-as('t/helloworld.pdf'), '.save-as';
 
 done;
