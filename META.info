@@ -36,6 +36,7 @@
         "PDF::DOM::Composition::Text::Block" : "lib/PDF/DOM/Composition/Text/Block.pm",
         "PDF::DOM::Composition::Text::Line" : "lib/PDF/DOM/Composition/Text/Line.pm",
 
+        "PDF::DOM::RootObject" : "lib/PDF/DOM/RootObject.pm",
         "PDF::DOM::Util::Font" : "lib/PDF/DOM/Util/Font.pm"        
     }
 }
