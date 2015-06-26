@@ -1,0 +1,270 @@
+{
+  "pdf" : {
+    "body" : [
+      {
+        "trailer" : {
+          "dict" : {
+            "Root" : {
+              "ind-ref" : [
+                1,
+                0
+              ]
+            },
+            "Size" : {
+              "int" : 10
+            }
+          }
+        },
+        "objects" : [
+          {
+            "ind-obj" : [
+              1,
+              0,
+              {
+                "dict" : {
+                  "Pages" : {
+                    "ind-ref" : [
+                      2,
+                      0
+                    ]
+                  },
+                  "Type" : {
+                    "name" : "Catalog"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ind-obj" : [
+              3,
+              0,
+              {
+                "dict" : {
+                  "Encoding" : {
+                    "name" : "WinAnsiEncoding"
+                  },
+                  "BaseFont" : {
+                    "name" : "Helvetica"
+                  },
+                  "Subtype" : {
+                    "name" : "Type1"
+                  },
+                  "Type" : {
+                    "name" : "Font"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ind-obj" : [
+              4,
+              0,
+              {
+                "dict" : {
+                  "Encoding" : {
+                    "name" : "WinAnsiEncoding"
+                  },
+                  "BaseFont" : {
+                    "name" : "Helvetica-Bold"
+                  },
+                  "Subtype" : {
+                    "name" : "Type1"
+                  },
+                  "Type" : {
+                    "name" : "Font"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ind-obj" : [
+              5,
+              0,
+              {
+                "dict" : {
+                  "Contents" : {
+                    "array" : [
+                      {
+                        "ind-ref" : [
+                          6,
+                          0
+                        ]
+                      }
+                    ]
+                  },
+                  "Parent" : {
+                    "ind-ref" : [
+                      2,
+                      0
+                    ]
+                  },
+                  "Type" : {
+                    "name" : "Page"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ind-obj" : [
+              6,
+              0,
+              {
+                "stream" : {
+                  "encoded" : "\nBT\nq\n50 750 Td\n/F1 18 Tf\n19.8 TL\n[ (***) -278 (ALIGN:) 0 () 0 (left) -278 (***) ] TJ\nT*\n/F2 15 Tf\n16.5 TL\n[ (Lorem) -278 (ipsum) -278 (dolor) -278 (sit) -278 (amet,) -278 (consectetur) ] TJ\nT*\n[ (adipiscing) -278 (elit,) -278 (sed) -278 (do) -278 (eiusmod) -278 (tempor) ] TJ\nT*\n[ (incididunt) -278 (ut) -278 (labore) -278 (et) -278 (dolore) -278 (magna) -278 (aliqua.) ] TJ\nT*\n[ (Ut) -278 (enim) -278 (ad) -278 (minim) -278 (v) 25 (eniam,) -278 (quis) -278 (nostr) -15 (ud) ] TJ\nT*\n[ (e) 30 (x) 30 (ercitation) -278 (ullamco) -278 (labor) -15 (is) -278 (nisi) -278 (ut) -278 (aliquip) -278 (e) 30 (x) ] TJ\nT*\n[ (ea) -278 (commodo) -278 (consequat.) ] TJ\nT*\nT*\n/F1 18 Tf\n19.8 TL\n[ -3665 (***) -278 (ALIGN:) 0 () 0 (center) -278 (***) ] TJ\nT*\n/F2 15 Tf\n16.5 TL\n[ -1108 (Lorem) -278 (ipsum) -278 (dolor) -278 (sit) -278 (amet,) -278 (consectetur) ] TJ\nT*\n[ -1496 (adipiscing) -278 (elit,) -278 (sed) -278 (do) -278 (eiusmod) -278 (tempor) ] TJ\nT*\n[ -439 (incididunt) -278 (ut) -278 (labore) -278 (et) -278 (dolore) -278 (magna) -278 (aliqua.) ] TJ\nT*\n[ -1363 (Ut) -278 (enim) -278 (ad) -278 (minim) -278 (v) 25 (eniam,) -278 (quis) -278 (nostr) -15 (ud) ] TJ\nT*\n[ -312 (e) 30 (x) 30 (ercitation) -278 (ullamco) -278 (labor) -15 (is) -278 (nisi) -278 (ut) -278 (aliquip) -278 (e) 30 (x) ] TJ\nT*\n[ -4525 (ea) -278 (commodo) -278 (consequat.) ] TJ\nT*\nT*\n/F1 18 Tf\n19.8 TL\n[ -8110 (***) -278 (ALIGN:) 0 () 0 (right) -278 (***) ] TJ\nT*\n/F2 15 Tf\n16.5 TL\n[ -2216 (Lorem) -278 (ipsum) -278 (dolor) -278 (sit) -278 (amet,) -278 (consectetur) ] TJ\nT*\n[ -2993 (adipiscing) -278 (elit,) -278 (sed) -278 (do) -278 (eiusmod) -278 (tempor) ] TJ\nT*\n[ -879 (incididunt) -278 (ut) -278 (labore) -278 (et) -278 (dolore) -278 (magna) -278 (aliqua.) ] TJ\nT*\n[ -2727 (Ut) -278 (enim) -278 (ad) -278 (minim) -278 (v) 25 (eniam,) -278 (quis) -278 (nostr) -15 (ud) ] TJ\nT*\n[ -624 (e) 30 (x) 30 (ercitation) -278 (ullamco) -278 (labor) -15 (is) -278 (nisi) -278 (ut) -278 (aliquip) -278 (e) 30 (x) ] TJ\nT*\n[ -9050 (ea) -278 (commodo) -278 (consequat.) ] TJ\nT*\nT*\n/F1 18 Tf\n19.8 TL\n[ (***) -2740 (ALIGN:) 0 () -2462 (justify) -2740 (***) ] TJ\nT*\n/F2 15 Tf\n16.5 TL\n[ (Lorem) -721 (ipsum) -721 (dolor) -721 (sit) -721 (amet,) -721 (consectetur) ] TJ\nT*\n[ (adipiscing) -876 (elit,) -876 (sed) -876 (do) -876 (eiusmod) -876 (tempor) ] TJ\nT*\n[ (incididunt) -424 (ut) -424 (labore) -424 (et) -424 (dolore) -424 (magna) -424 (aliqua.) ] TJ\nT*\n[ (Ut) -732 (enim) -732 (ad) -732 (minim) -732 (v) 25 (eniam,) -732 (quis) -732 (nostr) -15 (ud) ] TJ\nT*\n[ (e) 30 (x) 30 (ercitation) -382 (ullamco) -382 (labor) -15 (is) -382 (nisi) -382 (ut) -382 (aliquip) -382 (e) 30 (x) ] TJ\nT*\n[ (ea) -4803 (commodo) -4803 (consequat.) ] TJ\nT*\nT*\nQ\nET",
+                  "dict" : {
+                    "Length" : {
+                      "int" : 2698
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ind-obj" : [
+              2,
+              0,
+              {
+                "dict" : {
+                  "Resources" : {
+                    "dict" : {
+                      "Font" : {
+                        "dict" : {
+                          "F2" : {
+                            "ind-ref" : [
+                              3,
+                              0
+                            ]
+                          },
+                          "F3" : {
+                            "ind-ref" : [
+                              7,
+                              0
+                            ]
+                          },
+                          "F1" : {
+                            "ind-ref" : [
+                              4,
+                              0
+                            ]
+                          }
+                        }
+                      },
+                      "Procset" : {
+                        "array" : [
+                          {
+                            "name" : "PDF"
+                          },
+                          {
+                            "name" : "Text"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "Count" : {
+                    "int" : 2
+                  },
+                  "Type" : {
+                    "name" : "Pages"
+                  },
+                  "Kids" : {
+                    "array" : [
+                      {
+                        "ind-ref" : [
+                          5,
+                          0
+                        ]
+                      },
+                      {
+                        "ind-ref" : [
+                          8,
+                          0
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ind-obj" : [
+              7,
+              0,
+              {
+                "dict" : {
+                  "Encoding" : {
+                    "name" : "WinAnsiEncoding"
+                  },
+                  "BaseFont" : {
+                    "name" : "Courier"
+                  },
+                  "Subtype" : {
+                    "name" : "Type1"
+                  },
+                  "Type" : {
+                    "name" : "Font"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ind-obj" : [
+              8,
+              0,
+              {
+                "dict" : {
+                  "Contents" : {
+                    "array" : [
+                      {
+                        "ind-ref" : [
+                          9,
+                          0
+                        ]
+                      }
+                    ]
+                  },
+                  "Parent" : {
+                    "ind-ref" : [
+                      2,
+                      0
+                    ]
+                  },
+                  "Type" : {
+                    "name" : "Page"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ind-obj" : [
+              9,
+              0,
+              {
+                "stream" : {
+                  "encoded" : "\nBT\nq\n300 50 Tm\n/F3 16 Tf\n17.6 TL\n[ (New) -600 (Last) -600 (Page!!) ] TJ\nT*\nQ\nET",
+                  "dict" : {
+                    "Length" : {
+                      "int" : 80
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "header" : {
+      "type" : "PDF",
+      "version" : 1.3
+    }
+  }
+}
