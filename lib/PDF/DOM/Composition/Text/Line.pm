@@ -7,7 +7,6 @@ class PDF::DOM::Composition::Text::Line {
     has @.atoms;
     has Numeric $.indent is rw = 0;
 
-    method actual-height { @!atoms.map({ .height }).max };
     method actual-width  { [+] @!atoms.map({ .width + .space }) };
 
     multi method align('justify', Numeric :$width! ) {

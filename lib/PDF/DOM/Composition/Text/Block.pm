@@ -29,8 +29,8 @@ class PDF::DOM::Composition::Text::Block {
                                         !! $word
                                  });
 
-        constant BREAK-WS = rx/ <[ \c[NO-BREAK SPACE] \c[NARROW NO-BREAK SPACE] \c[WORD JOINER] ]> /;
-        constant NO-BREAK-WS = rx/ <![ \c[NO-BREAK SPACE] \c[NARROW NO-BREAK SPACE] \c[WORD JOINER] ]> \s /;
+        constant NO-BREAK-WS = rx/ <[ \c[NO-BREAK SPACE] \c[NARROW NO-BREAK SPACE] \c[WORD JOINER] ]> /;
+        constant BREAKING-WS = rx/ <![ \c[NO-BREAK SPACE] \c[NARROW NO-BREAK SPACE] \c[WORD JOINER] ]> \s /;
 
         my @atoms;
         while @chunks {
@@ -41,15 +41,15 @@ class PDF::DOM::Composition::Text::Block {
                 !! 0;
             %atom<width> = $font.stringwidth($content, $font-size);
             # don't atomize regular white-space
-            next if $content ~~ NO-BREAK-WS;
-            my $followed-by-ws = @chunks && @chunks[0] ~~ NO-BREAK-WS;
+            next if $content ~~ BREAKING-WS;
+            my $followed-by-ws = @chunks && @chunks[0] ~~ BREAKING-WS;
             my $kerning = %atom<space> < 0;
 
             my $atom = PDF::DOM::Composition::Text::Atom.new( |%atom );
             if $kerning {
                 $atom.sticky = True;
             }
-            elsif $atom.content ~~ BREAK-WS {
+            elsif $atom.content ~~ NO-BREAK-WS {
                 $atom.elastic = True;
                 $atom.sticky = True;
                 @atoms[*-1].sticky = True
