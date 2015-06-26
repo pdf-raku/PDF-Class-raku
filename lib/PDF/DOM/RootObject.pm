@@ -15,10 +15,11 @@ role PDF::DOM::RootObject {
 
     #| perform an incremental save back to the opened input file
     method update {
-        my $reader = $.reader;
+        my $reader = $.reader
+            // die "pdf is not associated with an input source";
 
-        die "no pdf updates available"
-            unless $reader.defined && $reader.file-name.defined && $reader.input.defined;
+        die "pdf reader is defunct"
+            if $reader.defunct;
  
         # todo we should be able to leave the input file open and append to it
         my $offset = $reader.input.chars + 1;
@@ -31,11 +32,12 @@ role PDF::DOM::RootObject {
         my $new-body = "\n" ~ $writer.write( :$body );
         $reader.input.?close;
         $reader.input = Any;
+        $reader.defunct = True;
         $reader.file-name.IO.open(:a).write( $new-body.encode('latin-1') );
     }
 
     #| use the reader when available.
-    multi method save-as(Str $file-name! where {$.reader.defined && $.reader.input.defined},
+    multi method save-as(Str $file-name! where {$.reader.defined && !$.reader.defunct},
                          Numeric :$version?,
                          Bool :$rebuild = False ) {
         $.reader.version = $version if $version.defined;
