@@ -110,20 +110,20 @@ use PDF::DOM::Type::XObject::Image;
 my $new-page = PDF::DOM::Type::Page.new;
 my $xobject = PDF::DOM::Type::XObject::Form.new;
 
-my $fm1 = $new-page.register-resource( $xobject );
-is-deeply $fm1, 'Fm1' => $xobject, 'xobject form name';
+my $fm1 = $new-page.resource( $xobject );
+is-deeply $fm1.key, 'Fm1', 'xobject form name';
 
 my $object2 = PDF::DOM::Type::XObject::Form.new;
 my $object3 = PDF::DOM::Type::XObject::Image.new;
 my $object4 = PDF::DOM::Type::Font.new;
-my $fm2 = $new-page.register-resource( $object2 );
-is-deeply $fm2, 'Fm2' => $object2, 'xobject form name';
+my $fm2 = $new-page.resource( $object2 );
+is-deeply $fm2.key, 'Fm2', 'xobject form name';
 
-my $im1 = $new-page.register-resource( $object3 );
-is-deeply $im1, 'Im1' => $object3, 'xobject form name';
+my $im1 = $new-page.resource( $object3 );
+is-deeply $im1.key, 'Im1', 'xobject form name';
 
-my $f1 = $new-page.register-resource( $object4 );
-is-deeply $f1, 'F1' => $object4, 'font name';
+my $f1 = $new-page.resource( $object4 );
+is-deeply $f1.key, 'F1', 'font name';
 
 is-json-equiv $new-page<Resources><XObject>, { :Fm1($xobject), :Fm2($object2), :Im1($object3) }, 'Resource XObject content';
 is-json-equiv $new-page<Resources><Font>, { :F1($object4) }, 'Resource Font content';

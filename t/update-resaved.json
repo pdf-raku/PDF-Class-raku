@@ -249,10 +249,10 @@
               0,
               {
                 "stream" : {
-                  "encoded" : "\nBT\nq\n300 50 Tm\n/F3 16 Tf\n17.6 TL\n[ (New) -600 (Last) -600 (Page!!) ] TJ\nT*\nQ\nET",
+                  "encoded" : "\nBT\nq\n/F3 16 Tf\n17.6 TL\n[ (New) -600 (Last) -600 (Page!!) ] TJ\nT*\nQ\nET",
                   "dict" : {
                     "Length" : {
-                      "int" : 80
+                      "int" : 70
                     }
                   }
                 }

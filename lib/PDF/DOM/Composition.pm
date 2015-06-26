@@ -14,17 +14,34 @@ role PDF::DOM::Composition {
     method Resources is rw { self<Resources> }
     method Contents is rw { self<Contents> }
 
+    role ResourceEntry {
+        has Str $.key is rw;
+    }
+
     method core-font( *@arg, *%opt ) {
         my $core-font = PDF::DOM::Util::Font::core-font( |@arg, |%opt );
-        my Pair $entry = self!"find-resource"(sub ($_){.isa(PDF::DOM::Type::Font) && .font-obj === $core-font}, :type<Font>)
+        my Pair $lookup = self!"find-resource"(sub ($_){.isa(PDF::DOM::Type::Font) && .font-obj === $core-font}, :type<Font>)
             // do {
                 my %params = $core-font.to-dom('Font');
                 my $new-obj = PDF::Object.compose( |%params );
-                my Pair $new-entry = self.register-resource( $new-obj );
-                $new-entry.value.key = $new-entry.key;
+                my Pair $new-entry = self!"register-resource"( $new-obj );
                 $new-entry;
         };
-        $entry.value;
+        my $entry = $lookup.value but ResourceEntry;
+        $entry.key = $lookup.key;
+        $entry;
+    }
+
+    method resource(PDF::Object $object) {
+        my $type = $object.?Type
+            // die "not a resource object: {$object.WHAT}";
+
+        my Pair $lookup = self!"find-resource"(sub ($_){$_ === $object}, :$type)
+            //  self!"register-resource"( $object );
+
+        my $entry = $lookup.value but ResourceEntry;
+        $entry.key = $lookup.key;
+        $entry;
     }
 
     method !find-resource( &match, Str :$type! ) {
@@ -47,24 +64,27 @@ role PDF::DOM::Composition {
         $found;
     }
 
-    multi method register-resource( PDF::DOM::Type::XObject $object) {
-        my $base-name = do given $object.Subtype {
-            when 'Form'  {'Fm'}
-            when 'Image' {'Im'}
-            default {die "Unhandled XObject.Subtype: $_"}
-        }
-        self!"add-resource"( $object, :$base-name, );
-    }
+    method !base-name( PDF::DOM::Type $object ) {
+        my $type = $object.?Type
+            // die "not a resource object: {$object.WHAT}";
 
-    multi method register-resource( PDF::DOM::Type::Font $object) {
-        self!"add-resource"( $object, :base-name<F>, );
+        do given $type {
+            when 'Font' {'F'}
+            when 'Pattern' {'Pat'}
+            when 'XObject' {
+                $object.Subtype eq 'Form'
+                    ?? 'Fm'
+                    !! 'Im';
+            }
+            default { 'Obj' }
+        }
     }
 
     #| ensure that the object is registered as a page resource. Return a unique
     #| name for it.
-    method !add-resource(PDF::Object $object,
-                         Str :$base-name = <Obj>,
-                         :$type = $object.Type
+    method !register-resource(PDF::Object $object,
+                             Str :$base-name = self!"base-name"($object),
+                             :$type = $object.Type
         --> Pair ) {
         my $id = $object.id;
         my $resources = self.find-prop('Resources')

@@ -1,0 +1,62 @@
+%PDF-1.3
+%¥±ë
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Count 1 /Kids [ 4 0 R ] /Resources << /Pattern << /Pat1 3 0 R >> /Procset [ /PDF /Text ] >> >>
+endobj
+3 0 obj
+<< /Type /Pattern /BBox [ 0 0 100 100 ] /Length 604 /Matrix [ 0.4 0 0 0.4 0 0 ] /PaintType 1 /PatternType 1 /Resources << >> /TilingType 2 /XStep 100 /YStep 100 >>
+stream
+q
+BT% Begin text object
+/F1 1 Tf% Set text font and size
+64 0 0 64 7.1771 2.4414 Tm% Set text matrix
+0 Tc% Set character spacing
+0 Tw% Set word spacing
+1.0 0.0 0.0 rg% Set nonstroking color to red
+( \001 ) Tj% Show spade glyph
+0.7478 ?0.007 TD% Move text position
+0.0 1.0 0.0 rg% Set nonstroking color to green
+( \002 ) Tj% Show heart glyph
+?0.7323 0.7813 TD% Move text position
+0.0 0.0 1.0 rg% Set nonstroking color to blue
+( \003 ) Tj% Show diamond glyph
+0.6913 0.007 TD% Move text position
+0.0 0.0 0.0 rg% Set nonstroking color to black
+( \004 ) Tj% Show club glyph
+ET% End text object
+Q
+q
+% The end
+Q
+endstream
+endobj
+4 0 obj
+<< /Type /Page /Contents [ 5 0 R ] /Parent 2 0 R >>
+endobj
+5 0 obj
+<< /Length 19 >>
+stream
+
+BT
+q
+/Pat1 Do
+Q
+ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000014 00000 n 
+0000000063 00000 n 
+0000000190 00000 n 
+0000000991 00000 n 
+0000001058 00000 n 
+trailer
+<< /Root 1 0 R /Size 6 >>
+startxref
+1127
+%%EOF

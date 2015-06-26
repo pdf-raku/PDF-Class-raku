@@ -3,7 +3,7 @@ use Test;
 
 plan 13;
 
-use PDF::DOM::Type;
+use PDF::DOM;
 use PDF::Storage::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
@@ -20,7 +20,7 @@ my $input = q:to"--END-OBJ--";
 /BBox [ 0 0 100 100 ]
 /XStep 100
 /YStep 100
-/Resources 16 0 R
+/Resources <<>>
 /Matrix [ 0.4 0.0 0.0 0.4 0.0 0.0 ]
 /Length 183
 >>
@@ -68,3 +68,8 @@ is $contents.lines[*-4], 'Q', 'fourth last content line is a grestore';
 is $contents.lines[*-3], 'q', 'third last content line is a gsave';
 is $contents.lines[*-2], '% The end', 'second last content line';
 is $contents.lines[*-1], 'Q', 'last content line is a grestore';
+
+my $pdf = PDF::DOM.new;
+my $page = $pdf.Pages.add-page;
+$page.gfx.do($pattern-obj);
+$pdf.save-as('t/dom-pattern.pdf');

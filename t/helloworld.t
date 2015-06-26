@@ -11,7 +11,7 @@ my $font = $page.core-font( :family<Helvetica> );
 my $width = 300;
 my $font-size = 15;
 
-$gfx.ops.push('Td' => [ :real(50), :real(750) ]);
+$gfx.text-move(50, 750);
 
 for <left center right justify> -> $align {
     my $header = [~] '*** ALIGN:', "\c[NO-BREAK SPACE]", $align, ' ***', "\n";

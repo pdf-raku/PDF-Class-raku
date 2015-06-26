@@ -1,6 +1,7 @@
 use v6;
 
 use PDF::DOM::Composition::Text::Block;
+use PDF::DOM::Type;
 
 class PDF::DOM::Composition::Content {
     has $.parent;
@@ -14,13 +15,21 @@ class PDF::DOM::Composition::Content {
         @!ops."{$prepend ?? 'unshift' !! 'push'}"( 'Q' );
     }
 
+    #| execute a resource
+    multi method do(PDF::DOM::Type $obj!)  {
+        $.do( $.parent.resource($obj).key );
+    }
+
+    #| execute the named xobject form or pattern object
+    multi method do(Str $name!) is default  { @!ops.push: (:Do[ :$name ]) }
+
+    method text-move(Numeric $x!, Numeric $y!) { @!ops.push: (:Td[ :real($x), :real($y) ]) }
+
     method text(Str $text,
                 :$font is copy = $!parent.core-font('Courier'),
                 Numeric :$font-size = 16;
                 Str :$align,
                 Bool :$dry-run = False,
-                Numeric :$top?,
-                Numeric :$left?,
                 *%etc,  #| :$kern, :$font-size, :$line-height, :$width, :$height
         ) {
 
@@ -32,8 +41,6 @@ class PDF::DOM::Composition::Content {
             && $align eq 'left' | 'right' | 'center' | 'justify';
 
         unless $dry-run {
-            @!ops.push: ( 'Tm' => [ :real($top//0), :real($left//0) ] )
-                if $top.defined || $left.defined;
             @!ops.push: ( 'Tf' => [ :name($font.key), :real($font-size) ] );
             @!ops.push: $text-block.content.list;
         }

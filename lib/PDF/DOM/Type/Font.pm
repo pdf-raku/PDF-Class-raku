@@ -10,7 +10,6 @@ class PDF::DOM::Type::Font
     does PDF::DOM::Type {
 
     has $.font-obj handles <encode decode height stringwidth kern>;
-    has Str $.key is rw;
 
     method Name is rw { self<Name> }
     method BaseFont is rw { self<BaseFont> }
