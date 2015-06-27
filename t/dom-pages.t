@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 24;
+plan 25;
 
 use PDF::DOM::Type::Page;
 use PDF::Storage::IndObj;
@@ -65,3 +65,9 @@ isa-ok $new-page, PDF::DOM::Type::Page;
 is $pages.Count, 63, 'number of pages';
 is $pages[62].find-prop('Rotate'), 270, 'new page - inheritance';
 
+$pages.core-font('Helvetica');
+is-json-equiv $pages.Resources, {:Font{
+    :F1{
+        :Type<Font>, :Subtype<Type1>, :Encoding<WinAnsiEncoding>, :BaseFont<Helvetica>,
+    }}
+}, '$.Resources accessor';

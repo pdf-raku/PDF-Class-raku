@@ -4,13 +4,15 @@ use PDF::Object::Dict;
 use PDF::DOM::Type;
 use PDF::DOM::Type::Page;
 use PDF::Object::Inheritance;
+use PDF::DOM::Resources;
 
 # /Type /Pages - a node in the page tree
 
 class PDF::DOM::Type::Pages
     is PDF::Object::Dict
     does PDF::DOM::Type
-    does PDF::Object::Inheritance {
+    does PDF::Object::Inheritance
+    does PDF::DOM::Resources {
 
     method Count is rw { self<Count> }
     method Kids is rw { self<Kids> }
