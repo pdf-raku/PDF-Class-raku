@@ -4,10 +4,10 @@
 << /Type /Catalog /Pages 2 0 R >>
 endobj
 2 0 obj
-<< /Type /Pages /Count 1 /Kids [ 4 0 R ] /Resources << /Pattern << /Pat1 3 0 R >> /Procset [ /PDF /Text ] >> >>
+<< /Type /Pages /Count 1 /Kids [ 5 0 R ] /Resources << /Pattern << /P1 3 0 R >> /Procset [ /PDF /Text ] >> >>
 endobj
 3 0 obj
-<< /Type /Pattern /BBox [ 0 0 100 100 ] /Length 604 /Matrix [ 0.4 0 0 0.4 0 0 ] /PaintType 1 /PatternType 1 /Resources << >> /TilingType 2 /XStep 100 /YStep 100 >>
+<< /Type /Pattern /BBox [ 0 0 100 100 ] /Length 584 /Matrix [ 0.4 0 0 0.4 0 0 ] /PaintType 1 /PatternType 1 /Resources << /Font << /F1 4 0 R >> >> /TilingType 2 /XStep 100 /YStep 100 >>
 stream
 q
 BT% Begin text object
@@ -16,16 +16,16 @@ BT% Begin text object
 0 Tc% Set character spacing
 0 Tw% Set word spacing
 1.0 0.0 0.0 rg% Set nonstroking color to red
-( \001 ) Tj% Show spade glyph
-0.7478 ?0.007 TD% Move text position
+(«) Tj% Show spade glyph
+0.7478 -0.007 TD% Move text position
 0.0 1.0 0.0 rg% Set nonstroking color to green
-( \002 ) Tj% Show heart glyph
-?0.7323 0.7813 TD% Move text position
+(*) Tj% Show heart glyph
+-0.7323 0.7813 TD% Move text position
 0.0 0.0 1.0 rg% Set nonstroking color to blue
-( \003 ) Tj% Show diamond glyph
+(ª) Tj% Show diamond glyph
 0.6913 0.007 TD% Move text position
 0.0 0.0 0.0 rg% Set nonstroking color to black
-( \004 ) Tj% Show club glyph
+(©) Tj% Show club glyph
 ET% End text object
 Q
 q
@@ -34,29 +34,55 @@ Q
 endstream
 endobj
 4 0 obj
-<< /Type /Page /Contents [ 5 0 R ] /Parent 2 0 R >>
+<< /Type /Font /Subtype /Type1 /BaseFont /ZapfDingbats >>
 endobj
 5 0 obj
-<< /Length 19 >>
+<< /Type /Page /Contents 6 0 R /MediaBox [ 0 0 230 210 ] /Parent 2 0 R >>
+endobj
+6 0 obj
+<< /Length 1063 >>
 stream
-
-BT
-q
-/Pat1 Do
-Q
-ET
+0.0 G% Set stroking color to black
+1.0 1.0 0.0 rg% Set nonstroking color to yellow
+25 175 175 -150 re% Construct rectangular path
+f% Fill path
+/Pattern cs% Set pattern color space
+/P1 scn% Set pattern as nonstroking color
+99.92 49.92 m% Start new path
+99.92 77.52 77.52 99.92 49.92 99.92 c% Construct lower-left circle
+22.32 99.92 -0.08 77.52 -0.08 49.92 c
+-0.08 22.32 22.32 -0.08 49.92 -0.08 c
+77.52 -0.08 99.92 22.32 99.92 49.92 c
+B% Fill and stroke path
+224.96 49.92 m% Start new path
+224.96 77.52 202.56 99.92 174.96 99.92 c% Construct lower-right circle
+147.36 99.92 124.96 77.52 124.96 49.92 c
+124.96 22.32 147.36 -0.08 174.96 -0.08 c
+202.56 -0.08 224.96 22.32 224.96 49.92 c
+B% Fill and stroke path
+87.56 201.70 m% Start new path
+63.66 187.90 55.46 157.32 69.26 133.40 c% Construct upper circle
+83.06 109.50 113.66 101.30 137.56 115.10 c
+161.46 128.90 169.66 159.50 155.86 183.40 c
+142.06 207.30 111.46 215.50 87.56 201.70 c
+B% Fill and stroke path
+50 50 m% Start new path
+175 50 l% Construct triangular path
+112.5 158.253 l
+b% Close, fill, and stroke path
 endstream
 endobj
 xref
-0 6
+0 7
 0000000000 65535 f 
 0000000014 00000 n 
 0000000063 00000 n 
-0000000190 00000 n 
+0000000188 00000 n 
 0000000991 00000 n 
-0000001058 00000 n 
+0000001064 00000 n 
+0000001153 00000 n 
 trailer
-<< /Root 1 0 R /Size 6 >>
+<< /Root 1 0 R /Size 7 >>
 startxref
-1127
+2268
 %%EOF

@@ -45,8 +45,12 @@ role PDF::DOM::Composition {
     }
 
     method !find-resource( &match, Str :$type! ) {
-        my $resources = self.find-prop('Resources')
-            // {};
+
+        my $resources = self.can('find-prop')
+            ?? self.find-prop('Resources')
+            !! self.Resources;
+
+       $resources // {};
 
         my $found;
 
@@ -70,7 +74,7 @@ role PDF::DOM::Composition {
 
         do given $type {
             when 'Font' {'F'}
-            when 'Pattern' {'Pat'}
+            when 'Pattern' {'P'}
             when 'XObject' {
                 $object.Subtype eq 'Form'
                     ?? 'Fm'
@@ -87,10 +91,13 @@ role PDF::DOM::Composition {
                              :$type = $object.Type
         --> Pair ) {
         my $id = $object.id;
-        my $resources = self.find-prop('Resources')
-            // do {
-                self.Resources = {};
-                self.Resources
+        my $resources = self.can('find-prop')
+            ?? self.find-prop('Resources')
+            !! self.Resources;
+
+        $resources //= do {
+            self.Resources = {};
+            self.Resources
         };
 
         $resources{$type} //= {};

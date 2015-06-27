@@ -1,7 +1,7 @@
 use v6;
 
 use PDF::DOM::Composition::Text::Block;
-use PDF::DOM::Type;
+use PDF::DOM::Type::XObject;
 
 class PDF::DOM::Composition::Content {
     has $.parent;
@@ -16,7 +16,7 @@ class PDF::DOM::Composition::Content {
     }
 
     #| execute a resource
-    multi method do(PDF::DOM::Type $obj!)  {
+    multi method do(PDF::DOM::Type::XObject $obj!)  {
         $.do( $.parent.resource($obj).key );
     }
 
