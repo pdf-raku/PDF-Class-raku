@@ -5,6 +5,7 @@ use PDF::Object::Stream;
 use PDF::Object::Inheritance;
 use PDF::DOM::Type;
 use PDF::DOM::Composition;
+use PDF::DOM::Resources;
 use PDF::DOM::Type::XObject::Form;
 
 # /Type /Page - describes a single PDF page
@@ -13,7 +14,8 @@ class PDF::DOM::Type::Page
     is PDF::Object::Dict
     does PDF::Object::Inheritance
     does PDF::DOM::Type
-    does PDF::DOM::Composition {
+    does PDF::DOM::Composition
+    does PDF::DOM::Resources {
 
     method Parent is rw { self<Parent> }
     method MediaBox is rw { self<MediaBox> }

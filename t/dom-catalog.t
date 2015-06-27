@@ -1,12 +1,13 @@
 use v6;
 use Test;
 
-plan 7;
+plan 9;
 
 use PDF::DOM::Type;
 use PDF::Storage::IndObj;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
+use PDF::Grammar::Test :is-json-equiv;
 
 my $actions = PDF::Grammar::PDF::Actions.new;
 
@@ -34,3 +35,11 @@ is $object<PageLayout>, 'OneColumn', 'dict lookup';
 is-deeply $object.Pages, (:ind-ref[212, 0]), '$.Pages accessor';
 is-deeply $object.Outlines, (:ind-ref[18, 0]), '$.Outlines accessor';
 is-deeply $ind-obj.ast, $ast, 'ast regeneration';
+
+lives-ok {$object.core-font('Helvetica')}, 'can add resource (core-font) to catalog';
+is-json-equiv $object.Resources, {:Font{
+    :F1{
+        :Type<Font>, :Subtype<Type1>, :Encoding<WinAnsiEncoding>, :BaseFont<Helvetica>,
+    }}
+}, '$.Resources accessor';
+
