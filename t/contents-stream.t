@@ -1,9 +1,9 @@
 use v6;
 use Test;
-use PDF::DOM::Composition::Content;
+use PDF::DOM::Contents::Stream;
 plan 3;
 
-my $gfx = PDF::DOM::Composition::Content.new;
+my $gfx = PDF::DOM::Contents::Stream.new;
 
 lives-ok {$gfx.ops.push: ('Tj' => [ :literal('Hello, world!') ])}, 'push raw content';
 $gfx.save( :prepend );

@@ -1,9 +1,9 @@
 use v6;
 
-use PDF::DOM::Composition::Text::Line;
-use PDF::DOM::Composition::Text::Atom;
+use PDF::DOM::Contents::Text::Line;
+use PDF::DOM::Contents::Text::Atom;
 
-class PDF::DOM::Composition::Text::Block {
+class PDF::DOM::Contents::Text::Block {
     has Numeric $.line-height;
     has Numeric $.font-height;
     has $.width;
@@ -45,7 +45,7 @@ class PDF::DOM::Composition::Text::Block {
             my $followed-by-ws = @chunks && @chunks[0] ~~ BREAKING-WS;
             my $kerning = %atom<space> < 0;
 
-            my $atom = PDF::DOM::Composition::Text::Atom.new( |%atom );
+            my $atom = PDF::DOM::Contents::Text::Atom.new( |%atom );
             if $kerning {
                 $atom.sticky = True;
             }
@@ -95,7 +95,7 @@ class PDF::DOM::Composition::Text::Block {
 
             if !$line || ($!width && $line.atoms && $line-width + $word-width - $trailing-space > $!width) {
                 last if $!height && (@!lines + 1)  *  $!line-height > $!height;
-                $line = PDF::DOM::Composition::Text::Line.new();
+                $line = PDF::DOM::Contents::Text::Line.new();
                 $line-width = 0.0;
                 @!lines.push: $line;
             }

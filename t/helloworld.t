@@ -24,7 +24,7 @@ for <left center right justify> -> $align {
     note "% **** $align *** ";
     $gfx.text( $header, :font($header-font), :font-size(18), :$width, :$align);
     my $text-block = $gfx.text( $body, :$font, :$font-size, :$width, :$align, :kern);
-    isa-ok $text-block, ::('PDF::DOM::Composition::Text::Block');
+    isa-ok $text-block, ::('PDF::DOM::Contents::Text::Block');
     $gfx.ops.push: 'T*';
 
 }

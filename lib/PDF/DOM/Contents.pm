@@ -1,15 +1,15 @@
 use v6;
 
-use PDF::DOM::Composition::Content;
+use PDF::DOM::Contents::Stream;
 use PDF::DOM::Type::XObject;
 
 #| this role is applied to PDF::DOM::Type::Pages and PDF::DOM::Type::XObject::Form
-role PDF::DOM::Composition {
+role PDF::DOM::Contents {
 
     method Contents is rw { self<Contents> }
 
-    has PDF::DOM::Composition::Content $.pre-gfx = PDF::DOM::Composition::Content.new( :parent(self) ); #| prepended graphics
-    has PDF::DOM::Composition::Content $.gfx     = PDF::DOM::Composition::Content.new( :parent(self) ); #| appended graphics
+    has PDF::DOM::Contents::Stream $.pre-gfx = PDF::DOM::Contents::Stream.new( :parent(self) ); #| prepended graphics
+    has PDF::DOM::Contents::Stream $.gfx     = PDF::DOM::Contents::Stream.new( :parent(self) ); #| appended graphics
 
     method cb-finish {
 

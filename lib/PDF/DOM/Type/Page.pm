@@ -4,7 +4,7 @@ use PDF::Object::Dict;
 use PDF::Object::Stream;
 use PDF::Object::Inheritance;
 use PDF::DOM::Type;
-use PDF::DOM::Composition;
+use PDF::DOM::Contents;
 use PDF::DOM::Resources;
 use PDF::DOM::Type::XObject::Form;
 
@@ -14,7 +14,7 @@ class PDF::DOM::Type::Page
     is PDF::Object::Dict
     does PDF::Object::Inheritance
     does PDF::DOM::Type
-    does PDF::DOM::Composition
+    does PDF::DOM::Contents
     does PDF::DOM::Resources {
 
     method Parent is rw { self<Parent> }

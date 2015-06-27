@@ -1,9 +1,9 @@
 use v6;
 
-use PDF::DOM::Composition::Text::Block;
+use PDF::DOM::Contents::Text::Block;
 use PDF::DOM::Type::XObject;
 
-class PDF::DOM::Composition::Content {
+class PDF::DOM::Contents::Stream {
     has $.parent;
     has @.ops is rw;
 
@@ -33,7 +33,7 @@ class PDF::DOM::Composition::Content {
                 *%etc,  #| :$kern, :$font-size, :$line-height, :$width, :$height
         ) {
 
-        my $text-block = PDF::DOM::Composition::Text::Block.new( :$text, :$font, :$font-size, |%etc );
+        my $text-block = PDF::DOM::Contents::Text::Block.new( :$text, :$font, :$font-size, |%etc );
 
         $text-block.align( $align )
             if $align.defined
