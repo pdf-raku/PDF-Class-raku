@@ -2,8 +2,10 @@ use v6;
 
 use PDF::DOM::Contents::Text::Block;
 use PDF::DOM::Type::XObject;
+use PDF::DOM::Contents::Op;
 
-class PDF::DOM::Contents::Stream {
+class PDF::DOM::Contents::Stream 
+    does PDF::DOM::Contents::Op {
     has $.parent;
     has @.ops is rw;
 
@@ -41,7 +43,7 @@ class PDF::DOM::Contents::Stream {
             && $align eq 'left' | 'right' | 'center' | 'justify';
 
         unless $dry-run {
-            @!ops.push: ( 'Tf' => [ :name($font.key), :real($font-size) ] );
+            @!ops.push: $.op('Tf', $font.key, $font-size);
             @!ops.push: $text-block.content.list;
         }
 
