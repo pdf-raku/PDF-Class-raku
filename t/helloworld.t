@@ -30,5 +30,6 @@ for <left center right justify> -> $align {
 }
 
 ok $pdf.save-as('t/helloworld.pdf'), '.save-as';
+ok $pdf.save-as('t/helloworld-compressed.pdf', :compress), '.save-as( :compress )';
 
 done;

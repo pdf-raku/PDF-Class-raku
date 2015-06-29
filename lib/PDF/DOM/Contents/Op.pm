@@ -2,7 +2,7 @@ use v6;
 
 role PDF::DOM::Contents::Op {
     multi method op(Str $op! where 'BT' | 'ET' | 'EMC' | 'BI' | 'ID' | 'EI' | 'BX' | 'EX' | 'b*' | 'b' | 'B*' | 'B'
-                    | 'f*' | 'F' | 'f' | 'h' | 'n' | 'q' | 'Q' | 's' | 'S' | 'T*' | 'W*' | 'W' ) {
+                                  | 'f*' | 'F' | 'f' | 'h' | 'n' | 'q' | 'Q' | 's' | 'S' | 'T*' | 'W*' | 'W' ) {
         $op
     }
     multi method op(Str $op! where 'BMC' | 'BDC' | 'cs' | 'CS' | 'Do' | 'DP' | 'gs' | 'ri' | 'sh',

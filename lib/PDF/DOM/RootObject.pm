@@ -14,7 +14,7 @@ role PDF::DOM::RootObject {
     }
 
     #| perform an incremental save back to the opened input file
-    method update {
+    method update(:$compress) {
         my $reader = $.reader
             // die "pdf is not associated with an input source";
 
@@ -25,7 +25,7 @@ role PDF::DOM::RootObject {
         my $offset = $reader.input.chars + 1;
 
         my $serializer = PDF::Storage::Serializer.new;
-        my $body = $serializer.body( $reader, :updates );
+        my $body = $serializer.body( $reader, :updates, :$compress );
         my $root = $reader.root;
         my $prev = $body<trailer><dict><Prev>.value;
         my $writer = PDF::Writer.new( :$root, :$offset, :$prev );
@@ -39,20 +39,24 @@ role PDF::DOM::RootObject {
     #| use the reader when available.
     multi method save-as(Str $file-name! where {$.reader.defined && !$.reader.defunct},
                          Numeric :$version?,
-                         Bool :$rebuild = False ) {
+                         Bool :$rebuild = False,
+                         :$compress,
+        ) {
+        $.reader.recompress( :$compress ) if $compress.defined;
         $.reader.version = $version if $version.defined;
-        $.reader.save-as($file-name, :$rebuild)
+        $.reader.save-as($file-name, :$rebuild, :$compress)
     }
 
     #| do a full save to the named file
     multi method save-as(Str $file-name!,
                          Numeric :$version is copy,  #| e.g. 1.3
                          :$type is copy,     #| e.g. 'PDF', 'FDF;
+                         :$compress,
         ) {
 
         $version //= 1.3;
         $type //= 'PDF';
-        my $body = PDF::Storage::Serializer.new.body(self);
+        my $body = PDF::Storage::Serializer.new.body(self, :$compress);
         my $root = $body<trailer><dict><Root>;
         my $ast = :pdf{ :header{ :$type, :$version }, :$body };
 
