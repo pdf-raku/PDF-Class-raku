@@ -9,7 +9,7 @@ use PDF::Storage::IndObj;
 use lib '.';
 use t::Object :to-obj;
 
-plan 33;
+plan 39;
 
 # crosschecks on /Type
 require ::('PDF::DOM::Type::Catalog');
@@ -127,3 +127,45 @@ is-deeply $f1.key, 'F1', 'font name';
 
 is-json-equiv $new-page<Resources><XObject>, { :Fm1($xobject), :Fm2($object2), :Im1($object3) }, 'Resource XObject content';
 is-json-equiv $new-page<Resources><Font>, { :F1($object4) }, 'Resource Font content';
+
+$input = q:to"--END--";
+22 0 obj
+<< /Type /Annot
+/Subtype /Text
+/Rect [ 266 116 430 204 ]
+/Contents (The quick brown fox ate the lazy mouse.)
+>>
+endobj
+--END--
+
+PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
+    // die "parse failed: $input";
+$ast = $/.ast;
+
+$ind-obj = PDF::Storage::IndObj.new( :$input, |%( $ast.kv ) );
+my $text-annot = $ind-obj.object;
+isa-ok $text-annot, ::('PDF::DOM::Type::Annot::Text');
+is-json-equiv $text-annot.Rect, [ 266, 116, 430, 204 ], '.Rect';
+is $text-annot.Contents, 'The quick brown fox ate the lazy mouse.', '.Contents';
+
+$input = q:to"--END--";
+93 0 obj
+<< /Type /Annot
+/Subtype /Link
+/Rect [ 71 717 190 734 ]
+/Border [ 16 16 1 ]
+/Dest [ 3 0 R /FitR -4 399 199 533 ]
+>>
+endobj
+--END--
+
+PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
+    // die "parse failed: $input";
+$ast = $/.ast;
+
+$ind-obj = PDF::Storage::IndObj.new( :$input, |%( $ast.kv ) );
+my $link-annot = $ind-obj.object;
+isa-ok $link-annot, ::('PDF::DOM::Type::Annot::Link');
+is-json-equiv $link-annot.Border, [ 16, 16, 1 ], '.Border';
+is-json-equiv $link-annot.Dest, [ :ind-ref[3, 0], 'FitR', -4, 399, 199, 533], '.Dest';
+
