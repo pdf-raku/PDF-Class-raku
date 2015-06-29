@@ -43,21 +43,27 @@ is-json-equiv $pattern-obj.BBox, [ 0, 0, 100, 100 ], '$.BBox accessor';
 my $zfont = $pattern-obj.core-font('ZapfDingbats');
 $pattern-obj.gfx.ops = $pattern-obj.gfx.op: [
     'BT',                              # Begin text object
+
     :Tf[$zfont.key, 1],                # Set text font and size
     :Tm[64, 0, 0, 64, 7.1771, 2.4414], # Set text matrix
     :Tc[0],                            # Set character spacing
     :Tw[0],                            # Set word spacing
+
     :rg[1.0, 0.0, 0.0],                # Set nonstroking color to red
-    :Tj<«>,                            # Tj% Show spade glyph
-    :TD[0.7478, -0.007]                # Move text position
-    :rg[0.0, 1.0, 0.0]                 # Set nonstroking color to green
-    :Tj<*>                             # Show heart glyph
+    :Tj($zfont.encode("♠")),           # Tj% Show spade glyph
+
+    :TD[0.7478, -0.007],               # Move text position
+    :rg[0.0, 1.0, 0.0],                # Set nonstroking color to green
+    :Tj($zfont.encode("♥")),           # Tj% Show heart glyph
+
     :TD[-0.7323, 0.7813],              # Move text position
     :rg[0.0, 0.0, 1.0],                # Set nonstroking color to blue
-    :Tj("ª"),                          # Show diamond glyph
+    :Tj($zfont.encode("♦")),           # Tj% Show diamond glyph
+
     :TD[0.6913, 0.007],                # Move text position
     :rg[0.0, 0.0, 0.0],                # Set nonstroking color to black
-    :Tj("©"),                          # Show club glyph
+    :Tj($zfont.encode("♣")),           # Tj% Show club glyph
+
     'ET'                               # End text object
     ];
 
@@ -65,8 +71,8 @@ $pattern-obj.cb-finish;
 
 my $contents = $pattern-obj.decoded;
 my @lines = $contents.lines;
-is-deeply [ @lines[0..3] ], ["", "q", "BT", "/F1 1 Tf"], 'first four lines of content';
-is-deeply [ @lines[*-5..*] ], ["0.6913 0.007 TD", "0 0 0 rg", "(\\251) Tj", "ET", "Q"], 'last 6 lines of content';
+is-deeply [ @lines[0..3] ], ['', 'q', 'BT', '/F1 1 Tf'], 'first four lines of content';
+is-deeply [ @lines[*-5..*] ], ['0.6913 0.007 TD', '0 0 0 rg', '(\250) Tj', 'ET', 'Q'], 'last 6 lines of content';
 
 my $pdf = PDF::DOM.new;
 my $page = $pdf.Pages.add-page;
