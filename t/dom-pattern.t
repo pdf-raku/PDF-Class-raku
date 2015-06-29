@@ -50,19 +50,19 @@ $pattern-obj.gfx.ops = $pattern-obj.gfx.op: [
     :Tw[0],                            # Set word spacing
 
     :rg[1.0, 0.0, 0.0],                # Set nonstroking color to red
-    :Tj($zfont.encode("♠")),           # Tj% Show spade glyph
+    :Tj($zfont.encode("♠")),           # Show spade glyph
 
     :TD[0.7478, -0.007],               # Move text position
     :rg[0.0, 1.0, 0.0],                # Set nonstroking color to green
-    :Tj($zfont.encode("♥")),           # Tj% Show heart glyph
+    :Tj($zfont.encode("♥")),           # Show heart glyph
 
     :TD[-0.7323, 0.7813],              # Move text position
     :rg[0.0, 0.0, 1.0],                # Set nonstroking color to blue
-    :Tj($zfont.encode("♦")),           # Tj% Show diamond glyph
+    :Tj($zfont.encode("♦")),           # Show diamond glyph
 
     :TD[0.6913, 0.007],                # Move text position
     :rg[0.0, 0.0, 0.0],                # Set nonstroking color to black
-    :Tj($zfont.encode("♣")),           # Tj% Show club glyph
+    :Tj($zfont.encode("♣")),           # Show club glyph
 
     'ET'                               # End text object
     ];
@@ -78,38 +78,38 @@ my $pdf = PDF::DOM.new;
 my $page = $pdf.Pages.add-page;
 $page.media-box(230,210);
 $page.gfx.ops = $page.gfx.op: [
-    :G[0.0], # Set stroking color to black
-    :rg[1.0, 1.0, 0.0], # Set nonstroking color to yellow
-    :re[25, 175, 175, -150], # Construct rectangular path
-    :f[], # Fill path
-    :cs<Pattern>, # Set pattern color space
+    :G[0.0],                                # Set stroking color to black
+    :rg[1.0, 1.0, 0.0],                     # Set nonstroking color to yellow
+    :re[25, 175, 175, -150],                # Construct rectangular path
+    :f[],                                   # Fill path
+    :cs<Pattern>,                           # Set pattern color space
     :scn($page.resource($pattern-obj).key), # Set pattern as nonstroking color
 
-    :m(99.92, 49.92), # Start new path
-    :c(99.92, 77.52, 77.52, 99.92, 49.92, 99.92), # Construct lower-left circle
+    :m(99.92, 49.92),                                # Start new path
+    :c(99.92, 77.52, 77.52, 99.92, 49.92, 99.92),    # Construct lower-left circle
     :c(22.32, 99.92, -0.08, 77.52, -0.08, 49.92),
     :c(-0.08, 22.32, 22.32, -0.08, 49.92, -0.08),
     :c(77.52, -0.08, 99.92, 22.32, 99.92, 49.92),
-    :B[], # Fill and stroke path
+    :B[],                                            # Fill and stroke path
 
-    :m(224.96, 49.92), # Start new path
+    :m(224.96, 49.92),                               # Start new path
     :c(224.96, 77.52, 202.56, 99.92, 174.96, 99.92), # Construct lower-right circle
     :c(147.36, 99.92, 124.96, 77.52, 124.96, 49.92),
-    :c(124.96, 22.32, 147.36, -0.08, 174.96, -0.08, ),
+    :c(124.96, 22.32, 147.36, -0.08, 174.96, -0.08),
     :c(202.56, -0.08, 224.96, 22.32, 224.96, 49.92),
-    :B[], # Fill and stroke path
+    :B[],                                            # Fill and stroke path
 
-    :m[87.56, 201.70], # Start new path
+    :m[87.56, 201.70],                               # Start new path
     :c[63.66, 187.90, 55.46, 157.32, 69.26, 133.40], # Construct upper circle
     :c[83.06, 109.50, 113.66, 101.30, 137.56, 115.10],
     :c[161.46, 128.90, 169.66, 159.50, 155.86, 183.40],
     :c[142.06, 207.30, 111.46, 215.50, 87.56, 201.70],
-    :B[], # Fill and stroke path
+    :B[],                                            # Fill and stroke path
 
-    :m[50, 50], # Start new path
-    :l[175, 50], # Construct triangular path
+    :m[50, 50],         # Start new path
+    :l[175, 50],        # Construct triangular path
     :l[112.5, 158.253],
-    :b[], # Close, fill, and stroke path
+    :b[],               # Close, fill, and stroke path
     ];
 
 $pdf.save-as('t/dom-pattern.pdf');
