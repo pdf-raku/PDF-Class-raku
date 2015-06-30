@@ -122,11 +122,14 @@ class PDF::DOM::Contents::Text::Block {
 
     method content {
 
-        :TL[ :real($!line-height) ],
-        $.lines.map({
-            ( .content(:$.font-size), 'T*')
-        });
+        my @content = :TL[ $!line-height ];
 
+        for $.lines.list {
+            @content.push: .content(:$.font-size);
+            @content.push: 'T*';
+        }
+
+        @content;
     }
 
 }

@@ -7,7 +7,6 @@ use PDF::DOM::Contents::Op;
 class PDF::DOM::Contents::Stream 
     does PDF::DOM::Contents::Op {
     has $.parent;
-    has @.ops is rw;
 
     method save(Bool :$prepend) {
         @!ops."{$prepend ?? 'unshift' !! 'push'}"( 'q' );
@@ -23,9 +22,9 @@ class PDF::DOM::Contents::Stream
     }
 
     #| execute the named xobject form or pattern object
-    multi method do(Str $name!) is default  { @!ops.push: (:Do[ :$name ]) }
+    multi method do(Str $name!) is default  { $.op('Do', $name) }
 
-    method text-move(Numeric $x!, Numeric $y!) { @!ops.push: (:Td[ :real($x), :real($y) ]) }
+    method text-move(Numeric $x!, Numeric $y!) { $.op('Td', $x, $y) }
 
     method text(Str $text,
                 :$font is copy = $!parent.core-font('Courier'),
@@ -43,18 +42,11 @@ class PDF::DOM::Contents::Stream
             && $align eq 'left' | 'right' | 'center' | 'justify';
 
         unless $dry-run {
-            @!ops.push: $.op('Tf', $font.key, $font-size);
-            @!ops.push: $text-block.content.list;
+            $.op('Tf', $font.key, $font-size);
+            $.ops( $text-block.content );
         }
 
         return $text-block;
-    }
-
-    method content {
-        use PDF::Writer;
-        my $writer = PDF::Writer.new;
-        my @content = @!ops;
-        $writer.write( :@content );
     }
 
 }

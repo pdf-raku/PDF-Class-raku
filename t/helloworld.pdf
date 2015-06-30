@@ -16,7 +16,7 @@ endobj
 << /Type /Page /Contents [ 6 0 R ] /Parent 2 0 R >>
 endobj
 6 0 obj
-<< /Length 2698 >>
+<< /Length 2672 >>
 stream
 
 BT
@@ -24,7 +24,7 @@ q
 50 750 Td
 /F1 18 Tf
 19.8 TL
-[ (***) -278 (ALIGN:) 0 () 0 (left) -278 (***) ] TJ
+[ (***) -278 (ALIGN:) (left) -278 (***) ] TJ
 T*
 /F2 15 Tf
 16.5 TL
@@ -43,7 +43,7 @@ T*
 T*
 /F1 18 Tf
 19.8 TL
-[ -3665 (***) -278 (ALIGN:) 0 () 0 (center) -278 (***) ] TJ
+[ -3665 (***) -278 (ALIGN:) (center) -278 (***) ] TJ
 T*
 /F2 15 Tf
 16.5 TL
@@ -62,7 +62,7 @@ T*
 T*
 /F1 18 Tf
 19.8 TL
-[ -8110 (***) -278 (ALIGN:) 0 () 0 (right) -278 (***) ] TJ
+[ -8110 (***) -278 (ALIGN:) (right) -278 (***) ] TJ
 T*
 /F2 15 Tf
 16.5 TL
@@ -81,7 +81,7 @@ T*
 T*
 /F1 18 Tf
 19.8 TL
-[ (***) -2740 (ALIGN:) 0 () -2462 (justify) -2740 (***) ] TJ
+[ (***) -2740 (ALIGN:) -2462 (justify) -2740 (***) ] TJ
 T*
 /F2 15 Tf
 16.5 TL
@@ -114,5 +114,5 @@ xref
 trailer
 << /Root 1 0 R /Size 7 >>
 startxref
-3211
+3185
 %%EOF

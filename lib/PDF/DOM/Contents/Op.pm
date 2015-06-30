@@ -1,59 +1,71 @@
 use v6;
 
+use PDF::Writer;
+use PDF::Object :from-ast;
+
 role PDF::DOM::Contents::Op {
-    multi method op(Str $op! where 'BT' | 'ET' | 'EMC' | 'BI' | 'ID' | 'EI' | 'BX' | 'EX' | 'b*' | 'b' | 'B*' | 'B'
-                                  | 'f*' | 'F' | 'f' | 'h' | 'n' | 'q' | 'Q' | 's' | 'S' | 'T*' | 'W*' | 'W' ) {
-        $op
+
+    has @!ops;
+
+    multi sub op(Str $op! where 'BT' | 'ET' | 'EMC' | 'BI' | 'ID' | 'EI' | 'BX' | 'EX' | 'b*' | 'b' | 'B*' | 'B'
+                                  | 'f*' | 'F' | 'f' | 'h' | 'n' | 'q' | 'Q' | 's' | 'S' | 'T*' | 'W*' | 'W') {
+        $op;
     }
-    multi method op(Str $op! where 'BMC' | 'BDC' | 'cs' | 'CS' | 'Do' | 'DP' | 'gs' | 'ri' | 'sh',
+    multi sub op(Str $op! where 'BMC' | 'BDC' | 'cs' | 'CS' | 'Do' | 'DP' | 'gs' | 'ri' | 'sh',
         Str $name!) {
-        $op => [ :$name ],
+        $op => [ :$name ]
     }
-    multi method op(Str $op! where 'Tj' | "'",
+    multi sub op(Str $op! where 'Tj' | "'",
         Str $literal!) {
-        $op => [ :$literal ],
+        $op => [ :$literal ]
     }
-    multi method op(Str $op! where 'TJ',
-        Array $array!) {
-        $op => [ :$array ]
+    multi sub op(Str $op! where 'TJ',
+        Array $args!) {
+        my @array = $args.map({
+            when Str     { :literal($_) }
+            when Numeric { :int(.Int) }
+            when Pair    { $_ }
+            default {die "invalid entry in TJ array: {.perl}"}
+        });
+        $op => [ :@array ];
     }
-    multi method op(Str $op! where 'Tf',
+    multi sub op(Str $op! where 'Tf',
         Str $name!, Numeric $real!) {
         $op => [ :$name, :$real ]
     }
-    multi method op(Str $op! where 'BDC' | 'DP',
+    multi sub op(Str $op! where 'BDC' | 'DP',
         Str $name!, Hash $dict!) {
         $op => [ :$name, :$dict ]
     }
-    multi method op(Str $op! where 'd' | 'i' | 'g' | 'G' | 'M' | 'MP' | 'Tc' | 'TL' | 'Ts' | 'Tw' | 'Tz' | 'w',
+    multi sub op(Str $op! where 'd' | 'i' | 'g' | 'G' | 'M' | 'MP' | 'Tc' | 'TL' | 'Ts' | 'Tw' | 'Tz' | 'w',
         Numeric $real!) {
         $op => [ :$real ]
     }
-    multi method op(Str $op! where 'j' | 'J' | 'Tr',
+    multi sub op(Str $op! where 'j' | 'J' | 'Tr',
         Int $int!) {
         $op => [ :$int ]
     }
-    multi method op(Str $op! where 'd0' | 'l' | 'm' | 'Td' | 'TD',
+    multi sub op(Str $op! where 'd0' | 'l' | 'm' | 'Td' | 'TD',
         Numeric $n1!, Numeric $n2!) {
         $op => [ :real($n1), :real($n2) ]
     }
-    multi method op(Str $op! where '"',
+    multi sub op(Str $op! where '"',
         Numeric $n1!, Numeric $n2!, Str $literal! ) {
         $op => [ :real($n1), :real($n2), :$literal ]
     }
-    multi method op(Str $op! where 'rg' | 'RG',
+    multi sub op(Str $op! where 'rg' | 'RG',
         Numeric $n1!, Numeric $n2!, Numeric $n3!) {
         $op => [ :real($n1), :real($n2), :real($n3) ]
     }
-    multi method op(Str $op! where 'k' | 'K' | 're' | 'SC' | 'sc' | 'v' | 'y',
+    multi sub op(Str $op! where 'k' | 'K' | 're' | 'SC' | 'sc' | 'v' | 'y',
         Numeric $n1!, Numeric $n2!, Numeric $n3!, Numeric $n4!) {
         $op => [ :real($n1), :real($n2), :real($n3), :real($n4) ]
     }
-    multi method op(Str $op! where 'c' | 'd1' | 'Tm',
+    multi sub op(Str $op! where 'c' | 'd1' | 'Tm',
         Numeric $n1!, Numeric $n2!, Numeric $n3!, Numeric $n4!, Numeric $n5!, Numeric $n6!) {
         $op => [ :real($n1), :real($n2), :real($n3), :real($n4), :real($n5), :real($n6) ]
     }
-    multi method op(Str $op! where 'scn' | 'SCN', *@args is copy) {
+    multi sub op(Str $op! where 'scn' | 'SCN', *@args is copy) {
 
         # scn & SCN have an optional trailing name
         my $name = @args.pop
@@ -69,16 +81,46 @@ role PDF::DOM::Contents::Op {
 
         $op => [ @args ]
     }
-    multi method op(Str $op!, *@args) {
+    multi sub op(Str $op!, *@args) {
         die "bad operation: $op @args[]";
     }
-    multi method op(Pair $op!) {
-        self.op($op.key, |@($op.value.list) );
+    #| semi-raw and a little dwimmy e.g:  op('TJ' => [[:literal<a>, :hex-string<b>, 'c']])
+    #|                                     --> :TJ( :array[ :literal<a>, :hex-string<b>, :literal<c> ] )
+    multi sub op(Pair $raw!) {
+        my $op = $raw.key;
+        my $raw_vals = $raw.value;
+        # validate the operation and get fallback coercements for any missing pairs
+        my @vals = $raw.value.map({ from-ast($_) });
+        my $opn = op($op, |@vals);
+        unless $opn ~~ Str {
+            my $coerced_vals = $opn.value;
+            # looks ok, pass it thru
+            my @ast-values = $raw_vals.keys.map({ $raw_vals[$_] ~~ Pair
+                                                      ?? $raw_vals[$_]
+                                                      !! $coerced_vals[$_] });
+            $opn = $op => [ @ast-values ];
+        }
+        $opn;
     }
-    multi method op(Array $op!) {
-        $op.list.map({self.op($_)});
+    multi sub op(*@args) is default {
+        die "unknown op: {@args.perl}";
     }
-    multi method op(*@args) is default {
-        die "unknown op: @args[]";
+
+    multi method op(*@args, :$prepend) {
+        my $opn = op(|@args);
+        $prepend ?? @!ops.unshift($opn) !! @!ops.push($opn);
     }
+    method ops(Array $ops?) is rw {
+        @!ops.push: $ops.map({ op($_) })
+            if $ops.defined;
+        @!ops;
+    }
+
+    method content {
+        use PDF::Writer;
+        my $writer = PDF::Writer.new;
+        my @content = @!ops;
+        $writer.write( :@content );
+    }
+
 }

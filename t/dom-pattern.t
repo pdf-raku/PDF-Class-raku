@@ -41,7 +41,7 @@ is $pattern-obj.Type, 'Pattern', '$.Type accessor';
 ok !$pattern-obj.Subtype.defined, '$.Subtype accessor';
 is-json-equiv $pattern-obj.BBox, [ 0, 0, 100, 100 ], '$.BBox accessor';
 my $zfont = $pattern-obj.core-font('ZapfDingbats');
-$pattern-obj.gfx.ops = $pattern-obj.gfx.op: [
+$pattern-obj.gfx.ops: [
     'BT',                              # Begin text object
 
     :Tf[$zfont.key, 1],                # Set text font and size
@@ -77,7 +77,7 @@ is-deeply [ @lines[*-5..*] ], ['0.6913 0.007 TD', '0 0 0 rg', '(\250) Tj', 'ET',
 my $pdf = PDF::DOM.new;
 my $page = $pdf.Pages.add-page;
 $page.media-box(230,210);
-$page.gfx.ops = $page.gfx.op: [
+$page.gfx.ops: [
     :G[0.0],                                # Set stroking color to black
     :rg[1.0, 1.0, 0.0],                     # Set nonstroking color to yellow
     :re[25, 175, 175, -150],                # Construct rectangular path

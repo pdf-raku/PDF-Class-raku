@@ -41,16 +41,22 @@ class PDF::DOM::Contents::Text::Line {
     method content(:$font-size) {
 
         my $scale = -1000 / $font-size;
+        my $array = [];
 
-        my @array = $.atoms.map({
-            ( :literal(.encoded // .content), :int( (.space * $scale).Int ) )
-        });
-        @array.pop;
-
-        @array.unshift: (:int( ( $.indent * $scale ).Int ) )
+        $array.push( ($.indent * $scale ).Int )
             if $.indent;
 
-        :TJ(:@array);
+        for $.atoms.list {
+            my $enc = .encoded // .content;
+            $array.push( $enc)
+                if $enc.chars;
+            $array.push( (.space * $scale).Int )
+                if .space;
+        }
+
+        $array.pop if +$array && $array[*-1] ~~ Numeric;
+
+        :TJ[$array];
 
     }
 
