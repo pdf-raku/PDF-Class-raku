@@ -51,8 +51,8 @@ class PDF::DOM::Type::Page
                     BBox => self.find-prop('MediaBox').clone);
 
         my $xobject = PDF::DOM::Type::XObject::Form.new(:%dict);
-        $xobject.pre-gfx.ops = self.pre-gfx.ops.clone;
-        $xobject.gfx.ops = self.gfx.ops.clone;
+        $xobject.pre-gfx.ops(self.pre-gfx.ops);
+        $xobject.gfx.ops(self.gfx.ops);
 
         my $contents = $.contents;
         $xobject.edit-stream( :append([~] $contents.map({.decoded})) );

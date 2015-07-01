@@ -74,8 +74,13 @@ role PDF::DOM::Contents::Op {
         die "too few arguments to: $op"
             unless $name.defined || @args;
 
-        @args = @args.map({ die "$op: bad argument: {.perl}" unless $_ ~~ Numeric;
-                            :real($_) });
+        @args = @args.map({ 
+            when Pair    {$_}
+            when Numeric { :real($_) }
+            default {
+                die "$op: bad argument: {.perl}"
+            }
+        });
 
         @args.push: (:$name) if $name.defined;
 
@@ -110,7 +115,7 @@ role PDF::DOM::Contents::Op {
         my $opn = op(|@args);
         $prepend ?? @!ops.unshift($opn) !! @!ops.push($opn);
     }
-    method ops(Array $ops?) is rw {
+    method ops(Array $ops?) {
         @!ops.push: $ops.map({ op($_) })
             if $ops.defined;
         @!ops;
