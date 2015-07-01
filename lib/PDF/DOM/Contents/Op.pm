@@ -61,7 +61,7 @@ role PDF::DOM::Contents::Op {
         Numeric $n1!, Numeric $n2!, Numeric $n3!, Numeric $n4!) {
         $op => [ :real($n1), :real($n2), :real($n3), :real($n4) ]
     }
-    multi sub op(Str $op! where 'c' | 'd1' | 'Tm',
+    multi sub op(Str $op! where 'c' | 'cm' | 'd1' | 'Tm',
         Numeric $n1!, Numeric $n2!, Numeric $n3!, Numeric $n4!, Numeric $n5!, Numeric $n6!) {
         $op => [ :real($n1), :real($n2), :real($n3), :real($n4), :real($n5), :real($n6) ]
     }
@@ -88,16 +88,16 @@ role PDF::DOM::Contents::Op {
     #|                                     --> :TJ( :array[ :literal<a>, :hex-string<b>, :literal<c> ] )
     multi sub op(Pair $raw!) {
         my $op = $raw.key;
-        my $raw_vals = $raw.value;
+        my $input_vals = $raw.value;
         # validate the operation and get fallback coercements for any missing pairs
         my @vals = $raw.value.map({ from-ast($_) });
         my $opn = op($op, |@vals);
         unless $opn ~~ Str {
             my $coerced_vals = $opn.value;
             # looks ok, pass it thru
-            my @ast-values = $raw_vals.keys.map({ $raw_vals[$_] ~~ Pair
-                                                      ?? $raw_vals[$_]
-                                                      !! $coerced_vals[$_] });
+            my @ast-values = $input_vals.pairs.map({ .value ~~ Pair
+                                                        ?? .value
+                                                        !! $coerced_vals[.key] });
             $opn = $op => [ @ast-values ];
         }
         $opn;

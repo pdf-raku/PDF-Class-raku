@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 8;
+plan 13;
 
 use PDF::DOM::Type;
 use PDF::Storage::IndObj;
@@ -44,3 +44,10 @@ is $ximage-obj.Subtype, 'Image', '$.Subtype accessor';
 is-json-equiv $ximage-obj.ColorSpace, 'DeviceGray', '$.ColorSpace accessor';
 is-json-equiv $ximage-obj.BitsPerComponent, 8, '$.BitsPerComponent accessor';
 is $ximage-obj.encoded, "(binary data)", '$.encoded accessor';
+
+my $snoopy = ::('PDF::DOM::Type')::('XObject::Image').open("t/images/snoopy-happy-dance.jpg");
+is $snoopy.Width, 200, '$img.Width (jpeg)';
+is $snoopy.Height, 254, '$img.Height (jpeg)';
+is-deeply $snoopy.ColorSpace, (:name<DeviceRGB>), '$img.ColorSpace (jpeg)';
+is $snoopy.BitsPerComponent, 8, '$img.BitsPerComponent (jpeg)';
+is $snoopy.Length, $snoopy.encoded.chars, '$img Length (jpeg)';

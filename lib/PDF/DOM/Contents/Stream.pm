@@ -24,7 +24,10 @@ class PDF::DOM::Contents::Stream
     #| execute the named xobject form or pattern object
     multi method do(Str $name!) is default  { $.op('Do', $name) }
 
-    method text-move(Numeric $x!, Numeric $y!) { $.op('Td', $x, $y) }
+    method text-move(Numeric $x!, Numeric $y!, Bool :$abs) {
+        $.op('Tm', 1, 0, 0, 1, 0, 0) if $abs;
+        $.op('Td', $x, $y)
+    }
 
     method text(Str $text,
                 :$font is copy = $!parent.core-font('Courier'),
