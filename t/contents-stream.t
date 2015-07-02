@@ -1,12 +1,13 @@
 use v6;
 use Test;
 use PDF::DOM::Contents::Stream;
-plan 4;
+plan 5;
 
 my $gfx = PDF::DOM::Contents::Stream.new;
 
 lives-ok {$gfx.op('Tj' => [ :literal('Hello, world!') ])}, 'push raw content';
 lives-ok {$gfx.op('TJ' => [[ 'bye', :hex-string('bye') ]])}, 'push raw content';
+dies-ok {$gfx.op('Tjunk' => [ :literal('wtf?') ])}, "can't push bad raw content";
 $gfx.save( :prepend );
 $gfx.restore;
 is-deeply $gfx.ops, [
