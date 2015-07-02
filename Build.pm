@@ -64,7 +64,6 @@ class Build is Panda::Builder {
 
         for $encoding-path.lines {
             next if /^ '#'/ || /^ $/;
-warn $_;
             m:s/^ $<code-point>=[<xdigit>+] $<encoding>=[<xdigit>+] .*? $<glyph-name>=[\w+] $<comment>=['(' .*? ')']? $/
                or do {
                    warn "unable to parse encoding line: $_";
