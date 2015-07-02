@@ -2,7 +2,6 @@ use v6;
 use Test;
 
 use PDF::DOM;
-use PDF::DOM::Type::XObject::Image;
 my $pdf = PDF::DOM.new;
 my $page = $pdf.Pages.add-page;
 my $gfx = $page.gfx;
@@ -34,15 +33,9 @@ $gfx.text-move(272,600, :abs);
 $gfx.text("♠♥♦♣", :font($page.core-font('ZapfDingbats')), :font-size(24), :$width );
 $gfx.restore;
 
-my $img = PDF::DOM::Type::XObject::Image.open("t/images/snoopy-happy-dance.jpg");
+my $img = $gfx.image("t/images/snoopy-happy-dance.jpg");
 ok $img.Width, '$img.Width';
-my $display-width = 150;
-my $display-height = $display-width * ($img.Height / $img.Width);
-
-$gfx.save;
-$gfx.op('cm',$display-width, 0, 0, $display-height, 232, 380);
-$gfx.do($img);
-$gfx.restore;
+$gfx.do($img, 232, 380, :width(150) );
 
 $gfx.text-move(100,300, :abs);
 $gfx.text('Hello, world!', :font($header-font), :font-size(24));

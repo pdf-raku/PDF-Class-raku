@@ -58,7 +58,9 @@ is-deeply [$contents.lines], [
 
 my $pdf = PDF::DOM.new;
 my $page = $pdf.Pages.add-page;
-$page.media-box(230,210);
-$page.gfx.do($xform);
+$page.media-box(220,220);
+$page.gfx.do($xform, 10, 10, :width(.5));
+$page.gfx.do($xform, 120, 10, :scale(.45));
+$page.gfx.do($xform, 120, 110, :scale(.45));
 
 $pdf.save-as('t/dom-xobject-form.pdf');

@@ -1,12 +1,14 @@
 use v6;
 
-use PDF::DOM::Contents::Text::Block;
-use PDF::DOM::Type::XObject;
 use PDF::DOM::Contents::Op;
 
 class PDF::DOM::Contents::Stream 
     does PDF::DOM::Contents::Op {
     has $.parent;
+
+    use PDF::DOM::Contents::Text::Block;
+    use PDF::DOM::Type::XObject;
+    use PDF::DOM::Type::XObject::Image;
 
     method save(Bool :$prepend) {
         @!ops."{$prepend ?? 'unshift' !! 'push'}"( 'q' );
@@ -16,13 +18,46 @@ class PDF::DOM::Contents::Stream
         @!ops."{$prepend ?? 'unshift' !! 'push'}"( 'Q' );
     }
 
-    #| execute a resource
-    multi method do(PDF::DOM::Type::XObject $obj!)  {
-        $.do( $.parent.resource($obj).key );
+    method image($spec where Str | PDF::DOM::Type::XObject::Image ) {
+        my $image = PDF::DOM::Type::XObject::Image.open( $spec );
+        $.parent.resource($image);
+        $image;
     }
 
-    #| execute the named xobject form or pattern object
-    multi method do(Str $name!) is default  { $.op('Do', $name) }
+    #| execute a resource
+    method do(PDF::DOM::Type::XObject $obj!,
+              Numeric $x!,
+              Numeric $y!,
+              Numeric :$width is copy,
+              Numeric :$height is copy,
+              Numeric :$scale = 1.0,
+        )  {
+
+        given $obj {
+            when PDF::DOM::Type::XObject::Image {
+                if $width.defined {
+                    $height //= $width * ($obj.Height / $obj.Width);
+                }
+                elsif $height.defined {
+                    $width //= $height * ($obj.Width / $obj.Height);
+                }
+                else {
+                    $width = $obj.Width;
+                    $height = $obj.Height;
+                }
+            }
+            default {
+                # Form: width & height are scales
+                $width //= 1;
+                $height //= 1;
+            }
+        }
+
+        $.save;
+        $.op('cm', $width * $scale, 0, 0, $height * $scale, $x, $y);
+        $.op('Do', $.parent.resource($obj).key );
+        $.restore;
+    }
 
     method text-move(Numeric $x!, Numeric $y!, Bool :$abs) {
         $.op('Tm', 1, 0, 0, 1, 0, 0) if $abs;
