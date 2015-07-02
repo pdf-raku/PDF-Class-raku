@@ -18,6 +18,12 @@ class PDF::DOM::Contents::Stream
         @!ops."{$prepend ?? 'unshift' !! 'push'}"( 'Q' );
     }
 
+    method block( &do-stuff! ) {
+        $.op('q');
+        &do-stuff();
+        $.op('Q');
+    }
+
     method image($spec where Str | PDF::DOM::Type::XObject::Image ) {
         my $image = PDF::DOM::Type::XObject::Image.open( $spec );
         $.parent.resource($image);

@@ -23,17 +23,16 @@ for <left center right> -> $align {
 
     my $text-block = $gfx.say( $body, :$font, :$font-size, :$width, :$align, :kern);
     isa-ok $text-block, ::('PDF::DOM::Contents::Text::Block');
-    $gfx.restore;
     $x += 275;
 }
 
-$gfx.save;
-$gfx.text-move(272,600, :abs);
-$font = $page.core-font('ZapfDingbats');
-$gfx.print("♠♣", :$font, :font-size(24));
-$gfx.op('rg', 1, .3, .3);
-$gfx.say("♦♥", :$font, :font-size(24));
-$gfx.restore;
+$gfx.block: {
+    $gfx.text-move(272,600, :abs);
+    $font = $page.core-font('ZapfDingbats');
+    $gfx.print("♠♣", :$font, :font-size(24));
+    $gfx.op('rg', 1, .3, .3);
+    $gfx.say("♦♥", :$font, :font-size(24));
+};
 
 my $img = $gfx.image("t/images/snoopy-happy-dance.jpg");
 ok $img.Width, '$img.Width';
