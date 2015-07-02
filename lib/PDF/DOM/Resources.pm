@@ -15,28 +15,20 @@ role PDF::DOM::Resources {
 
     method core-font( *@arg, *%opt ) {
         my $core-font = PDF::DOM::Util::Font::core-font( |@arg, |%opt );
-        my Pair $lookup = self!"find-resource"(sub ($_){.isa(PDF::DOM::Type::Font) && .font-obj === $core-font}, :type<Font>)
+        self!"find-resource"(sub ($_){.isa(PDF::DOM::Type::Font) && .font-obj === $core-font}, :type<Font>)
             // do {
                 my %params = $core-font.to-dom('Font');
                 my $new-obj = PDF::Object.compose( |%params );
-                my Pair $new-entry = self!"register-resource"( $new-obj );
-                $new-entry;
+                self!"register-resource"( $new-obj );
         };
-        my $entry = $lookup.value but ResourceEntry;
-        $entry.key = $lookup.key;
-        $entry;
     }
 
     method resource(PDF::Object $object) {
         my $type = $object.?Type
             // die "not a resource object: {$object.WHAT}";
 
-        my Pair $lookup = self!"find-resource"(sub ($_){$_ === $object}, :$type)
+        self!"find-resource"(sub ($_){$_ === $object}, :$type)
             //  self!"register-resource"( $object );
-
-        my $entry = $lookup.value but ResourceEntry;
-        $entry.key = $lookup.key;
-        $entry;
     }
 
     method !find-resource( &match, Str :$type! ) {
@@ -47,20 +39,21 @@ role PDF::DOM::Resources {
 
        $resources // {};
 
-        my $found;
+        my $entry;
 
         if $resources = $resources{$type} {
 
             for $resources.keys {
                 my $resource = $resources{$_};
                 if &match($resource) {
-                    $found = $_ => $resource;
+                    $entry = $resource but ResourceEntry;
+                    $entry.key = $_;
                     last;
                 }
             }
         }
 
-        $found;
+        $entry;
     }
 
     method !base-name( PDF::DOM::Type $object ) {
@@ -83,8 +76,7 @@ role PDF::DOM::Resources {
     #| name for it.
     method !register-resource(PDF::Object $object,
                              Str :$base-name = self!"base-name"($object),
-                             :$type = $object.Type
-        --> Pair ) {
+                             :$type = $object.Type) {
         my $id = $object.id;
         my $resources = self.can('find-prop')
             ?? self.find-prop('Resources')
@@ -98,9 +90,11 @@ role PDF::DOM::Resources {
         $resources{$type} //= {};
 
         my $name = (1..*).map({$base-name ~ $_}).first({ $resources{$type}{$_}:!exists });
-        $resources{$type}{$name} = $object;
 
-        $name => $object;
+        $resources{$type}{$name} = $object;
+        my $entry = $object but ResourceEntry;
+        $entry.key = $name;
+        $entry;
     }
 
 }
