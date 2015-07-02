@@ -6,11 +6,13 @@ use PDF::DOM::Contents::Text::Atom;
 class PDF::DOM::Contents::Text::Block {
     has Numeric $.line-height;
     has Numeric $.font-height;
-    has $.width;
-    has $.height;
+    has Numeric $!width;
+    has Numeric $!height;
     has @.lines;
     has @.overflow is rw;
-    has $.font-size;
+    has Numeric $.font-size;
+    has Str $!align where 'left' | 'center' | 'right' | 'justify';
+    has Str $.valign where 'top' | 'center' | 'bottom';
 
     method actual-width  { @!lines.max({ .actual-width }); }
     method actual-height { (+@!lines - 1) * $!line-height  +  $!font-height }
@@ -39,7 +41,7 @@ class PDF::DOM::Contents::Text::Block {
             %atom<space> = @chunks && @chunks[0] ~~ Numeric
                 ?? @chunks.shift
                 !! 0;
-            %atom<width> = $font.stringwidth($content, $font-size);
+            %atom<width> = $font.stringwidth($content, $font-size, :$kern);
             # don't atomize regular white-space
             next if $content ~~ BREAKING-WS;
             my $followed-by-ws = @chunks && @chunks[0] ~~ BREAKING-WS;
@@ -71,10 +73,12 @@ class PDF::DOM::Contents::Text::Block {
     }
 
     multi submethod BUILD(:@atoms! is copy,
-                     Numeric :$!font-size!,
-                     Numeric :$!line-height = $!font-size * 1.1,
-                     Numeric :$!width?,      #| optional constraint
-                     Numeric :$!height?,     #| optional constraint
+                          Numeric :$!font-size!,
+                          Numeric :$!line-height = $!font-size * 1.1,
+                          Numeric :$!width?,      #| optional constraint
+                          Numeric :$!height?,     #| optional constraint
+                          Str :$!align = 'left',
+                          Str :$!valign = 'top',
         ) is default {
 
         my $line;
@@ -107,27 +111,40 @@ class PDF::DOM::Contents::Text::Block {
         for @!lines {
             .atoms[*-1].elastic = False;
             .atoms[*-1].space = 0;
+            .align($!align);
         }
-
-        $!width //= self.actual-width;
-        $!height //= self.actual-height;
 
         @!overflow = @atoms;
     }
 
-    method align($mode) {
-        .align($mode, :$!width )
+    method width  { $!width //= self.actual-width }
+    method height { $!height //= self.actual-height }
+
+    method align($!align) {
+        .align($!align)
             for self.lines;
     }
 
-    method content {
+    method content(Bool :$nl = False) {
 
         my @content = :TL[ $!line-height ];
+
+        my $dy = do given $!valign {
+            when 'center' { 0.5 }
+            when 'bottom' { 1.0 }
+            default { 0 }
+        };
+
+        @content.push: 'Td' => [0, $dy * $!height]
+            if $dy && $!height;
 
         for $.lines.list {
             @content.push: .content(:$.font-size);
             @content.push: 'T*';
         }
+
+        @content.pop
+            if !$nl && @content;
 
         @content;
     }

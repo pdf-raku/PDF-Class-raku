@@ -42,7 +42,7 @@ my $page = $pdf.Pages.add-page;
 $page.media-box(350, 250);
 $page.Annots = [ $text-annot, $open-text-annot ];
 $page.gfx.text-move(50,50);
-$page.gfx.text('Page with an open annotation');
+$page.gfx.say('Page with an open annotation');
 $pdf.save-as('t/dom-annot.pdf');
 
 $input = q:to"--END--";

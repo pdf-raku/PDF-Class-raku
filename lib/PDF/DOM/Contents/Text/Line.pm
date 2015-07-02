@@ -26,16 +26,16 @@ class PDF::DOM::Contents::Text::Line {
         }
     }
 
-    multi method align('left', Numeric :$width! ) {
+    multi method align('left') {
         $.indent = 0;
     }
 
-    multi method align('right', Numeric :$width! ) {
-        $.indent = $width - $.actual-width;
+    multi method align('right') {
+        $.indent = - $.actual-width;
     }
 
-    multi method align('center', Numeric :$width! ) {
-        $.indent = ( $width - $.actual-width )  /  2;
+    multi method align('center') {
+        $.indent = - $.actual-width  /  2;
     }
 
     method content(:$font-size) {

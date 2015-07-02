@@ -47,7 +47,7 @@ is $xform.encoded, "0 0 m\n0 200 l\n200 200 l\n200 0 l\nf", '$.encoded accessor'
 $xform.gfx.text-move(50,50);
 $xform.gfx.ops.push: ('rg' => [ :real(.5), :real(.95), :real(.5), ]);
 my $font = $xform.core-font( :family<Helvetica>, :weight<bold> );
-$xform.gfx.text('Hello, again!', :$font);
+$xform.gfx.say('Hello, again!', :$font);
 $xform.cb-finish;
 
 my $contents = $xform.decoded;

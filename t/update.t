@@ -4,7 +4,7 @@ use PDF::DOM;
 't/helloworld.pdf'.IO.copy('t/update-incremental.pdf');
 my $pdf = PDF::DOM.open('t/update-incremental.pdf');
 my $new-page = $pdf.Pages.add-page;
-$new-page.gfx.text( 'New Last Page!!', :left(50), :top(300) );
+$new-page.gfx.say( 'New Last Page!!', :left(50), :top(300) );
 ok $pdf.update, 'update';
 
 $pdf = PDF::DOM.open('t/update-incremental.pdf');

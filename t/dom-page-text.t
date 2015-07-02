@@ -10,7 +10,7 @@ my $width = 50;
 my $font-size = 18;
 
 $gfx.text-move(50,100);
-$gfx.text('Hello, World!', :$font, :$font-size, :$width, :kern);
+$gfx.say('Hello, World!', :$font, :$font-size, :$width, :kern);
 
 is-deeply [$gfx.content.lines], [
     "50 100 Td", 
