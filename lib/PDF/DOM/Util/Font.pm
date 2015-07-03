@@ -97,9 +97,10 @@ module PDF::DOM::Util::Font {
             }
         }
 
-        method height($pointsize) {
+        method height($pointsize?, Bool :$from-baseline = False) {
             my $bbox = $.FontBBox;
-            my $height = $bbox[3] - $bbox[1];
+            my $height = $bbox[3];
+            $height -= $bbox[1] unless $from-baseline;
             $pointsize ?? $height * $pointsize / 1000 !! $height;
         }
 

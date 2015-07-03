@@ -6,19 +6,22 @@ use PDF::DOM::Contents::Text::Atom;
 class PDF::DOM::Contents::Text::Block {
     has Numeric $.line-height;
     has Numeric $.font-height;
+    has Numeric $.font-base-height;
     has Numeric $!width;
     has Numeric $!height;
     has @.lines;
     has @.overflow is rw;
     has Numeric $.font-size;
     has Str $!align where 'left' | 'center' | 'right' | 'justify';
-    has Str $.valign where 'top' | 'center' | 'bottom';
+    has Str $.valign where 'top' | 'center' | 'bottom' | 'none';
 
     method actual-width  { @!lines.max({ .actual-width }); }
     method actual-height { (+@!lines - 1) * $!line-height  +  $!font-height }
 
     multi submethod BUILD(Str :$text!,
-                          :$font!, :$font-size=16, :$!font-height = $font.height( $font-size ),
+                          :$font!, :$font-size=16,
+                          :$!font-height = $font.height( $font-size ),
+                          :$!font-base-height = $font.height( $font-size, :from-baseline ),
                           :$word-spacing = $font.stringwidth( ' ', $font-size ),
                           :$kern = False,
                           *%etc) {
@@ -78,7 +81,7 @@ class PDF::DOM::Contents::Text::Block {
                           Numeric :$!width?,      #| optional constraint
                           Numeric :$!height?,     #| optional constraint
                           Str :$!align = 'left',
-                          Str :$!valign = 'top',
+                          Str :$!valign = 'none',
         ) is default {
 
         my $line;
@@ -111,7 +114,7 @@ class PDF::DOM::Contents::Text::Block {
         for @!lines {
             .atoms[*-1].elastic = False;
             .atoms[*-1].space = 0;
-            .align($!align);
+            .align($!align, :$!width);
         }
 
         @!overflow = @atoms;
@@ -129,14 +132,17 @@ class PDF::DOM::Contents::Text::Block {
 
         my @content = :TL[ $!line-height ];
 
-        my $dy = do given $!valign {
-            when 'center' { 0.5 }
-            when 'bottom' { 1.0 }
-            default { 0 }
-        };
+        if $!valign ne 'none' {
 
-        @content.push: 'Td' => [0, $dy * $!height]
-            if $dy && $!height;
+            my $dy = do given $!valign {
+                when 'center' { 0.5 }
+                when 'bottom' { 1.0 }
+                default { 0 }
+            };
+
+            # adopt html style text positioning. from the top of the font, not the baseline.
+            @content.push: 'Td' => [0, $dy * $.height  -  $!font-base-height]
+        }
 
         for $.lines.list {
             @content.push: .content(:$.font-size);

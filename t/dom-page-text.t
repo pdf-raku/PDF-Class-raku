@@ -21,6 +21,30 @@ is-deeply [$gfx.content.lines], [
     "[ (W) 60 (orld!) ] TJ",
     "T*",];
 
+$font = $page.core-font( :family<Helvetica> );
+$font-size = 10;
+$width = 100;
+my $height = 80;
+my $x = 110;
+
+for <none top center bottom> -> $valign {
+
+    my $y = 700;
+
+    for <left center right justify> -> $align {
+        my $body = q:to"--ENOUGH!!--".subst(/\n/, ' ', :g);
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+        ut labore et dolore magna aliqua.
+        --ENOUGH!!--
+
+        $gfx.text-move($x, $y, :abs);
+        my $text-block = $gfx.say( "*** $valign $align*** " ~ $body, :$font, :$font-size, :$width, :$height, :$valign, :$align);
+        $y -= 170;
+    }
+    $x += 125;
+}
+
+
 my $dom = PDF::DOM.new;
 $dom.Pages.add-page: $page;
 $dom.save-as('t/dom-page-text.pdf');

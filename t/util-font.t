@@ -8,6 +8,9 @@ my $hb-afm = PDF::DOM::Util::Font::core-font( 'Helvetica-Bold' );
 isa-ok $hb-afm, ::('Font::AFM'); 
 is $hb-afm.FontName, 'Helvetica-Bold', 'FontName';
 is $hb-afm.enc, 'win', '.enc';
+is $hb-afm.height, 1190, 'font height';
+is-approx $hb-afm.height(12), 14.28, 'font height @ 12pt';
+is-approx $hb-afm.height(12, :from-baseline), 11.544, 'font base-height @ 12pt';
 
 my $ab-afm = PDF::DOM::Util::Font::core-font( 'Arial-Bold' );
 isa-ok $hb-afm, ::('Font::AFM'); 
