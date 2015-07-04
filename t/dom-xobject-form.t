@@ -16,7 +16,7 @@ my $input = q:to"--END-OBJ--";
 << /Type /XObject
 /Subtype /Form
 /FormType 1
-/BBox [ 0 0 1000 1000 ]
+/BBox [ 0 0 200 200 ]
 /Matrix [ 1 0 0 1 0 0 ]
 /Resources << /ProcSet [ /PDF ] >>
 /Length 58
@@ -42,7 +42,7 @@ isa-ok $xform, ::('PDF::DOM::Type')::('XObject::Form');
 is $xform.Type, 'XObject', '$.Type accessor';
 is $xform.Subtype, 'Form', '$.Subtype accessor';
 is-json-equiv $xform.Resources, { :ProcSet( [ <PDF> ] ) }, '$.Resources accessor';
-is-json-equiv $xform.BBox, [ 0, 0, 1000, 1000 ], '$.BBox accessor';
+is-json-equiv $xform.BBox, [ 0, 0, 200, 200 ], '$.BBox accessor';
 is $xform.encoded, "0 0 m\n0 200 l\n200 200 l\n200 0 l\nf", '$.encoded accessor';
 $xform.gfx.text-move(50,50);
 $xform.gfx.ops.push: ('rg' => [ :real(.5), :real(.95), :real(.5), ]);
@@ -57,10 +57,26 @@ is-deeply [$contents.lines], [
     ], 'finished contents';
 
 my $pdf = PDF::DOM.new;
+$pdf.Pages<MediaBox> = [0,0,220,220];
 my $page = $pdf.Pages.add-page;
-$page.media-box(220,220);
-$page.gfx.do($xform, 10, 10, :width(.5));
-$page.gfx.do($xform, 120, 10, :scale(.45));
-$page.gfx.do($xform, 120, 110, :scale(.45));
+$page.gfx.do($xform, 10, 15, :width(100), :height(190));
+$page.gfx.do($xform, 120, 15, :width(90));
+$page.gfx.do($xform, 120, 115, :width(90));
+
+$page = $pdf.Pages.add-page;
+
+my $x = 50;
+
+for <top center bottom> -> $valign {
+
+    my $y = 170;
+
+    for <left center right> -> $align {
+
+        $page.gfx.do($xform, $x, $y, :width(40), :$align, :$valign);
+        $y -= 60;
+    }
+    $x += 60;
+}
 
 $pdf.save-as('t/dom-xobject-form.pdf');

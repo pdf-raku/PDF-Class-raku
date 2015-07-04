@@ -36,11 +36,15 @@ class PDF::DOM::Contents::Stream
               Numeric $y!,
               Numeric :$width is copy,
               Numeric :$height is copy,
-              Numeric :$scale = 1.0,
+              Str :$align  where {$_ eq 'left' | 'center' | 'right'}  = 'left',
+              Str :$valign where {$_ eq 'top'  | 'center' | 'bottom'} = 'bottom',
         )  {
 
+        my $dx = { :left(0),   :center(-.5), :right(-1) }{$align};
+        my $dy = { :bottom(0), :center(-.5), :top(-1)  }{$valign};
+
         given $obj {
-            when PDF::DOM::Type::XObject::Image {
+            when .Subtype eq 'Image' {
                 if $width.defined {
                     $height //= $width * ($obj.Height / $obj.Width);
                 }
@@ -51,16 +55,38 @@ class PDF::DOM::Contents::Stream
                     $width = $obj.Width;
                     $height = $obj.Height;
                 }
+
+                $dx *= $width;
+                $dy *= $height;
             }
-            default {
-                # Form: width & height are scales
-                $width //= 1;
-                $height //= 1;
+            when .Subtype eq 'Form' {
+                my $bbox = .BBox;
+                my $obj-width = $bbox[2] - $bbox[0] || 1;
+                my $obj-height = $bbox[3] - $bbox[1] || 1;
+
+                if $width.defined {
+                    $height //= $width * ($obj-height / $obj-width);
+                }
+                elsif $height.defined {
+                    $width //= $height * ($obj-width / $obj-height);
+                }
+                else {
+                    $width = $obj-width;
+                    $height = $obj-height;
+                }
+
+                $dx *= $width;
+                $dy *= $height;
+
+                $width /= $obj-width;
+                $height /= $obj-height;
+
             }
+            default { die "not an xobject form or image: {.perl}" }
         }
 
         $.save;
-        $.op('cm', $width * $scale, 0, 0, $height * $scale, $x, $y);
+        $.op('cm', $width, 0, 0, $height, $x + $dx, $y + $dy);
         $.op('Do', $.parent.resource($obj).key );
         $.restore;
     }

@@ -15,7 +15,7 @@ class PDF::DOM::Contents::Text::Block {
     has Str $!align where 'left' | 'center' | 'right' | 'justify';
     has Str $.valign where 'top' | 'center' | 'bottom' | 'none';
 
-    method actual-width  { @!lines.max({ .actual-width }); }
+    method actual-width(@lines = @!lines)  { @lines.max({ .actual-width }); }
     method actual-height { (+@!lines - 1) * $!line-height  +  $!font-height }
 
     multi submethod BUILD(Str :$text!,
@@ -111,10 +111,13 @@ class PDF::DOM::Contents::Text::Block {
             $line-width += $word-width;
         }
 
+        my $width = $!width // self.actual-width(@!lines)
+            if $!align eq 'justify';
+
         for @!lines {
             .atoms[*-1].elastic = False;
             .atoms[*-1].space = 0;
-            .align($!align, :$!width);
+            .align($!align, :$width);
         }
 
         @!overflow = @atoms;

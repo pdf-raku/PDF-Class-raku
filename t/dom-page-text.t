@@ -41,7 +41,8 @@ for <none top center bottom> -> $valign {
         my $text-block = $gfx.say( "*** $valign $align*** " ~ $body, :$font, :$font-size, :$width, :$height, :$valign, :$align);
         $y -= 170;
     }
-    $x += 125;
+
+   $x += 125;
 }
 
 
