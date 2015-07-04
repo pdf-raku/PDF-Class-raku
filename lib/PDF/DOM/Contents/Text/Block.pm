@@ -13,7 +13,7 @@ class PDF::DOM::Contents::Text::Block {
     has @.overflow is rw;
     has Numeric $.font-size;
     has Str $!align where 'left' | 'center' | 'right' | 'justify';
-    has Str $.valign where 'top' | 'center' | 'bottom' | 'none';
+    has Str $.valign where 'top' | 'center' | 'bottom' | 'text';
 
     method actual-width(@lines = @!lines)  { @lines.max({ .actual-width }); }
     method actual-height { (+@!lines - 1) * $!line-height  +  $!font-height }
@@ -81,7 +81,7 @@ class PDF::DOM::Contents::Text::Block {
                           Numeric :$!width?,      #| optional constraint
                           Numeric :$!height?,     #| optional constraint
                           Str :$!align = 'left',
-                          Str :$!valign = 'none',
+                          Str :$!valign = 'text',
         ) is default {
 
         my $line;
@@ -135,7 +135,7 @@ class PDF::DOM::Contents::Text::Block {
 
         my @content = :TL[ $!line-height ];
 
-        if $!valign ne 'none' {
+        if $!valign ne 'text' {
 
             my $dy = do given $!valign {
                 when 'center' { 0.5 }

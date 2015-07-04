@@ -26,7 +26,7 @@ T*
 110 700 Td
 /F2 10 Tf
 11 TL
-[ (***) -278 (none) -278 (left***) -278 (Lorem) ] TJ
+[ (***) -278 (text) -278 (left***) -278 (Lorem) ] TJ
 T*
 [ (ipsum) -278 (dolor) -278 (sit) -278 (amet,) ] TJ
 T*
@@ -44,7 +44,7 @@ T*
 110 530 Td
 /F2 10 Tf
 11 TL
-[ 3946 (***) -278 (none) -278 (center***) ] TJ
+[ 3640 (***) -278 (text) -278 (center***) ] TJ
 T*
 [ 4779 (Lorem) -278 (ipsum) -278 (dolor) -278 (sit) ] TJ
 T*
@@ -62,25 +62,25 @@ T*
 110 360 Td
 /F2 10 Tf
 11 TL
-[ 7059 (***) -278 (none) -278 (right***) ] TJ
+[ 9559 (***) -278 (text) -278 (right***) -278 (Lorem) ] TJ
 T*
-[ 9558 (Lorem) -278 (ipsum) -278 (dolor) -278 (sit) ] TJ
+[ 9225 (ipsum) -278 (dolor) -278 (sit) -278 (amet,) ] TJ
 T*
-[ 7948 (amet,) -278 (consectetur) ] TJ
+[ 9893 (consectetur) -278 (adipiscing) ] TJ
 T*
-[ 9560 (adipiscing) -278 (elit,) -278 (sed) -278 (do) ] TJ
+[ 8893 (elit,) -278 (sed) -278 (do) -278 (eiusmod) ] TJ
 T*
-[ 7169 (eiusmod) -278 (tempor) ] TJ
+[ 8726 (tempor) -278 (incididunt) -278 (ut) ] TJ
 T*
-[ 9505 (incididunt) -278 (ut) -278 (labore) -278 (et) ] TJ
+[ 6948 (labore) -278 (et) -278 (dolore) ] TJ
 T*
-[ 9338 (dolore) -278 (magna) -278 (aliqua.) ] TJ
+[ 6281 (magna) -278 (aliqua.) ] TJ
 T*
 1 0 0 1 0 0 Tm
 110 190 Td
 /F2 10 Tf
 11 TL
-[ (***) -1443 (none) -1443 (justify***) ] TJ
+[ (***) -1749 (text) -1749 (justify***) ] TJ
 T*
 [ (Lorem) -425 (ipsum) -425 (dolor) -425 (sit) ] TJ
 T*

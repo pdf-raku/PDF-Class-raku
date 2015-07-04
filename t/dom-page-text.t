@@ -27,7 +27,7 @@ $width = 100;
 my $height = 80;
 my $x = 110;
 
-for <none top center bottom> -> $valign {
+for <text top center bottom> -> $valign {
 
     my $y = 700;
 
