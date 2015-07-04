@@ -14,8 +14,10 @@ class PDF::DOM::Type::Catalog
     does PDF::DOM::Resources {
 
     use PDF::DOM::Type::Pages;
-    method Pages is rw { self<Pages> }
-    method Outlines is rw { self<Outlines> }
+    method Pages is rw returns PDF::DOM::Type::Pages:_ { self<Pages> }
+
+    use PDF::DOM::Type::Outlines;
+    method Outlines is rw returns PDF::DOM::Type::Outlines:_ { self<Outlines> }
 
     method cb-finish {
         self<Pages>.cb-finish;

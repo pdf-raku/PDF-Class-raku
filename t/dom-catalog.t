@@ -32,8 +32,8 @@ is $ind-obj.gen-num, 0, '$.gen-num';
 my $object = $ind-obj.object;
 isa-ok $object, ::('PDF::DOM::Type')::('Catalog');
 is $object<PageLayout>, 'OneColumn', 'dict lookup';
-is-deeply $object.Pages, (:ind-ref[212, 0]), '$.Pages accessor';
-is-deeply $object.Outlines, (:ind-ref[18, 0]), '$.Outlines accessor';
+is-deeply $object<Pages>, (:ind-ref[212, 0]), '$object<Pages>';
+is-deeply $object<Outlines>, (:ind-ref[18, 0]), '$object<Outlines>';
 is-deeply $ind-obj.ast, $ast, 'ast regeneration';
 
 lives-ok {$object.core-font('Helvetica')}, 'can add resource (core-font) to catalog';

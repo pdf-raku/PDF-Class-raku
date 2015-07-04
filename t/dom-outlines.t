@@ -12,7 +12,7 @@ my $actions = PDF::Grammar::PDF::Actions.new;
 
 my $input = q:to"--END-OBJ--";
 18 0 obj
-<< /Count 3 /First 19 0 R /Last 20 0 R /Type /Outlines >>
+<< /Type /Outlines /Count 3 /First 19 0 R /Last 20 0 R >>
 endobj
 --END-OBJ--
 
@@ -26,6 +26,6 @@ my $outlines-obj = $ind-obj.object;
 isa-ok $outlines-obj, ::('PDF::DOM::Type')::('Outlines');
 is $outlines-obj.Type, 'Outlines', '$.Type accessor';
 is $outlines-obj.Count, 3, '$.Count accessor';
-is-deeply $outlines-obj.First, (:ind-ref[19, 0]), '$.First accessor';
-is-deeply $outlines-obj.Last, (:ind-ref[20, 0]), '$.Last accessor';
+is-deeply $outlines-obj<First>, (:ind-ref[19, 0]), '$obj<First>';
+is-deeply $outlines-obj<Last>, (:ind-ref[20, 0]), '$obj<Last>';
 is-deeply $ind-obj.ast, $ast, 'ast regeneration';

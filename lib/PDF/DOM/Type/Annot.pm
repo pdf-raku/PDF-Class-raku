@@ -9,17 +9,17 @@ class PDF::DOM::Type::Annot
     is PDF::Object::Dict
     does PDF::DOM::Type {
 
-    method Contents is rw { self<Contents> }
-    method Rect is rw { self<Rect> }
-    method P is rw { self<P> }
-    method NM is rw { self<NM> }
-    method M is rw { self<M> }
-    method F is rw { self<F> }
-    method AP is rw { self<AP> }
-    method AS is rw { self<AS> }
-    method Border is rw { self<Border> }
-    method C is rw { self<C> }
-    method StructParent is rw { self<StructParent> }
-    method OC is rw { self<OC> }
+    method Rect is rw returns Array { self<Rect> }
+    method Contents is rw returns Str:_ { self<Contents> }
+    method P is rw returns Hash:_ { self<P> }
+    method NM is rw returns Str:_ { self<NM> }
+    method M is rw returns Str:_ { self<M> }
+    method F is rw returns Int:_ { self<F> }
+    method AP is rw returns Hash:_ { self<AP> }
+    method AS is rw returns Str:_ { self<AS> }
+    method Border is rw returns Array:_ { self<Border> }
+    method C is rw returns Array:_ { self<C> }
+    method StructParent is rw returns Int:_ { self<StructParent> }
+    method OC is rw returns Hash:_ { self<OC> }
 
 }
