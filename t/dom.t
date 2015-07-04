@@ -9,7 +9,7 @@ use PDF::Storage::IndObj;
 use lib '.';
 use t::Object :to-obj;
 
-plan 33;
+plan 38;
 
 # crosschecks on /Type
 require ::('PDF::DOM::Type::Catalog');
@@ -128,3 +128,25 @@ is-deeply $f1.key, 'F1', 'font name';
 is-json-equiv $new-page<Resources><XObject>, { :Fm1($xobject), :Fm2($object2), :Im1($object3) }, 'Resource XObject content';
 is-json-equiv $new-page<Resources><Font>, { :F1($object4) }, 'Resource Font content';
 
+$input = q:to"--END--";
+35 0 obj    % Graphics state parameter dictionary
+<< /Type /ExtGState
+/OP false
+/TR 36 0 R
+>>
+endobj
+--END--
+
+PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
+    // die "parse failed: $input";
+$ast = $/.ast;
+
+$ind-obj = PDF::Storage::IndObj.new( :$input, |%( $ast.kv ) );
+my $gs-obj = $ind-obj.object;
+isa-ok $gs-obj, ::('PDF::DOM::Type::ExtGState');
+is $gs-obj.Type, 'ExtGState', 'ExtGState Type';
+is-deeply $gs-obj.OP, False, 'ExtGState OP';
+is $gs-obj.TR, (:ind-ref[36, 0]), 'ExtGState TR';
+
+my $gs1 = $new-page.resource( $gs-obj );
+is-deeply $gs1.key, 'GS1', 'ExtGState resource entry';

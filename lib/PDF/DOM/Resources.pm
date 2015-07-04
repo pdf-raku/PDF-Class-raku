@@ -62,6 +62,7 @@ role PDF::DOM::Resources {
 
         do given $type {
             when 'Font' {'F'}
+            when 'ExtGState' {'GS'}
             when 'Pattern' {'P'}
             when 'XObject' {
                 $object.Subtype eq 'Form'
