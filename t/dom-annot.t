@@ -40,7 +40,7 @@ is-deeply $open-text-annot.Open, False, '.Open';
 my $pdf = PDF::DOM.new;
 my $page = $pdf.Pages.add-page;
 $page.media-box(350, 250);
-$page.Annots = [ $text-annot, $open-text-annot ];
+$page<Annots> = [ $text-annot, $open-text-annot ];
 $page.gfx.text-move(50,50);
 $page.gfx.say('Page with an open annotation');
 $pdf.save-as('t/dom-annot.pdf');

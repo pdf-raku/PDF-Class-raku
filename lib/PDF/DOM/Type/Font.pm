@@ -11,8 +11,8 @@ class PDF::DOM::Type::Font
 
     has $.font-obj handles <encode decode height stringwidth kern>;
 
-    method Name is rw { self<Name> }
-    method BaseFont is rw { self<BaseFont> }
+    method Name is rw returns Str { self<Name> }
+    method BaseFont is rw returns Str:_ { self<BaseFont> }
     method Encoding is rw { self<Encoding> }
 
 }

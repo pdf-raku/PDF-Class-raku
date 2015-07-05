@@ -33,7 +33,7 @@ my $page = $ind-obj.object;
 isa-ok $page, ::('PDF::DOM::Type')::('Page');
 is $page.Type, 'Page', '$.Type accessor';
 my $dummy-stream = PDF::Object::Stream.new( :decoded('%dummy stream') );
-is $page.Parent, (:ind-ref[3, 0]), '$.Parent accessor';
+is $page<Parent>, (:ind-ref[3, 0]), '$page<Parent>';
 is $page.Resources, { :Font{ :F1( :ind-ref[7, 0] )}, :ProcSet( :ind-ref[6, 0]) }, '$.Resources accessor';
 
 is-deeply $ind-obj.ast, $ast, 'ast regeneration';

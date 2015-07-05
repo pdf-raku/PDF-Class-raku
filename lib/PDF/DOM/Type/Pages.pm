@@ -14,8 +14,8 @@ class PDF::DOM::Type::Pages
     does PDF::Object::Inheritance
     does PDF::DOM::Resources {
 
-    method Count is rw { self<Count> }
-    method Kids is rw { self<Kids> }
+    method Count is rw returns Int { self<Count> }
+    method Kids is rw returns Array { self<Kids> }
 
     #| add new last page
     method add-page( $page = PDF::DOM::Type::Page.new ) {

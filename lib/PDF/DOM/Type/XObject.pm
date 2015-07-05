@@ -10,6 +10,6 @@ class PDF::DOM::Type::XObject
     is PDF::Object::Stream
     does PDF::DOM::Type {
 
-    method BBox is rw { self<BBox> }
+    method BBox is rw returns Array { self<BBox> }
 
 }

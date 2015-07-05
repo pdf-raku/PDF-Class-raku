@@ -17,9 +17,9 @@ class PDF::DOM::Type::Page
     does PDF::DOM::Contents
     does PDF::DOM::Resources {
 
-    method Parent is rw { self<Parent> }
-    method MediaBox is rw { self<MediaBox> }
-    method Annots is rw { self<Annots> }
+    method Parent is rw returns Hash:_ { self<Parent> }
+    method MediaBox is rw returns Array:_ { self<MediaBox> }
+    method Annots is rw returns Array:_ { self<Annots> }
 
     multi method media-box(Numeric $lx!, Numeric $ly!, Numeric $ux!, Numeric $uy! ) {
         self<MediaBox> = [$lx, $ly, $ux, $uy ]

@@ -78,8 +78,8 @@ my $objr-ind-obj = PDF::Storage::IndObj.new( |%($objr-ast) );
 my $objr-obj = $objr-ind-obj.object;
 isa-ok $objr-obj, ::('PDF::DOM::Type::OBJR');
 is $objr-obj.Type, 'OBJR', '$objr.Type';
-is-deeply $objr-obj.Pg, (:ind-ref[6, 1]), '$objr.Pg';
-is-deeply $objr-obj.Obj, (:ind-ref[6, 2]), '$objr.Obj';
+is-deeply $objr-obj<Pg>, (:ind-ref[6, 1]), '$objr<P>';
+is-deeply $objr-obj<Obj>, (:ind-ref[6, 2]), '$objr<Obj>';
 
 $input = q:to"--END--";
 99 0 obj

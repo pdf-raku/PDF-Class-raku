@@ -26,9 +26,12 @@ class PDF::DOM::Type::Catalog
     method new() {
         my $obj = callsame;
 
+        # vivify pages
         $obj<Pages> //= PDF::DOM::Type::Pages.new(
             :dict{
                 :Resources{ :Procset[ :name<PDF>, :name<Text> ] },
+                :Count(0),
+                :Kids[],
                 });
 
         $obj;

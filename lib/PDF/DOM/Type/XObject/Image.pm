@@ -5,10 +5,10 @@ use PDF::DOM::Type::XObject;
 class PDF::DOM::Type::XObject::Image
     is PDF::DOM::Type::XObject {
 
-    method Width is rw { self<Width> }
-    method Height is rw { self<Height> }
+    method Width is rw returns Numeric:_ { self<Width> }
+    method Height is rw returns Numeric:_ { self<Height> }
     method ColorSpace is rw { self<ColorSpace> }
-    method BitsPerComponent is rw { self<BitsPerComponent> }
+    method BitsPerComponent is rw returns Int:_ { self<BitsPerComponent> }
 
     method open($spec! where Str | IO::Handle ) {
         my $img = self.new;
@@ -62,11 +62,11 @@ class PDF::DOM::Type::XObject::Image
         $fh.seek(0,0);
         self.encoded( $fh.slurp-rest );
 
-        self.Width = $width;
-        self.Height = $height;
-        self.BitsPerComponent = $bpc;
-        self.ColorSpace = :name($color-space);
-        self.Filter = :name<DCTDecode>
+        self<Width> = $width;
+        self<Height> = $height;
+        self<BitsPerComponent> = $bpc;
+        self<ColorSpace> = :name($color-space);
+        self<Filter> = :name<DCTDecode>
             if $is-dct;
 
         return self;

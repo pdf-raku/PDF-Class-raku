@@ -11,12 +11,13 @@ class PDF::DOM::Type::Pattern
     does PDF::DOM::Contents
     does PDF::DOM::Resources {
 
-    method BBox is rw { self<BBox> }
-    method PatternType is rw { self<PatternType> }
-    method PaintType is rw { self<PaintType> }
-    method XStep is rw { self<XStep> }
-    method YStep is rw { self<YStep> }
-    method Matrix is rw { self<Matrix> }
+    method BBox is rw returns Array { self<BBox> }
+    method PatternType is rw returns Int { self<PatternType> }
+    method PaintType is rw returns Int { self<PaintType> }
+    method TilingType is rw returns Int { self<TilingType> }
+    method XStep is rw returns Numeric { self<XStep> }
+    method YStep is rw returns Numeric { self<YStep> }
+    method Matrix is rw returns Array:_ { self<Matrix> }
 
 
 }
