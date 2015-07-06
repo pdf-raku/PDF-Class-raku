@@ -10,11 +10,10 @@ class PDF::DOM::Type::OutputIntent
     is PDF::Object::Dict
     does PDF::DOM::Type {
 
-    method S is rw returns Str { self<S> }
-    method OutputCondition is rw returns Str:_ { self<OutputCondition> }
-    method OutputConditionIdentifier is rw returns Str:_ { self<OutputConditionIndentifier> }
-    method RegistryName is rw returns Str:_ { self<RegistryName> }
-    method Info is rw returns Str:_ { self<Info> }
-    method DestOutputProfile is rw returns PDF::Object::Stream:_ { self<DestOutputProfile> }
+    has Str:_ $!OutputCondition; method OutputCondition { self.tie(:$!OutputCondition) };
+    has Str:_ $!OutputConditionIdentifier; method OutputConditionIdentifier { self.tie(:$!OutputConditionIdentifier) };
+    has Str:_ $!RegistryName; method RegistryName { self.tie(:$!RegistryName) };
+    has Str:_ $!Info; method Info { self.tie(:$!Info) };
+    has PDF::Object::Stream:_ $!DestOutputProfile; method DestOutputProfile { self.tie(:$!DestOutputProfile) };
 
 }

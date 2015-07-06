@@ -9,7 +9,7 @@ class PDF::DOM::Type::Encoding
     is PDF::Object::Dict
     does PDF::DOM::Type {
 
-    method BaseEncoding is rw returns Str:_ { self<BaseEncoding> }
-    method Differences  is rw returns Array:_ { self<Differences> }
+    has Str:_ $!BaseEncoding; method BaseEncoding { self.tie(:$!BaseEncoding) };
+    has Array:_ $!Differences; method Differences { self.tie(:$!Differences) };
 
 }

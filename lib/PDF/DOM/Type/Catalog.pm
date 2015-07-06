@@ -14,10 +14,10 @@ class PDF::DOM::Type::Catalog
     does PDF::DOM::Resources {
 
     use PDF::DOM::Type::Pages;
-    method Pages is rw returns PDF::DOM::Type::Pages:_ { self<Pages> }
+    has PDF::DOM::Type::Pages:_ $!Pages; method Pages { self.tie(:$!Pages) };
 
     use PDF::DOM::Type::Outlines;
-    method Outlines is rw returns PDF::DOM::Type::Outlines:_ { self<Outlines> }
+    has PDF::DOM::Type::Outlines:_ $!Outlines; method Outlines { self.tie(:$!Outlines) };
 
     method cb-finish {
         self<Pages>.cb-finish;

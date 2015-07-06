@@ -10,26 +10,26 @@ class PDF::DOM::Type::FontDescriptor
     is PDF::Object::Dict
     does PDF::DOM::Type {
 
-    method FontName is rw returns Str { self<FontName> }
-    method FontFamily is rw returns Str:_ { self<FontFamily> }
-    method FontStretch is rw returns Str:_ { self<FontStretch> }
-    method FontWeight is rw returns Numeric:_ { self<FontWeight> }
-    method Flags is rw returns Int:_ { self<Flags> }
-    method FontBBox is rw returns Array:_ { self<FontBBox> }
-    method ItalicAngle is rw returns Numeric:_ { self<ItalicAngle> }
-    method Ascent is rw returns Numeric:_ { self<Ascent> }
-    method Descent is rw returns Numeric:_ { self<Descent> }
-    method Leading is rw returns Numeric:_ { self<Leading> }
-    method CapHeight is rw returns Numeric:_ { self<CapHeight> }
-    method XHeight is rw returns Numeric:_ { self<XHeight> }
-    method StemV is rw returns Numeric:_ { self<StemV> }
-    method AvgWidth is rw returns Numeric:_ { self<AvgWidth> }
-    method MaxWidth is rw returns Numeric:_ { self<MaxWidth> }
-    method MissingWidth is rw returns Numeric:_ { self<MissingWidth> }
-    method FontFile is rw returns PDF::Object::Stream:_ { self<FontFile> }
-    method FontFile2 is rw returns PDF::Object::Stream:_ { self<FontFile2> }
-    method FontFile3 is rw returns PDF::Object::Stream:_ { self<FontFile3> }
-    method CharSet is rw returns Str:_ { self<CharSet> }
+    has Str $!FontName; method FontName { self.tie(:$!FontName) };
+    has Str:_ $!FontFamily; method FontFamily { self.tie(:$!FontFamily) };
+    has Str:_ $!FontStretch; method FontStretch { self.tie(:$!FontStretch) };
+    has Numeric:_ $!FontWeight; method FontWeight { self.tie(:$!FontWeight) };
+    has Int:_ $!Flags; method Flags { self.tie(:$!Flags) };
+    has Array:_ $!FontBBox; method FontBBox { self.tie(:$!FontBBox) };
+    has Numeric:_ $!ItalicAngle; method ItalicAngle { self.tie(:$!ItalicAngle) };
+    has Numeric:_ $!Ascent; method Ascent { self.tie(:$!Ascent) };
+    has Numeric:_ $!Descent; method Descent { self.tie(:$!Descent) };
+    has Numeric:_ $!Leading; method Leading { self.tie(:$!Leading) };
+    has Numeric:_ $!CapHeight; method CapHeight { self.tie(:$!CapHeight) };
+    has Numeric:_ $!XHeight; method XHeight { self.tie(:$!XHeight) };
+    has Numeric:_ $!StemV; method StemV { self.tie(:$!StemV) };
+    has Numeric:_ $!AvgWidth; method AvgWidth { self.tie(:$!AvgWidth) };
+    has Numeric:_ $!MaxWidth; method MaxWidth { self.tie(:$!MaxWidth) };
+    has Numeric:_ $!MissingWidth; method MissingWidth { self.tie(:$!MissingWidth) };
+    has PDF::Object::Stream:_ $!FontFile; method FontFile { self.tie(:$!FontFile) };
+    has PDF::Object::Stream:_ $!FontFile2; method FontFile2 { self.tie(:$!FontFile2) };
+    has PDF::Object::Stream:_ $!FontFile3; method FontFile3 { self.tie(:$!FontFile3) };
+    has Str:_ $!CharSet; method CharSet { self.tie(:$!CharSet) };
 
 
 }
