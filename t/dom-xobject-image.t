@@ -54,13 +54,13 @@ is $snoopy.BitsPerComponent, 8, '$img.BitsPerComponent (jpeg)';
 is $snoopy.Length, $snoopy.encoded.chars, '$img Length (jpeg)';
 
 my $pdf = PDF::DOM.new;
-$pdf.Pages<MediaBox> = [0,0,220,220];
-my $page = $pdf.Pages.add-page;
+$pdf.media-box(220,220);
+my $page = $pdf.add-page;
 $page.gfx.do($snoopy, 10, 15, :width(100), :height(190));
 $page.gfx.do($snoopy, 120, 15, :width(90));
 $page.gfx.do($snoopy, 120, 115, :width(90));
 
-$page = $pdf.Pages.add-page;
+$page = $pdf.add-page;
 
 my $x = 50;
 

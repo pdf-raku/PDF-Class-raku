@@ -3,7 +3,7 @@ use Test;
 
 use PDF::DOM;
 my $pdf = PDF::DOM.new;
-my $page = $pdf.Pages.add-page;
+my $page = $pdf.add-page;
 my $gfx = $page.gfx;
 my $header-font = $page.core-font( :family<Helvetica>, :weight<bold> );
 my $font = $page.core-font( :family<Helvetica> );

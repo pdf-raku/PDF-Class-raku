@@ -6,6 +6,7 @@ use PDF::Object::Inheritance;
 use PDF::DOM::Type;
 use PDF::DOM::Contents;
 use PDF::DOM::Resources;
+use PDF::DOM::PageSizes;
 use PDF::DOM::Type::XObject::Form;
 
 # /Type /Page - describes a single PDF page
@@ -15,24 +16,12 @@ class PDF::DOM::Type::Page
     does PDF::Object::Inheritance
     does PDF::DOM::Type
     does PDF::DOM::Contents
-    does PDF::DOM::Resources {
+    does PDF::DOM::Resources
+    does PDF::DOM::PageSizes {
 
     has Hash:_ $!Parent; method Parent { self.tie(:$!Parent) };
     has Array:_ $!MediaBox; method MediaBox { self.tie(:$!MediaBox) };
     has Array:_ $!Annots; method Annots { self.tie(:$!Annots) };
-
-    multi method media-box(Numeric $lx!, Numeric $ly!, Numeric $ux!, Numeric $uy! ) {
-        self<MediaBox> = [$lx, $ly, $ux, $uy ]
-    }
-
-    multi method media-box(Numeric $ux!, Numeric $uy! ) {
-        self.media-box(0, 0, $ux, $uy)
-    }
-
-    multi method media-box() is default {
-        self.find-prop('MediaBox')
-            // [0, 0, 612, 792];
-    }
 
     #| contents may either be a stream on an array of streams
     method contents {

@@ -14,7 +14,12 @@ class PDF::DOM::Type::Catalog
     does PDF::DOM::Resources {
 
     use PDF::DOM::Type::Pages;
-    has PDF::DOM::Type::Pages:_ $!Pages; method Pages { self.tie(:$!Pages) };
+    has PDF::DOM::Type::Pages $!Pages; method Pages { self.tie(:$!Pages) };
+    method page($page-num) { self.Pages.page($page-num) }
+    method pages { self.Pages.Count }
+    method add-page { self.Pages.add-page }
+    method delete-page($page-num) { self.Pages.delete-page($page-num) }
+    method media-box(*@args) { self.Pages.media-box( |@args ) }
 
     use PDF::DOM::Type::Outlines;
     has PDF::DOM::Type::Outlines:_ $!Outlines; method Outlines { self.tie(:$!Outlines) };
@@ -33,6 +38,7 @@ class PDF::DOM::Type::Catalog
                 :Count(0),
                 :Kids[],
                 });
+        $obj.Pages;
 
         $obj;
     }
