@@ -34,10 +34,17 @@ role PDF::DOM::Contents::Op {
         :CurveTo2<y> :MoveSetShowText<"> :MoveShowText<'>
     »;
 
-    #| todo: BI [dict] ID ... EI probably need a new class dervied from PDF::Object::Stream
-    multi sub op(Str $op! where 'BI' | 'ID' | 'EI',
-                 *@args) {
-        die "todo image content BI [dict] ID ... EI: $op";
+    #| BI dict ID stream EI
+    multi sub op(Str $op! where 'BI',
+                 Hash $dict = {}) {
+        $op => [ :$dict ];
+    }
+    multi sub op(Str $op! where 'ID',
+                 Str $encoded = '') {
+        $op => [ :$encoded ];
+    }
+    multi sub op(Str $op! where 'EI') {
+        $op
     }
 
     multi sub op(Str $op! where 'BX' | 'EX',
@@ -45,8 +52,8 @@ role PDF::DOM::Contents::Op {
         die "todo ignored content BX [lines] EX: $op";
     }
 
-    multi sub op(Str $op! where 'BT' | 'ET' | 'EMC' | 'BX' | 'EX' | 'b*' | 'b' | 'B*' | 'B' | 'f*' | 'F' | 'f' | 'h'
-                                     | 'n' | 'q' | 'Q' | 's' | 'S' | 'T*' | 'W*' | 'W') {
+    multi sub op(Str $op! where 'BT' | 'ET' | 'EMC' | 'BX' | 'EX' | 'b*' | 'b' | 'B*' | 'B' | 'f*' | 'F' | 'f'
+                                     | 'h' | 'n' | 'q' | 'Q' | 's' | 'S' | 'T*' | 'W*' | 'W') {
         $op => [];
     }
     #| tag                     BMC | MP

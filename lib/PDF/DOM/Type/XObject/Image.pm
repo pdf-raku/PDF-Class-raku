@@ -78,4 +78,20 @@ class PDF::DOM::Type::XObject::Image
              ?? "can't yet handle files of type: $ext"
              !! "unable to determine image-type: {$fh.path.basename}");
     }
+
+    method content(Bool :$inline = False) {
+        nextsame unless $inline;   # normal case, constructing DOM object
+
+        # for serialization to content stream ops: BI dict ID data EI
+        use PDF::DOM::Contents::Op :OpNames;
+        use PDF::Object :to-ast-native;
+        # serialize to content ops
+        my %dict = to-ast-native(self).value.list;
+        %dict<Type Subtype Length>:delete;
+        [ (BeginImage) => [ :%dict ],
+          (ImageData)  => [ :$.encoded ],
+          (EndImage)   => [],
+        ]
+    }
+
 }

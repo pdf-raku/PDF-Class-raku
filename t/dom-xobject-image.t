@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 13;
+plan 17;
 
 use PDF::DOM;
 use PDF::DOM::Type;
@@ -52,6 +52,16 @@ is $snoopy.Height, 254, '$img.Height (jpeg)';
 is-deeply $snoopy.ColorSpace, (:name<DeviceRGB>), '$img.ColorSpace (jpeg)';
 is $snoopy.BitsPerComponent, 8, '$img.BitsPerComponent (jpeg)';
 is $snoopy.Length, $snoopy.encoded.chars, '$img Length (jpeg)';
+
+my $inline = $snoopy.content( :inline );
+is +$inline, 3, '.content(:inline) has 3 ops';
+is-json-equiv $inline[0], (:BI[ :dict{:BitsPerComponent(:int(8)),
+                                      :ColorSpace(:name("DeviceRGB")),
+                                      :Filter(:name("DCTDecode")),
+                                      :Height(:int(254)),
+                                      :Width(:int(200))} ]), 'first .content(:inline) op: :BI[...]';
+is-json-equiv $inline[1], (:ID[ :encoded($snoopy.encoded) ]), 'second .content(:inline) op: :ID[...]';
+is-json-equiv $inline[2], (:EI[ ]), 'third .content(:inline) op: :EI[]';
 
 my $pdf = PDF::DOM.new;
 $pdf.media-box(220,220);

@@ -25,9 +25,7 @@ class PDF::DOM::Contents::Stream
     }
 
     method image($spec where Str | PDF::DOM::Type::XObject::Image ) {
-        my $image = PDF::DOM::Type::XObject::Image.open( $spec );
-        $.parent.resource($image);
-        $image;
+        PDF::DOM::Type::XObject::Image.open( $spec );
     }
 
     #| place an image, or form object
@@ -38,6 +36,7 @@ class PDF::DOM::Contents::Stream
               Numeric :$height is copy,
               Str :$align  where {$_ eq 'left' | 'center' | 'right'}  = 'left',
               Str :$valign where {$_ eq 'top'  | 'center' | 'bottom'} = 'bottom',
+              Bool :$inline = False,
         )  {
 
         my $dx = { :left(0),   :center(-.5), :right(-1) }{$align};
@@ -87,7 +86,13 @@ class PDF::DOM::Contents::Stream
 
         $.save;
         $.op(ConcatMatrix, $width, 0, 0, $height, $x + $dx, $y + $dy);
-        $.op(XObject, $.parent.resource($obj).key );
+        if $inline && $obj.Subtype eq 'Image' {
+            # serialize the image to the content stream, aka: :BI[:$dict], :ID[:$stream], :EI[]
+            $.ops( $obj.content(:inline) );
+        }
+        else {
+            $.op(XObject, $.parent.resource($obj).key );
+        }
         $.restore;
     }
 
