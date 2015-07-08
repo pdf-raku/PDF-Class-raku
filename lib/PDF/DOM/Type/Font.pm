@@ -11,9 +11,9 @@ class PDF::DOM::Type::Font
 
     has $.font-obj handles <encode decode height stringwidth kern>;
 
-    has Str $!Name; method Name { self.tie(:$!Name) };
-    has Str:_ $!BaseFont; method BaseFont { self.tie(:$!BaseFont) };
-    has $!Encoding; method Encoding { self.tie(:$!Encoding) };
+    has Str $!Name; method Name { self.tie($!Name) };
+    has Str:_ $!BaseFont; method BaseFont { self.tie($!BaseFont) };
+    has $!Encoding; method Encoding { self.tie($!Encoding) };
 
 }
 

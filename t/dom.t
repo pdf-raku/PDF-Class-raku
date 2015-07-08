@@ -9,7 +9,7 @@ use PDF::Storage::IndObj;
 use lib '.';
 use t::Object :to-obj;
 
-plan 38;
+plan 42;
 
 # crosschecks on /Type
 require ::('PDF::DOM::Type::Catalog');
@@ -145,7 +145,11 @@ $ind-obj = PDF::Storage::IndObj.new( :$input, |%( $ast.kv ) );
 my $gs-obj = $ind-obj.object;
 isa-ok $gs-obj, ::('PDF::DOM::Type::ExtGState');
 is $gs-obj.Type, 'ExtGState', 'ExtGState Type';
-is-deeply $gs-obj.OP, False, 'ExtGState OP';
+is-deeply $gs-obj.OP, False, 'ExtGState.OP';
+dies-ok {$gs-obj<OP> = 42}, 'Typechecking on assignment';
+is-deeply $gs-obj.OP, False, 'ExtGState.OP';
+lives-ok {$gs-obj<OP> = True}, 'Valid property assignment';
+is-deeply $gs-obj.OP, True, 'ExtGState.OP after assignment';
 is $gs-obj.TR, (:ind-ref[36, 0]), 'ExtGState TR';
 
 my $gs1 = $new-page.resource( $gs-obj );

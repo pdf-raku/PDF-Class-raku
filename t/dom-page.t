@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 29;
+plan 31;
 
 use PDF::DOM::Type;
 use PDF::Storage::IndObj;
@@ -63,6 +63,8 @@ is-json-equiv $page.media-box, [0, 0, 150, 200], 'media-box - 2 arg setter';
 
 $page.media-box(-3,-3,253,303);
 is-json-equiv $page.media-box, [-3, -3, 253, 303], 'media-box - 4 arg setter';
+is-json-equiv $page.MediaBox, [-3, -3, 253, 303], '.MediaBox accessor';
+is-json-equiv $page<MediaBox>, [-3, -3, 253, 303], '<MediaBox> accessor';
 
 $page.gfx.ops.push: ('Tj' => [ :literal('Hello, world!') ]);
 $page.cb-finish;

@@ -11,8 +11,11 @@ role PDF::DOM::PageSizes {
     }
 
     multi method media-box() is default {
-        self.?find-prop('MediaBox')
-            // [0, 0, 612, 792];
+        my $media-box = self.can('find-prop')
+            ?? self.find-prop('MediaBox')
+            !! self<MediaBox>;
+
+        $media-box // [0, 0, 612, 792];
     }
 
 }

@@ -9,8 +9,8 @@ class PDF::DOM::Type::Outlines
     is PDF::Object::Dict
     does PDF::DOM::Type {
 
-    has Int $!Count; method Count { self.tie(:$!Count) };
-    has Hash $!First; method First { self.tie(:$!First) };
-    has Hash $!Last; method Last { self.tie(:$!Last) };
+    has Int $!Count; method Count { self.tie($!Count) };
+    has Hash $!First; method First { self.tie($!First) };
+    has Hash $!Last; method Last { self.tie($!Last) };
 
 }
