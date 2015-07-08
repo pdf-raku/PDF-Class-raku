@@ -2,6 +2,7 @@ use v6;
 
 use PDF::DOM::Contents::Text::Line;
 use PDF::DOM::Contents::Text::Atom;
+use PDF::DOM::Contents::Op :OpNames;
 
 class PDF::DOM::Contents::Text::Block {
     has Numeric $.line-height;
@@ -149,7 +150,7 @@ class PDF::DOM::Contents::Text::Block {
 
         for $.lines.list {
             @content.push: .content(:$.font-size);
-            @content.push: 'T*';
+            @content.push: OpNames::TextNextLine;
         }
 
         @content.pop

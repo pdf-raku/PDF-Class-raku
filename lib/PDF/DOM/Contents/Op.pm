@@ -7,9 +7,47 @@ role PDF::DOM::Contents::Op {
 
     has @!ops;
 
-    multi sub op(Str $op! where 'BT' | 'ET' | 'EMC' | 'BI' | 'ID' | 'EI' | 'BX' | 'EX' | 'b*' | 'b' | 'B*' | 'B'
-                                  | 'f*' | 'F' | 'f' | 'h' | 'n' | 'q' | 'Q' | 's' | 'S' | 'T*' | 'W*' | 'W') {
-        $op;
+    #| some convenient mnemomic names
+    our Str enum OpNames is export(:OpNames) «
+        :BeginImage<BI> :ImageData<ID> :EndImage<EI>
+        :BeginMarkedContent<BMC> :EndMarkedContent<EMC>
+        :BeginText<BT> :EndText<ET>
+        :BeginIgnore<BX> :EndIgnore<EX>
+        :CloseEOFillStroke<b*> :CloseFillStroke<b> :EOFillStroke<B*>
+        :FillStroke<B> :CurveTo<c> :ConcatMatrix<cm>
+        :SetFillColorSpace<cs> :SetStrokeColorSpace<CS> :SetDash<d>
+        :SetCharWidth<d0> :SetCacheDevice<d1> :XObject<Do>
+        :MarkPoint<DP> :EOFill<f*> :Fill<f> :SetStrokeGray<G>
+        :SetFillGray<g> :SetExtGState<gs> :ClosePath<h> :SetFlat<i>
+        :SetLineJoin<j> :SetLineCap<J> :SetFillCMYK<k>
+        :SetStrokeCMYK<K> :LineTo<l> :MoveTo<m> :SetMiterLimit<M>
+        :MarkPoint2<MP> :EndPath<n> :Save<q> :Restore<Q>
+        :Rectangle<re> :SetFillRGB<rg> :SetStrokeRGB<RG>
+        :SetRenderingIntent<ri> :CloseStroke<s> :Stroke<S>
+        :SetStrokeColor<SC> :SetFillColor<sc> :SetFillColorN<scn>
+        :SetStrokeColorN<SCN> :ShFill<sh> :TextNextLine<T*>
+        :SetCharSpacing<Tc> :TextMove<Td> :TextMoveSet<TD>
+        :SetFont<Tf> :ShowText<Tj> :ShowSpaceText<TJ>
+        :SetTextLeading<TL> :SetTextMatrix<Tm> :SetTextRender<Tr>
+        :SetTextRise<Ts> :SetWordSpacing<Tw> :SetHorizScaling<Tz>
+        :CurveTo1<v> :EOClip<W*> :Clip<W> :SetLineWidth<w>
+        :CurveTo2<y> :MoveSetShowText<"> :MoveShowText<'>
+    »;
+
+    #| todo: BI [dict] ID ... EI probably need a new class dervied from PDF::Object::Stream
+    multi sub op(Str $op! where 'BI' | 'ID' | 'EI',
+                 *@args) {
+        die "todo image content BI [dict] ID ... EI: $op";
+    }
+
+    multi sub op(Str $op! where 'BX' | 'EX',
+                 *@args) {
+        die "todo ignored content BX [lines] EX: $op";
+    }
+
+    multi sub op(Str $op! where 'BT' | 'ET' | 'EMC' | 'BX' | 'EX' | 'b*' | 'b' | 'B*' | 'B' | 'f*' | 'F' | 'f' | 'h'
+                                     | 'n' | 'q' | 'Q' | 's' | 'S' | 'T*' | 'W*' | 'W') {
+        $op => [];
     }
     #| tag                     BMC | MP
     #| name                    cs | CS | Do | sh

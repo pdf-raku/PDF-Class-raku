@@ -1,12 +1,12 @@
 use v6;
 
-use PDF::Object::DOM;
-PDF::Object::DOM.install-handler('PDF::DOM::Type');
+use PDF::Object::Type;
+PDF::Object::Type.install-handler('PDF::DOM::Type');
 
 # autoload from PDF::DOM::Type
 
 role PDF::DOM::Type
-    does PDF::Object::DOM {
+    does PDF::Object::Type {
 
     #| enforce tie-ins between /Type, /Subtype & the class name. e.g.
     #| PDF::DOM::Type::Catalog should have /Type = /Catalog

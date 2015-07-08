@@ -1,6 +1,6 @@
 use v6;
 
-use PDF::DOM::Contents::Op;
+use PDF::DOM::Contents::Op :OpNames;
 
 class PDF::DOM::Contents::Stream 
     does PDF::DOM::Contents::Op {
@@ -11,17 +11,17 @@ class PDF::DOM::Contents::Stream
     use PDF::DOM::Type::XObject::Image;
 
     method save(Bool :$prepend) {
-        @!ops."{$prepend ?? 'unshift' !! 'push'}"( 'q' );
+        @!ops."{$prepend ?? 'unshift' !! 'push'}"( Save.value );
     }
 
     method restore(Bool :$prepend) {
-        @!ops."{$prepend ?? 'unshift' !! 'push'}"( 'Q' );
+        @!ops."{$prepend ?? 'unshift' !! 'push'}"( Restore.value );
     }
 
     method block( &do-stuff! ) {
-        $.op('q');
+        $.op(Save);
         &do-stuff();
-        $.op('Q');
+        $.op(Restore);
     }
 
     method image($spec where Str | PDF::DOM::Type::XObject::Image ) {
@@ -30,7 +30,7 @@ class PDF::DOM::Contents::Stream
         $image;
     }
 
-    #| execute a resource
+    #| place an image, or form object
     method do(PDF::DOM::Type::XObject $obj!,
               Numeric $x!,
               Numeric $y!,
@@ -86,16 +86,18 @@ class PDF::DOM::Contents::Stream
         }
 
         $.save;
-        $.op('cm', $width, 0, 0, $height, $x + $dx, $y + $dy);
-        $.op('Do', $.parent.resource($obj).key );
+        $.op(ConcatMatrix, $width, 0, 0, $height, $x + $dx, $y + $dy);
+        $.op(XObject, $.parent.resource($obj).key );
         $.restore;
     }
 
+    #| set the current text position on the page/form
     method text-move(Numeric $x!, Numeric $y!, Bool :$abs) {
-        $.op('Tm', 1, 0, 0, 1, 0, 0) if $abs;
-        $.op('Td', $x, $y)
+        $.op(SetTextMatrix, 1, 0, 0, 1, 0, 0) if $abs;
+        $.op(TextMove, $x, $y)
     }
 
+    #! output text leave the text position at the end of the current line
     method print(Str $text,
                  :$font is copy = $!parent.core-font('Courier'),
                  Numeric :$font-size = 16;
@@ -107,13 +109,14 @@ class PDF::DOM::Contents::Stream
         my $text-block = PDF::DOM::Contents::Text::Block.new( :$text, :$font, :$font-size, |%etc );
 
         unless $dry-run {
-            $.op('Tf', $font.key, $font-size);
+            $.op(SetFont, $font.key, $font-size);
             $.ops( $text-block.content(:$nl) );
         }
 
         return $text-block;
     }
 
+    #! output text move the  text position down one line
     method say($text, *%opt) {
         $.print($text, :nl, |%opt);
     }

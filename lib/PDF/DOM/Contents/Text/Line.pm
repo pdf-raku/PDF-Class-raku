@@ -1,6 +1,7 @@
 use v6;
 
 use PDF::DOM::Contents::Text::Atom;
+use PDF::DOM::Contents::Op :OpNames;
 
 class PDF::DOM::Contents::Text::Line {
 
@@ -56,7 +57,7 @@ class PDF::DOM::Contents::Text::Line {
 
         $array.pop if +$array && $array[*-1] ~~ Numeric;
 
-        :TJ[$array];
+        (OpNames::ShowSpaceText) => [$array];
 
     }
 
