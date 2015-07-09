@@ -21,11 +21,11 @@ is-deeply [$gfx.content.lines], [
     "[ (W) 60 (orld!) ] TJ",
     "T*",];
 
-$font = $page.core-font( :family<Helvetica> );
-$font-size = 10;
 $width = 100;
 my $height = 80;
 my $x = 110;
+
+$gfx.set-font( $page.core-font( :family<Helvetica> ), 10);
 
 for <text top center bottom> -> $valign {
 
@@ -38,7 +38,7 @@ for <text top center bottom> -> $valign {
         --ENOUGH!!--
 
         $gfx.text-move($x, $y, :abs);
-        my $text-block = $gfx.say( "*** $valign $align*** " ~ $body, :$font, :$font-size, :$width, :$height, :$valign, :$align);
+        my $text-block = $gfx.say( "*** $valign $align*** " ~ $body, :$width, :$height, :$valign, :$align);
         $y -= 170;
     }
 

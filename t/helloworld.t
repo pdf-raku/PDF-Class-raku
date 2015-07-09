@@ -29,12 +29,12 @@ for <left center right> -> $align {
 
 $gfx.block: {
     $gfx.text-move(240,600, :abs);
-    $font = $page.core-font('ZapfDingbats');
-    $gfx.op(SetWordSpacing, 18);
+    $gfx.set-font($page.core-font('ZapfDingbats'), 24);
+    $gfx.op(SetWordSpacing, 16);
     my $nbsp = "\c[NO-BREAK SPACE]";
-    $gfx.print("♠ ♣$nbsp", :$font, :font-size(24));
+    $gfx.print("♠ ♣$nbsp");
     $gfx.op(SetFillRGB, 1, .3, .3);
-    $gfx.say("♦ ♥", :$font, :font-size(24));
+    $gfx.say("♦ ♥");
 };
 
 my $img = $gfx.image("t/images/snoopy-happy-dance.jpg");

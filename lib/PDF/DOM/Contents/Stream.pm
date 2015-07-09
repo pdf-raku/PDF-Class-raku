@@ -102,19 +102,32 @@ class PDF::DOM::Contents::Stream
         $.op(TextMove, $x, $y)
     }
 
+    #| thin wrapper to $.op(SetFont, ...)
+    method set-font( $font-entry! is copy, Numeric $size!) {
+        $font-entry = $font-entry.key if $font-entry.can('key');
+        $.op(SetFont, $font-entry, $size);
+    }
+
     #! output text leave the text position at the end of the current line
     method print(Str $text,
-                 :$font is copy = $!parent.core-font('Courier'),
-                 Numeric :$font-size = 16;
+                 :$font is copy,
+                 Numeric :$font-size = $.FontSize || 16;
                  Numeric :$word-spacing = $.WordSpacing,
                  Bool :$dry-run = False,
                  Bool :$nl = False,
                  *%etc,  #| :$align, :$kern, :$line-height, :$width, :$height
         ) {
+        $font //= $.parent.resource-entry('Font', $.FontKey)
+            if $.FontKey;
+        $font //= $!parent.core-font('Courier');
+            
         my $text-block = PDF::DOM::Contents::Text::Block.new( :$text, :$font, :$font-size, :$word-spacing, |%etc );
 
         unless $dry-run {
-            $.op(SetFont, $font.key, $font-size);
+            $.op(SetFont, $font.key, $font-size)
+                unless $.FontKey
+                && $font.key eq $.FontKey
+                && $font-size == $.FontSize;
             $.ops( $text-block.content(:$nl) );
         }
 

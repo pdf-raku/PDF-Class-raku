@@ -36,8 +36,10 @@ role PDF::DOM::Contents::Op {
 
     has %!gstate = %( :Tw(0), :TL(0) );
     has @!gsave;
-    method WordSpacing is rw { %!gstate<Tw> }
-    method Leading     is rw { %!gstate<TL> }
+    method WordSpacing is rw { %!gstate<Tw>  }
+    method Leading     is rw { %!gstate<TL>  }
+    method FontKey     is rw { %!gstate<Tf>  }
+    method FontSize    is rw { %!gstate<Tfs> }
 
     #| BI dict ID stream EI
     multi sub op(Str $op! where 'BI',
@@ -242,6 +244,14 @@ role PDF::DOM::Contents::Op {
     }
     multi method g-track(SetWordSpacing, Numeric $Ts!) {$.WordSpacing = $Ts}
     multi method g-track(SetTextLeading, Numeric $Tw!) {$.TextLeading = $Tw}
+    multi method g-track(SetFont, Str $Tf!, Numeric $Tfs!) {
+        if self.can('parent') {
+            die "unknown font key: /$Tf"
+                unless self.parent.resource-entry('Font', $Tf);
+        }
+        $.FontKey = $Tf;     #| e.g. 'F2'
+        $.FontSize = $Tfs;   #| e.g. 16
+    }
     multi method g-track(*@args) is default {}
 
     method content {

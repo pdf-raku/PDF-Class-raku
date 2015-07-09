@@ -31,6 +31,24 @@ role PDF::DOM::Resources {
             //  self!"register-resource"( $object );
     }
 
+    method resource-entry(Str $type!, Str $key!) {
+        my $resources = self.can('find-prop')
+            ?? self.find-prop('Resources')
+            !! self.Resources;
+
+        return unless
+            $resources.defined
+            && ($resources{$type}:exists)
+            && ($resources{$type}{$key}:exists);
+
+        my $object = $resources{$type}{$key}
+        or return;
+
+        my $entry = $object but ResourceEntry;
+        $entry.key = $key;
+        $entry;
+    }
+
     method !find-resource( &match, Str :$type! ) {
 
         my $resources = self.can('find-prop')
@@ -90,11 +108,11 @@ role PDF::DOM::Resources {
 
         $resources{$type} //= {};
 
-        my $name = (1..*).map({$base-name ~ $_}).first({ $resources{$type}{$_}:!exists });
+        my $key = (1..*).map({$base-name ~ $_}).first({ $resources{$type}{$_}:!exists });
 
-        $resources{$type}{$name} = $object;
+        $resources{$type}{$key} = $object;
         my $entry = $object but ResourceEntry;
-        $entry.key = $name;
+        $entry.key = $key;
         $entry;
     }
 
