@@ -97,8 +97,13 @@ class PDF::DOM::Contents::Stream
     }
 
     #| set the current text position on the page/form
-    method text-move(Numeric $x!, Numeric $y!, Bool :$abs) {
-        $.op(SetTextMatrix, 1, 0, 0, 1, 0, 0) if $abs;
+    multi method text-move(Numeric $x!, Numeric $y!, Bool :$abs! where $abs) {
+        my @tm = @$.TextMatrix;
+        @tm[4] = $x;
+        @tm[5] = $y;
+        $.op(SetTextMatrix, @tm);
+    }
+    multi method text-move(Numeric $x!, Numeric $y!) is default {
         $.op(TextMove, $x, $y)
     }
 

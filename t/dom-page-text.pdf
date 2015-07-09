@@ -10,7 +10,7 @@ endobj
 << /Type /Page /Contents [ 4 0 R ] /Parent 2 0 R /Resources << /Font << /F1 6 0 R /F2 5 0 R >> >> >>
 endobj
 4 0 obj
-<< /Length 6347 >>
+<< /Length 6235 >>
 stream
 
 BT
@@ -23,8 +23,7 @@ T*
 [ (W) 60 (orld!) ] TJ
 T*
 /F2 10 Tf
-1 0 0 1 0 0 Tm
-110 700 Td
+1 0 0 1 110 700 Tm
 11 TL
 [ (***) -278 (text) -278 (left***) -278 (Lorem) ] TJ
 T*
@@ -40,8 +39,7 @@ T*
 T*
 [ (magna) -278 (aliqua.) ] TJ
 T*
-1 0 0 1 0 0 Tm
-110 530 Td
+1 0 0 1 110 530 Tm
 11 TL
 [ 3640 (***) -278 (text) -278 (center***) ] TJ
 T*
@@ -57,8 +55,7 @@ T*
 T*
 [ 4669 (dolore) -278 (magna) -278 (aliqua.) ] TJ
 T*
-1 0 0 1 0 0 Tm
-110 360 Td
+1 0 0 1 110 360 Tm
 11 TL
 [ 9559 (***) -278 (text) -278 (right***) -278 (Lorem) ] TJ
 T*
@@ -74,8 +71,7 @@ T*
 T*
 [ 6281 (magna) -278 (aliqua.) ] TJ
 T*
-1 0 0 1 0 0 Tm
-110 190 Td
+1 0 0 1 110 190 Tm
 11 TL
 [ (***) -1749 (text) -1749 (justify***) ] TJ
 T*
@@ -91,8 +87,7 @@ T*
 T*
 [ (dolore) -609 (magna) -609 (aliqua.) ] TJ
 T*
-1 0 0 1 0 0 Tm
-235 700 Td
+1 0 0 1 235 700 Tm
 11 TL
 0 -9.31 Td
 [ (***) -278 (top) -278 (left***) -278 (Lorem) ] TJ
@@ -109,8 +104,7 @@ T*
 T*
 [ (magna) -278 (aliqua.) ] TJ
 T*
-1 0 0 1 0 0 Tm
-235 530 Td
+1 0 0 1 235 530 Tm
 11 TL
 0 -9.31 Td
 [ 3529 (***) -278 (top) -278 (center***) ] TJ
@@ -127,8 +121,7 @@ T*
 T*
 [ 4669 (dolore) -278 (magna) -278 (aliqua.) ] TJ
 T*
-1 0 0 1 0 0 Tm
-235 360 Td
+1 0 0 1 235 360 Tm
 11 TL
 0 -9.31 Td
 [ 9337 (***) -278 (top) -278 (right***) -278 (Lorem) ] TJ
@@ -145,8 +138,7 @@ T*
 T*
 [ 6281 (magna) -278 (aliqua.) ] TJ
 T*
-1 0 0 1 0 0 Tm
-235 190 Td
+1 0 0 1 235 190 Tm
 11 TL
 0 -9.31 Td
 [ (***) -295 (top) -295 (justify***) -295 (Lorem) ] TJ
@@ -163,8 +155,7 @@ T*
 T*
 [ (magna) -3997 (aliqua.) ] TJ
 T*
-1 0 0 1 0 0 Tm
-360 700 Td
+1 0 0 1 360 700 Tm
 11 TL
 0 30.69 Td
 [ (***) -278 (center) -278 (left***) ] TJ
@@ -181,8 +172,7 @@ T*
 T*
 [ (dolore) -278 (magna) -278 (aliqua.) ] TJ
 T*
-1 0 0 1 0 0 Tm
-360 530 Td
+1 0 0 1 360 530 Tm
 11 TL
 0 30.69 Td
 [ 4224 (***) -278 (center) -278 (center***) ] TJ
@@ -199,8 +189,7 @@ T*
 T*
 [ 4669 (dolore) -278 (magna) -278 (aliqua.) ] TJ
 T*
-1 0 0 1 0 0 Tm
-360 360 Td
+1 0 0 1 360 360 Tm
 11 TL
 0 30.69 Td
 [ 7614 (***) -278 (center) -278 (right***) ] TJ
@@ -217,8 +206,7 @@ T*
 T*
 [ 9338 (dolore) -278 (magna) -278 (aliqua.) ] TJ
 T*
-1 0 0 1 0 0 Tm
-360 190 Td
+1 0 0 1 360 190 Tm
 11 TL
 0 30.69 Td
 [ (***) -1165 (center) -1165 (justify***) ] TJ
@@ -235,8 +223,7 @@ T*
 T*
 [ (dolore) -609 (magna) -609 (aliqua.) ] TJ
 T*
-1 0 0 1 0 0 Tm
-485 700 Td
+1 0 0 1 485 700 Tm
 11 TL
 0 70.69 Td
 [ (***) -278 (bottom) -278 (left***) ] TJ
@@ -253,8 +240,7 @@ T*
 T*
 [ (dolore) -278 (magna) -278 (aliqua.) ] TJ
 T*
-1 0 0 1 0 0 Tm
-485 530 Td
+1 0 0 1 485 530 Tm
 11 TL
 0 70.69 Td
 [ 4363 (***) -278 (bottom) -278 (center***) ] TJ
@@ -271,8 +257,7 @@ T*
 T*
 [ 4669 (dolore) -278 (magna) -278 (aliqua.) ] TJ
 T*
-1 0 0 1 0 0 Tm
-485 360 Td
+1 0 0 1 485 360 Tm
 11 TL
 0 70.69 Td
 [ 7892 (***) -278 (bottom) -278 (right***) ] TJ
@@ -289,8 +274,7 @@ T*
 T*
 [ 9338 (dolore) -278 (magna) -278 (aliqua.) ] TJ
 T*
-1 0 0 1 0 0 Tm
-485 190 Td
+1 0 0 1 485 190 Tm
 11 TL
 0 70.69 Td
 [ (***) -1026 (bottom) -1026 (justify***) ] TJ
@@ -324,10 +308,10 @@ xref
 0000000063 00000 n 
 0000000163 00000 n 
 0000000279 00000 n 
-0000006678 00000 n 
-0000006775 00000 n 
+0000006566 00000 n 
+0000006663 00000 n 
 trailer
 << /Root 1 0 R /Size 7 >>
 startxref
-6877
+6765
 %%EOF

@@ -34,12 +34,13 @@ role PDF::DOM::Contents::Op {
         :CurveTo2<y> :MoveSetShowText<"> :MoveShowText<'>
     »;
 
-    has %!gstate = %( :Tw(0), :TL(0) );
+    has %.gstate = %( :Tw(0), :TL(0), :Tl[ 1, 0, 0, 1, 0, 0 ]);
     has @!gsave;
-    method WordSpacing is rw { %!gstate<Tw>  }
-    method Leading     is rw { %!gstate<TL>  }
     method FontKey     is rw { %!gstate<Tf>  }
     method FontSize    is rw { %!gstate<Tfs> }
+    method Leading     is rw { %!gstate<TL>  }
+    method TextMatrix  is rw { %!gstate<Tl>  }
+    method WordSpacing is rw { %!gstate<Tw>  }
 
     #| BI dict ID stream EI
     multi sub op(Str $op! where 'BI',
@@ -234,13 +235,13 @@ role PDF::DOM::Contents::Op {
     }
 
     multi method g-track(Save) {
-        my %gcopy = %!gstate.list;
-        @!gsave.push: %gcopy.item;
+        my %gclone = %!gstate.pairs.map( -> $p { $p.key => $p.value.clone });
+        @!gsave.push: %gclone.item;
     }
     multi method g-track(Restore) {
         die "bad nesting; Restore(Q) operator not matched by preceeding Save(q) operator"
             unless @!gsave;
-        %!gstate = @!gsave.pop.list
+        %!gstate = @!gsave.pop.pairs;
     }
     multi method g-track(SetWordSpacing, Numeric $Ts!) {$.WordSpacing = $Ts}
     multi method g-track(SetTextLeading, Numeric $Tw!) {$.TextLeading = $Tw}
@@ -251,6 +252,20 @@ role PDF::DOM::Contents::Op {
         }
         $.FontKey = $Tf;     #| e.g. 'F2'
         $.FontSize = $Tfs;   #| e.g. 16
+    }
+    multi method g-track(SetTextMatrix,  Array $Tm!) {
+        $.TextMatrix = %!gstate<Tls> = $Tm
+    }
+    multi method g-track(TextMove, Numeric $tx!, Numeric $ty) {
+        $.TextMatrix[4] += $tx;
+        $.TextMatrix[5] += $ty;
+    }
+    multi method g-track(TextMoveSet, Numeric $tx!, Numeric $ty) {
+        $.TextLeading = - $ty;
+        $.g-track(TextMove, $tx, $ty);
+    }
+    multi method g-track(TextNextLine) {
+        $.g-track(TextMove, 0, $.TextLeading);
     }
     multi method g-track(*@args) is default {}
 
