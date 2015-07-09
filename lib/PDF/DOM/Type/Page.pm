@@ -8,6 +8,7 @@ use PDF::DOM::Contents;
 use PDF::DOM::Resources;
 use PDF::DOM::PageSizes;
 use PDF::DOM::Type::XObject::Form;
+use PDF::DOM::Contents::Op :OpNames;
 
 # /Type /Page - describes a single PDF page
 
@@ -67,7 +68,7 @@ class PDF::DOM::Type::Page
             for $!pre-gfx, $!gfx {
                 if .defined && .ops {
                     $new-content = True;
-                    .save(:prepend);
+                    .ops.unshift: OpNames::Save;
                     .restore;
                 }
             }
@@ -78,7 +79,7 @@ class PDF::DOM::Type::Page
                 if +@contents {
                     # wrap ex
                     $!pre-gfx.save;
-                    $!gfx.restore(:prepend);
+                    $!gfx.ops.unshift: OpNames::Restore;
                 }
 
                 @contents.unshift: PDF::Object::Stream.new( :decoded( "BT\n" ~ $!pre-gfx.content ~ "\nET\n" ) )

@@ -106,12 +106,12 @@ class PDF::DOM::Contents::Stream
     method print(Str $text,
                  :$font is copy = $!parent.core-font('Courier'),
                  Numeric :$font-size = 16;
+                 Numeric :$word-spacing = $.WordSpacing,
                  Bool :$dry-run = False,
                  Bool :$nl = False,
-                 *%etc,  #| :$align, :$kern, :$font-size, :$line-height, :$width, :$height
+                 *%etc,  #| :$align, :$kern, :$line-height, :$width, :$height
         ) {
-
-        my $text-block = PDF::DOM::Contents::Text::Block.new( :$text, :$font, :$font-size, |%etc );
+        my $text-block = PDF::DOM::Contents::Text::Block.new( :$text, :$font, :$font-size, :$word-spacing, |%etc );
 
         unless $dry-run {
             $.op(SetFont, $font.key, $font-size);

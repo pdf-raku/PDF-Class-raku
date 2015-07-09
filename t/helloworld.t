@@ -2,6 +2,7 @@ use v6;
 use Test;
 
 use PDF::DOM;
+use PDF::DOM::Contents::Op :OpNames;
 my $pdf = PDF::DOM.new;
 my $page = $pdf.add-page;
 my $gfx = $page.gfx;
@@ -27,11 +28,13 @@ for <left center right> -> $align {
 }
 
 $gfx.block: {
-    $gfx.text-move(272,600, :abs);
+    $gfx.text-move(240,600, :abs);
     $font = $page.core-font('ZapfDingbats');
-    $gfx.print("♠♣", :$font, :font-size(24));
-    $gfx.op('rg', 1, .3, .3);
-    $gfx.say("♦♥", :$font, :font-size(24));
+    $gfx.op(SetWordSpacing, 18);
+    my $nbsp = "\c[NO-BREAK SPACE]";
+    $gfx.print("♠ ♣$nbsp", :$font, :font-size(24));
+    $gfx.op(SetFillRGB, 1, .3, .3);
+    $gfx.say("♦ ♥", :$font, :font-size(24));
 };
 
 my $img = $gfx.image("t/images/snoopy-happy-dance.jpg");

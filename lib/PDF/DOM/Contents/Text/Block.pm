@@ -23,9 +23,10 @@ class PDF::DOM::Contents::Text::Block {
                           :$font!, :$font-size=16,
                           :$!font-height = $font.height( $font-size ),
                           :$!font-base-height = $font.height( $font-size, :from-baseline ),
-                          :$word-spacing = $font.stringwidth( ' ', $font-size ),
+                          :$word-spacing is copy = 0,
                           :$kern = False,
                           *%etc) {
+        $word-spacing += $font.stringwidth( ' ', $font-size );
         # assume uniform simple text, for now
         my @chunks = $text.comb(/ [ <![ - ]> [ \w | <:Punctuation> ] ]+ '-'?
                                 || .

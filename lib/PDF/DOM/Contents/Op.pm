@@ -34,6 +34,11 @@ role PDF::DOM::Contents::Op {
         :CurveTo2<y> :MoveSetShowText<"> :MoveShowText<'>
     »;
 
+    has %!gstate = %( :Tw(0), :TL(0) );
+    has @!gsave;
+    method WordSpacing is rw { %!gstate<Tw> }
+    method Leading     is rw { %!gstate<TL> }
+
     #| BI dict ID stream EI
     multi sub op(Str $op! where 'BI',
                  Hash $dict = {}) {
@@ -215,13 +220,29 @@ role PDF::DOM::Contents::Op {
 
     multi method op(*@args, :$prepend) {
         my $opn = op(|@args);
-        $prepend ?? @!ops.unshift($opn) !! @!ops.push($opn);
+        $opn ~~ Pair
+          ?? $.g-track($opn.key, |@( $opn.value.map({ .value }) ) )
+          !! $.g-track($opn);
+        @!ops.push($opn);
     }
     method ops(Array $ops?) {
         @!ops.push: $ops.map({ op($_) })
             if $ops.defined;
         @!ops;
     }
+
+    multi method g-track(Save) {
+        my %gcopy = %!gstate.list;
+        @!gsave.push: %gcopy.item;
+    }
+    multi method g-track(Restore) {
+        die "bad nesting; Restore(Q) operator not matched by preceeding Save(q) operator"
+            unless @!gsave;
+        %!gstate = @!gsave.pop.list
+    }
+    multi method g-track(SetWordSpacing, Numeric $Ts!) {$.WordSpacing = $Ts}
+    multi method g-track(SetTextLeading, Numeric $Tw!) {$.TextLeading = $Tw}
+    multi method g-track(*@args) is default {}
 
     method content {
         use PDF::Writer;
