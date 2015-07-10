@@ -38,6 +38,8 @@
         "PDF::DOM::Contents::Text::Line" : "lib/PDF/DOM/Contents/Text/Line.pm",
 
         "PDF::DOM::RootObject" : "lib/PDF/DOM/RootObject.pm",
-        "PDF::DOM::Util::Font" : "lib/PDF/DOM/Util/Font.pm"        
+
+        "PDF::DOM::Util::Font" : "lib/PDF/DOM/Util/Font.pm",        
+        "PDF::DOM::Util::TransformMatrix" : "lib/PDF/DOM/Util/TransformMatrix.pm"        
     }
 }
