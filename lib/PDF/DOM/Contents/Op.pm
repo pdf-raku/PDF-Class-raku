@@ -8,7 +8,7 @@ role PDF::DOM::Contents::Op {
     has @!ops;
 
     #| some convenient mnemomic names
-    our Str enum OpNames is export(:OpNames) «
+    BEGIN our Str enum OpNames is export(:OpNames) «
         :BeginImage<BI> :ImageData<ID> :EndImage<EI>
         :BeginMarkedContent<BMC> :EndMarkedContent<EMC>
         :BeginText<BT> :EndText<ET>
@@ -34,8 +34,13 @@ role PDF::DOM::Contents::Op {
         :CurveTo2<y> :MoveSetShowText<"> :MoveShowText<'>
     »;
 
+    constant TextOps = set <T* Tc Td TD Tf Tj TJ TL Tm Tr Ts Tw Tz>;
+    constant GraphicOps = set <cm w J j M d ri i gs>;
+
     has %.gstate = %( :Tw(0), :TL(0), :Tl[ 1, 0, 0, 1, 0, 0 ]);
     has @!gsave;
+    has @!tags;
+
     method FontKey     is rw { %!gstate<Tf>  }
     method FontSize    is rw { %!gstate<Tfs> }
     method Leading     is rw { %!gstate<TL>  }
@@ -217,34 +222,71 @@ role PDF::DOM::Contents::Op {
         }
         $opn;
     }
+
     multi sub op(*@args) is default {
         die "unknown op: {@args.perl}";
     }
 
-    multi method op(*@args, :$prepend) {
+    multi method op(*@args is copy, :$prepend) {
         my $opn = op(|@args);
-        $opn ~~ Pair
-          ?? $.g-track($opn.key, |@( $opn.value.map({ .value }) ) )
-          !! $.g-track($opn);
-        @!ops.push($opn);
+	my $op-name;
+
+        if $opn ~~ Pair {
+	    $op-name = $opn.key;
+	    @args = @( $opn.value.map({ .value }) );
+	}
+	else {
+	    $op-name = $opn;
+	}
+
+	die "text operation '$op-name' outside of a BT ... ET text block\n"
+	    if $op-name ∈ TextOps
+	    && (!@!tags || @!tags[*-1] ne 'BT');
+
+	die "graphics operator '$op-name' outside of a q ... Q graphics block\n"
+	    if $op-name ∈ GraphicOps && !@!gsave;
+
+	@!ops.push($opn);
+        $.g-track($op-name, |@args );
+
+	@!ops[*-1];
     }
+
     method ops(Array $ops?) {
         @!ops.push: $ops.map({ op($_) })
             if $ops.defined;
         @!ops;
     }
 
-    multi method g-track(Save) {
+    multi method g-track('q') {
         my %gclone = %!gstate.pairs.map( -> $p { $p.key => $p.value.clone });
         @!gsave.push: %gclone.item;
     }
-    multi method g-track(Restore) {
-        die "bad nesting; Restore(Q) operator not matched by preceeding Save(q) operator"
+    multi method g-track('Q') {
+        die "bad nesting; Restore(Q) operator not matched by preceeding Save(q) operator in PDF content\n"
             unless @!gsave;
         %!gstate = @!gsave.pop.pairs;
+	Restore;
     }
-    multi method g-track(SetWordSpacing, Numeric $Ts!) {$.WordSpacing = $Ts}
-    multi method g-track(SetTextLeading, Numeric $Tw!) {$.TextLeading = $Tw}
+    multi method g-track('BT') {
+        die "illegal nesting of BT text-blocks in PDF content\n"
+            if @!tags && @!tags[*-1] eq 'BT';
+	@!tags.push: 'BT';
+    }
+    multi method g-track('ET') {
+	die "closing ET without opening BT in PDF content\n"
+	    unless @!tags && @!tags[*-1] eq 'BT';
+	@!tags.pop;
+    }
+    multi method g-track('BMC') {
+	@!tags.push: 'BMC';
+    }
+    multi method g-track('EMC') {
+	die "closing EMC without opening BMC in PDF content\n"
+	    unless @!tags && @!tags[*-1] eq 'BMC';
+	@!tags.pop;
+    }
+    multi method g-track('TL', Numeric $Tw!) {$.TextLeading = $Tw}
     multi method g-track(SetFont, Str $Tf!, Numeric $Tfs!) {
         if self.can('parent') {
             die "unknown font key: /$Tf"
@@ -253,23 +295,27 @@ role PDF::DOM::Contents::Op {
         $.FontKey = $Tf;     #| e.g. 'F2'
         $.FontSize = $Tfs;   #| e.g. 16
     }
-    multi method g-track(SetTextMatrix,  Array $Tm!) {
+    multi method g-track('Tm',  Array $Tm!) {
         $.TextMatrix = %!gstate<Tls> = $Tm
     }
-    multi method g-track(TextMove, Numeric $tx!, Numeric $ty) {
+    multi method g-track('Td', Numeric $tx!, Numeric $ty) {
         $.TextMatrix[4] += $tx;
         $.TextMatrix[5] += $ty;
     }
-    multi method g-track(TextMoveSet, Numeric $tx!, Numeric $ty) {
+    multi method g-track('TD', Numeric $tx!, Numeric $ty) {
         $.TextLeading = - $ty;
         $.g-track(TextMove, $tx, $ty);
     }
-    multi method g-track(TextNextLine) {
+    multi method g-track('T*') {
         $.g-track(TextMove, 0, $.TextLeading);
     }
     multi method g-track(*@args) is default {}
 
     method content {
+	die "Unclosed @!tags[] at end of content stream\n"
+	    if @!tags;
+	die "q(Save) unmatched by closing Q(Restore) at end of content stream\n"
+	    if @!gsave;
         use PDF::Writer;
         my $writer = PDF::Writer.new;
         my @content = @!ops;
