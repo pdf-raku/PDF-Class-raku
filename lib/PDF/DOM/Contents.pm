@@ -1,10 +1,11 @@
 use v6;
 
-use PDF::DOM::Contents::Stream;
-use PDF::DOM::Type::XObject;
-
 #| this role is applied to PDF::DOM::Type::Pages and PDF::DOM::Type::XObject::Form
 role PDF::DOM::Contents {
+
+    use PDF::DOM::Contents::Stream;
+    use PDF::DOM::Type::XObject;
+    use PDF::DOM::Contents::Op :OpNames;
 
     method Contents is rw { self<Contents> }
 
@@ -15,37 +16,24 @@ role PDF::DOM::Contents {
 
         if $!pre-gfx.ops || $!gfx.ops {
 
-            my $new-content;
+	    my $content = self.decoded;
+	    if $content.defined && $content.chars {
+		# dont trust existing content. wrap it in q ... Q
+		$!pre-gfx.ops.push(OpNames::Save);
+		$!gfx.ops.unshift: OpNames::Restore;
+	    }
+	    my $prepend = $!pre-gfx.ops
+		?? $!pre-gfx.content ~ "\n"
+		!! '';
 
-            # wrap new content in save ... restore - for safety's sake
-            for $!pre-gfx, $!gfx {
-                if .defined && .ops {
-                    $new-content = True;
-                    .save(:prepend);
-                    .restore;
-                }
-            }
+	    my $append = $!gfx.ops
+		?? "\n" ~ $!gfx.content
+		!! '';
 
-            # also wrap any existing content in save ... restore
-            if $new-content {
-                my $content = self.decoded;
-                if $content.defined && $content.chars
-                    && ($content !~~ m:s/^ 'q' /  || $content !~~ m:s/ 'Q' ^/) {
-                        $!pre-gfx.save;
-                        $!gfx.restore(:prepend);
-                }
-
-                my $prepend = $!pre-gfx.ops
-                    ?? $!pre-gfx.content ~ "\n"
-                    !! '';
-
-                my $append = $!gfx.ops
-                    ?? "\n" ~ $!gfx.content
-                    !! '';
-
-                self.edit-stream(:$prepend, :$append)
-                    if $prepend.chars || $append.chars;
-            }
+	    $!pre-gfx.ops = ();
+	    $!gfx.ops = ();
+	    self.edit-stream(:$prepend, :$append)
+		if $prepend.chars || $append.chars;
         }
     }
 

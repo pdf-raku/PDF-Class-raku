@@ -66,7 +66,7 @@ is-json-equiv $page.media-box, [-3, -3, 253, 303], 'media-box - 4 arg setter';
 is-json-equiv $page.MediaBox, [-3, -3, 253, 303], '.MediaBox accessor';
 is-json-equiv $page<MediaBox>, [-3, -3, 253, 303], '<MediaBox> accessor';
 
-$page.gfx.ops.push: ('Tj' => [ :literal('Hello, world!') ]);
+$page.gfx.ops(['BT', 'Tj' => [ :literal('Hello, world!') ], 'ET']);
 $page.cb-finish;
 
 my $contents = $page.Contents;
@@ -74,15 +74,15 @@ isa-ok $contents, Array, 'finished Contents';
 is-deeply +$contents, 3, 'finished Contents count';
 
 isa-ok $contents[0], ::('PDF::Object::Stream'), 'finished Contents';
-is $contents[0].decoded, "BT\nq\nET\n", 'finished Contents pretext';
+is $contents[0].decoded, "q\n", 'finished Contents pretext';
 is $contents[1].decoded, '%dummy stream', 'finished Contents existing text';
-is-deeply [$contents[2].decoded.lines], ['', 'BT', 'Q', 'q', '(Hello, world!) Tj', 'Q', 'ET'], 'finished Contents post-text';
+is-deeply [$contents[2].decoded.lines], ['', 'Q', 'BT', '(Hello, world!) Tj', 'ET'], 'finished Contents post-text';
 
 my $xobject = $page.to-xobject;
 isa-ok $xobject, ::('PDF::DOM::Type::XObject::Form');
 is-deeply $xobject.BBox, $page.MediaBox, 'xobject copied BBox';
-is-deeply [$xobject.decoded.lines], ['BT', 'q', 'ET',
+is-deeply [$xobject.decoded.lines], ['q',
                                      '%dummy stream',
-                                     'BT', 'Q', 'q', '(Hello, world!) Tj', 'Q', 'ET' ], 'xobject decoded';
+                                     'Q', 'BT', '(Hello, world!) Tj', 'ET' ], 'xobject decoded';
 
 

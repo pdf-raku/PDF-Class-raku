@@ -7,10 +7,9 @@ endobj
 << /Type /Pages /Count 1 /Kids [ 5 0 R ] /Resources << /Pattern << /P1 3 0 R >> /Procset [ /PDF /Text ] >> >>
 endobj
 3 0 obj
-<< /Type /Pattern /BBox [ 0 0 100 100 ] /Matrix [ 0.4 0 0 0.4 0 0 ] /PaintType 1 /PatternType 1 /Resources << /Font << /F1 4 0 R >> >> /TilingType 2 /XStep 100 /YStep 100 /Length 183 >>
+<< /Type /Pattern /BBox [ 0 0 100 100 ] /Matrix [ 0.4 0 0 0.4 0 0 ] /PaintType 1 /PatternType 1 /Resources << /Font << /F1 4 0 R >> >> /TilingType 2 /XStep 100 /YStep 100 /Length 179 >>
 stream
 
-q
 BT
 /F1 1 Tf
 64 0 0 64 7.1771 2.4414 Tm
@@ -28,7 +27,6 @@ BT
 0 0 0 rg
 (\250) Tj
 ET
-Q
 endstream
 endobj
 4 0 obj
@@ -38,11 +36,9 @@ endobj
 << /Type /Page /Contents [ 6 0 R ] /MediaBox [ 0 0 230 210 ] /Parent 2 0 R >>
 endobj
 6 0 obj
-<< /Length 624 >>
+<< /Length 614 >>
 stream
 
-BT
-q
 0 G
 1 1 0 rg
 25 175 175 -150 re
@@ -71,8 +67,6 @@ B
 175 50 l
 112.5 158.253 l
 b
-Q
-ET
 endstream
 endobj
 xref
@@ -81,11 +75,11 @@ xref
 0000000014 00000 n 
 0000000063 00000 n 
 0000000188 00000 n 
-0000000590 00000 n 
-0000000663 00000 n 
-0000000756 00000 n 
+0000000586 00000 n 
+0000000659 00000 n 
+0000000752 00000 n 
 trailer
 << /Root 1 0 R /Size 7 >>
 startxref
-1431
+1417
 %%EOF

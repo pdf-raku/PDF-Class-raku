@@ -12,6 +12,7 @@ my $width = 150;
 my $font-size = 15;
 my $x = 35;
 
+$gfx.op(BeginText);
 for <left center right> -> $align {
     $gfx.text-move($x, 750, :abs);
     my $header = [~] '*** ', $align, ' ***', "\n";
@@ -43,7 +44,7 @@ $gfx.do($img, 232, 380, :width(150) );
 
 $gfx.text-move(100,300, :abs);
 $gfx.say('Hello, world!', :font($header-font), :font-size(24));
-
+$gfx.op(EndText);
 ok $pdf.save-as('t/helloworld.pdf'), '.save-as';
 ok $pdf.save-as('t/helloworld-compressed.pdf', :compress), '.save-as( :compress )';
 

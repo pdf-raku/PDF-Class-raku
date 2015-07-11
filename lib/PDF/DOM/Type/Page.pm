@@ -7,8 +7,6 @@ use PDF::DOM::Type;
 use PDF::DOM::Contents;
 use PDF::DOM::Resources;
 use PDF::DOM::PageSizes;
-use PDF::DOM::Type::XObject::Form;
-use PDF::DOM::Contents::Op :OpNames;
 
 # /Type /Page - describes a single PDF page
 
@@ -20,6 +18,9 @@ class PDF::DOM::Type::Page
     does PDF::DOM::Resources
     does PDF::DOM::PageSizes {
 
+    use PDF::DOM::Type::XObject::Form;
+    use PDF::DOM::Contents::Op :OpNames;
+
     has Hash:_ $!Parent; method Parent { self.tie($!Parent) };
     has Array:_ $!MediaBox; method MediaBox { self.tie($!MediaBox) };
     has Array:_ $!Annots; method Annots { self.tie($!Annots) };
@@ -27,9 +28,9 @@ class PDF::DOM::Type::Page
     #| contents may either be a stream on an array of streams
     method contents {
         given $.Contents {
-            when !.defined   { [] }
-            when Array       { $_ }
-            when Hash | Pair { [$_] }
+            when !.defined { [] }
+            when Array     { $_ }
+            when Hash      { [$_] }
             default { die "unexpected page content: {.perl}" }
         }
     }
@@ -63,31 +64,23 @@ class PDF::DOM::Type::Page
 
         if $!pre-gfx.ops || $!gfx.ops {
 
-            my $new-content;
-            # wrap new content in save ... restore - for safety's sake
-            for $!pre-gfx, $!gfx {
-                if .defined && .ops {
-                    $new-content = True;
-                    .ops.unshift: OpNames::Save;
-                    .restore;
-                }
-            }
-
-            if $new-content {
-                # also wrap any existing content in save ... restore
+            if $!pre-gfx.ops || $!gfx.ops {
+                # handle new content.
                 my @contents = @$.contents;
                 if +@contents {
-                    # wrap ex
-                    $!pre-gfx.save;
+		    # dont trust existing content. wrap it in q ... Q
+                    $!pre-gfx.ops.push: OpNames::Save;
                     $!gfx.ops.unshift: OpNames::Restore;
                 }
 
-                @contents.unshift: PDF::Object::Stream.new( :decoded( "BT\n" ~ $!pre-gfx.content ~ "\nET\n" ) )
+                @contents.unshift: PDF::Object::Stream.new( :decoded( $!pre-gfx.content ~ "\n") )
                     if $!pre-gfx.ops;
 
-                @contents.push: PDF::Object::Stream.new( :decoded( "\nBT\n" ~ $!gfx.content ~ "\nET" ) )
+                @contents.push: PDF::Object::Stream.new( :decoded("\n" ~ $!gfx.content ) )
                     if $!gfx.ops;
 
+		$!pre-gfx.ops = ();
+		$!gfx.ops = ();
                 self<Contents> = @contents.item;
             }
         }

@@ -2,6 +2,7 @@ use v6;
 
 use Test;
 use PDF::DOM;
+use PDF::DOM::Contents::Op :OpNames;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::Grammar::Test :is-json-equiv;
@@ -41,8 +42,11 @@ my $pdf = PDF::DOM.new;
 my $page = $pdf.Pages.add-page;
 $page.media-box(350, 250);
 $page<Annots> = [ $text-annot, $open-text-annot ];
-$page.gfx.text-move(50,50);
+$page.gfx.op(BeginText);
+$page.gfx.text-move(50, 50);
 $page.gfx.say('Page with an open annotation');
+$page.gfx.op(EndText);
+
 $pdf.save-as('t/dom-annot.pdf');
 
 $input = q:to"--END--";

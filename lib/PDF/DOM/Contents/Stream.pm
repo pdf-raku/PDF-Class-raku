@@ -10,14 +10,6 @@ class PDF::DOM::Contents::Stream
     use PDF::DOM::Type::XObject;
     use PDF::DOM::Type::XObject::Image;
 
-    method save(Bool :$prepend) {
-        @!ops."{$prepend ?? 'unshift' !! 'push'}"( Save.value );
-    }
-
-    method restore(Bool :$prepend) {
-        @!ops."{$prepend ?? 'unshift' !! 'push'}"( Restore.value );
-    }
-
     method block( &do-stuff! ) {
         $.op(Save);
         &do-stuff();
@@ -84,7 +76,7 @@ class PDF::DOM::Contents::Stream
             default { die "not an xobject form or image: {.perl}" }
         }
 
-        $.save;
+        $.op(Save);
         $.op(ConcatMatrix, $width, 0, 0, $height, $x + $dx, $y + $dy);
         if $inline && $obj.Subtype eq 'Image' {
             # serialize the image to the content stream, aka: :BI[:$dict], :ID[:$stream], :EI[]
@@ -93,7 +85,7 @@ class PDF::DOM::Contents::Stream
         else {
             $.op(XObject, $.parent.resource($obj).key );
         }
-        $.restore;
+        $.op(Restore);
     }
 
     #| set the current text position on the page/form
@@ -129,11 +121,17 @@ class PDF::DOM::Contents::Stream
         my $text-block = PDF::DOM::Contents::Text::Block.new( :$text, :$font, :$font-size, :$word-spacing, |%etc );
 
         unless $dry-run {
+
+	    my Bool $in-text = $.in-text-block;
+	    $.op(BeginText) unless $in-text;
+
             $.op(SetFont, $font.key, $font-size)
                 unless $.FontKey
                 && $font.key eq $.FontKey
                 && $font-size == $.FontSize;
             $.ops( $text-block.content(:$nl) );
+
+	    $.op(EndText) unless $in-text;
         }
 
         return $text-block;

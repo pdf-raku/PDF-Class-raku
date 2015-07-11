@@ -43,9 +43,10 @@ role PDF::DOM::Contents::Op {
 
     method FontKey     is rw { %!gstate<Tf>  }
     method FontSize    is rw { %!gstate<Tfs> }
-    method Leading     is rw { %!gstate<TL>  }
+    method TextLeading is rw { %!gstate<TL>  }
     method TextMatrix  is rw { %!gstate<Tl>  }
     method WordSpacing is rw { %!gstate<Tw>  }
+    method in-text-block returns Bool { ?@!tags && @!tags[*-1] eq 'BT' }
 
     #| BI dict ID stream EI
     multi sub op(Str $op! where 'BI',
@@ -227,16 +228,16 @@ role PDF::DOM::Contents::Op {
         die "unknown op: {@args.perl}";
     }
 
-    multi method op(*@args is copy, :$prepend) {
+    method op(*@args is copy, :$prepend) {
         my $opn = op(|@args);
 	my $op-name;
 
         if $opn ~~ Pair {
-	    $op-name = $opn.key;
+	    $op-name = $opn.key.Str;
 	    @args = @( $opn.value.map({ .value }) );
 	}
 	else {
-	    $op-name = $opn;
+	    $op-name = $opn.Str;
 	}
 
 	die "text operation '$op-name' outside of a BT ... ET text block\n"
@@ -244,7 +245,7 @@ role PDF::DOM::Contents::Op {
 	    && (!@!tags || @!tags[*-1] ne 'BT');
 
 	die "graphics operator '$op-name' outside of a q ... Q graphics block\n"
-	    if $op-name ∈ GraphicOps && !@!gsave;
+	    if ($op-name ∈ GraphicOps) && !@!gsave;
 
 	@!ops.push($opn);
         $.g-track($op-name, |@args );
@@ -253,8 +254,10 @@ role PDF::DOM::Contents::Op {
     }
 
     method ops(Array $ops?) {
-        @!ops.push: $ops.map({ op($_) })
-            if $ops.defined;
+	if $ops.defined {
+	    self.op($_)
+		for $ops.list
+	}
         @!ops;
     }
 
@@ -287,7 +290,7 @@ role PDF::DOM::Contents::Op {
 	@!tags.pop;
     }
     multi method g-track('TL', Numeric $Tw!) {$.TextLeading = $Tw}
-    multi method g-track(SetFont, Str $Tf!, Numeric $Tfs!) {
+    multi method g-track('Tf', Str $Tf!, Numeric $Tfs!) {
         if self.can('parent') {
             die "unknown font key: /$Tf"
                 unless self.parent.resource-entry('Font', $Tf);
@@ -308,6 +311,9 @@ role PDF::DOM::Contents::Op {
     }
     multi method g-track('T*') {
         $.g-track(TextMove, 0, $.TextLeading);
+    }
+    multi method g-track('Tw', Numeric $Tw!) {
+        $.WordSpacing = $Tw;
     }
     multi method g-track(*@args) is default {}
 
