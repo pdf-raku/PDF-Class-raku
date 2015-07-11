@@ -37,16 +37,25 @@ role PDF::DOM::Contents::Op {
     constant TextOps = set <T* Tc Td TD Tf Tj TJ TL Tm Tr Ts Tw Tz>;
     constant GraphicOps = set <cm w J j M d ri i gs>;
 
-    has %.gstate = %( :Tw(0), :TL(0), :Tl[ 1, 0, 0, 1, 0, 0 ]);
+    has %.gstate = %(:CTM[ 1, 0, 0, 1, 0, 0 ]);
+
+    has Array:_ $!Tm;      #| text matrix
+    has Str $!Tf;          #| text font key, e.g. 'F1'
+    has Numeric $!Tfs;     #| text font size
+    has Numeric $!Tl = 0;  #| text leading
+    has Numeric $!Tw = 0;  #| text word spacing
+
     has @!gsave;
     has @!tags;
     has Bool $.in-text-block = False;
 
-    method FontKey     is rw { %!gstate<Tf>  }
-    method FontSize    is rw { %!gstate<Tfs> }
-    method TextLeading is rw { %!gstate<TL>  }
-    method TextMatrix  is rw { %!gstate<Tl>  }
-    method WordSpacing is rw { %!gstate<Tw>  }
+    method FontKey     is rw { $!Tf  }
+    method FontSize    is rw { $!Tfs }
+    method TextLeading is rw { $!Tl  }
+    method TextMatrix  is rw { $!Tm  }
+    method WordSpacing is rw { $!Tw  }
+
+    method GraphicsMatrix is rw { %!gstate<CTM>  }
 
     #| BI dict ID stream EI
     multi sub op(Str $op! where 'BI',
@@ -225,7 +234,7 @@ role PDF::DOM::Contents::Op {
     }
 
     multi sub op(*@args) is default {
-        die "unknown op: {@args.perl}";
+        die "invalid op: {@args.perl}";
     }
 
     method op(*@args is copy, :$prepend) {
@@ -270,15 +279,22 @@ role PDF::DOM::Contents::Op {
         %!gstate = @!gsave.pop.pairs;
 	Restore;
     }
+    multi method g-track('cm', *@transform) {
+        use PDF::DOM::Util::TransformMatrix;
+        my Array $CTM = PDF::DOM::Util::TransformMatrix::multiply($.GraphicsMatrix, @transform);
+        %!gstate<CTM> = $CTM;
+    }
     multi method g-track('BT') {
         die "illegal nesting of BT text-blocks in PDF content\n"
             if @!tags && @!tags[*-1] eq 'BT';
+        $!Tm = [ 1, 0, 0, 1, 0, 0 ];
 	@!tags.push: 'BT';
         $!in-text-block = True;
     }
     multi method g-track('ET') {
 	die "closing ET without opening BT in PDF content\n"
 	    unless @!tags && @!tags[*-1] eq 'BT';
+        $!Tm = Nil;
 	@!tags.pop;
         $!in-text-block = False;
     }
@@ -299,8 +315,8 @@ role PDF::DOM::Contents::Op {
         $.FontKey = $Tf;     #| e.g. 'F2'
         $.FontSize = $Tfs;   #| e.g. 16
     }
-    multi method g-track('Tm',  Array $Tm!) {
-        $.TextMatrix = %!gstate<Tls> = $Tm
+    multi method g-track('Tm', *@Tm) {
+	$!Tm = [ @Tm ];
     }
     multi method g-track('Td', Numeric $tx!, Numeric $ty) {
         $.TextMatrix[4] += $tx;
