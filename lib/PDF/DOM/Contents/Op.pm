@@ -40,13 +40,13 @@ role PDF::DOM::Contents::Op {
     has %.gstate = %( :Tw(0), :TL(0), :Tl[ 1, 0, 0, 1, 0, 0 ]);
     has @!gsave;
     has @!tags;
+    has Bool $.in-text-block = False;
 
     method FontKey     is rw { %!gstate<Tf>  }
     method FontSize    is rw { %!gstate<Tfs> }
     method TextLeading is rw { %!gstate<TL>  }
     method TextMatrix  is rw { %!gstate<Tl>  }
     method WordSpacing is rw { %!gstate<Tw>  }
-    method in-text-block returns Bool { ?@!tags && @!tags[*-1] eq 'BT' }
 
     #| BI dict ID stream EI
     multi sub op(Str $op! where 'BI',
@@ -241,8 +241,7 @@ role PDF::DOM::Contents::Op {
 	}
 
 	die "text operation '$op-name' outside of a BT ... ET text block\n"
-	    if $op-name ∈ TextOps
-	    && (!@!tags || @!tags[*-1] ne 'BT');
+	    if $op-name ∈ TextOps && !$!in-text-block;
 
 	die "graphics operator '$op-name' outside of a q ... Q graphics block\n"
 	    if ($op-name ∈ GraphicOps) && !@!gsave;
@@ -275,11 +274,13 @@ role PDF::DOM::Contents::Op {
         die "illegal nesting of BT text-blocks in PDF content\n"
             if @!tags && @!tags[*-1] eq 'BT';
 	@!tags.push: 'BT';
+        $!in-text-block = True;
     }
     multi method g-track('ET') {
 	die "closing ET without opening BT in PDF content\n"
 	    unless @!tags && @!tags[*-1] eq 'BT';
 	@!tags.pop;
+        $!in-text-block = False;
     }
     multi method g-track('BMC') {
 	@!tags.push: 'BMC';
