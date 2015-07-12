@@ -2,7 +2,7 @@ use v6;
 
 use PDF::DOM::Op :OpNames;
 
-class PDF::DOM::Contents::Stream 
+class PDF::DOM::Contents::Gfx 
     does PDF::DOM::Op {
     has $.parent;
 
