@@ -1,9 +1,9 @@
 use v6;
 use Test;
 use PDF::Grammar::Test :is-json-equiv;
-use PDF::DOM::Contents::Op :OpNames;
+use PDF::DOM::Op :OpNames;
 
-class T does PDF::DOM::Contents::Op {};
+class T does PDF::DOM::Op {};
 my $g = T.new;
 
 dies-ok {$g.op('TJ', ['grrr'])}, "Text before BT - dies";

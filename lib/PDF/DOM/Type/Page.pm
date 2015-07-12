@@ -19,7 +19,7 @@ class PDF::DOM::Type::Page
     does PDF::DOM::PageSizes {
 
     use PDF::DOM::Type::XObject::Form;
-    use PDF::DOM::Contents::Op :OpNames;
+    use PDF::DOM::Op :OpNames;
 
     has Hash:_ $!Parent; method Parent { self.tie($!Parent) };
     has Array:_ $!MediaBox; method MediaBox { self.tie($!MediaBox) };

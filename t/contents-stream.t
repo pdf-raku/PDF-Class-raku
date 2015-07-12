@@ -2,7 +2,7 @@ use v6;
 use Test;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::DOM::Contents::Stream;
-use PDF::DOM::Contents::Op :OpNames;
+use PDF::DOM::Op :OpNames;
 plan 6;
 
 my $gfx = PDF::DOM::Contents::Stream.new;

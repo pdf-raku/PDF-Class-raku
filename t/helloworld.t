@@ -2,7 +2,7 @@ use v6;
 use Test;
 
 use PDF::DOM;
-use PDF::DOM::Contents::Op :OpNames;
+use PDF::DOM::Op :OpNames;
 my $pdf = PDF::DOM.new;
 my $page = $pdf.add-page;
 my $gfx = $page.gfx;

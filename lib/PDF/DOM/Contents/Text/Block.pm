@@ -2,7 +2,7 @@ use v6;
 
 use PDF::DOM::Contents::Text::Line;
 use PDF::DOM::Contents::Text::Atom;
-use PDF::DOM::Contents::Op :OpNames;
+use PDF::DOM::Op :OpNames;
 
 class PDF::DOM::Contents::Text::Block {
     has Numeric $.line-height;

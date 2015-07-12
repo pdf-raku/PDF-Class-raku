@@ -3,7 +3,7 @@ use v6;
 use PDF::Writer;
 use PDF::Object :from-ast;
 
-role PDF::DOM::Contents::Op {
+role PDF::DOM::Op {
 
     has @!ops;
 

@@ -1,9 +1,9 @@
 use v6;
 
-use PDF::DOM::Contents::Op :OpNames;
+use PDF::DOM::Op :OpNames;
 
 class PDF::DOM::Contents::Stream 
-    does PDF::DOM::Contents::Op {
+    does PDF::DOM::Op {
     has $.parent;
 
     use PDF::DOM::Contents::Text::Block;

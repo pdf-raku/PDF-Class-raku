@@ -5,7 +5,7 @@ role PDF::DOM::Contents {
 
     use PDF::DOM::Contents::Stream;
     use PDF::DOM::Type::XObject;
-    use PDF::DOM::Contents::Op :OpNames;
+    use PDF::DOM::Op :OpNames;
 
     method Contents is rw { self<Contents> }
 

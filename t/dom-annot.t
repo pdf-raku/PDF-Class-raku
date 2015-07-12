@@ -2,7 +2,7 @@ use v6;
 
 use Test;
 use PDF::DOM;
-use PDF::DOM::Contents::Op :OpNames;
+use PDF::DOM::Op :OpNames;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::Grammar::Test :is-json-equiv;
