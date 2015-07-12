@@ -10,7 +10,7 @@ endobj
 << /Type /Page /Contents [ 4 0 R ] /Parent 2 0 R /Resources << /Font << /F1 6 0 R /F2 5 0 R >> >> >>
 endobj
 4 0 obj
-<< /Length 6237 >>
+<< /Length 4977 >>
 stream
 
 BT
@@ -26,51 +26,51 @@ BT
 /F2 10 Tf
 1 0 0 1 110 700 Tm
 11 TL
-[ (***) -278 (text) -278 (left***) -278 (Lorem) ] TJ
+[ (*** text left*** Lorem) ] TJ
 T*
-[ (ipsum) -278 (dolor) -278 (sit) -278 (amet,) ] TJ
+[ (ipsum dolor sit amet,) ] TJ
 T*
-[ (consectetur) -278 (adipiscing) ] TJ
+[ (consectetur adipiscing) ] TJ
 T*
-[ (elit,) -278 (sed) -278 (do) -278 (eiusmod) ] TJ
+[ (elit, sed do eiusmod) ] TJ
 T*
-[ (tempor) -278 (incididunt) -278 (ut) ] TJ
+[ (tempor incididunt ut) ] TJ
 T*
-[ (labore) -278 (et) -278 (dolore) ] TJ
+[ (labore et dolore) ] TJ
 T*
-[ (magna) -278 (aliqua.) ] TJ
+[ (magna aliqua.) ] TJ
 T*
 1 0 0 1 110 530 Tm
 11 TL
-[ 3640 (***) -278 (text) -278 (center***) ] TJ
+[ 3640 (*** text center***) ] TJ
 T*
-[ 4779 (Lorem) -278 (ipsum) -278 (dolor) -278 (sit) ] TJ
+[ 4779 (Lorem ipsum dolor sit) ] TJ
 T*
-[ 3974 (amet,) -278 (consectetur) ] TJ
+[ 3974 (amet, consectetur) ] TJ
 T*
-[ 4780 (adipiscing) -278 (elit,) -278 (sed) -278 (do) ] TJ
+[ 4780 (adipiscing elit, sed do) ] TJ
 T*
-[ 3584 (eiusmod) -278 (tempor) ] TJ
+[ 3584 (eiusmod tempor) ] TJ
 T*
-[ 4752 (incididunt) -278 (ut) -278 (labore) -278 (et) ] TJ
+[ 4752 (incididunt ut labore et) ] TJ
 T*
-[ 4669 (dolore) -278 (magna) -278 (aliqua.) ] TJ
+[ 4669 (dolore magna aliqua.) ] TJ
 T*
 1 0 0 1 110 360 Tm
 11 TL
-[ 9559 (***) -278 (text) -278 (right***) -278 (Lorem) ] TJ
+[ 9559 (*** text right*** Lorem) ] TJ
 T*
-[ 9225 (ipsum) -278 (dolor) -278 (sit) -278 (amet,) ] TJ
+[ 9225 (ipsum dolor sit amet,) ] TJ
 T*
-[ 9893 (consectetur) -278 (adipiscing) ] TJ
+[ 9893 (consectetur adipiscing) ] TJ
 T*
-[ 8893 (elit,) -278 (sed) -278 (do) -278 (eiusmod) ] TJ
+[ 8893 (elit, sed do eiusmod) ] TJ
 T*
-[ 8726 (tempor) -278 (incididunt) -278 (ut) ] TJ
+[ 8726 (tempor incididunt ut) ] TJ
 T*
-[ 6948 (labore) -278 (et) -278 (dolore) ] TJ
+[ 6948 (labore et dolore) ] TJ
 T*
-[ 6281 (magna) -278 (aliqua.) ] TJ
+[ 6281 (magna aliqua.) ] TJ
 T*
 1 0 0 1 110 190 Tm
 11 TL
@@ -91,53 +91,53 @@ T*
 1 0 0 1 235 700 Tm
 11 TL
 0 -9.31 Td
-[ (***) -278 (top) -278 (left***) -278 (Lorem) ] TJ
+[ (*** top left*** Lorem) ] TJ
 T*
-[ (ipsum) -278 (dolor) -278 (sit) -278 (amet,) ] TJ
+[ (ipsum dolor sit amet,) ] TJ
 T*
-[ (consectetur) -278 (adipiscing) ] TJ
+[ (consectetur adipiscing) ] TJ
 T*
-[ (elit,) -278 (sed) -278 (do) -278 (eiusmod) ] TJ
+[ (elit, sed do eiusmod) ] TJ
 T*
-[ (tempor) -278 (incididunt) -278 (ut) ] TJ
+[ (tempor incididunt ut) ] TJ
 T*
-[ (labore) -278 (et) -278 (dolore) ] TJ
+[ (labore et dolore) ] TJ
 T*
-[ (magna) -278 (aliqua.) ] TJ
+[ (magna aliqua.) ] TJ
 T*
 1 0 0 1 235 530 Tm
 11 TL
 0 -9.31 Td
-[ 3529 (***) -278 (top) -278 (center***) ] TJ
+[ 3529 (*** top center***) ] TJ
 T*
-[ 4779 (Lorem) -278 (ipsum) -278 (dolor) -278 (sit) ] TJ
+[ 4779 (Lorem ipsum dolor sit) ] TJ
 T*
-[ 3974 (amet,) -278 (consectetur) ] TJ
+[ 3974 (amet, consectetur) ] TJ
 T*
-[ 4780 (adipiscing) -278 (elit,) -278 (sed) -278 (do) ] TJ
+[ 4780 (adipiscing elit, sed do) ] TJ
 T*
-[ 3584 (eiusmod) -278 (tempor) ] TJ
+[ 3584 (eiusmod tempor) ] TJ
 T*
-[ 4752 (incididunt) -278 (ut) -278 (labore) -278 (et) ] TJ
+[ 4752 (incididunt ut labore et) ] TJ
 T*
-[ 4669 (dolore) -278 (magna) -278 (aliqua.) ] TJ
+[ 4669 (dolore magna aliqua.) ] TJ
 T*
 1 0 0 1 235 360 Tm
 11 TL
 0 -9.31 Td
-[ 9337 (***) -278 (top) -278 (right***) -278 (Lorem) ] TJ
+[ 9337 (*** top right*** Lorem) ] TJ
 T*
-[ 9225 (ipsum) -278 (dolor) -278 (sit) -278 (amet,) ] TJ
+[ 9225 (ipsum dolor sit amet,) ] TJ
 T*
-[ 9893 (consectetur) -278 (adipiscing) ] TJ
+[ 9893 (consectetur adipiscing) ] TJ
 T*
-[ 8893 (elit,) -278 (sed) -278 (do) -278 (eiusmod) ] TJ
+[ 8893 (elit, sed do eiusmod) ] TJ
 T*
-[ 8726 (tempor) -278 (incididunt) -278 (ut) ] TJ
+[ 8726 (tempor incididunt ut) ] TJ
 T*
-[ 6948 (labore) -278 (et) -278 (dolore) ] TJ
+[ 6948 (labore et dolore) ] TJ
 T*
-[ 6281 (magna) -278 (aliqua.) ] TJ
+[ 6281 (magna aliqua.) ] TJ
 T*
 1 0 0 1 235 190 Tm
 11 TL
@@ -159,53 +159,53 @@ T*
 1 0 0 1 360 700 Tm
 11 TL
 0 30.69 Td
-[ (***) -278 (center) -278 (left***) ] TJ
+[ (*** center left***) ] TJ
 T*
-[ (Lorem) -278 (ipsum) -278 (dolor) -278 (sit) ] TJ
+[ (Lorem ipsum dolor sit) ] TJ
 T*
-[ (amet,) -278 (consectetur) ] TJ
+[ (amet, consectetur) ] TJ
 T*
-[ (adipiscing) -278 (elit,) -278 (sed) -278 (do) ] TJ
+[ (adipiscing elit, sed do) ] TJ
 T*
-[ (eiusmod) -278 (tempor) ] TJ
+[ (eiusmod tempor) ] TJ
 T*
-[ (incididunt) -278 (ut) -278 (labore) -278 (et) ] TJ
+[ (incididunt ut labore et) ] TJ
 T*
-[ (dolore) -278 (magna) -278 (aliqua.) ] TJ
+[ (dolore magna aliqua.) ] TJ
 T*
 1 0 0 1 360 530 Tm
 11 TL
 0 30.69 Td
-[ 4224 (***) -278 (center) -278 (center***) ] TJ
+[ 4224 (*** center center***) ] TJ
 T*
-[ 4779 (Lorem) -278 (ipsum) -278 (dolor) -278 (sit) ] TJ
+[ 4779 (Lorem ipsum dolor sit) ] TJ
 T*
-[ 3974 (amet,) -278 (consectetur) ] TJ
+[ 3974 (amet, consectetur) ] TJ
 T*
-[ 4780 (adipiscing) -278 (elit,) -278 (sed) -278 (do) ] TJ
+[ 4780 (adipiscing elit, sed do) ] TJ
 T*
-[ 3584 (eiusmod) -278 (tempor) ] TJ
+[ 3584 (eiusmod tempor) ] TJ
 T*
-[ 4752 (incididunt) -278 (ut) -278 (labore) -278 (et) ] TJ
+[ 4752 (incididunt ut labore et) ] TJ
 T*
-[ 4669 (dolore) -278 (magna) -278 (aliqua.) ] TJ
+[ 4669 (dolore magna aliqua.) ] TJ
 T*
 1 0 0 1 360 360 Tm
 11 TL
 0 30.69 Td
-[ 7614 (***) -278 (center) -278 (right***) ] TJ
+[ 7614 (*** center right***) ] TJ
 T*
-[ 9558 (Lorem) -278 (ipsum) -278 (dolor) -278 (sit) ] TJ
+[ 9558 (Lorem ipsum dolor sit) ] TJ
 T*
-[ 7948 (amet,) -278 (consectetur) ] TJ
+[ 7948 (amet, consectetur) ] TJ
 T*
-[ 9560 (adipiscing) -278 (elit,) -278 (sed) -278 (do) ] TJ
+[ 9560 (adipiscing elit, sed do) ] TJ
 T*
-[ 7169 (eiusmod) -278 (tempor) ] TJ
+[ 7169 (eiusmod tempor) ] TJ
 T*
-[ 9505 (incididunt) -278 (ut) -278 (labore) -278 (et) ] TJ
+[ 9505 (incididunt ut labore et) ] TJ
 T*
-[ 9338 (dolore) -278 (magna) -278 (aliqua.) ] TJ
+[ 9338 (dolore magna aliqua.) ] TJ
 T*
 1 0 0 1 360 190 Tm
 11 TL
@@ -227,53 +227,53 @@ T*
 1 0 0 1 485 700 Tm
 11 TL
 0 70.69 Td
-[ (***) -278 (bottom) -278 (left***) ] TJ
+[ (*** bottom left***) ] TJ
 T*
-[ (Lorem) -278 (ipsum) -278 (dolor) -278 (sit) ] TJ
+[ (Lorem ipsum dolor sit) ] TJ
 T*
-[ (amet,) -278 (consectetur) ] TJ
+[ (amet, consectetur) ] TJ
 T*
-[ (adipiscing) -278 (elit,) -278 (sed) -278 (do) ] TJ
+[ (adipiscing elit, sed do) ] TJ
 T*
-[ (eiusmod) -278 (tempor) ] TJ
+[ (eiusmod tempor) ] TJ
 T*
-[ (incididunt) -278 (ut) -278 (labore) -278 (et) ] TJ
+[ (incididunt ut labore et) ] TJ
 T*
-[ (dolore) -278 (magna) -278 (aliqua.) ] TJ
+[ (dolore magna aliqua.) ] TJ
 T*
 1 0 0 1 485 530 Tm
 11 TL
 0 70.69 Td
-[ 4363 (***) -278 (bottom) -278 (center***) ] TJ
+[ 4363 (*** bottom center***) ] TJ
 T*
-[ 4779 (Lorem) -278 (ipsum) -278 (dolor) -278 (sit) ] TJ
+[ 4779 (Lorem ipsum dolor sit) ] TJ
 T*
-[ 3974 (amet,) -278 (consectetur) ] TJ
+[ 3974 (amet, consectetur) ] TJ
 T*
-[ 4780 (adipiscing) -278 (elit,) -278 (sed) -278 (do) ] TJ
+[ 4780 (adipiscing elit, sed do) ] TJ
 T*
-[ 3584 (eiusmod) -278 (tempor) ] TJ
+[ 3584 (eiusmod tempor) ] TJ
 T*
-[ 4752 (incididunt) -278 (ut) -278 (labore) -278 (et) ] TJ
+[ 4752 (incididunt ut labore et) ] TJ
 T*
-[ 4669 (dolore) -278 (magna) -278 (aliqua.) ] TJ
+[ 4669 (dolore magna aliqua.) ] TJ
 T*
 1 0 0 1 485 360 Tm
 11 TL
 0 70.69 Td
-[ 7892 (***) -278 (bottom) -278 (right***) ] TJ
+[ 7892 (*** bottom right***) ] TJ
 T*
-[ 9558 (Lorem) -278 (ipsum) -278 (dolor) -278 (sit) ] TJ
+[ 9558 (Lorem ipsum dolor sit) ] TJ
 T*
-[ 7948 (amet,) -278 (consectetur) ] TJ
+[ 7948 (amet, consectetur) ] TJ
 T*
-[ 9560 (adipiscing) -278 (elit,) -278 (sed) -278 (do) ] TJ
+[ 9560 (adipiscing elit, sed do) ] TJ
 T*
-[ 7169 (eiusmod) -278 (tempor) ] TJ
+[ 7169 (eiusmod tempor) ] TJ
 T*
-[ 9505 (incididunt) -278 (ut) -278 (labore) -278 (et) ] TJ
+[ 9505 (incididunt ut labore et) ] TJ
 T*
-[ 9338 (dolore) -278 (magna) -278 (aliqua.) ] TJ
+[ 9338 (dolore magna aliqua.) ] TJ
 T*
 1 0 0 1 485 190 Tm
 11 TL
@@ -308,10 +308,10 @@ xref
 0000000063 00000 n 
 0000000163 00000 n 
 0000000279 00000 n 
-0000006568 00000 n 
-0000006665 00000 n 
+0000005308 00000 n 
+0000005405 00000 n 
 trailer
 << /Root 1 0 R /Size 7 >>
 startxref
-6767
+5507
 %%EOF

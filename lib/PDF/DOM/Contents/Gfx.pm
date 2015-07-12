@@ -109,7 +109,6 @@ class PDF::DOM::Contents::Gfx
     method print(Str $text,
                  :$font is copy,
                  Numeric :$font-size = $.FontSize || 16;
-                 Numeric :$word-spacing = $.WordSpacing,
                  Bool :$dry-run = False,
                  Bool :$nl = False,
                  *%etc,  #| :$align, :$kern, :$line-height, :$width, :$height
@@ -118,6 +117,7 @@ class PDF::DOM::Contents::Gfx
             if $.FontKey;
         $font //= $!parent.core-font('Courier');
             
+	my Numeric $word-spacing = $.WordSpacing,
         my $text-block = PDF::DOM::Contents::Text::Block.new( :$text, :$font, :$font-size, :$word-spacing, |%etc );
 
         unless $dry-run {

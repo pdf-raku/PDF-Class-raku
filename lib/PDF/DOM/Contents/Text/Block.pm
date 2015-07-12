@@ -13,6 +13,7 @@ class PDF::DOM::Contents::Text::Block {
     has @.lines;
     has @.overflow is rw;
     has Numeric $.font-size;
+    has Numeric $.space-width;
     has Str $!align where 'left' | 'center' | 'right' | 'justify';
     has Str $.valign where 'top' | 'center' | 'bottom' | 'text';
 
@@ -20,19 +21,20 @@ class PDF::DOM::Contents::Text::Block {
     method actual-height { (+@!lines - 1) * $!line-height  +  $!font-height }
 
     multi submethod BUILD(Str :$text!,
-                          :$font!, :$font-size=16,
-                          :$!font-height = $font.height( $font-size ),
-                          :$!font-base-height = $font.height( $font-size, :from-baseline ),
+                          :$font!, :$!font-size=16,
                           :$word-spacing is copy = 0,
                           :$kern = False,
                           *%etc) {
-        $word-spacing += $font.stringwidth( ' ', $font-size );
-        # assume uniform simple text, for now
+
+	$!font-height = $font.height( $!font-size );
+	$!font-base-height = $font.height( $!font-size, :from-baseline );
+        $!space-width = $font.stringwidth( ' ', $!font-size );
+
         my @chunks = $text.comb(/ [ <![ - ]> [ \w | <:Punctuation> ] ]+ '-'?
                                 || .
                                 /).map( -> $word {
                                     $kern
-                                        ?? $font.kern($word, $font-size, :$kern).list
+                                        ?? $font.kern($word, $!font-size, :$kern).list
                                         !! $word
                                  });
 
@@ -46,7 +48,7 @@ class PDF::DOM::Contents::Text::Block {
             %atom<space> = @chunks && @chunks[0] ~~ Numeric
                 ?? @chunks.shift
                 !! 0;
-            %atom<width> = $font.stringwidth($content, $font-size, :$kern);
+            %atom<width> = $font.stringwidth($content, $!font-size, :$kern);
             # don't atomize regular white-space
             next if $content ~~ BREAKING-WS;
             my $followed-by-ws = @chunks && @chunks[0] ~~ BREAKING-WS;
@@ -64,7 +66,7 @@ class PDF::DOM::Contents::Text::Block {
             }
             elsif $followed-by-ws {
                 $atom.elastic = True;
-                $atom.space += $word-spacing;
+                $atom.space += $!space-width + $word-spacing;
             }
 
             my $encoded = [~] $font.encode( $atom.content );
@@ -74,11 +76,10 @@ class PDF::DOM::Contents::Text::Block {
             @atoms.push: $atom;
         }
 
-        self.BUILD( :@atoms, :$font-size, |%etc );
+        self.BUILD( :@atoms, |%etc );
     }
 
     multi submethod BUILD(:@atoms! is copy,
-                          Numeric :$!font-size!,
                           Numeric :$!line-height = $!font-size * 1.1,
                           Numeric :$!width?,      #| optional constraint
                           Numeric :$!height?,     #| optional constraint
@@ -136,6 +137,7 @@ class PDF::DOM::Contents::Text::Block {
     method content(Bool :$nl = False) {
 
         my @content = :TL[ $!line-height ];
+	my $space-size = -(1000 * $!space-width / $!font-size).Int;
 
         if $!valign ne 'text' {
 
@@ -150,7 +152,7 @@ class PDF::DOM::Contents::Text::Block {
         }
 
         for $.lines.list {
-            @content.push: .content(:$.font-size);
+            @content.push: .content(:$.font-size, :$space-size);
             @content.push: OpNames::TextNextLine;
         }
 

@@ -39,7 +39,7 @@ class PDF::DOM::Contents::Text::Line {
         $.indent = - $.actual-width  /  2;
     }
 
-    method content(:$font-size) {
+    method content(Numeric :$font-size, Numeric :$space-size) {
 
         my $scale = -1000 / $font-size;
         my $array = [];
@@ -48,11 +48,28 @@ class PDF::DOM::Contents::Text::Line {
             if $.indent;
 
         for $.atoms.list {
+	    my $space = (.space * $scale).Int;
             my $enc = .encoded // .content;
-            $array.push( $enc)
-                if $enc.chars;
-            $array.push( (.space * $scale).Int )
-                if .space;
+
+	    if $space && $space-size && $space == $space-size {
+		# optimization convert a spacing of ' ' to a ' '
+		$enc ~= ' ';
+		$space = 0;
+	    }
+
+	    if $enc.chars {
+		if $array && $array[*-1] ~~ Str {
+		    # on a string segment - concatonate
+		    $array[*-1] ~= $enc
+		}
+		else {
+		    # start a new string segment
+		    $array.push( $enc);
+		}
+	    }
+
+            $array.push( $space )
+                if $space;
         }
 
         $array.pop if +$array && $array[*-1] ~~ Numeric;
