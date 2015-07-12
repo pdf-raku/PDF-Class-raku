@@ -16,18 +16,15 @@ module PDF::DOM::Util::TransformMatrix {
 
     subset TransformMatrix of Array where {.elems == 6}
 
-    our proto sub transform(|c) {*};
-    our proto sub multiply(|c) {*};
-
-    multi sub transform('identity') {
+    sub identity {
         [1, 0, 0, 1, 0, 0];
     }
 
-    multi sub transform('translate', Numeric $x!, Numeric $y = $x --> TransformMatrix) {
+    sub translate(Numeric $x!, Numeric $y = $x --> TransformMatrix) {
         [1, 0, 0, 1, $x, $y];
     }
 
-    multi sub transform('rotate', Numeric $deg! --> TransformMatrix) {
+    sub rotate( Numeric $deg! --> TransformMatrix) {
         my $r = deg2rad($deg);
         my $cos = cos($r);
         my $sin = sin($r);
@@ -35,15 +32,15 @@ module PDF::DOM::Util::TransformMatrix {
         [$cos, $sin,-$sin, $cos, 0, 0];
     }
 
-    multi sub transform('scale', Numeric $x!, Numeric $y = $x --> TransformMatrix) {
+    sub scale(Numeric $x!, Numeric $y = $x --> TransformMatrix) {
         [$x, 0, 0, $y, 0, 0];
     }
 
-    multi sub transform('skew', Numeric $x, Numeric $y = $x --> TransformMatrix) {
+    sub skew(Numeric $x, Numeric $y = $x --> TransformMatrix) {
         [1, tan(deg2rad($x)), tan(deg2rad($y)), 1, 0, 0];
     }
 
-    multi sub multiply(TransformMatrix $a!, TransformMatrix $b! --> TransformMatrix) {
+    our sub multiply(TransformMatrix $a!, TransformMatrix $b! --> TransformMatrix) {
 
         [ $b[0]*$a[0] + $b[2]*$a[1],
           $b[1]*$a[0] + $b[3]*$a[1],
@@ -53,4 +50,38 @@ module PDF::DOM::Util::TransformMatrix {
           $b[1]*$a[4] + $b[3]*$a[5] + $b[5],
         ];
     }
+
+    our sub apply(TransformMatrix $a! is rw, TransformMatrix $b! --> TransformMatrix) {
+	$a = multiply($a, $b);
+    }
+
+    our sub round(Numeric $n) {
+	my $r = $n.round(1e-6);
+	my $i = $n.round(1);
+	constant Epsilon = 1e-5;
+	abs($n - $i) < Epsilon
+	    ?? $i.Int   # assume it's an int
+	    !! $r;
+    }
+
+    multi sub vect(Numeric $n!) {($n, $n)}
+    multi sub vect(Array $v where {+$v == 2}) {$v.flat}
+
+    our sub transform(
+	:$translate,
+	:$rotate?,
+	:$scale?,
+	:$skew?,
+	:$matrix?,
+	) {
+	my $t = identity();
+	apply($t, translate( |@( vect($translate) ) )) if $translate.defined;
+	apply($t, rotate( $rotate ))                   if $rotate.defined;
+	apply($t, scale( |@( vect($scale) ) ))         if $scale.defined;
+	apply($t, skew( |@( vect($skew) ) ))           if $skew.defined;
+	apply($t, $matrix) if $matrix.defined;
+	[ $t.map({ round($_) }) ];
+    }
+
+
 }
