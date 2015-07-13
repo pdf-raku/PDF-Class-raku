@@ -81,7 +81,9 @@ class PDF::DOM::Type::Page
 
 		$!pre-gfx.ops = ();
 		$!gfx.ops = ();
-                self<Contents> = @contents.item;
+                self<Contents> = @contents == 1 
+		    ?? @contents[0]
+		    !! @contents.item;
             }
         }
     }

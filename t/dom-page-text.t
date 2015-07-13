@@ -12,7 +12,8 @@ my $font-size = 18;
 
 $gfx.op(BeginText);
 $gfx.text-move(50,100);
-$gfx.say('Hello, World!', :$font, :$font-size, :$width, :kern);
+$gfx.set-font($font, $font-size);
+$gfx.say('Hello, World!', :$width, :kern);
 $gfx.op(EndText);
 
 is-deeply [$gfx.content.lines], [

@@ -13,16 +13,19 @@ my $font-size = 15;
 my $x = 35;
 
 $gfx.op(BeginText);
+
 for <left center right> -> $align {
     $gfx.text-move($x, 750, :abs);
     my $header = [~] '*** ', $align, ' ***', "\n";
-    $gfx.say( $header, :font($header-font), :font-size(18), :$width, :$align);
+    $gfx.set-font($header-font, 18);
+    $gfx.say( $header, :$width, :$align);
 
     my $body = q:to"--ENOUGH!!--".subst(/\n/, ' ', :g);
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
         ut labore et dolore magna aliqua.
         --ENOUGH!!--
 
+    $gfx.set-font($font, $font-size);
     my $text-block = $gfx.say( $body, :$font, :$font-size, :$width, :$align, :kern);
     isa-ok $text-block, ::('PDF::DOM::Contents::Text::Block');
     $x += 275;
@@ -43,7 +46,8 @@ ok $img.Width, '$img.Width';
 $gfx.do($img, 232, 380, :width(150) );
 
 $gfx.text-move(100,300, :abs);
-$gfx.say('Hello, world!', :font($header-font), :font-size(24));
+$gfx.set-font( $header-font, 24);
+$gfx.say('Hello, world!');
 $gfx.op(EndText);
 ok $pdf.save-as('t/helloworld.pdf'), '.save-as';
 ok $pdf.save-as('t/helloworld-compressed.pdf', :compress), '.save-as( :compress )';

@@ -100,23 +100,21 @@ class PDF::DOM::Contents::Gfx
     }
 
     #| thin wrapper to $.op(SetFont, ...)
-    method set-font( $font-entry! is copy, Numeric $size!) {
+    method set-font( $font-entry! is copy, Numeric $size = 16) {
         $font-entry = $font-entry.key if $font-entry.can('key');
         $.op(SetFont, $font-entry, $size);
     }
 
     #! output text leave the text position at the end of the current line
     method print(Str $text,
-                 :$font is copy,
-                 Numeric :$font-size = $.FontSize || 16;
                  Bool :$dry-run = False,
                  Bool :$nl = False,
                  *%etc,  #| :$align, :$kern, :$line-height, :$width, :$height
         ) {
-        $font //= $.parent.resource-entry('Font', $.FontKey)
+        my $font //= $.parent.resource-entry('Font', $.FontKey)
             if $.FontKey;
         $font //= $!parent.core-font('Courier');
-            
+	my Numeric $font-size = $.FontSize || 16;
 	my Numeric $word-spacing = $.WordSpacing,
         my $text-block = PDF::DOM::Contents::Text::Block.new( :$text, :$font, :$font-size, :$word-spacing, |%etc );
 

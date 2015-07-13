@@ -137,7 +137,7 @@ class PDF::DOM::Contents::Text::Block {
     method content(Bool :$nl = False) {
 
         my @content = :TL[ $!line-height ];
-	my $space-size = -(1000 * $!space-width / $!font-size).Int;
+	my $space-size = -(1000 * $!space-width / $!font-size).round.Int;
 
         if $!valign ne 'text' {
 

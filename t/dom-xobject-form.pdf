@@ -30,7 +30,7 @@ endobj
 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
 endobj
 5 0 obj
-<< /Type /Page /Contents [ 6 0 R ] /Parent 2 0 R >>
+<< /Type /Page /Contents 6 0 R /Parent 2 0 R >>
 endobj
 6 0 obj
 << /Length 111 >>
@@ -53,7 +53,7 @@ Q
 endstream
 endobj
 7 0 obj
-<< /Type /Page /Contents [ 8 0 R ] /Parent 2 0 R >>
+<< /Type /Page /Contents 8 0 R /Parent 2 0 R >>
 endobj
 8 0 obj
 << /Length 305 >>
@@ -105,11 +105,11 @@ xref
 0000000221 00000 n 
 0000000529 00000 n 
 0000000631 00000 n 
-0000000698 00000 n 
-0000000860 00000 n 
-0000000927 00000 n 
+0000000694 00000 n 
+0000000856 00000 n 
+0000000919 00000 n 
 trailer
 << /Root 1 0 R /Size 9 >>
 startxref
-1283
+1275
 %%EOF

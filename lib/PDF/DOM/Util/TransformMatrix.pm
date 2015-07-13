@@ -57,7 +57,7 @@ module PDF::DOM::Util::TransformMatrix {
 
     our sub round(Numeric $n) {
 	my $r = $n.round(1e-6);
-	my $i = $n.round(1);
+	my $i = $n.round;
 	constant Epsilon = 1e-5;
 	abs($n - $i) < Epsilon
 	    ?? $i.Int   # assume it's an int

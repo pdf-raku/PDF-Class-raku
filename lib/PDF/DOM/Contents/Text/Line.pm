@@ -44,15 +44,15 @@ class PDF::DOM::Contents::Text::Line {
         my $scale = -1000 / $font-size;
         my $array = [];
 
-        $array.push( ($.indent * $scale ).Int )
+        $array.push( ($.indent * $scale ).round.Int )
             if $.indent;
 
         for $.atoms.list {
-	    my $space = (.space * $scale).Int;
+	    my $space = (.space * $scale).round.Int;
             my $enc = .encoded // .content;
 
-	    if $space && $space-size && $space == $space-size {
-		# optimization convert a spacing of ' ' to a ' '
+	    if $space && $space-size && abs($space - $space-size) <= 1 {
+		# optimization: use an actual space, when it fits
 		$enc ~= ' ';
 		$space = 0;
 	    }

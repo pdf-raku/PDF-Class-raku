@@ -49,7 +49,8 @@ $xform.gfx.op(BeginText);
 $xform.gfx.text-move(50,50);
 $xform.gfx.ops.push: ('rg' => [ :real(.5), :real(.95), :real(.5), ]);
 my $font = $xform.core-font( :family<Helvetica>, :weight<bold> );
-$xform.gfx.say('Hello, again!', :$font);
+$xform.gfx.set-font($font);
+$xform.gfx.say('Hello, again!');
 $xform.gfx.op(EndText);
 
 $xform.cb-finish;
