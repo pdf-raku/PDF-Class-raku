@@ -11,7 +11,10 @@ $pdf = PDF::DOM.open('t/update-incremental.pdf');
 ok $pdf.page(2), 'pdf now has two pages';
 
 ok $pdf.save-as('t/update-resaved.json'), 'save-as json';
+
 $pdf = PDF::DOM.open('t/update-resaved.json');
+is $pdf<Info><Author>, 't/helloworld.t', '$pdf<Info><Author>';
+is $pdf<Info><Creator>, 'PDF::Tools', '$pdf<Info><Creator>';
 my $p2;
 ok $p2 = $pdf.page(2), 'pdf reload from json';
 

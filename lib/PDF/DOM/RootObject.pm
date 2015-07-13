@@ -11,7 +11,8 @@ role PDF::DOM::RootObject {
         my $reader = PDF::Reader.new;
         $reader.open($file-name);
 	my $dict = $reader.trailer-dict;
-        self.new( :$dict, :$reader );
+        my $obj = self.new( :$dict, :$reader );
+	$obj;
     }
 
     #| perform an incremental save back to the opened input file
@@ -26,7 +27,8 @@ role PDF::DOM::RootObject {
         my $offset = $reader.input.chars + 1;
 
         my $serializer = PDF::Storage::Serializer.new;
-        my $body = $serializer.body( $reader, :updates, :$compress );
+	my $trailer-dict = self.content.value;
+        my $body = $serializer.body( $reader, :updates, :$compress, :$trailer-dict );
         my $root = $reader.root;
         my $prev = $body<trailer><dict><Prev>.value;
         my $writer = PDF::Writer.new( :$root, :$offset, :$prev );
@@ -57,7 +59,8 @@ role PDF::DOM::RootObject {
 
         $version //= 1.3;
         $type //= 'PDF';
-        my $body = PDF::Storage::Serializer.new.body(self.Root, :$compress);
+	my $trailer-dict = self.content.value;
+        my $body = PDF::Storage::Serializer.new.body(self.Root, :$compress, :$trailer-dict);
         my $root = $body<trailer><dict><Root>;
         my $ast = :pdf{ :header{ :$type, :$version }, :$body };
 

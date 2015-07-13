@@ -1,6 +1,7 @@
 use v6;
 
 use PDF::DOM::RootObject;
+use PDF::Object :to-ast-native;
 use PDF::Object::Dict;
 use PDF::Object::Tie::Hash;
 
@@ -11,10 +12,10 @@ class PDF::DOM
     does PDF::DOM::RootObject {
 
     use PDF::DOM::Type::Catalog;
-    has PDF::DOM::Type::Catalog $!Root;               method Root { self.tie($!Root) };
-    has Numeric $!Size;            method Size { self.tie($!Root) };
-    has Array:_ $ID;               method ID   { self.tie($!ID) };
-    has Hash:_ $Info;              method Info { self.tie($!Info) };
+    has PDF::DOM::Type::Catalog $!Root;   method Root { self.tie($!Root) };
+    has Numeric $!Size;                   method Size { self.tie($!Root) };
+    has Array:_ $ID;                      method ID   { self.tie($!ID) };
+    has Hash:_ $Info;                     method Info { self.tie($!Info) };
 
     method new {
 	my $obj = callsame;
@@ -29,4 +30,11 @@ class PDF::DOM
     method add-page { self.Pages.add-page }
     method delete-page($page-num) { self.Pages.delete-page($page-num) }
     method media-box(*@args) { self.Pages.media-box( |@args ) }
+
+    method content {
+	my %trailer = self.pairs;
+	%trailer<Root Prev Size>:delete;
+        to-ast-native %trailer;
+    }
+
 }

@@ -49,6 +49,8 @@ $gfx.text-move(100,300, :abs);
 $gfx.set-font( $header-font, 24);
 $gfx.say('Hello, world!');
 $gfx.op(EndText);
+$pdf<Info><Author> = 't/helloworld.t';
+$pdf<Info><Creator> = 'PDF::Tools';
 ok $pdf.save-as('t/helloworld.pdf'), '.save-as';
 ok $pdf.save-as('t/helloworld-compressed.pdf', :compress), '.save-as( :compress )';
 
