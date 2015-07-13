@@ -18,7 +18,7 @@ ok $p2 = $pdf.page(2), 'pdf reload from json';
 my $p2-again;
 lives-ok {$p2-again = $pdf.delete-page(2)}, 'delete-page lives';
 ok $p2 === $p2-again, 'delete page returned';
-is $pdf.pages, 1, 'pages after deletion';
+is $pdf.page-count, 1, 'pages after deletion';
 
 
 done;
