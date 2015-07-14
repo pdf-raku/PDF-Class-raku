@@ -54,5 +54,43 @@ is-json-equiv $g.GraphicsMatrix, [1, 0, 0, 1, 0, 0, ], '$g.GraphicMatrix - outsi
 
 lives-ok {$g.content}, 'content with matching BT ... ET  q ... Q - lives';
 
+$g = T.new;
+
+$g.parse("175 720 m 175 700 l 300 800 400 720 v h S");
+is-json-equiv $g.ops, [:m[:int(175), :int(720)],
+		       :l[:int(175), :int(700)],
+		       :v[:int(300), :int(800), :int(400), :int(720)],
+		       :h[],
+		       :S[],
+    ], 'basic parse';
+
+my $image-block = 'BI                  % Begin inline image object
+    /W 17           % Width in samples
+    /H 17           % Height in samples
+    /CS /RGB        % Colour space
+    /BPC 8          % Bits per component
+    /F [/A85 /LZW]  % Filters
+ID                  % Begin image data
+J1/gKA>.]AN&J?]-<HW]aRVcg*bb.\eKAdVV%/PcZ
+%…Omitted data…
+%R.s(4KE3&d&7hb*7[%Ct2HCqC~>
+EI';
+
+$g.parse($image-block);
+is-json-equiv $g.ops[*-3], {:BI[:dict{:BPC(:int(8)),
+				      :CS(:name<RGB>),
+				      :F(:array[:name<A85>,
+						:name<LZW>]),
+				      :H(:int(17)),
+				      :W(:int(17)) }]}, 'Image BI';
+is-json-equiv $g.ops[*-2], {:ID[:encoded("J1/gKA>.]AN\&J?]-<HW]aRVcg*bb.\\eKAdVV\%/PcZ\n\%…Omitted data…\n\%R.s(4KE3\&d\&7hb*7[\%Ct2HCqC~>")]}, 'Image ID';
+is-json-equiv $g.ops[*-1], 'EI', 'Image EI';
+
+$g.parse("BT/F1 16 Tf\n(Hi)Tj ET");
+is-json-equiv [ $g.ops[*-4..*] ], [:BT([]),
+				   :Tf([:name("F1"), :int(16)]),
+				   :Tj([:literal("Hi")]),
+				   :ET([])], 'Text block parse';
+
 done;
 

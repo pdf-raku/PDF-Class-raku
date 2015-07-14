@@ -269,6 +269,17 @@ role PDF::DOM::Op {
         @!ops;
     }
 
+    method parse(Str $content) {
+	use PDF::Grammar::Content;
+	use PDF::Grammar::Content::Actions;
+	state $actions //= PDF::Grammar::Content::Actions.new;
+	PDF::Grammar::Content.parse($content, :$actions)
+	    // die "unable to parse content stream: $content";
+
+	my $ast = $/.ast;
+	$.ops( $ast );
+    }
+
     multi method g-track('q') {
         my %gclone = %!gstate.pairs.map( -> $p { $p.key => $p.value.clone });
         @!gsave.push: %gclone.item;
