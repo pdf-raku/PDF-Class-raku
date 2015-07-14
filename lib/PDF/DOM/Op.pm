@@ -261,7 +261,11 @@ role PDF::DOM::Op {
 	@!ops[*-1];
     }
 
-    method ops(Array $ops?) {
+    multi method ops(Str $ops!) {
+	$.ops( self.parse($ops) );
+    }
+
+    multi method ops(Array $ops?) {
 	if $ops.defined {
 	    self.op($_)
 		for $ops.list
@@ -275,9 +279,7 @@ role PDF::DOM::Op {
 	state $actions //= PDF::Grammar::Content::Actions.new;
 	PDF::Grammar::Content.parse($content, :$actions)
 	    // die "unable to parse content stream: $content";
-
-	my $ast = $/.ast;
-	$.ops( $ast );
+	$/.ast
     }
 
     multi method g-track('q') {
