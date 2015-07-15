@@ -39,7 +39,7 @@ class PDF::DOM::Contents::Text::Line {
         $.indent = - $.actual-width  /  2;
     }
 
-    method content(Numeric :$font-size, Numeric :$space-size) {
+    method content(Numeric :$font-size!, Numeric :$space-size!, Numeric :$word-spacing = 0) {
 
         my $scale = -1000 / $font-size;
         my $array = [];
@@ -48,7 +48,10 @@ class PDF::DOM::Contents::Text::Line {
             if $.indent;
 
         for $.atoms.list {
-	    my $space = (.space * $scale).round.Int;
+	    my $space = .space;
+	    $space += $word-spacing
+		if $space > 0 && $word-spacing;
+	    $space = ($space * $scale).round.Int;
             my $enc = .encoded // .content;
 
 	    if $space && $space-size && abs($space - $space-size) <= 1 {

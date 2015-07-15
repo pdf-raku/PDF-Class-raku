@@ -8,14 +8,15 @@ class PDF::DOM::Contents::Text::Block {
     has Numeric $.line-height;
     has Numeric $.font-height;
     has Numeric $.font-base-height;
+    has Numeric $.font-size;
     has Numeric $.horiz-scaling = 100;
     has Numeric $.char-spacing = 0;
+    has Numeric $.word-spacing = 0;
+    has Numeric $.space-width;
     has Numeric $!width;
     has Numeric $!height;
     has @.lines;
     has @.overflow is rw;
-    has Numeric $.font-size;
-    has Numeric $.space-width;
     has Str $!align where 'left' | 'center' | 'right' | 'justify';
     has Str $.valign where 'top' | 'center' | 'bottom' | 'text';
 
@@ -25,7 +26,6 @@ class PDF::DOM::Contents::Text::Block {
     multi submethod BUILD(Str :$text!,
                           :$font!,
 			  :$!font-size=16,
-                          :$word-spacing is copy = 0,
                           :$kern = False,
                           *%etc) {
 
@@ -69,7 +69,7 @@ class PDF::DOM::Contents::Text::Block {
             }
             elsif $followed-by-ws {
                 $atom.elastic = True;
-                $atom.space += $!space-width + $word-spacing;
+                $atom.space = $!space-width;
             }
 
             my $encoded = [~] $font.encode( $atom.content );
@@ -86,6 +86,7 @@ class PDF::DOM::Contents::Text::Block {
                           Numeric :$!line-height = $!font-size * 1.1,
 			  Numeric :$!horiz-scaling = 100,
 			  Numeric :$!char-spacing = 0,
+                          Numeric :$!word-spacing = 0,
                           Numeric :$!width?,      #| optional constraint
                           Numeric :$!height?,     #| optional constraint
                           Str :$!align = 'left',
@@ -104,12 +105,17 @@ class PDF::DOM::Contents::Text::Block {
 
             repeat {
                 $atom = @atoms.shift;
-		$char-count += $atom.content.chars  +  $atom.space * $!font-size / $!space-width;
+		$char-count += $atom.content.chars;
 		$word-width += $atom.width + $atom.space;
                 @word.push: $atom;
             } while $atom.sticky && @atoms;
 
             my $trailing-space = @word[*-1].space;
+	    if $trailing-space > 0 {
+		$char-count += $trailing-space * $!font-size / $!space-width;
+		$trailing-space += $!word-spacing;
+		$word-width += $!word-spacing;
+	    }
 
 	    my $visual-width = $line-width + $word-width - $trailing-space;
 	    $visual-width += ($char-count - 1) * $!char-spacing
@@ -167,7 +173,7 @@ class PDF::DOM::Contents::Text::Block {
         }
 
         for $.lines.list {
-            @content.push: .content(:$.font-size, :$space-size);
+            @content.push: .content(:$.font-size, :$space-size, :$!word-spacing);
             @content.push: OpNames::TextNextLine;
         }
 

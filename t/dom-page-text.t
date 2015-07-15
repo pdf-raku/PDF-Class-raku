@@ -73,13 +73,15 @@ my $op-tab = OpNames.enums;
 
 $gfx.op(BeginText);
 $gfx.set-font($reg-font, 10);
+my %default-settings = :TextRise(0), :HorizScaling(100), :CharSpacing(0), :WordSpacing(0);
 
 for (
-    :TextRise(3), :TextRise(0), :TextRise(-3),
+    :TextRise(0), :TextRise(3), :TextRise(-3),
     :HorizScaling(70), :HorizScaling(100), :HorizScaling(150),
-    :CharSpacing(-2.5), :CharSpacing(-1.5), :CharSpacing(0), :CharSpacing(1.5),
+    :CharSpacing(-2.5), :CharSpacing(-1.5), :CharSpacing(-.5), :CharSpacing(1.5),
+    :WordSpacing(-2), :WordSpacing(8),
     ) {
-    my %settings = :TextRise(0), :HorizScaling(100), :CharSpacing(0);
+    my %settings = %default-settings;
     %settings{.key} = .value;
 
     for %settings.keys -> $s {
@@ -91,6 +93,11 @@ for (
 	    $gfx.op( $op,  $val );
 	}
     }
+
+    for %settings.keys {
+        %settings{$_}:delete
+            if %settings{$_} == %default-settings{$_}
+    }    
 
     $gfx.text-move($x, $y, :abs);
     my $text-block = $gfx.say( ("*** {%settings} *** ", $sample, $sample2).join(' '), :$width, :$height);
