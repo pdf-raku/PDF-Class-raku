@@ -97,6 +97,7 @@ module PDF::DOM::Util::Font {
             }
         }
 
+        #| compute the overall font-height
         method height($pointsize?, Bool :$from-baseline = False) {
             my $bbox = $.FontBBox;
             my $height = $bbox[3];
@@ -104,7 +105,13 @@ module PDF::DOM::Util::Font {
             $pointsize ?? $height * $pointsize / 1000 !! $height;
         }
 
-        multi method to-dom('Font') {
+	#| reduce string to the displayable characters
+        method filter(Str $text-in) {
+	    $text-in.comb.grep({ $!glyphs{$_}:exists }).join: '';
+	}
+
+	#| map ourselves to a PDF::DOM object
+        method to-dom('Font') {
             my %enc-name = :win<WinAnsiEncoding>, :mac<MacRomanEncoding>;
             my $dict = { :Type( :name<Font> ), :Subtype( :name<Type1> ),
                         :BaseFont( :name( self.FontName ) ),
@@ -151,12 +158,12 @@ module PDF::DOM::Util::Font {
         core-font( $font-name, :$enc );
     }
 
-   sub load-font($font-name, :$enc!) {
+    sub load-font($font-name, :$enc!) {
         state %core-font-cache;
         my $fnt = (%core-font-cache{$font-name.lc}{$enc} //= (Font::AFM.metrics-class( $font-name ) but Afm2Dom).new(:$enc));
         $fnt.set-encoding(:$enc);
         $fnt;
-   }
+    }
 
     multi sub core-font(Str $font-name! where { $font-name ~~ m:i/^ ZapfDingbats $/ }) {
         load-font( $font-name.lc, :enc<zapf> );

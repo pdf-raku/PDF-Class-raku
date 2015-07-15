@@ -40,20 +40,29 @@ role PDF::DOM::Op {
     has %.gstate = %(:CTM[ 1, 0, 0, 1, 0, 0 ]);
 
     has Array:_ $!Tm;      #| text matrix
-    has Str $!Tf;          #| text font key, e.g. 'F1'
-    has Numeric $!Tfs;     #| text font size
-    has Numeric $!Tl = 0;  #| text leading
-    has Numeric $!Tw = 0;  #| text word spacing
+
+    # *** TEXT STATE ***
+    has Numeric $!Tc = 0;   #| character spacing
+    has Numeric $!Tw = 0;   #| word spacing
+    has Numeric $!Th = 100; #| horizontal scaling
+    has Numeric $!Tl = 0;   #| leading
+    has Str $!Tf;           #| font entry name, e.g. 'F1'
+    has Numeric $!Tfs;      #| font size
+    has Numeric $!Trise = 0;
 
     has @!gsave;
     has @!tags;
     has Bool $.in-text-block = False;
 
-    method FontKey     is rw { $!Tf  }
-    method FontSize    is rw { $!Tfs }
-    method TextLeading is rw { $!Tl  }
     method TextMatrix  is rw { $!Tm  }
-    method WordSpacing is rw { $!Tw  }
+
+    method CharSpacing  is rw { $!Tc  }
+    method WordSpacing  is rw { $!Tw  }
+    method HorizScaling is rw { $!Th  }
+    method TextLeading  is rw { $!Tl  }
+    method FontKey      is rw { $!Tf  }
+    method FontSize     is rw { $!Tfs }
+    method TextRise     is rw { $!Trise }
 
     method GraphicsMatrix is rw { %!gstate<CTM>  }
 
@@ -237,7 +246,7 @@ role PDF::DOM::Op {
         die "invalid op: {@args.perl}";
     }
 
-    method op(*@args is copy, :$prepend) {
+    method op(*@args is copy) {
         my $opn = op(|@args);
 	my $op-name;
 
@@ -319,7 +328,18 @@ role PDF::DOM::Op {
 	    unless @!tags && @!tags[*-1] eq 'BMC';
 	@!tags.pop;
     }
-    multi method g-track('TL', Numeric $Tw!) {$.TextLeading = $Tw}
+    multi method g-track('Tc', Numeric $Tc!) {
+	$.CharSpacing = $Tc
+    }
+    multi method g-track('Tw', Numeric $Tw!) {
+        $.WordSpacing = $Tw;
+    }
+    multi method g-track('Tz', Numeric $Th!) {
+        $.HorizScaling = $Th;
+    }
+    multi method g-track('TL', Numeric $TL!) {
+	$.TextLeading = $TL
+    }
     multi method g-track('Tf', Str $Tf!, Numeric $Tfs!) {
         if self.can('parent') {
             die "unknown font key: /$Tf"
@@ -327,6 +347,9 @@ role PDF::DOM::Op {
         }
         $.FontKey = $Tf;     #| e.g. 'F2'
         $.FontSize = $Tfs;   #| e.g. 16
+    }
+    multi method g-track('Ts', Numeric $Ts!) {
+	$.TextRise = $Ts
     }
     multi method g-track('Tm', *@Tm) {
 	$!Tm = [ @Tm ];
@@ -341,9 +364,6 @@ role PDF::DOM::Op {
     }
     multi method g-track('T*') {
         $.g-track(TextMove, 0, $.TextLeading);
-    }
-    multi method g-track('Tw', Numeric $Tw!) {
-        $.WordSpacing = $Tw;
     }
     multi method g-track(*@args) is default {}
 

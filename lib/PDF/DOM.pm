@@ -29,7 +29,8 @@ class PDF::DOM
     method page-count { self.Pages.Count }
     method add-page { self.Pages.add-page }
     method delete-page($page-num) { self.Pages.delete-page($page-num) }
-    method media-box(*@args) { self.Pages.media-box( |@args ) }
+    method media-box(*@a) { self.Pages.media-box( |@a ) }
+    method core-font(*@a, *%o) { self.Pages.core-font( |@a, |%o ) }
 
     method content {
 	my %trailer = self.pairs;

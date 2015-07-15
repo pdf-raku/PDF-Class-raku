@@ -115,8 +115,12 @@ class PDF::DOM::Contents::Gfx
             if $.FontKey;
         $font //= $!parent.core-font('Courier');
 	my Numeric $font-size = $.FontSize || 16;
-	my Numeric $word-spacing = $.WordSpacing,
-        my $text-block = PDF::DOM::Contents::Text::Block.new( :$text, :$font, :$font-size, :$word-spacing, |%etc );
+	my Numeric $word-spacing = $.WordSpacing;
+	my Numeric $horiz-scaling = $.HorizScaling;
+	my Numeric $char-spacing = $.CharSpacing;
+        my $text-block = PDF::DOM::Contents::Text::Block.new( :$text, :$font, :$font-size,
+							      :$word-spacing, :$horiz-scaling, :$char-spacing,
+							      |%etc );
 
         unless $dry-run {
 

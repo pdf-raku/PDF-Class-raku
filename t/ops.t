@@ -22,7 +22,19 @@ is $g.WordSpacing, 0, '$g.WordSpacing - initial';
 $g.op(SetWordSpacing, 7.5);
 is $g.WordSpacing, 7.5, '$g.WordSpacing - updated';
 
-is-json-equiv $g.TextMatrix, [1, 0, 0, 1, 0, 0], '$g.TexrMatrix - initial';
+is $g.HorizScaling, 100, '$g.HorizScaling - initial';
+$g.op(SetHorizScaling, 150);
+is $g.HorizScaling, 150, '$g.HorizScaling - updated';
+
+is $g.TextRise, 0, '$g.TextRise - initial';
+$g.op(SetTextRise, 1.5);
+is $g.TextRise, 1.5, '$g.TextRise - updated';
+
+is $g.CharSpacing, 0, '$g.CharSpacing - initial';
+$g.op(SetCharSpacing, -.5);
+is $g.CharSpacing, -.5, '$g.CharSpacing - updated';
+
+is-json-equiv $g.TextMatrix, [1, 0, 0, 1, 0, 0], '$g.TextMatrix - initial';
 $g.op(SetTextMatrix, 10, 1, 15, 2, 3, 4);
 is-json-equiv $g.TextMatrix, [10, 1, 15, 2, 3, 4], '$g.TextMatrix - updated';
 $g.op(SetTextMatrix, 10, 1, 15, 2, 3, 4);

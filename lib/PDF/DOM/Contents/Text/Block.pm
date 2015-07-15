@@ -8,6 +8,8 @@ class PDF::DOM::Contents::Text::Block {
     has Numeric $.line-height;
     has Numeric $.font-height;
     has Numeric $.font-base-height;
+    has Numeric $.horiz-scaling = 100;
+    has Numeric $.char-spacing = 0;
     has Numeric $!width;
     has Numeric $!height;
     has @.lines;
@@ -21,7 +23,8 @@ class PDF::DOM::Contents::Text::Block {
     method actual-height { (+@!lines - 1) * $!line-height  +  $!font-height }
 
     multi submethod BUILD(Str :$text!,
-                          :$font!, :$!font-size=16,
+                          :$font!,
+			  :$!font-size=16,
                           :$word-spacing is copy = 0,
                           :$kern = False,
                           *%etc) {
@@ -34,8 +37,8 @@ class PDF::DOM::Contents::Text::Block {
                                 || .
                                 /).map( -> $word {
                                     $kern
-                                        ?? $font.kern($word, $!font-size, :$kern).list
-                                        !! $word
+                                        ?? $font.kern($word, $!font-size).list
+                                        !! $font.filter($word)
                                  });
 
         constant NO-BREAK-WS = rx/ <[ \c[NO-BREAK SPACE] \c[NARROW NO-BREAK SPACE] \c[WORD JOINER] ]> /;
@@ -81,6 +84,8 @@ class PDF::DOM::Contents::Text::Block {
 
     multi submethod BUILD(:@atoms! is copy,
                           Numeric :$!line-height = $!font-size * 1.1,
+			  Numeric :$!horiz-scaling = 100,
+			  Numeric :$!char-spacing = 0,
                           Numeric :$!width?,      #| optional constraint
                           Numeric :$!height?,     #| optional constraint
                           Str :$!align = 'left',
@@ -89,24 +94,34 @@ class PDF::DOM::Contents::Text::Block {
 
         my $line;
         my $line-width = 0.0;
+	my $char-count = 0.0;
 
         while @atoms {
 
             my @word;
             my $atom;
+	    my $word-width = 0;
 
             repeat {
                 $atom = @atoms.shift;
+		$char-count += $atom.content.chars  +  $atom.space * $!font-size / $!space-width;
+		$word-width += $atom.width + $atom.space;
                 @word.push: $atom;
             } while $atom.sticky && @atoms;
 
-            my $word-width = [+] @word.map({ .width + .space });
             my $trailing-space = @word[*-1].space;
 
-            if !$line || ($!width && $line.atoms && $line-width + $word-width - $trailing-space > $!width) {
+	    my $visual-width = $line-width + $word-width - $trailing-space;
+	    $visual-width += ($char-count - 1) * $!char-spacing
+		if $char-count && $!char-spacing > 0;
+	    $visual-width *= $!horiz-scaling / 100
+		if $!horiz-scaling != 100;
+
+            if !$line || ($!width && $line.atoms && $visual-width > $!width) {
                 last if $!height && (@!lines + 1)  *  $!line-height > $!height;
                 $line = PDF::DOM::Contents::Text::Line.new();
                 $line-width = 0.0;
+		$char-count = 0;
                 @!lines.push: $line;
             }
 
@@ -120,7 +135,7 @@ class PDF::DOM::Contents::Text::Block {
         for @!lines {
             .atoms[*-1].elastic = False;
             .atoms[*-1].space = 0;
-            .align($!align, :$width);
+            .align($!align, :$width );
         }
 
         @!overflow = @atoms;
