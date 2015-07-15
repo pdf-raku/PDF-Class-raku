@@ -16,7 +16,7 @@ module PDF::DOM::Util::TransformMatrix {
 
     subset TransformMatrix of Array where {.elems == 6}
 
-    sub identity {
+    sub identity returns TransformMatrix {
         [1, 0, 0, 1, 0, 0];
     }
 
@@ -25,9 +25,9 @@ module PDF::DOM::Util::TransformMatrix {
     }
 
     sub rotate( Numeric $deg! --> TransformMatrix) {
-        my $r = deg2rad($deg);
-        my $cos = cos($r);
-        my $sin = sin($r);
+        my Numeric $r = deg2rad($deg);
+        my Numeric $cos = cos($r);
+        my Numeric $sin = sin($r);
 
         [$cos, $sin,-$sin, $cos, 0, 0];
     }
@@ -56,16 +56,16 @@ module PDF::DOM::Util::TransformMatrix {
     }
 
     our sub round(Numeric $n) {
-	my $r = $n.round(1e-6);
-	my $i = $n.round;
+	my Numeric $r = $n.round(1e-6);
+	my Int $i = $n.round;
 	constant Epsilon = 1e-5;
 	abs($n - $i) < Epsilon
 	    ?? $i.Int   # assume it's an int
 	    !! $r;
     }
 
-    multi sub vect(Numeric $n!) {($n, $n)}
-    multi sub vect(Array $v where {+$v == 2}) {$v.flat}
+    multi sub vect(Numeric $n! --> List) {@($n, $n)}
+    multi sub vect(Array $v where {+$v == 2} --> List) {$v.flat}
 
     our sub transform(
 	:$translate,
@@ -74,7 +74,7 @@ module PDF::DOM::Util::TransformMatrix {
 	:$skew?,
 	:$matrix?,
 	) {
-	my $t = identity();
+	my TransformMatrix $t = identity();
 	apply($t, translate( |@( vect($translate) ) )) if $translate.defined;
 	apply($t, rotate( $rotate ))                   if $rotate.defined;
 	apply($t, scale( |@( vect($scale) ) ))         if $scale.defined;

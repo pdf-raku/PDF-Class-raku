@@ -12,10 +12,10 @@ role PDF::DOM::Type
     #| PDF::DOM::Type::Catalog should have /Type = /Catalog
     method cb-setup-type( Hash $dict is rw ) {
         for self.^mro {
-            my $class-name = .^name;
+            my Str $class-name = .^name;
 
             if $class-name ~~ /^ 'PDF::DOM::Type::' (\w+) ['::' (\w+)]? $/ {
-                my $type-name = ~$0;
+                my Str $type-name = ~$0;
 
                 if $dict<Type>:!exists {
                     $dict<Type> = PDF::Object.compose( :name($type-name) );
@@ -27,7 +27,7 @@ role PDF::DOM::Type
                 }
 
                 if $1 {
-                    my $subtype-name = ~$1;
+                    my Str $subtype-name = ~$1;
 
                     if $dict<Subtype>:!exists {
                         $dict<Subtype> = PDF::Object.compose( :name($subtype-name) );

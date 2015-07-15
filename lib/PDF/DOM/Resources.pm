@@ -24,7 +24,7 @@ role PDF::DOM::Resources {
     }
 
     method resource(PDF::Object $object) {
-        my $type = $object.?Type
+        my Str $type = $object.?Type
             // die "not a resource object: {$object.WHAT}";
 
         self!"find-resource"(sub ($_){$_ === $object}, :$type)
@@ -75,7 +75,7 @@ role PDF::DOM::Resources {
     }
 
     method !base-name( PDF::DOM::Type $object ) {
-        my $type = $object.?Type
+        my Str $type = $object.?Type
             // die "not a resource object: {$object.WHAT}";
 
         do given $type {
@@ -96,7 +96,7 @@ role PDF::DOM::Resources {
     method !register-resource(PDF::Object $object,
                              Str :$base-name = self!"base-name"($object),
                              :$type = $object.Type) {
-        my $id = $object.id;
+        my Str $id = $object.id;
         my $resources = self.can('find-prop')
             ?? self.find-prop('Resources')
             !! self.Resources;
@@ -108,7 +108,7 @@ role PDF::DOM::Resources {
 
         $resources{$type} //= {};
 
-        my $key = (1..*).map({$base-name ~ $_}).first({ $resources{$type}{$_}:!exists });
+        my Str $key = (1..*).map({$base-name ~ $_}).first({ $resources{$type}{$_}:!exists });
 
         $resources{$type}{$key} = $object;
         my $entry = $object but ResourceEntry;

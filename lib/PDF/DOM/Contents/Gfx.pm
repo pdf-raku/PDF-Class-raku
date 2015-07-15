@@ -31,8 +31,8 @@ class PDF::DOM::Contents::Gfx
               Bool :$inline = False,
         )  {
 
-        my $dx = { :left(0),   :center(-.5), :right(-1) }{$align};
-        my $dy = { :bottom(0), :center(-.5), :top(-1)  }{$valign};
+        my Numeric $dx = { :left(0),   :center(-.5), :right(-1) }{$align};
+        my Numeric $dy = { :bottom(0), :center(-.5), :top(-1)  }{$valign};
 
         given $obj {
             when .Subtype eq 'Image' {
@@ -51,9 +51,9 @@ class PDF::DOM::Contents::Gfx
                 $dy *= $height;
             }
             when .Subtype eq 'Form' {
-                my $bbox = .BBox;
-                my $obj-width = $bbox[2] - $bbox[0] || 1;
-                my $obj-height = $bbox[3] - $bbox[1] || 1;
+                my Array $bbox = .BBox;
+                my Numeric $obj-width = $bbox[2] - $bbox[0] || 1;
+                my Numeric $obj-height = $bbox[3] - $bbox[1] || 1;
 
                 if $width.defined {
                     $height //= $width * ($obj-height / $obj-width);
@@ -111,7 +111,7 @@ class PDF::DOM::Contents::Gfx
                  Bool :$nl = False,
                  *%etc,  #| :$align, :$kern, :$line-height, :$width, :$height
         ) {
-        my $font //= $.parent.resource-entry('Font', $.FontKey)
+        my $font = $.parent.resource-entry('Font', $.FontKey)
             if $.FontKey;
         $font //= $!parent.core-font('Courier');
 	my Numeric $font-size = $.FontSize || 16;

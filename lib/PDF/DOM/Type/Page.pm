@@ -45,7 +45,7 @@ class PDF::DOM::Type::Page
         $xobject.pre-gfx.ops(self.pre-gfx.ops);
         $xobject.gfx.ops(self.gfx.ops);
 
-        my $contents = $.contents;
+        my Array $contents = $.contents;
         $xobject.edit-stream( :append([~] $contents.map({.decoded})) );
         if +$contents {
             # inherit compression from the first stream segment

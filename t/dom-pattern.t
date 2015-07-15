@@ -82,21 +82,21 @@ $page.gfx.ops: [
     :rg[1.0, 1.0, 0.0],                     # Set nonstroking color to yellow
     :re[25, 175, 175, -150],                # Construct rectangular path
     :f[],                                   # Fill path
-    :cs<Pattern>,                           # Set pattern color space
-    :scn($page.resource($pattern-obj).key), # Set pattern as nonstroking color
+    :cs[<Pattern>],                           # Set pattern color space
+    :scn[$page.resource($pattern-obj).key], # Set pattern as nonstroking color
 
-    :m(99.92, 49.92),                                # Start new path
-    :c(99.92, 77.52, 77.52, 99.92, 49.92, 99.92),    # Construct lower-left circle
-    :c(22.32, 99.92, -0.08, 77.52, -0.08, 49.92),
-    :c(-0.08, 22.32, 22.32, -0.08, 49.92, -0.08),
-    :c(77.52, -0.08, 99.92, 22.32, 99.92, 49.92),
+    :m[99.92, 49.92],                                # Start new path
+    :c[99.92, 77.52, 77.52, 99.92, 49.92, 99.92],    # Construct lower-left circle
+    :c[22.32, 99.92, -0.08, 77.52, -0.08, 49.92],
+    :c[-0.08, 22.32, 22.32, -0.08, 49.92, -0.08],
+    :c[77.52, -0.08, 99.92, 22.32, 99.92, 49.92],
     :B[],                                            # Fill and stroke path
 
-    :m(224.96, 49.92),                               # Start new path
-    :c(224.96, 77.52, 202.56, 99.92, 174.96, 99.92), # Construct lower-right circle
-    :c(147.36, 99.92, 124.96, 77.52, 124.96, 49.92),
-    :c(124.96, 22.32, 147.36, -0.08, 174.96, -0.08),
-    :c(202.56, -0.08, 224.96, 22.32, 224.96, 49.92),
+    :m[224.96, 49.92],                               # Start new path
+    :c[224.96, 77.52, 202.56, 99.92, 174.96, 99.92], # Construct lower-right circle
+    :c[147.36, 99.92, 124.96, 77.52, 124.96, 49.92],
+    :c[124.96, 22.32, 147.36, -0.08, 174.96, -0.08],
+    :c[202.56, -0.08, 224.96, 22.32, 224.96, 49.92],
     :B[],                                            # Fill and stroke path
 
     :m[87.56, 201.70],                               # Start new path

@@ -18,7 +18,7 @@ class PDF::DOM
     has Hash:_ $Info;                     method Info { self.tie($!Info) };
 
     method new {
-	my $obj = callsame;
+	my PDF::Object::Dict $obj = callsame;
         $obj<Root> //= PDF::DOM::Type::Catalog.new;
         $obj<Size> //= 0;
 	$obj;

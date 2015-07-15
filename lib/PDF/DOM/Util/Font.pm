@@ -99,8 +99,8 @@ module PDF::DOM::Util::Font {
 
         #| compute the overall font-height
         method height($pointsize?, Bool :$from-baseline = False) {
-            my $bbox = $.FontBBox;
-            my $height = $bbox[3];
+            my List $bbox = $.FontBBox;
+            my Numeric $height = $bbox[3];
             $height -= $bbox[1] unless $from-baseline;
             $pointsize ?? $height * $pointsize / 1000 !! $height;
         }
@@ -142,18 +142,18 @@ module PDF::DOM::Util::Font {
 
     multi sub core-font( Str :$family!, Str :$weight?, Str :$style?, :$enc) {
 
-        my $bold = $weight && $weight ~~ m:i/bold|[6..9]00/
+        my Str $bold = $weight && $weight ~~ m:i/bold|[6..9]00/
             ?? 'bold' !! '';
 
         # italic & oblique can be treated as synonyms for core fonts
-        my $italic = $style && $style ~~ m:i/italic|oblique/
+        my Str $italic = $style && $style ~~ m:i/italic|oblique/
             ?? 'italic' !! '';
 
-        my $sfx = $bold || $italic
+        my Str $sfx = $bold || $italic
             ?? '-' ~ $bold ~ $italic
             !! '';
 
-        my $font-name = $family.subst(/['-'.*]? $/, $sfx );
+        my Str $font-name = $family.subst(/['-'.*]? $/, $sfx );
 
         core-font( $font-name, :$enc );
     }

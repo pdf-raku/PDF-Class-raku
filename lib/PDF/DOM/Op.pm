@@ -202,7 +202,7 @@ role PDF::DOM::Op {
     multi sub op(Str $op! where 'scn' | 'SCN', *@args is copy) {
 
         # scn & SCN have an optional trailing name
-        my $name = @args.pop
+        my Str $name = @args.pop
             if +@args && @args[*-1] ~~ Str;
 
         die "too few arguments to: $op"
@@ -226,8 +226,8 @@ role PDF::DOM::Op {
     #| semi-raw and a little dwimmy e.g:  op('TJ' => [[:literal<a>, :hex-string<b>, 'c']])
     #|                                     --> :TJ( :array[ :literal<a>, :hex-string<b>, :literal<c> ] )
     multi sub op(Pair $raw!) {
-        my $op = $raw.key;
-        my $input_vals = $raw.value;
+        my Str $op = $raw.key;
+        my List $input_vals = $raw.value;
         # validate the operation and get fallback coercements for any missing pairs
         my @vals = $raw.value.map({ from-ast($_) });
         my $opn = op($op, |@vals);
@@ -248,7 +248,7 @@ role PDF::DOM::Op {
 
     method op(*@args is copy) {
         my $opn = op(|@args);
-	my $op-name;
+	my Str $op-name;
 
         if $opn ~~ Pair {
 	    $op-name = $opn.key.Str;

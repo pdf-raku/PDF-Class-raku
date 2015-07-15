@@ -54,8 +54,8 @@ class PDF::DOM::Contents::Text::Block {
             %atom<width> = $font.stringwidth($content, $!font-size, :$kern);
             # don't atomize regular white-space
             next if $content ~~ BREAKING-WS;
-            my $followed-by-ws = @chunks && @chunks[0] ~~ BREAKING-WS;
-            my $kerning = %atom<space> < 0;
+            my Bool $followed-by-ws = ?(@chunks && @chunks[0] ~~ BREAKING-WS);
+            my Bool $kerning = %atom<space> < 0;
 
             my $atom = PDF::DOM::Contents::Text::Atom.new( |%atom );
             if $kerning {
@@ -72,7 +72,7 @@ class PDF::DOM::Contents::Text::Block {
                 $atom.space = $!space-width;
             }
 
-            my $encoded = [~] $font.encode( $atom.content );
+            my Str $encoded = [~] $font.encode( $atom.content );
             $atom.encoded = $encoded
                 unless $encoded eq $atom.content;
 
@@ -93,9 +93,9 @@ class PDF::DOM::Contents::Text::Block {
                           Str :$!valign = 'text',
         ) is default {
 
-        my $line;
-        my $line-width = 0.0;
-	my $char-count = 0.0;
+        my PDF::DOM::Contents::Text::Line $line;
+        my Numeric $line-width = 0.0;
+	my Numeric $char-count = 0.0;
 
         while @atoms {
 

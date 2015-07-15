@@ -38,7 +38,8 @@ class PDF::DOM::Type::Pages
     }
 
     #| $.page(0) or $.page(-1) adds a new page
-    multi method page(Int $page-num where $page-num == 0|-1) {
+    multi method page(Int $page-num where $page-num == 0|-1
+	--> PDF::DOM::Type::Page) {
         self.add-page;
     }
 
@@ -49,14 +50,14 @@ class PDF::DOM::Type::Pages
 
     #| traverse page tree
     multi method page(Int $page-num where { $page-num > 0 && $page-num <= self<Count> }) {
-        my $page-count = 0;
+        my Int $page-count = 0;
 
         for self.Kids.keys {
             my $kid = self.Kids[$_];
 
             if $kid.can('page') {
-                my $sub-pages = $kid<Count>;
-                my $sub-page-num = $page-num - $page-count;
+                my Int $sub-pages = $kid<Count>;
+                my Int $sub-page-num = $page-num - $page-count;
 
                 return $kid.page( $sub-page-num )
                     if $sub-page-num > 0 && $sub-page-num <= $sub-pages;
@@ -74,7 +75,8 @@ class PDF::DOM::Type::Pages
     }
 
     #| delete page from page tree
-    multi method delete-page(Int $page-num where { $page-num > 0 && $page-num <= self<Count>}) {
+    multi method delete-page(Int $page-num where { $page-num > 0 && $page-num <= self<Count>},
+	--> PDF::DOM::Type::Page) {
         my $page-count = 0;
 
         for self.Kids.keys -> $i {
@@ -111,8 +113,8 @@ class PDF::DOM::Type::Pages
     }
 
     method cb-finish {
-        my $count = 0;
-        my $kids = self.Kids;
+        my Int $count = 0;
+        my Array $kids = self.Kids;
         for $kids.keys {
             my $kid = $kids[$_];
             $kid.<Parent> //= self;

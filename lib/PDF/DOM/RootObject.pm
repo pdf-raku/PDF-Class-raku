@@ -10,7 +10,7 @@ role PDF::DOM::RootObject {
     method open(Str $file-name) {
         my $reader = PDF::Reader.new;
         $reader.open($file-name);
-	my $dict = $reader.trailer-dict;
+	my Hash $dict = $reader.trailer-dict;
         my $obj = self.new( :$dict, :$reader );
 	$obj;
     }
@@ -24,15 +24,15 @@ role PDF::DOM::RootObject {
             if $reader.defunct;
  
         # todo we should be able to leave the input file open and append to it
-        my $offset = $reader.input.chars + 1;
+        my Numeric $offset = $reader.input.chars + 1;
 
         my $serializer = PDF::Storage::Serializer.new;
-	my $trailer-dict = self.content.value;
-        my $body = $serializer.body( $reader, :updates, :$compress, :$trailer-dict );
-        my $root = $reader.root;
-        my $prev = $body<trailer><dict><Prev>.value;
+	my Hash $trailer-dict = self.content.value;
+        my Hash $body = $serializer.body( $reader, :updates, :$compress, :$trailer-dict );
+        my Pair $root = $reader.root.ind-ref;
+        my Int $prev = $body<trailer><dict><Prev>.value;
         my $writer = PDF::Writer.new( :$root, :$offset, :$prev );
-        my $new-body = "\n" ~ $writer.write( :$body );
+        my Str $new-body = "\n" ~ $writer.write( :$body );
         $reader.input.?close;
         $reader.input = Any;
         $reader.defunct = True;
@@ -59,10 +59,10 @@ role PDF::DOM::RootObject {
 
         $version //= 1.3;
         $type //= 'PDF';
-	my $trailer-dict = self.content.value;
-        my $body = PDF::Storage::Serializer.new.body(self.Root, :$compress, :$trailer-dict);
-        my $root = $body<trailer><dict><Root>;
-        my $ast = :pdf{ :header{ :$type, :$version }, :$body };
+	my Hash $trailer-dict = self.content.value;
+        my Hash $body = PDF::Storage::Serializer.new.body(self.Root, :$compress, :$trailer-dict);
+        my Pair $root = $body<trailer><dict><Root>;
+        my Pair $ast = :pdf{ :header{ :$type, :$version }, :$body };
 
         my $writer = PDF::Writer.new( :$root );
         $file-name ~~ m:i/'.json' $/

@@ -73,7 +73,7 @@ class PDF::DOM::Type::XObject::Image
     }
 
     multi method read(IO::Handle $fh!) is default {
-        my $ext = $fh.path.extension;
+        my Str $ext = $fh.path.extension;
         die ($ext
              ?? "can't yet handle files of type: $ext"
              !! "unable to determine image-type: {$fh.path.basename}");
