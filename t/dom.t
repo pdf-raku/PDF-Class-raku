@@ -1,11 +1,11 @@
 use v6;
 use Test;
 
+use PDF::Storage::IndObj;
 use PDF::DOM::Type;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
-use PDF::Storage::IndObj;
 use lib '.';
 use t::Object :to-obj;
 

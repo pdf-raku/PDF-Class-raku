@@ -1,7 +1,7 @@
 use v6;
 
 use PDF::DOM::RootObject;
-use PDF::Object :to-ast-native;
+use PDF::Object::Util :to-ast-native;
 use PDF::Object::Dict;
 use PDF::Object::Tie::Hash;
 

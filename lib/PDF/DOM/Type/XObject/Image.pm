@@ -84,7 +84,7 @@ class PDF::DOM::Type::XObject::Image
 
         # for serialization to content stream ops: BI dict ID data EI
         use PDF::DOM::Op :OpNames;
-        use PDF::Object :to-ast-native;
+        use PDF::Object::Util :to-ast-native;
         # serialize to content ops
         my %dict = to-ast-native(self).value.list;
         %dict<Type Subtype Length>:delete;

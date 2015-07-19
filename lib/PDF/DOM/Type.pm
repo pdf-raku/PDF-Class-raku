@@ -1,7 +1,8 @@
 use v6;
 
+use PDF::Object;
 use PDF::Object::Type;
-PDF::Object::Type.install-handler('PDF::DOM::Type');
+use PDF::DOM::Delegator;
 
 # autoload from PDF::DOM::Type
 

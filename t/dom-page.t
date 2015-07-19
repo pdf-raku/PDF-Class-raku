@@ -3,8 +3,8 @@ use Test;
 
 plan 31;
 
-use PDF::DOM::Type;
 use PDF::Storage::IndObj;
+use PDF::DOM::Type;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
