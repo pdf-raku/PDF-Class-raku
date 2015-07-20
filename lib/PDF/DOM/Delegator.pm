@@ -33,7 +33,12 @@ class PDF::DOM::Delegator
         self.install-delegate( :$subclass, :$handler-class );
     }
 
-    method delegate(*%opts) {
-	nextwith(:class-path<PDF::DOM::Type>, |%opts);
+    multi method delegate(Hash :$dict! where {$dict<ShadingType>:exists}) {
+	require ::('PDF::DOM::Type::Shading');
+	::('PDF::DOM::Type::Shading').delegate( :$dict );
+    }
+
+    multi method delegate(Hash :$dict!, *%opts) is default {
+	nextwith( :$dict, |%opts);
     }
 }
