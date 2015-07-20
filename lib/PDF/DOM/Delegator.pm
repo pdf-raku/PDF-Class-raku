@@ -9,6 +9,12 @@ PDF::Object.delegator = PDF::DOM::Delegator;
 class PDF::DOM::Delegator
     is PDF::Object::Delegator {
 
+    multi method find-delegate( Str :$subclass! where 'XRef' | 'ObjStm', :$fallback) {
+	require ::('PDF::Object::Type')::($subclass);
+	my $handler-class = ::('PDF::Object::Type')::($subclass);
+        self.install-delegate( :$subclass, :$handler-class );
+    }
+
     multi method find-delegate( Str :$subclass!, :$fallback!) is default {
 
         my $handler-class = $fallback;
