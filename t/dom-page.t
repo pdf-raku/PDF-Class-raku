@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 31;
+plan 41;
 
 use PDF::Storage::IndObj;
 use PDF::DOM::Type;
@@ -54,17 +54,30 @@ is-deeply [$page.Resources<Font>.keys.sort], [<F1 F2 F3>], 'font resource entrie
 
 is-json-equiv $page.MediaBox, [0, 0, 595, 842], '$.MediaBox accessor';
 is-json-equiv $page.media-box, [0, 0, 595, 842], '$.media-box accessor';
+is-json-equiv $page.crop-box, $page.media-box, '$.crop-box accessor';
+is-json-equiv $page.bleed-box, $page.media-box, '$.bleed-box accessor';
+is-json-equiv $page.art-box, $page.crop-box, '$.art-box - accessor';
+is-json-equiv $page.trim-box, $page.crop-box, '$.trim-box - accessor';
 
 $page<MediaBox>:delete;
 is-json-equiv $page.media-box, [0, 0, 612, 792], 'media-box - default';
+is-json-equiv $page.bleed-box, $page.media-box, '$.bleed-box - default';
 
 $page.media-box(150,200);
 is-json-equiv $page.media-box, [0, 0, 150, 200], 'media-box - 2 arg setter';
 
-$page.media-box(-3,-3,253,303);
-is-json-equiv $page.media-box, [-3, -3, 253, 303], 'media-box - 4 arg setter';
-is-json-equiv $page.MediaBox, [-3, -3, 253, 303], '.MediaBox accessor';
-is-json-equiv $page<MediaBox>, [-3, -3, 253, 303], '<MediaBox> accessor';
+$page.media-box(-10,-10,260,310);
+$page.crop-box(0,0,250,300);
+$page.bleed-box(-3,-3,253,303);
+is-json-equiv $page.media-box, [-10, -10, 260, 310], 'media-box - 4 arg setter';
+is-json-equiv $page.MediaBox, [-10, -10, 260, 310], '.MediaBox accessor';
+is-json-equiv $page<MediaBox>, [-10, -10, 260, 310], '<MediaBox> accessor';
+is-json-equiv $page.crop-box, [0, 0, 250, 300], '$.crop-box - updated';
+is-json-equiv $page.bleed-box, [-3, -3, 253, 303], '$.bleed-box - updated';
+is-json-equiv $page.trim-box, $page.crop-box, '$trim-box - get';
+is-json-equiv $page.art-box, $page.crop-box, '$.art-box - get';
+$page.art-box(10,10,240,290);
+is-json-equiv $page.art-box, [10,10,240,290], '$.art-box - updated';
 
 $page.gfx.ops(['BT', 'Tj' => [ :literal('Hello, world!') ], 'ET']);
 $page.cb-finish;
