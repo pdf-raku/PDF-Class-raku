@@ -1,7 +1,6 @@
 use v6;
 
 use PDF::Object::Dict;
-use PDF::DOM::Type;
 
 # /ShadingType 1..7 - the Shading dictionary delegates
 

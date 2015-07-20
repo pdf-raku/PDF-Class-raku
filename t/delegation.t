@@ -1,5 +1,6 @@
 use v6;
 use Test;
+use PDF::DOM;
 use PDF::DOM::Delegator;
 
 plan 12;
@@ -25,7 +26,6 @@ my $shading = ::('PDF::DOM::Type::Shading::Radial').new;
 is $shading.ShadingType, 3, '$.ShadingType init';
 
 require ::('PDF::DOM::Type::Function::PostScript');
-todo("precomp issues?", 2);
 my $function;
 lives-ok { $function = ::('PDF::DOM::Type::Function::PostScript').new( )}, "PostScript require";
 lives-ok {$function.FunctionType}, 'FunctionType accessor';
