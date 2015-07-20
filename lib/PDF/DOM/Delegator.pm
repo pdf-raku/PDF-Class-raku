@@ -22,18 +22,14 @@ class PDF::DOM::Delegator
 	my $error;
 	my $class-path = 'PDF::DOM::Type';
 
-	do {
+	try {
 	    require ::($class-path)::($subclass);
 	    $handler-class = ::($class-path ~ '::' ~ $subclass);
 	    $resolved = True;
-
-	    CATCH {
-		default { warn $_ }
-	    }
 	}
 		
         unless $resolved {
-            warn "No DOM handler class {$class-path}::{$subclass}";
+           note "No DOM handler class {$class-path}::{$subclass}";
         }
 
         self.install-delegate( :$subclass, :$handler-class );

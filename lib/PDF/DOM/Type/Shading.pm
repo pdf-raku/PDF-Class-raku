@@ -27,7 +27,7 @@ class PDF::DOM::Type::Shading
 	my Int $shading-type-int = from-ast $dict<ShadingType>;
 
 	unless $shading-type-int ~~ ShadingTypeInt {
-	    warn "unknown /ShadingType $dict<ShadingType> - supported range is 1..7";
+	    note "unknown /ShadingType $dict<ShadingType> - supported range is 1..7";
 	    return self.WHAT;
 	}
 
