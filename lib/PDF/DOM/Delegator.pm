@@ -40,6 +40,11 @@ class PDF::DOM::Delegator
 	::('PDF::DOM::Type::Shading').delegate( :$dict );
     }
 
+    multi method delegate(Hash :$dict! where {$dict<FunctionType>:exists}) {
+	require ::('PDF::DOM::Type::Function');
+	::('PDF::DOM::Type::Function').delegate( :$dict );
+    }
+
     multi method delegate(Hash :$dict!, *%opts) is default {
 	nextwith( :$dict, |%opts);
     }

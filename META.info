@@ -10,6 +10,7 @@
         "PDF::DOM::Type" : "lib/PDF/DOM/Type.pm",
         "PDF::DOM::Type::Catalog" : "lib/PDF/DOM/Type/Catalog.pm",
         "PDF::DOM::Type::Encoding" : "lib/PDF/DOM/Type/Encoding.pm",
+
         "PDF::DOM::Type::Font" : "lib/PDF/DOM/Type/Font.pm",
         "PDF::DOM::Type::Font::CIDFontType0" : "lib/PDF/DOM/Type/Font/CIDFontType0.pm",
         "PDF::DOM::Type::Font::CIDFontType2" : "lib/PDF/DOM/Type/Font/CIDFontType2.pm",
@@ -18,6 +19,13 @@
         "PDF::DOM::Type::Font::Type0" : "lib/PDF/DOM/Type/Font/Type0.pm",
         "PDF::DOM::Type::Font::Type1" : "lib/PDF/DOM/Type/Font/Type1.pm",
         "PDF::DOM::Type::Font::Type3" : "lib/PDF/DOM/Type/Font/Type3.pm",
+
+        "PDF::DOM::Type::Function" : "lib/PDF/DOM/Type/Function.pm",
+        "PDF::DOM::Type::Function::Sampled" : "lib/PDF/DOM/Type/Function/Sampled.pm",
+        "PDF::DOM::Type::Function::Exponential" : "lib/PDF/DOM/Type/Function/Exponential.pm",
+        "PDF::DOM::Type::Function::Stitching" : "lib/PDF/DOM/Type/Function/Stitching.pm",
+        "PDF::DOM::Type::Function::PostScript" : "lib/PDF/DOM/Type/Function/PostScript.pm",
+
         "PDF::DOM::Type::FontDescriptor" : "lib/PDF/DOM/Type/FontDescriptor.pm",
         "PDF::DOM::Type::Metadata::XML" : "lib/PDF/DOM/Type/Metadata/XML.pm",
         "PDF::DOM::Type::OBJR" : "lib/PDF/DOM/Type/OBJR.pm",
