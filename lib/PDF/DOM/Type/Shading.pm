@@ -18,6 +18,8 @@ class PDF::DOM::Type::Shading
     # from PDF Spec 1.7 table 4.28
     constant ShadingTypes = <Function Axial Radial FreeForm Lattice Coons Tensor>;
     constant ShadingNames = %( ShadingTypes.pairs.invert );
+    method type {'Shading'}
+    method subtype { ShadingTypes[ $!ShadingType - 1] }
 
     #| see also PDF::DOM::Delegator
     method delegate(Hash :$dict!) {
@@ -46,7 +48,7 @@ class PDF::DOM::Type::Shading
 		    if $1;
 
 		die "invalid shading class: $class-name"
-		    unless $type eq 'Shading'
+		    unless $type eq $.type
 		    && $shading-type
 		    && (ShadingNames{ $shading-type }:exists);
 

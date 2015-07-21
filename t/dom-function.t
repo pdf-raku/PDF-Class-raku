@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 6;
+plan 8;
 
 use PDF::DOM::Type;
 use PDF::Storage::IndObj;
@@ -38,5 +38,7 @@ is $ind-obj.gen-num, 0, '$.gen-num';
 my $function-obj = $ind-obj.object;
 isa-ok $function-obj, ::('PDF::DOM::Type')::('Function::PostScript');
 is $function-obj.FunctionType, 4, '$.FunctionType accessor';
+is $function-obj.type, 'Function', '$.type accessor';
+is $function-obj.subtype, 'PostScript', '$.subtype accessor';
 is-json-equiv $function-obj.Domain, [ -1.0, 1.0, -1.0, 1.0 ], '$.Domain accessor';
 is-json-equiv $function-obj.Length, 71, '$.Length accessor';

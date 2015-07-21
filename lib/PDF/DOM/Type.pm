@@ -11,6 +11,9 @@ role PDF::DOM::Type
 
     #| enforce tie-ins between /Type, /Subtype & the class name. e.g.
     #| PDF::DOM::Type::Catalog should have /Type = /Catalog
+    method type    {self<Type>}
+    method subtype {self<Subtype> // self<S>}
+
     method cb-setup-type( Hash $dict is rw ) {
         for self.^mro {
             my Str $class-name = .^name;

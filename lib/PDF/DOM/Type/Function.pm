@@ -13,8 +13,10 @@ class PDF::DOM::Type::Function
     has Array $!Domain; method Domain { self.tie($!Domain) };
     has Array:_ $!Range; method Range { self.tie($!Range) };
     # from PDF Spec 1.7 table 3.35
-    constant FunctionTypes = <Sampled n/a  Exponential Stitching PostScript>;
+    constant FunctionTypes = <Sampled n/a Exponential Stitching PostScript>;
     constant FunctionNames = %( FunctionTypes.pairs.invert );
+    method type {'Function'}
+    method subtype { FunctionTypes[ $!FunctionType ] }
 
     #| see also PDF::DOM::Delegator
     method delegate(Hash :$dict!) {
@@ -43,7 +45,7 @@ class PDF::DOM::Type::Function
 		    if $1;
 
 		die "invalid function class: $class-name"
-		    unless $type eq 'Function'
+		    unless $type eq $.type
 		    && $function-type
 		    && (FunctionNames{ $function-type }:exists);
 

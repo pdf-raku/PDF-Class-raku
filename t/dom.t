@@ -9,7 +9,7 @@ use PDF::Grammar::PDF::Actions;
 use lib '.';
 use t::Object :to-obj;
 
-plan 42;
+plan 49;
 
 # crosschecks on /Type
 require ::('PDF::DOM::Type::Catalog');
@@ -18,6 +18,8 @@ my $catalog-obj = ::('PDF::DOM::Type::Catalog').new( :$dict );
 isa-ok $catalog-obj, ::('PDF::DOM::Type::Catalog');
 isa-ok $catalog-obj.Type, Str, 'catalog $.Type';
 is $catalog-obj.Type, 'Catalog', 'catalog $.Type';
+is $catalog-obj.type, 'Catalog', 'catalog $.type';
+ok ! $catalog-obj.subtype.defined, 'catalog $.subtype';
 
 $dict<Type>:delete;
 lives-ok {$catalog-obj = ::('PDF::DOM::Type::Catalog').new( :$dict )}, 'catalog .new with valid /Type - lives';
@@ -52,6 +54,8 @@ isa-ok $tt-font-obj, ::('PDF::DOM::Type::Font::TrueType');
 is $tt-font-obj.Type, 'Font', 'tt font $.Type';
 is $tt-font-obj.Subtype, 'TrueType', 'tt font $.Subype';
 is $tt-font-obj.Encoding, 'WinAnsiEncoding', 'tt font $.Encoding';
+is $tt-font-obj.type, 'Font', 'tt font type accessor';
+is $tt-font-obj.subtype, 'TrueType', 'tt font subtype accessor';
 
 require ::('PDF::DOM::Type::Font::Type0');
 $dict = to-obj :dict{ :BasedFont(:name<Wingdings-Regular>), :Encoding(:name<Identity-H>) };
@@ -109,7 +113,6 @@ use PDF::DOM::Type::XObject::Form;
 use PDF::DOM::Type::XObject::Image;
 my $new-page = PDF::DOM::Type::Page.new;
 my $xobject = PDF::DOM::Type::XObject::Form.new;
-
 my $fm1 = $new-page.resource( $xobject );
 is-deeply $fm1.key, 'Fm1', 'xobject form name';
 
@@ -153,4 +156,16 @@ is-deeply $gs-obj.OP, True, 'ExtGState.OP after assignment';
 is $gs-obj.TR, (:ind-ref[36, 0]), 'ExtGState TR';
 
 my $gs1 = $new-page.resource( $gs-obj );
-is-deeply $gs1.key, 'GS1', 'ExtGState resource entry';
+is-deeply $gs1.key, 'Gs1', 'ExtGState resource entry';
+
+use PDF::DOM::Array::ColorSpace::Lab;
+my $colorspace = PDF::DOM::Array::ColorSpace::Lab.new;
+isa-ok $colorspace, PDF::DOM::Array::ColorSpace::Lab;
+my $cs1 = $new-page.resource( $colorspace );
+is $cs1.key, 'Cs1', 'ColorSpace resource entry';
+
+use PDF::DOM::Type::Shading::Axial;
+my $shading = PDF::DOM::Type::Shading::Axial.new;
+my $sh1 = $new-page.resource( $shading );
+is $sh1.key, 'Sh1', 'Shading resource entry';
+

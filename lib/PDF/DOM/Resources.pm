@@ -1,11 +1,11 @@
 use v6;
 
-use PDF::Object;
-use PDF::DOM::Type;
-use PDF::DOM::Util::Font;
-use PDF::DOM::Type::Font;
-
 role PDF::DOM::Resources {
+
+    use PDF::Object;
+    use PDF::DOM::Type;
+    use PDF::DOM::Util::Font;
+    use PDF::DOM::Type::Font;
 
     method Resources is rw { self<Resources> }
 
@@ -24,7 +24,7 @@ role PDF::DOM::Resources {
     }
 
     method resource(PDF::Object $object) {
-        my Str $type = $object.?Type
+        my Str $type = $object.?type
             // die "not a resource object: {$object.WHAT}";
 
         self!"find-resource"(sub ($_){$_ === $object}, :$type)
@@ -74,28 +74,36 @@ role PDF::DOM::Resources {
         $entry;
     }
 
-    method !base-name( PDF::DOM::Type $object ) {
-        my Str $type = $object.?Type
+    multi method base-name( PDF::Object $object ) is default {
+        my Str $type = $object.?type
             // die "not a resource object: {$object.WHAT}";
 
         do given $type {
-            when 'Font' {'F'}
-            when 'ExtGState' {'GS'}
-            when 'Pattern' {'P'}
+	    when 'ColorSpace' {'Cs'}
+            when 'ExtGState'  {'Gs'}
+            when 'Font'       {'F'}
+            when 'Pattern'    {'P'}
+	    when 'Shading'    {'Sh'}
             when 'XObject' {
-                $object.Subtype eq 'Form'
-                    ?? 'Fm'
-                    !! 'Im';
+                given $object.Subtype {
+                    when 'Form'  {'Fm'}
+                    when 'Image' {'Im'}
+		    default { warn "unknown XObject subtype: $_"; 'Obj' }
+		}
             }
-            default { 'Obj' }
+            default { warn "unknown object type: $_"; 'Obj' }
         }
     }
 
     #| ensure that the object is registered as a page resource. Return a unique
     #| name for it.
     method !register-resource(PDF::Object $object,
-                             Str :$base-name = self!"base-name"($object),
-                             :$type = $object.Type) {
+                             Str :$base-name = $.base-name($object),
+                             :$type = $object.?type) {
+
+	die "unable to register this resource"
+	    unless $type.defined;
+
         my Str $id = $object.id;
         my $resources = self.can('find-prop')
             ?? self.find-prop('Resources')

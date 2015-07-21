@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 9;
+plan 10;
 
 use PDF::DOM::Type;
 use PDF::Storage::IndObj;
@@ -27,12 +27,13 @@ is $ind-obj.obj-num, 16, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $color-space-obj = $ind-obj.object;
 isa-ok $color-space-obj, ::('PDF::DOM::Array')::('ColorSpace::CalRGB');
-is $color-space-obj.type, 'CalRGB', '$.type accessor';
+is $color-space-obj.type, 'ColorSpace', '$.type accessor';
+is $color-space-obj.subtype, 'CalRGB', '$.subtype accessor';
 is-json-equiv $color-space-obj.dict, { :WhitePoint[ 1.0, 1.0, 1.0 ] }, '$.dict accessor';
 is-deeply $ind-obj.ast, $ast, 'ast regeneration';
 
 require ::('PDF::DOM::Array')::('ColorSpace::CalGray');
 my $cal-gray = ::('PDF::DOM::Array')::('ColorSpace::CalGray').new;
 isa-ok $cal-gray, ::('PDF::DOM::Array')::('ColorSpace::CalGray'), 'CalGray from scratch';
-is $cal-gray.type, 'CalGray', 'CalGray from scratch';
+is $cal-gray.subtype, 'CalGray', 'CalGray from scratch';
 isa-ok $cal-gray.dict, Hash, 'CalGray from scratch';

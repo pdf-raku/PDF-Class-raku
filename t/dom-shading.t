@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 6;
+plan 8;
 
 use PDF::DOM::Type;
 use PDF::Storage::IndObj;
@@ -30,5 +30,7 @@ is $ind-obj.gen-num, 0, '$.gen-num';
 my $shading-obj = $ind-obj.object;
 isa-ok $shading-obj, ::('PDF::DOM::Type')::('Shading::Radial');
 is $shading-obj.ShadingType, 3, '$.ShadingType accessor';
+is $shading-obj.type, 'Shading', '$.type accessor';
+is $shading-obj.subtype, 'Radial', '$.subtype accessor';
 is $shading-obj.ColorSpace, 'DeviceCMYK', '$.ColorSpace accessor';
 is-deeply $ind-obj.ast, $ast, 'ast regeneration';
