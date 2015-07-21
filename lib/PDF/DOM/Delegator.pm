@@ -9,6 +9,8 @@ PDF::Object.delegator = PDF::DOM::Delegator;
 class PDF::DOM::Delegator
     is PDF::Object::Delegator {
 
+    use PDF::Object::Util :from-ast;
+
     multi method find-delegate( Str :$subclass! where 'XRef' | 'ObjStm', :$fallback) {
 	require ::('PDF::Object::Type')::($subclass);
 	my $handler-class = ::('PDF::Object::Type')::($subclass);
@@ -48,4 +50,22 @@ class PDF::DOM::Delegator
     multi method delegate(Hash :$dict!, *%opts) is default {
 	nextwith( :$dict, |%opts);
     }
+
+    #| PDF Spec 1.7 Section 4.5.4 CIE-Based Color Spaces
+    subset CIEBased-ColorSpace of Array where {
+	.elems == 2 && do {
+	    my $t = from-ast .[0];
+	    $t ~~ Str && $t eq 'CalGray'|'CalRGB'|'Lab' && do {
+		my $d = from-ast .[1];
+		($d ~~ Hash) && ($d<WhitePoint>:exists);
+	    }
+	}
+    }
+
+    multi method delegate(CIEBased-ColorSpace :$array!, *%opts) {
+	my $colorspace = from-ast $array[0];
+	require ::('PDF::DOM::Array::ColorSpace')::($colorspace);
+	::('PDF::DOM::Array::ColorSpace')::($colorspace);
+    }
+
 }
