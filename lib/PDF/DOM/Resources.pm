@@ -80,9 +80,9 @@ role PDF::DOM::Resources {
 
         do given $type {
 	    when 'ColorSpace' {'Cs'}
-            when 'ExtGState'  {'Gs'}
+            when 'ExtGState'  {'Eg'}
             when 'Font'       {'F'}
-            when 'Pattern'    {'P'}
+            when 'Pattern'    {'Pt'}
 	    when 'Shading'    {'Sh'}
             when 'XObject' {
                 given $object.Subtype {

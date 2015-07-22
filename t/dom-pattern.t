@@ -36,7 +36,7 @@ my $ind-obj = PDF::Storage::IndObj.new( |%$ast, :$input);
 is $ind-obj.obj-num, 15, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $pattern-obj = $ind-obj.object;
-isa-ok $pattern-obj, ::('PDF::DOM::Type')::('Pattern');
+isa-ok $pattern-obj, ::('PDF::DOM::Type')::('Pattern::Tiling');
 is $pattern-obj.Type, 'Pattern', '$.Type accessor';
 ok !$pattern-obj.Subtype.defined, '$.Subtype accessor';
 is-json-equiv $pattern-obj.BBox, [ 0, 0, 100, 100 ], '$.BBox accessor';

@@ -25,17 +25,17 @@ class PDF::DOM::Type::Shading
     method delegate(Hash :$dict!) {
 
 	use PDF::Object::Util :from-ast;
-	my Int $shading-type-int = from-ast $dict<ShadingType>;
+	my Int $type-int = from-ast $dict<ShadingType>;
 
-	unless $shading-type-int ~~ ShadingTypeInt {
+	unless $type-int ~~ ShadingTypeInt {
 	    note "unknown /ShadingType $dict<ShadingType> - supported range is 1..7";
 	    return self.WHAT;
 	}
 
-	my $shading-type = ShadingTypes[$shading-type-int - 1];
+	my $type = ShadingTypes[$type-int - 1];
 
-	require ::(self.WHAT.^name)::($shading-type);
-	return  ::(self.WHAT.^name)::($shading-type);
+	require ::(self.WHAT.^name)::($type);
+	return  ::(self.WHAT.^name)::($type);
     }
 
     method cb-setup-type( Hash $dict is rw ) {

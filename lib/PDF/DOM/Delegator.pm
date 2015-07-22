@@ -37,14 +37,20 @@ class PDF::DOM::Delegator
         self.install-delegate( :$subclass, :$handler-class );
     }
 
-    multi method delegate(Hash :$dict! where {$dict<ShadingType>:exists}) {
-	require ::('PDF::DOM::Type::Shading');
-	::('PDF::DOM::Type::Shading').delegate( :$dict );
-    }
-
     multi method delegate(Hash :$dict! where {$dict<FunctionType>:exists}) {
 	require ::('PDF::DOM::Type::Function');
 	::('PDF::DOM::Type::Function').delegate( :$dict );
+    }
+
+    multi method delegate(Hash :$dict! where {$dict<PatternType>:exists}) {
+	warn "pattern delegation...";
+	require ::('PDF::DOM::Type::Pattern');
+	::('PDF::DOM::Type::Pattern').delegate( :$dict );
+    }
+
+    multi method delegate(Hash :$dict! where {$dict<ShadingType>:exists}) {
+	require ::('PDF::DOM::Type::Shading');
+	::('PDF::DOM::Type::Shading').delegate( :$dict );
     }
 
     multi method delegate(Hash :$dict!, *%opts) is default {

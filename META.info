@@ -35,6 +35,10 @@
         "PDF::DOM::Type::Page" : "lib/PDF/DOM/Type/Page.pm",
         "PDF::DOM::Type::Pages" : "lib/PDF/DOM/Type/Pages.pm",
 
+        "PDF::DOM::Type::Pattern" : "lib/PDF/DOM/Type/Pattern.pm",
+        "PDF::DOM::Type::Pattern::Tiling" : "lib/PDF/DOM/Type/Pattern/Tiling.pm",
+        "PDF::DOM::Type::Pattern::Shading" : "lib/PDF/DOM/Type/Pattern/Shading.pm",
+
         "PDF::DOM::Type::Shading" : "lib/PDF/DOM/Type/Shading.pm",
         "PDF::DOM::Type::Shading::Function" : "lib/PDF/DOM/Type/Shading/Function.pm",
         "PDF::DOM::Type::Shading::Axial" : "lib/PDF/DOM/Type/Shading/Axial.pm",

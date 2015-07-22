@@ -9,7 +9,7 @@ use PDF::Grammar::PDF::Actions;
 use lib '.';
 use t::Object :to-obj;
 
-plan 49;
+plan 51;
 
 # crosschecks on /Type
 require ::('PDF::DOM::Type::Catalog');
@@ -112,24 +112,24 @@ use PDF::DOM::Type::Page;
 use PDF::DOM::Type::XObject::Form;
 use PDF::DOM::Type::XObject::Image;
 my $new-page = PDF::DOM::Type::Page.new;
-my $xobject = PDF::DOM::Type::XObject::Form.new;
-my $fm1 = $new-page.resource( $xobject );
+my $form1 = PDF::DOM::Type::XObject::Form.new;
+my $fm1 = $new-page.resource( $form1 );
 is-deeply $fm1.key, 'Fm1', 'xobject form name';
 
-my $object2 = PDF::DOM::Type::XObject::Form.new;
-my $object3 = PDF::DOM::Type::XObject::Image.new;
-my $object4 = PDF::DOM::Type::Font.new;
-my $fm2 = $new-page.resource( $object2 );
+my $form2 = PDF::DOM::Type::XObject::Form.new;
+my $image = PDF::DOM::Type::XObject::Image.new;
+my $font = PDF::DOM::Type::Font.new;
+my $fm2 = $new-page.resource( $form2 );
 is-deeply $fm2.key, 'Fm2', 'xobject form name';
 
-my $im1 = $new-page.resource( $object3 );
+my $im1 = $new-page.resource( $image );
 is-deeply $im1.key, 'Im1', 'xobject form name';
 
-my $f1 = $new-page.resource( $object4 );
+my $f1 = $new-page.resource( $font );
 is-deeply $f1.key, 'F1', 'font name';
 
-is-json-equiv $new-page<Resources><XObject>, { :Fm1($xobject), :Fm2($object2), :Im1($object3) }, 'Resource XObject content';
-is-json-equiv $new-page<Resources><Font>, { :F1($object4) }, 'Resource Font content';
+is-json-equiv $new-page<Resources><XObject>, { :Fm1($form1), :Fm2($form2), :Im1($image) }, 'Resource XObject content';
+is-json-equiv $new-page<Resources><Font>, { :F1($font) }, 'Resource Font content';
 
 $input = q:to"--END--";
 35 0 obj    % Graphics state parameter dictionary
@@ -156,7 +156,7 @@ is-deeply $gs-obj.OP, True, 'ExtGState.OP after assignment';
 is $gs-obj.TR, (:ind-ref[36, 0]), 'ExtGState TR';
 
 my $gs1 = $new-page.resource( $gs-obj );
-is-deeply $gs1.key, 'Gs1', 'ExtGState resource entry';
+is-deeply $gs1.key, 'Eg1', 'ExtGState resource entry';
 
 use PDF::DOM::Array::ColorSpace::Lab;
 my $colorspace = PDF::DOM::Array::ColorSpace::Lab.new;
@@ -169,3 +169,18 @@ my $shading = PDF::DOM::Type::Shading::Axial.new;
 my $sh1 = $new-page.resource( $shading );
 is $sh1.key, 'Sh1', 'Shading resource entry';
 
+use PDF::DOM::Type::Pattern::Shading;
+my $pat-obj = PDF::DOM::Type::Pattern::Shading.new;
+my $pt1 = $new-page.resource( $pat-obj );
+is $pt1.key, 'Pt1', 'Shading resource entry';
+
+is-json-equiv $new-page.Resources, {
+    :ExtGState({:Eg1($gs-obj)}),
+    :ColorSpace{:Cs1($colorspace)},
+    :Pattern{ :Pt1($pat-obj) },
+    :Shading({:Sh1($shading)}),
+    :XObject({:Fm1($form1),
+	      :Fm2($form2),
+	      :Im1($image)}),
+    :Font({:F1($font)}),
+}, 'Resources';
