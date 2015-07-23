@@ -7,11 +7,14 @@ use PDF::Object::Stream;
 class PDF::DOM::Type::Function
     is PDF::Object::Stream {
 
-    subset FunctionTypeInt of Int where 0|2|3|4;
-    has FunctionTypeInt $!FunctionType; method FunctionType { self.tie($!FunctionType) };
+    use PDF::Object::Tie;
 
-    has Array $!Domain; method Domain { self.tie($!Domain) };
-    has Array:_ $!Range; method Range { self.tie($!Range) };
+    subset FunctionTypeInt of Int where 0|2|3|4;
+
+    has FunctionTypeInt $!FunctionType is tied;
+    has Array $!Domain is tied;
+    has Array:_ $!Range is tied;
+
     # from PDF Spec 1.7 table 3.35
     constant FunctionTypes = <Sampled n/a Exponential Stitching PostScript>;
     constant FunctionNames = %( FunctionTypes.pairs.invert );

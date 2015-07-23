@@ -43,7 +43,6 @@ class PDF::DOM::Delegator
     }
 
     multi method delegate(Hash :$dict! where {$dict<PatternType>:exists}) {
-	warn "pattern delegation...";
 	require ::('PDF::DOM::Type::Pattern');
 	::('PDF::DOM::Type::Pattern').delegate( :$dict );
     }

@@ -10,6 +10,7 @@ class PDF::DOM::Type::XObject
     is PDF::Object::Stream
     does PDF::DOM::Type {
 
-    has Array $!BBox; method BBox { self.tie($!BBox) };
+    use PDF::Object::Tie;
+    has Array $!BBox is tied;
 
 }

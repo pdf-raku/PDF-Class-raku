@@ -18,12 +18,14 @@ class PDF::DOM::Type::Page
     does PDF::DOM::Resources
     does PDF::DOM::PageSizes {
 
+    use PDF::Object::Tie;
+
     use PDF::DOM::Type::XObject::Form;
     use PDF::DOM::Op :OpNames;
 
-    has Hash:_ $!Parent; method Parent { self.tie($!Parent) };
-    has Array:_ $!MediaBox; method MediaBox { self.tie($!MediaBox) };
-    has Array:_ $!Annots; method Annots { self.tie($!Annots) };
+    has Hash:_ $!Parent is tied;
+    has Array:_ $!MediaBox is tied;
+    has Array:_ $!Annots is tied;
 
     #| contents may either be a stream on an array of streams
     method contents {

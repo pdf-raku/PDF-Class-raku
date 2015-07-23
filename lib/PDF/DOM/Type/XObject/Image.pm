@@ -5,10 +5,11 @@ use PDF::DOM::Type::XObject;
 class PDF::DOM::Type::XObject::Image
     is PDF::DOM::Type::XObject {
 
-    has Numeric:_ $!Width; method Width { self.tie($!Width) };
-    has Numeric:_ $!Height; method Height { self.tie($!Height) };
-    has $!ColorSpace; method ColorSpace { self.tie($!ColorSpace) };
-    has Int:_ $!BitsPerComponent; method BitsPerComponent { self.tie($!BitsPerComponent) };
+    use PDF::Object::Tie;
+    has Numeric:_ $!Width is tied;
+    has Numeric:_ $!Height is tied;
+    has $!ColorSpace is tied;
+    has Int:_ $!BitsPerComponent is tied;
 
     method open($spec! where Str | IO::Handle ) {
         my $img = self.new;

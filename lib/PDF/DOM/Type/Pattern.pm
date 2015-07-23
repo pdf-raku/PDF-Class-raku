@@ -8,11 +8,12 @@ role PDF::DOM::Type::Pattern
     does PDF::DOM::Contents
     does PDF::DOM::Resources {
 
+    use PDF::Object::Tie;
     #| /Type entry is optional, but should be /Pattern when present
-    has Str:_ $!Type; method Type { self.tie($!Type) };
+    has Str:_ $!Type is tied;
     subset PatternTypeInt of Int where 1|2;
-    has PatternTypeInt $!PatternType; method PatternType { self.tie($!PatternType) };
-    has Array:_ $!Matrix; method Matrix { self.tie($!Matrix) };
+    has PatternTypeInt $!PatternType is tied;
+    has Array:_ $!Matrix is tied;
 
     constant PatternTypes = %( :Tiling(1), :Shading(2) );
     constant PatternNames = %( PatternTypes.pairs.invert );

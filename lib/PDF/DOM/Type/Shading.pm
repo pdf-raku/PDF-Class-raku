@@ -7,13 +7,14 @@ use PDF::Object::Dict;
 class PDF::DOM::Type::Shading
     is PDF::Object::Dict {
 
+    use PDF::Object::Tie;
     subset ShadingTypeInt of Int where 1..7;
-    has ShadingTypeInt $!ShadingType; method ShadingType { self.tie($!ShadingType) };
+    has ShadingTypeInt $!ShadingType is tied;
 
-    has $!ColorSpace; method ColorSpace { self.tie($!ColorSpace) };
-    has Array:_ $!Background; method Background { self.tie($!Background) };
-    has Array:_ $!BBox; method BBox { self.tie($!BBox) };
-    has Bool:_ $!AntiAlias; method AntiAlias { self.tie($!AntiAlias) };
+    has $!ColorSpace is tied;
+    has Array:_ $!Background is tied;
+    has Array:_ $!BBox is tied;
+    has Bool:_ $!AntiAlias is tied;
 
     # from PDF Spec 1.7 table 4.28
     constant ShadingTypes = <Function Axial Radial FreeForm Lattice Coons Tensor>;

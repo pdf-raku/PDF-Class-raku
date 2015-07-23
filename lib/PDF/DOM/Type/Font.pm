@@ -11,9 +11,11 @@ class PDF::DOM::Type::Font
 
     has $.font-obj handles <encode decode filter height kern stringwidth>;
 
-    has Str $!Name; method Name { self.tie($!Name) };
-    has Str:_ $!BaseFont; method BaseFont { self.tie($!BaseFont) };
-    has $!Encoding; method Encoding { self.tie($!Encoding) };
+    use PDF::Object::Tie;
+
+    has Str $!Name is tied;
+    has Str:_ $!BaseFont is tied;
+    has $!Encoding is tied;
 
 }
 

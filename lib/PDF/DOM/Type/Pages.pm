@@ -16,8 +16,10 @@ class PDF::DOM::Type::Pages
     does PDF::DOM::PageSizes
     does PDF::DOM::Resources {
 
-    has Int $!Count; method Count { self.tie($!Count) };
-    has Array $!Kids; method Kids { self.tie($!Kids) };
+    use PDF::Object::Tie;
+
+    has Int $!Count is tied;
+    has Array $!Kids is tied;
 
     #| add new last page
     method add-page( $page = PDF::DOM::Type::Page.new ) {

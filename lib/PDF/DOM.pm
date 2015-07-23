@@ -11,11 +11,13 @@ class PDF::DOM
     does PDF::Object::Tie::Hash
     does PDF::DOM::RootObject {
 
+    use PDF::Object::Tie;
+
     use PDF::DOM::Type::Catalog;
-    has PDF::DOM::Type::Catalog $!Root;   method Root { self.tie($!Root) };
-    has Numeric $!Size;                   method Size { self.tie($!Root) };
-    has Array:_ $ID;                      method ID   { self.tie($!ID) };
-    has Hash:_ $Info;                     method Info { self.tie($!Info) };
+    has PDF::DOM::Type::Catalog $!Root is tied;
+    has Numeric $!Size is tied;
+    has Array:_ $!ID is tied;
+    has Hash:_ $!Info is tied;
 
     method new {
 	my PDF::Object::Dict $obj = callsame;

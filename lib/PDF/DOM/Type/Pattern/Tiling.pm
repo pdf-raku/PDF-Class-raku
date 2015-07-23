@@ -9,10 +9,12 @@ class PDF::DOM::Type::Pattern::Tiling
     is PDF::Object::Stream
     does PDF::DOM::Type::Pattern {
 
-    has Int $!TilingType; method TilingType { self.tie($!TilingType) };
-    has Array $!BBox; method BBox { self.tie($!BBox) };
-    has Int $!PaintType; method PaintType { self.tie($!PaintType) };
-    has Numeric $!XStep; method XStep { self.tie($!XStep) };
-    has Numeric $!YStep; method YStep { self.tie($!YStep) };
-    has Hash $!Resources; method Resources { self.tie($!Resources) };
+    use PDF::Object::Tie;
+
+    has Int $!TilingType is tied;
+    has Array $!BBox is tied;
+    has Int $!PaintType is tied;
+    has Numeric $!XStep is tied;
+    has Numeric $!YStep is tied;
+    has Hash $!Resources is tied;
 }

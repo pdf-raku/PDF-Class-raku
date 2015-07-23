@@ -11,11 +11,12 @@ class PDF::DOM::Type::Catalog
     does PDF::DOM::Type
     does PDF::DOM::Resources {
 
+    use PDF::Object::Tie;
     use PDF::DOM::Type::Pages;
-    has PDF::DOM::Type::Pages $!Pages; method Pages { self.tie($!Pages) };
+    has PDF::DOM::Type::Pages $!Pages is tied;
 
     use PDF::DOM::Type::Outlines;
-    has PDF::DOM::Type::Outlines:_ $!Outlines; method Outlines { self.tie($!Outlines) };
+    has PDF::DOM::Type::Outlines:_ $!Outlines is tied;
 
     method cb-finish {
         self<Pages>.cb-finish;

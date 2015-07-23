@@ -9,17 +9,19 @@ class PDF::DOM::Type::Annot
     is PDF::Object::Dict
     does PDF::DOM::Type {
 
-    has Array $!Rect; method Rect { self.tie($!Rect) };
-    has Str:_ $!Contents; method Contents { self.tie($!Contents) };
-    has Hash:_ $!P; method P { self.tie($!P) };
-    has Str:_ $!NM; method NM { self.tie($!NM) };
-    has Str:_ $!M; method M { self.tie($!M) };
-    has Int:_ $!F; method F { self.tie($!F) };
-    has Hash:_ $!AP; method AP { self.tie($!AP) };
-    has Str:_ $!AS; method AS { self.tie($!AS) };
-    has Array:_ $!Border; method Border { self.tie($!Border) };
-    has Array:_ $!C; method C { self.tie($!C) };
-    has Int:_ $!StructParent; method StructParent { self.tie($!StructParent) };
-    has Hash:_ $!OC; method OC { self.tie($!OC) };
+    use PDF::Object::Tie;
+
+    has Array $!Rect is tied;
+    has Str:_ $!Contents is tied;
+    has Hash:_ $!P is tied;
+    has Str:_ $!NM is tied;
+    has Str:_ $!M is tied;
+    has Int:_ $!F is tied;
+    has Hash:_ $!AP is tied;
+    has Str:_ $!AS is tied;
+    has Array:_ $!Border is tied;
+    has Array:_ $!C is tied;
+    has Int:_ $!StructParent is tied;
+    has Hash:_ $!OC is tied;
 
 }

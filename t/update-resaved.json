@@ -28,6 +28,25 @@
         "objects" : [
           {
             "ind-obj" : [
+              1,
+              0,
+              {
+                "dict" : {
+                  "Pages" : {
+                    "ind-ref" : [
+                      2,
+                      0
+                    ]
+                  },
+                  "Type" : {
+                    "name" : "Catalog"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ind-obj" : [
               3,
               0,
               {
@@ -162,97 +181,6 @@
                     "Length" : {
                       "int" : 1137
                     }
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "ind-obj" : [
-              1,
-              0,
-              {
-                "dict" : {
-                  "Pages" : {
-                    "dict" : {
-                      "Resources" : {
-                        "dict" : {
-                          "Font" : {
-                            "dict" : {
-                              "F2" : {
-                                "ind-ref" : [
-                                  4,
-                                  0
-                                ]
-                              },
-                              "F3" : {
-                                "ind-ref" : [
-                                  3,
-                                  0
-                                ]
-                              },
-                              "F1" : {
-                                "ind-ref" : [
-                                  5,
-                                  0
-                                ]
-                              },
-                              "F4" : {
-                                "ind-ref" : [
-                                  9,
-                                  0
-                                ]
-                              }
-                            }
-                          },
-                          "Procset" : {
-                            "array" : [
-                              {
-                                "name" : "PDF"
-                              },
-                              {
-                                "name" : "Text"
-                              }
-                            ]
-                          },
-                          "XObject" : {
-                            "dict" : {
-                              "Im1" : {
-                                "ind-ref" : [
-                                  6,
-                                  0
-                                ]
-                              }
-                            }
-                          }
-                        }
-                      },
-                      "Count" : {
-                        "int" : 2
-                      },
-                      "Type" : {
-                        "name" : "Pages"
-                      },
-                      "Kids" : {
-                        "array" : [
-                          {
-                            "ind-ref" : [
-                              7,
-                              0
-                            ]
-                          },
-                          {
-                            "ind-ref" : [
-                              10,
-                              0
-                            ]
-                          }
-                        ]
-                      }
-                    }
-                  },
-                  "Type" : {
-                    "name" : "Catalog"
                   }
                 }
               }

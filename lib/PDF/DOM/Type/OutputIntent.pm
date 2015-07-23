@@ -10,10 +10,12 @@ class PDF::DOM::Type::OutputIntent
     is PDF::Object::Dict
     does PDF::DOM::Type {
 
-    has Str:_ $!OutputCondition; method OutputCondition { self.tie($!OutputCondition) };
-    has Str:_ $!OutputConditionIdentifier; method OutputConditionIdentifier { self.tie($!OutputConditionIdentifier) };
-    has Str:_ $!RegistryName; method RegistryName { self.tie($!RegistryName) };
-    has Str:_ $!Info; method Info { self.tie($!Info) };
-    has PDF::Object::Stream:_ $!DestOutputProfile; method DestOutputProfile { self.tie($!DestOutputProfile) };
+    use PDF::Object::Tie;
+
+    has Str:_ $!OutputCondition is tied;
+    has Str:_ $!OutputConditionIdentifier is tied;
+    has Str:_ $!RegistryName is tied;
+    has Str:_ $!Info is tied;
+    has PDF::Object::Stream:_ $!DestOutputProfile is tied;
 
 }
