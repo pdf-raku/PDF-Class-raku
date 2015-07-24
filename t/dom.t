@@ -149,7 +149,6 @@ my $gs-obj = $ind-obj.object;
 isa-ok $gs-obj, ::('PDF::DOM::Type::ExtGState');
 is $gs-obj.Type, 'ExtGState', 'ExtGState Type';
 is-deeply $gs-obj.OP, False, 'ExtGState.OP';
-todo "restore typechecking on assigment", 2;
 dies-ok {$gs-obj<OP> = 42}, 'Typechecking on assignment';
 is-deeply $gs-obj.OP, False, 'ExtGState.OP';
 $gs-obj<OP> = False;
