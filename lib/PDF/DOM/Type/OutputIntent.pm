@@ -12,10 +12,10 @@ class PDF::DOM::Type::OutputIntent
 
     use PDF::Object::Tie;
 
-    has Str:_ $!OutputCondition is tied;
-    has Str:_ $!OutputConditionIdentifier is tied;
-    has Str:_ $!RegistryName is tied;
-    has Str:_ $!Info is tied;
-    has PDF::Object::Stream:_ $!DestOutputProfile is tied;
+    has Str $!OutputCondition is entry;
+    has Str $!OutputConditionIdentifier is entry;
+    has Str $!RegistryName is entry;
+    has Str $!Info is entry;
+    has PDF::Object::Stream $!DestOutputProfile is entry;
 
 }

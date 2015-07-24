@@ -9,12 +9,12 @@ class PDF::DOM::Type::Shading
 
     use PDF::Object::Tie;
     subset ShadingTypeInt of Int where 1..7;
-    has ShadingTypeInt $!ShadingType is tied;
+    has ShadingTypeInt $!ShadingType is entry;
 
-    has $!ColorSpace is tied;
-    has Array:_ $!Background is tied;
-    has Array:_ $!BBox is tied;
-    has Bool:_ $!AntiAlias is tied;
+    has $!ColorSpace is entry(:required);
+    has Array $!Background is entry;
+    has Array $!BBox is entry;
+    has Bool $!AntiAlias is entry;
 
     # from PDF Spec 1.7 table 4.28
     constant ShadingTypes = <Function Axial Radial FreeForm Lattice Coons Tensor>;

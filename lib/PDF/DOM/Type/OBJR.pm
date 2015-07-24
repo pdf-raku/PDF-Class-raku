@@ -10,7 +10,7 @@ class PDF::DOM::Type::OBJR
     does PDF::DOM::Type {
 
     use PDF::Object::Tie;
-    has Hash:_ $!Pg is tied;
-    has $!Obj is tied;
+    has Hash $!Pg is entry;
+    has $!Obj is entry(:required);
 
 }

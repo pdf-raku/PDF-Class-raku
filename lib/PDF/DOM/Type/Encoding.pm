@@ -10,7 +10,7 @@ class PDF::DOM::Type::Encoding
     does PDF::DOM::Type {
 
     use PDF::Object::Tie;
-    has Str:_ $!BaseEncoding is tied;
-    has Array:_ $!Differences is tied;
+    has Str $!BaseEncoding is entry;
+    has Array $!Differences is entry;
 
 }

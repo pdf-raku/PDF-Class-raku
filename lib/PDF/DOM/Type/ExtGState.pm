@@ -11,31 +11,31 @@ class PDF::DOM::Type::ExtGState
 
     use PDF::Object::Tie;
 
-    has Numeric:_ $!LW is tied;
-    has Int:_ $!LC is tied;
-    has Int:_ $!LJ is tied;
-    has Numeric:_ $!ML is tied;
-    has Array:_ $!D is tied;
-    has Str:_ $!RI is tied;
-    has Bool:_ $!OP is tied;
-    has Bool:_ $!op is tied;
-    has Int:_ $!OPM is tied;
-    has Array:_ $!Font is tied;
-    has $!BG is tied;
-    has $!BG2 is tied;
-    has $!UCR is tied;
-    has $!UCR2 is tied;
-    has $!TR is tied;
-    has $!TR2 is tied;
-    has $!HT is tied;
-    has Numeric:_ $!FL is tied;
-    has Numeric:_ $!SM is tied;
-    has Bool:_ $!SA is tied;
-    has $!BM is tied;
-    has $!SMask is tied;
-    has Numeric:_ $!CA is tied;
-    has Numeric:_ $!ca is tied;
-    has Bool:_ $!AIS is tied;
-    has Bool:_ $!TK is tied;
+    has Numeric $!LW is entry;
+    has Int $!LC is entry;
+    has Int $!LJ is entry;
+    has Numeric $!ML is entry;
+    has Array $!D is entry;
+    has Str $!RI is entry;
+    has Bool $!OP is entry;
+    has Bool $!op is entry;
+    has Int $!OPM is entry;
+    has Array $!Font is entry;
+    has $!BG is entry(:required);
+    has $!BG2 is entry(:required);
+    has $!UCR is entry(:required);
+    has $!UCR2 is entry(:required);
+    has $!TR is entry(:required);
+    has $!TR2 is entry(:required);
+    has $!HT is entry(:required);
+    has Numeric $!FL is entry;
+    has Numeric $!SM is entry;
+    has Bool $!SA is entry;
+    has $!BM is entry(:required);
+    has $!SMask is entry(:required);
+    has Numeric $!CA is entry;
+    has Numeric $!ca is entry;
+    has Bool $!AIS is entry;
+    has Bool $!TK is entry;
 
 }

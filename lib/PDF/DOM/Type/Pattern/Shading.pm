@@ -13,6 +13,6 @@ class PDF::DOM::Type::Pattern::Shading
 
     use PDF::DOM::Type::Shading;
     subset NameOrShading of Any where Str | PDF::DOM::Type::Shading;
-    has NameOrShading $!Shading is tied;
-    has Hash:_ $!ExtGState is tied;
+    has NameOrShading $!Shading is entry(:required);
+    has Hash $!ExtGState is entry;
 }

@@ -7,9 +7,9 @@ class PDF::DOM::Type::Annot::Text
 
     use PDF::Object::Tie;
 
-    has Bool:_ $!Open is tied;
-    has Str:_ $!Name is tied;
-    has Str:_ $!State is tied;
-    has Str:_ $!StateModel is tied;
+    has Bool $!Open is entry;
+    has Str $!Name is entry;
+    has Str $!State is entry;
+    has Str $!StateModel is entry;
 
 }

@@ -11,8 +11,8 @@ class PDF::DOM::Type::Outlines
 
     use PDF::Object::Tie;
 
-    has Int $!Count is tied;
-    has Hash $!First is tied;
-    has Hash $!Last is tied;
+    has Int $!Count is entry(:required);
+    has Hash $!First is entry(:required);
+    has Hash $!Last is entry(:required);
 
 }

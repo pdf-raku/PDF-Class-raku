@@ -23,9 +23,9 @@ class PDF::DOM::Type::Page
     use PDF::DOM::Type::XObject::Form;
     use PDF::DOM::Op :OpNames;
 
-    has Hash:_ $!Parent is tied;
-    has Array:_ $!MediaBox is tied;
-    has Array:_ $!Annots is tied;
+    has Hash $!Parent is entry;
+    has Array $!MediaBox is entry;
+    has Array $!Annots is entry;
 
     #| contents may either be a stream on an array of streams
     method contents {

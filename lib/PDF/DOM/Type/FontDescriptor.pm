@@ -12,26 +12,26 @@ class PDF::DOM::Type::FontDescriptor
 
     use PDF::Object::Tie;
 
-    has Str $!FontName is tied;
-    has Str:_ $!FontFamily is tied;
-    has Str:_ $!FontStretch is tied;
-    has Numeric:_ $!FontWeight is tied;
-    has Int:_ $!Flags is tied;
-    has Array:_ $!FontBBox is tied;
-    has Numeric:_ $!ItalicAngle is tied;
-    has Numeric:_ $!Ascent is tied;
-    has Numeric:_ $!Descent is tied;
-    has Numeric:_ $!Leading is tied;
-    has Numeric:_ $!CapHeight is tied;
-    has Numeric:_ $!XHeight is tied;
-    has Numeric:_ $!StemV is tied;
-    has Numeric:_ $!AvgWidth is tied;
-    has Numeric:_ $!MaxWidth is tied;
-    has Numeric:_ $!MissingWidth is tied;
-    has PDF::Object::Stream:_ $!FontFile is tied;
-    has PDF::Object::Stream:_ $!FontFile2 is tied;
-    has PDF::Object::Stream:_ $!FontFile3 is tied;
-    has Str:_ $!CharSet is tied;
+    has Str $!FontName is entry(:required);
+    has Str $!FontFamily is entry;
+    has Str $!FontStretch is entry;
+    has Numeric $!FontWeight is entry;
+    has Int $!Flags is entry;
+    has Array $!FontBBox is entry;
+    has Numeric $!ItalicAngle is entry;
+    has Numeric $!Ascent is entry;
+    has Numeric $!Descent is entry;
+    has Numeric $!Leading is entry;
+    has Numeric $!CapHeight is entry;
+    has Numeric $!XHeight is entry;
+    has Numeric $!StemV is entry;
+    has Numeric $!AvgWidth is entry;
+    has Numeric $!MaxWidth is entry;
+    has Numeric $!MissingWidth is entry;
+    has PDF::Object::Stream $!FontFile is entry;
+    has PDF::Object::Stream $!FontFile2 is entry;
+    has PDF::Object::Stream $!FontFile3 is entry;
+    has Str $!CharSet is entry;
 
 
 }

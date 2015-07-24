@@ -11,10 +11,10 @@ class PDF::DOM::Type::Pattern::Tiling
 
     use PDF::Object::Tie;
 
-    has Int $!TilingType is tied;
-    has Array $!BBox is tied;
-    has Int $!PaintType is tied;
-    has Numeric $!XStep is tied;
-    has Numeric $!YStep is tied;
-    has Hash $!Resources is tied;
+    has Int $!TilingType is entry(:required);
+    has Array $!BBox is entry(:required);
+    has Int $!PaintType is entry(:required);
+    has Numeric $!XStep is entry(:required);
+    has Numeric $!YStep is entry(:required);
+    has Hash $!Resources is entry(:required);
 }

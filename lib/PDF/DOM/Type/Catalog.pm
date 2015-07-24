@@ -13,10 +13,10 @@ class PDF::DOM::Type::Catalog
 
     use PDF::Object::Tie;
     use PDF::DOM::Type::Pages;
-    has PDF::DOM::Type::Pages $!Pages is tied;
+    has PDF::DOM::Type::Pages $!Pages is entry;
 
     use PDF::DOM::Type::Outlines;
-    has PDF::DOM::Type::Outlines:_ $!Outlines is tied;
+    has PDF::DOM::Type::Outlines $!Outlines is entry;
 
     method cb-finish {
         self<Pages>.cb-finish;

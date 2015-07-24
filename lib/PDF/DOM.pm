@@ -14,10 +14,10 @@ class PDF::DOM
     use PDF::Object::Tie;
 
     use PDF::DOM::Type::Catalog;
-    has PDF::DOM::Type::Catalog $!Root is tied;
-    has Numeric $!Size is tied;
-    has Array:_ $!ID is tied;
-    has Hash:_ $!Info is tied;
+    has PDF::DOM::Type::Catalog $!Root is entry(:required);
+    has Numeric $!Size is entry(:required);
+    has Array $!ID is entry;
+    has Hash $!Info is entry;
 
     method new {
 	my PDF::Object::Dict $obj = callsame;

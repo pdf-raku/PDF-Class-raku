@@ -10,10 +10,10 @@ role PDF::DOM::Type::Pattern
 
     use PDF::Object::Tie;
     #| /Type entry is optional, but should be /Pattern when present
-    has Str:_ $!Type is tied;
+    has Str $!Type is entry;
     subset PatternTypeInt of Int where 1|2;
-    has PatternTypeInt $!PatternType is tied;
-    has Array:_ $!Matrix is tied;
+    has PatternTypeInt $!PatternType is entry(:required);
+    has Array $!Matrix is entry;
 
     constant PatternTypes = %( :Tiling(1), :Shading(2) );
     constant PatternNames = %( PatternTypes.pairs.invert );

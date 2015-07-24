@@ -11,9 +11,9 @@ class PDF::DOM::Type::Function
 
     subset FunctionTypeInt of Int where 0|2|3|4;
 
-    has FunctionTypeInt $!FunctionType is tied;
-    has Array $!Domain is tied;
-    has Array:_ $!Range is tied;
+    has FunctionTypeInt $!FunctionType is entry(:required);
+    has Array $!Domain is entry(:required);
+    has Array $!Range is entry;
 
     # from PDF Spec 1.7 table 3.35
     constant FunctionTypes = <Sampled n/a Exponential Stitching PostScript>;

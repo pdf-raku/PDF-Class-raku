@@ -18,8 +18,8 @@ class PDF::DOM::Type::Pages
 
     use PDF::Object::Tie;
 
-    has Int $!Count is tied;
-    has Array $!Kids is tied;
+    has Int $!Count is entry;
+    has Array $!Kids is entry;
 
     #| add new last page
     method add-page( $page = PDF::DOM::Type::Page.new ) {

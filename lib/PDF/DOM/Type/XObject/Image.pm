@@ -6,10 +6,10 @@ class PDF::DOM::Type::XObject::Image
     is PDF::DOM::Type::XObject {
 
     use PDF::Object::Tie;
-    has Numeric:_ $!Width is tied;
-    has Numeric:_ $!Height is tied;
-    has $!ColorSpace is tied;
-    has Int:_ $!BitsPerComponent is tied;
+    has Numeric $!Width is entry;
+    has Numeric $!Height is entry;
+    has $!ColorSpace is entry(:required);
+    has Int $!BitsPerComponent is entry;
 
     method open($spec! where Str | IO::Handle ) {
         my $img = self.new;

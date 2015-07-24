@@ -11,6 +11,6 @@ class PDF::DOM::Type::XObject
     does PDF::DOM::Type {
 
     use PDF::Object::Tie;
-    has Array $!BBox is tied;
+    has Array $!BBox is entry(:required);
 
 }

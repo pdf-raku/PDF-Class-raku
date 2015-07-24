@@ -13,9 +13,9 @@ class PDF::DOM::Type::Font
 
     use PDF::Object::Tie;
 
-    has Str $!Name is tied;
-    has Str:_ $!BaseFont is tied;
-    has $!Encoding is tied;
+    has Str $!Name is entry(:required);
+    has Str $!BaseFont is entry;
+    has $!Encoding is entry(:required);
 
 }
 
