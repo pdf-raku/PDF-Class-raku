@@ -10,7 +10,4 @@ class PDF::DOM::Type::XObject
     is PDF::Object::Stream
     does PDF::DOM::Type {
 
-    use PDF::Object::Tie;
-    has Array $!BBox is entry(:required);
-
 }
