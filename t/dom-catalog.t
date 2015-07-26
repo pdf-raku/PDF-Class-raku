@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 9;
+plan 18;
 
 use PDF::DOM::Type;
 use PDF::Storage::IndObj;
@@ -29,15 +29,25 @@ my $ast = $/.ast;
 my $ind-obj = PDF::Storage::IndObj.new( |%$ast);
 is $ind-obj.obj-num, 215, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
-my $object = $ind-obj.object;
-isa-ok $object, ::('PDF::DOM::Type')::('Catalog');
-is $object<PageLayout>, 'OneColumn', 'dict lookup';
-is-deeply $object<Pages>, (:ind-ref[212, 0]), '$object<Pages>';
-is-deeply $object<Outlines>, (:ind-ref[18, 0]), '$object<Outlines>';
-is-deeply $ind-obj.ast, $ast, 'ast regeneration';
+my $catalog = $ind-obj.object;
+isa-ok $catalog, ::('PDF::DOM::Type')::('Catalog');
+is $catalog<PageLayout>, 'OneColumn', 'dict lookup';
+is-json-equiv $catalog.Lang, 'EN-US', '$catalog.Lang';
+# last modified is not listed as a property in [ PDF 1.7 TABLE 3.25 Entries in the catalog dictionary]
+is-json-equiv $catalog<LastModified>, 'D:20081012130709', '$catalog<LastModified>';
+is-json-equiv $catalog.MarkInfo, { :LetterspaceFlags(0), :Marked }, '$object.MarkInfo'; 
+is-json-equiv $catalog.Metadata, (:ind-ref[10, 0]), '$catalog.Metadata';
+is-json-equiv $catalog.Outlines, (:ind-ref[18, 0]), '$catalog.Outlines';
+is-json-equiv $catalog.PageLabels, (:ind-ref[210, 0]), '$catalog.PageLabels';
+is-json-equiv $catalog.PageLayout, 'OneColumn', '$catalog.PageLayout';
+is-json-equiv $catalog.Pages, (:ind-ref[212, 0]), '$catalog.Pages';
+is-json-equiv $catalog.PieceInfo, { :MarkedPDF{ :LastModified<D:20081012130709> } }, '$catalog.PieceInfo';
+is-json-equiv $catalog.StructTreeRoot, (:ind-ref[25, 0]), '$catalog.StructTreeRoot';
+is-json-equiv $ind-obj.ast, $ast, 'ast regeneration';
+is-json-equiv $catalog.Type, 'Catalog', '$catalog.Type';
 
-lives-ok {$object.core-font('Helvetica')}, 'can add resource (core-font) to catalog';
-is-json-equiv $object.Resources, {:Font{
+lives-ok {$catalog.core-font('Helvetica')}, 'can add resource (core-font) to catalog';
+is-json-equiv $catalog.Resources, {:Font{
     :F1{
         :Type<Font>, :Subtype<Type1>, :Encoding<WinAnsiEncoding>, :BaseFont<Helvetica>,
     }}
