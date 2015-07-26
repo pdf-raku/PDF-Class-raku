@@ -10,9 +10,10 @@ class PDF::DOM::Type::Pattern::Shading
     does PDF::DOM::Type::Pattern {
 
     use PDF::Object::Tie;
+    use PDF::Object::Name;
 
     use PDF::DOM::Type::Shading;
-    subset NameOrShading of Any where Str | PDF::DOM::Type::Shading;
+    subset NameOrShading of Any where PDF::Object::Name | PDF::DOM::Type::Shading;
     has NameOrShading $!Shading is entry(:required);
     has Hash $!ExtGState is entry;
 }

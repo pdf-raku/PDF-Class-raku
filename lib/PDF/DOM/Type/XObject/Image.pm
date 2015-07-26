@@ -11,13 +11,15 @@ class PDF::DOM::Type::XObject::Image
     use PDF::Object::Tie;
     use PDF::Object::Stream;
     use PDF::Object::Array;
+    use PDF::Object::Name;
 
     # See [PDF 1.7 TABLE 4.39 Additional entries specific to an image dictionary]
     has Numeric $!Width is entry(:required);      #| (Required) The width of the image, in samples.
     has Numeric $!Height is entry(:required);     #| (Required) The height of the image, in samples.
-    has $!ColorSpace is entry(:required);         #| (Required for images, except those that use the JPXDecode filter; not allowed for image masks) The color space in which image samples are specified; it can be any type of color space except Pattern.
+    subset NameOrArray of Any where PDF::Object::Name | PDF::Object::Array;
+    has NameOrArray $!ColorSpace is entry(:required);         #| (Required for images, except those that use the JPXDecode filter; not allowed for image masks) The color space in which image samples are specified; it can be any type of color space except Pattern.
     has Int $!BitsPerComponent is entry;          #| (Required except for image masks and images that use the JPXDecode filter)The number of bits used to represent each color component.
-    has Str $!Intent is entry;                    #| (Optional; PDF 1.1) The name of a color rendering intent to be used in rendering the image
+    has PDF::Object::Name $!Intent is entry;      #| (Optional; PDF 1.1) The name of a color rendering intent to be used in rendering the image
     has Bool $!ImageMask is entry;                #| (Optional) A flag indicating whether the image is to be treated as an image mask. If this flag is true, the value of BitsPerComponent must be 1 and Mask and ColorSpace should not be specified;
     subset StreamOrArray of PDF::Object where PDF::Object::Stream | PDF::Object::Array;
     has StreamOrArray $!Mask is entry;            #| (Optional) A flag indicating whether the image is to be treated as an image mask (see Section 4.8.5, “Masked Images”). If this flag is true, the value of BitsPerComponent must be 1 and Mask and ColorSpace should not be specified;

@@ -9,7 +9,8 @@ class PDF::DOM::Array::ColorSpace
 
     method type {'ColorSpace'}
     method subtype {$.Subtype}
-    has Str $!Subtype is index(0);
+    use PDF::Object::Name;
+    has PDF::Object::Name $!Subtype is index(0);
     has Hash $!Dict is index(1);
 
     constant ColorSpaceTypes = <CalGray CalRGB Lab>;

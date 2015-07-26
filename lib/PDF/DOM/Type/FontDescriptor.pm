@@ -11,10 +11,11 @@ class PDF::DOM::Type::FontDescriptor
     does PDF::DOM::Type {
 
     use PDF::Object::Tie;
+    use PDF::Object::Name;
 
-    has Str $!FontName is entry(:required);
+    has PDF::Object::Name $!FontName is entry(:required);
     has Str $!FontFamily is entry;
-    has Str $!FontStretch is entry;
+    has PDF::Object::Name $!FontStretch is entry;
     has Numeric $!FontWeight is entry;
     has Int $!Flags is entry;
     has Array $!FontBBox is entry;

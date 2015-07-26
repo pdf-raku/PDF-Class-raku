@@ -10,13 +10,14 @@ class PDF::DOM::Type::ExtGState
     does PDF::DOM::Type {
 
     use PDF::Object::Tie;
+    use PDF::Object::Name;
 
     has Numeric $!LW is entry;
     has Int $!LC is entry;
     has Int $!LJ is entry;
     has Numeric $!ML is entry;
     has Array $!D is entry;
-    has Str $!RI is entry;
+    has PDF::Object::Name $!RI is entry;
     has Bool $!OP is entry;
     has Bool $!op is entry;
     has Int $!OPM is entry;

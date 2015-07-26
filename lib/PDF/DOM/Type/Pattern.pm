@@ -9,8 +9,9 @@ role PDF::DOM::Type::Pattern
     does PDF::DOM::Resources {
 
     use PDF::Object::Tie;
+    use PDF::Object::Name;
     #| /Type entry is optional, but should be /Pattern when present
-    has Str $!Type is entry;
+    has PDF::Object::Name $!Type is entry;
     subset PatternTypeInt of Int where 1|2;
     has PatternTypeInt $!PatternType is entry(:required);
     has Array $!Matrix is entry;

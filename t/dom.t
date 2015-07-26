@@ -13,7 +13,7 @@ plan 51;
 
 # crosschecks on /Type
 require ::('PDF::DOM::Type::Catalog');
-my $dict = { :Outlines(:ind-ref[2, 0]), :Type<Catalog> };
+my $dict = { :Outlines(:ind-ref[2, 0]), :Type( :name<Catalog> ) };
 my $catalog-obj = ::('PDF::DOM::Type::Catalog').new( :$dict );
 isa-ok $catalog-obj, ::('PDF::DOM::Type::Catalog');
 isa-ok $catalog-obj.Type, Str, 'catalog $.Type';
