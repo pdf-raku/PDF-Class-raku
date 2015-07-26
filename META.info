@@ -51,6 +51,7 @@
         "PDF::DOM::Type::XObject" : "lib/PDF/DOM/Type/XObject.pm",
         "PDF::DOM::Type::XObject::Form" : "lib/PDF/DOM/Type/XObject/Form.pm",
         "PDF::DOM::Type::XObject::Image" : "lib/PDF/DOM/Type/XObject/Image.pm",
+        "PDF::DOM::Type::XObject::PS" : "lib/PDF/DOM/Type/XObject/PS.pm",
 
         "PDF::DOM::Array::ColorSpace" : "lib/PDF/DOM/Array/ColorSpace.pm",
         "PDF::DOM::Array::ColorSpace::CalGray" : "lib/PDF/DOM/Array/ColorSpace/CalGray.pm",
