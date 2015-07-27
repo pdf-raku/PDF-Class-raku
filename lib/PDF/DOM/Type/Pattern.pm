@@ -13,8 +13,8 @@ role PDF::DOM::Type::Pattern
     #| /Type entry is optional, but should be /Pattern when present
     has PDF::Object::Name $!Type is entry;
     subset PatternTypeInt of Int where 1|2;
-    has PatternTypeInt $!PatternType is entry(:required);
-    has Array $!Matrix is entry;
+    has PatternTypeInt $!PatternType is entry(:required);  #| (Required) A code identifying the type of pattern that this dictionary describes; must be 1 for a tiling pattern, or 2 for a shading pattern.
+    has Array $!Matrix is entry;                           #| (Optional) An array of six numbers specifying the pattern matrix (see Section 4.6.1, “General Properties of Patterns”). Default value: the identity matrix [ 1 0 0 1 0 0 ].
 
     constant PatternTypes = %( :Tiling(1), :Shading(2) );
     constant PatternNames = %( PatternTypes.pairs.invert );
