@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 18;
+plan 19;
 
 use PDF::DOM::Type;
 use PDF::Storage::IndObj;
@@ -53,3 +53,5 @@ is-json-equiv $catalog.Resources, {:Font{
     }}
 }, '$.Resources accessor';
 
+$catalog<Dests> = { :Foo(:name<Bar>) };
+ok $catalog.Dests.obj-num, 'entry(:indirect)';

@@ -19,7 +19,7 @@ class PDF::DOM::Type::Font
     has PDF::Object::Name $!Name is entry(:required);
     has PDF::Object::Name $!BaseFont is entry;
     subset NameOrDict of Any where PDF::Object::Name | PDF::Object::Dict;
-    has NameOrDict $!Encoding is entry(:required);
+    has NameOrDict $!Encoding is entry;
 
 }
 

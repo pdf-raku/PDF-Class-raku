@@ -11,8 +11,9 @@ class PDF::DOM::Type::Outlines
 
     use PDF::Object::Tie;
 
-    has Int $!Count is entry(:required);
-    has Hash $!First is entry(:required);
-    has Hash $!Last is entry(:required);
+    # see TABLE 8.3 Entries in the outline dictionary
+    has Hash $!First is entry(:indirect); #| (Required if there are any open or closed outline entries; must be an indirect reference) An outline item dictionary representing the first top-level item in the outline.
+    has Hash $!Last is entry(:indirect);  #| (Required if there are any open or closed outline entries; must be an indirect reference) An outline item dictionary representing the last top-level item in the outline.
+    has Int $!Count is entry;             #| (Required if the document has any open outline entries) The total number of open items at all levels of the outline. This entry should be omitted if there are no open outline items.
 
 }

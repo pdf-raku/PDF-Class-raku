@@ -23,14 +23,14 @@ class PDF::DOM::Type::Catalog
 
     use PDF::Object::Tie;
     use PDF::DOM::Type::Pages;
-    has PDF::DOM::Type::Pages $!Pages is entry(:required);  #| (Required; must be an indirect reference) The page tree node that is the root of the document’s page tree
+    has PDF::DOM::Type::Pages $!Pages is entry(:required, :indirect);  #| (Required; must be an indirect reference) The page tree node that is the root of the document’s page tree
 
     #tba distinct number tree objects
     has PDF::Object::Dict $!PageLabels is entry;            #| (Optional; PDF 1.3) A number tree defining the page labeling for the document.
 
     has PDF::Object::Dict $!Names is entry;                 #| (Optional; PDF 1.2) The document’s name dictionary
 
-    has PDF::Object::Dict $!Dests is entry;                 #| (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
+    has PDF::Object::Dict $!Dests is entry(:indirect);      #| (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
 
     has PDF::Object::Dict $!ViewPreferences is entry;       #| (Optional; PDF 1.2) A viewer preferences dictionary specifying the way the document is to be displayed on the screen.
 
@@ -41,7 +41,7 @@ class PDF::DOM::Type::Catalog
     has PageMode $!PageMode is entry;                       #| (Optional) A name object specifying how the document should be displayed when opened
 
     use PDF::DOM::Type::Outlines;
-    has PDF::DOM::Type::Outlines $!Outlines is entry;       #| (Optional; must be an indirect reference) The outline dictionary that is the root of the document’s outline hierarchy
+    has PDF::DOM::Type::Outlines $!Outlines is entry(:indirect); #| (Optional; must be an indirect reference) The outline dictionary that is the root of the document’s outline hierarchy
 
     has PDF::Object::Array $!Threads is entry;              #| (Optional; PDF 1.1; must be an indirect reference) An array of thread dictionaries representing the document’s article threads
 
@@ -54,7 +54,7 @@ class PDF::DOM::Type::Catalog
 
     has PDF::Object::Dict $!AcroForm is entry;              #| (Optional; PDF 1.2) The document’s interactive form (AcroForm) dictionary
 
-    has PDF::Object::Stream $!Metadata is entry;            #| (Optional; PDF 1.4; must be an indirect reference) A metadata streamcontaining metadata for the document
+    has PDF::Object::Stream $!Metadata is entry(:indirect); #| (Optional; PDF 1.4; must be an indirect reference) A metadata streamcontaining metadata for the document
 
     has PDF::Object::Dict $!StructTreeRoot is entry;        #| (Optional; PDF 1.3) The document’s structure tree root dictionary
 
