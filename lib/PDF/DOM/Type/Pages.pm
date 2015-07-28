@@ -18,8 +18,18 @@ class PDF::DOM::Type::Pages
 
     use PDF::Object::Tie;
 
-    has Int $!Count is entry;
-    has Array $!Kids is entry;
+    method cb-init {
+	self<Type> = PDF::Object.compose( :name<Pages> );
+	unless (self<Kids>:exists) || (self<Count>:exists) {
+	    self<Kids> = [];
+	    self<Count> = 0;
+	}
+    }
+
+    # see [PDF 1.7 TABLE 3.26 Required entries in a page tree node
+    has Hash $!Parent is entry;            #| (Required except in root node; must be an indirect reference) The page tree node that is the immediate parent of this one.
+    has Array $!Kids is entry(:required);  #| (Required) An array of indirect references to the immediate children of this node. The children may be page objects or other page tree nodes.
+    has Int $!Count is entry(:required);   #| (Required) The number of leaf nodes (page objects) that are descendants of this node within the page tree.
 
     #| add new last page
     method add-page( $page = PDF::DOM::Type::Page.new ) {

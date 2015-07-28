@@ -19,11 +19,13 @@ class PDF::DOM::Type::Catalog
     use PDF::Object::Name;
     use PDF::Object::Stream;
 
-    has PDF::Object::Name $!Version is entry;                #| (Optional; PDF 1.4) The version of the PDF specification to which the document conforms (for example, 1.4)
-
     use PDF::Object::Tie;
     use PDF::DOM::Type::Pages;
-    has PDF::DOM::Type::Pages $!Pages is entry(:required, :indirect);  #| (Required; must be an indirect reference) The page tree node that is the root of the document’s page tree
+
+    has PDF::Object::Name $!Version is entry;               #| (Optional; PDF 1.4) The version of the PDF specification to which the document conforms (for example, 1.4)
+
+    has PDF::DOM::Type::Pages $!Pages is entry(:required, :indirect);
+                                                            #| (Required; must be an indirect reference) The page tree node that is the root of the document’s page tree
 
     #tba distinct number tree objects
     has PDF::Object::Dict $!PageLabels is entry;            #| (Optional; PDF 1.3) A number tree defining the page labeling for the document.
@@ -80,23 +82,20 @@ class PDF::DOM::Type::Catalog
 
     has PDF::Object::Bool $!NeedsRendering is entry;        #| (Optional; PDF 1.7) A flag used to expedite the display of PDF documents containing XFA forms. It specifies whether the document must be regenerated when the document is first opened.
 
-    method cb-finish {
-        self<Pages>.cb-finish;
-    }
-
-    method new() {
-        my $obj = callsame;
-
+    method cb-init {
         # vivify pages
-        $obj<Pages> //= PDF::DOM::Type::Pages.new(
+	self<Type> //= PDF::Object.compose( :name<Catalog> );
+	die "invalid /Type {self<Type>}" unless self<Type> eq 'Catalog';
+        self<Pages> //= PDF::DOM::Type::Pages.new(
             :dict{
                 :Resources{ :Procset[ :name<PDF>, :name<Text> ] },
                 :Count(0),
                 :Kids[],
-                });
-
-        $obj;
+	    });
     }
 
+    method cb-finish {
+        self<Pages>.cb-finish;
+    }
 
 }

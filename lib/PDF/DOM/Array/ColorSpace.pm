@@ -18,7 +18,7 @@ class PDF::DOM::Array::ColorSpace
 
     #| enforce tie-ins between /Type, /Subtype & the class name. e.g.
     #| PDF::DOM::Type::Catalog should have /Type = /Catalog
-    method cb-setup-type( Array $obj is rw ) {
+    method cb-init {
         for self.^mro {
             my Str $class-name = .^name;
 
@@ -29,17 +29,17 @@ class PDF::DOM::Array::ColorSpace
 		
                 my Str $subtype = ~$1;
 
-                if ! $obj.Subtype {
-                    $obj.Subtype = PDF::Object.compose( :name($subtype) );
+                if ! self.Subtype {
+                    self.Subtype = PDF::Object.compose( :name($subtype) );
                 }
                 else {
                     # /Type already set. check it agrees with the class name
-                    die "conflict between class-name $class-name ($subtype) and array[0] type /{$obj[0]}"
-                        unless $obj.Subtype eq $subtype;
+                    die "conflict between class-name $class-name ($subtype) and array[0] type /{self[0]}"
+                        unless self.Subtype eq $subtype;
                 }
                 last;
             }
-	    $obj.Dict //= {};
+	    self.Dict //= {};
         }
     }
 }

@@ -40,7 +40,7 @@ class PDF::DOM::Type::Function
 	return  ::(self.WHAT.^name)::($function-type);
     }
 
-    method cb-setup-type( Hash $dict is rw ) {
+    method cb-init {
         for self.^mro {
             my Str $class-name = .^name;
 
@@ -56,13 +56,13 @@ class PDF::DOM::Type::Function
 
 		my FunctionTypeInt $function-type-int = FunctionNames{ $function-type };
 
-		if $dict<FunctionType>:!exists {
-		    $dict<FunctionType> = $function-type-int;
+		if self<FunctionType>:!exists {
+		    self<FunctionType> = $function-type-int;
 		}
 		else {
 		    # /Subtype already set. check it agrees with the class name
-		    die "conflict between class-name $class-name /FunctionType. Expected $function-type-int, got  $dict<FunctionType>"
-			unless $dict<FunctionType> == $function-type-int;
+		    die "conflict between class-name $class-name /FunctionType. Expected $function-type-int, got  self<FunctionType>"
+			unless self<FunctionType> == $function-type-int;
 		}
 
                 last;

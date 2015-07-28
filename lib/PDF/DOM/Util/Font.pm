@@ -114,7 +114,7 @@ module PDF::DOM::Util::Font {
         method to-dom('Font') {
             my %enc-name = :win<WinAnsiEncoding>, :mac<MacRomanEncoding>;
             my $dict = { :Type( :name<Font> ), :Subtype( :name<Type1> ),
-                        :BaseFont( :name( self.FontName ) ),
+			 :BaseFont( :name( self.FontName ) ),
             };
 
             if my $name = %enc-name{self.enc} {

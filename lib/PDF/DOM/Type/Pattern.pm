@@ -39,7 +39,7 @@ role PDF::DOM::Type::Pattern
 	return  ::(self.WHAT.^name)::($subtype);
     }
 
-    method cb-setup-type( Hash $dict is rw ) {
+    method cb-init {
 
         for self.^mro {
             my Str $class-name = .^name;
@@ -47,10 +47,10 @@ role PDF::DOM::Type::Pattern
             if $class-name ~~ /^ 'PDF::DOM::Type::' (\w+) ['::' (\w+)]? $/ {
                 my Str $type-name = ~$0;
 
-                if $dict<Type>:exists {
+                if self<Type>:exists {
                     # /Type already set. check it agrees with the class name
-                    die "conflict between class-name $class-name ($type-name) and dictionary /Type /{$dict<Type>}"
-                        unless $dict<Type> eq $.type;
+                    die "conflict between class-name $class-name ($type-name) and dictionary /Type /{self<Type>}"
+                        unless self<Type> eq $.type;
                 }
 
                 if $1 {
@@ -58,13 +58,13 @@ role PDF::DOM::Type::Pattern
 		    die "$class-name has unknown subtype $subtype"
 			unless PatternTypes{$subtype}:exists;
 
-                    if $dict<PatternType>:!exists {
-                        $dict<PatternType> = PatternTypes{$subtype};
+                    if self<PatternType>:!exists {
+                        self<PatternType> = PatternTypes{$subtype};
                     }
                     else {
                         # /Subtype already set. check it agrees with the class name
-                        die "conflict between class-name $class-name ($subtype) and /PatternType /{$dict<PatternType>.value}"
-                            unless $dict<PatternType> == PatternTypes{$subtype};
+                        die "conflict between class-name $class-name ($subtype) and /PatternType /{self<PatternType>.value}"
+                            unless self<PatternType> == PatternTypes{$subtype};
                     }
                 }
 

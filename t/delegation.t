@@ -17,15 +17,15 @@ my $pages = ::('PDF::DOM::Type::Pages').new;
 is $pages.Type, 'Pages', '$.Type init';
 
 require ::('PDF::DOM::Type::XObject::Form');
-my $form = ::('PDF::DOM::Type::XObject::Form').new;
+my $form = ::('PDF::DOM::Type::XObject::Form').new( :dict{ :BBox[0, 0, 100, 140 ] } );
 is $form.Type, 'XObject', '$.Type init';
 is $form.Subtype, 'Form', '$.Subtype init';
 
 require ::('PDF::DOM::Type::Shading::Radial');
-my $shading = ::('PDF::DOM::Type::Shading::Radial').new;
+my $shading = ::('PDF::DOM::Type::Shading::Radial').new( :dict{ :ColorSpace(:name<DeviceRGB>) } );
 is $shading.ShadingType, 3, '$.ShadingType init';
 
 require ::('PDF::DOM::Type::Function::PostScript');
 my $function;
-lives-ok { $function = ::('PDF::DOM::Type::Function::PostScript').new( )}, "PostScript require";
+lives-ok { $function = ::('PDF::DOM::Type::Function::PostScript').new( :dict{ :Domain[-1, 1, -1, 1] } )}, "PostScript require";
 lives-ok {$function.FunctionType}, 'FunctionType accessor';

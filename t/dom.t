@@ -13,7 +13,7 @@ plan 51;
 
 # crosschecks on /Type
 require ::('PDF::DOM::Type::Catalog');
-my $dict = { :Outlines(:ind-ref[2, 0]), :Type( :name<Catalog> ) };
+my $dict = { :Outlines(:ind-ref[2, 0]), :Type( :name<Catalog> ), :Pages{ :Type( :name<Pages> ) } };
 my $catalog-obj = ::('PDF::DOM::Type::Catalog').new( :$dict );
 isa-ok $catalog-obj, ::('PDF::DOM::Type::Catalog');
 isa-ok $catalog-obj.Type, Str, 'catalog $.Type';
@@ -112,12 +112,12 @@ use PDF::DOM::Type::Page;
 use PDF::DOM::Type::XObject::Form;
 use PDF::DOM::Type::XObject::Image;
 my $new-page = PDF::DOM::Type::Page.new;
-my $form1 = PDF::DOM::Type::XObject::Form.new;
+my $form1 = PDF::DOM::Type::XObject::Form.new( :dict{ :BBox[0, 0, 100, 120] } );
 my $fm1 = $new-page.resource( $form1 );
 is-deeply $fm1.key, 'Fm1', 'xobject form name';
 
-my $form2 = PDF::DOM::Type::XObject::Form.new;
-my $image = PDF::DOM::Type::XObject::Image.new;
+my $form2 = PDF::DOM::Type::XObject::Form.new( :dict{ :BBox[-3, -3, 103, 123] } );
+my $image = PDF::DOM::Type::XObject::Image.new( :dict{ :ColorSpace( :name<DeviceRGB> ), :Width(120), :Height(150) } );
 my $font = PDF::DOM::Type::Font.new;
 my $fm2 = $new-page.resource( $form2 );
 is-deeply $fm2.key, 'Fm2', 'xobject form name';
@@ -166,12 +166,12 @@ my $cs1 = $new-page.resource( $colorspace );
 is $cs1.key, 'Cs1', 'ColorSpace resource entry';
 
 use PDF::DOM::Type::Shading::Axial;
-my $shading = PDF::DOM::Type::Shading::Axial.new;
+my $shading = PDF::DOM::Type::Shading::Axial.new( :dict{ :ColorSpace( :name<DeviceRGB> ) } );
 my $sh1 = $new-page.resource( $shading );
 is $sh1.key, 'Sh1', 'Shading resource entry';
 
 use PDF::DOM::Type::Pattern::Shading;
-my $pat-obj = PDF::DOM::Type::Pattern::Shading.new;
+my $pat-obj = PDF::DOM::Type::Pattern::Shading.new( :dict{ :PaintType(1), :TilingType(2), :Shading{ :ShadingType(2), :ColorSpace( :name<DeviceRGB> ) } } );
 my $pt1 = $new-page.resource( $pat-obj );
 is $pt1.key, 'Pt1', 'Shading resource entry';
 

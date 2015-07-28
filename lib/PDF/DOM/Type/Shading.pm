@@ -8,13 +8,17 @@ class PDF::DOM::Type::Shading
     is PDF::Object::Dict {
 
     use PDF::Object::Tie;
+    use PDF::Object::Array;
+    use PDF::Object::Name;
     subset ShadingTypeInt of Int where 1..7;
     has ShadingTypeInt $!ShadingType is entry;
 
-    has $!ColorSpace is entry(:required);
-    has Array $!Background is entry;
-    has Array $!BBox is entry;
-    has Bool $!AntiAlias is entry;
+    # see [PDF 1.7 TABLE 4.28 Entries common to all shading dictionaries]
+    subset NameOrArray of Any where PDF::Object::Array | PDF::Object::Name;
+    has NameOrArray $!ColorSpace is entry(:required); #| (Required) The color space in which color values are expressed.
+    has Array $!Background is entry;                  #| (Optional) An array of color components appropriate to the color space, specifying a single background color value.
+    has Array $!BBox is entry;                        #| (Optional) An array of four numbers giving the left, bottom, right, and top coordinates, respectively, of the shading’s bounding box
+    has Bool $!AntiAlias is entry;                    #| (Optional) A flag indicating whether to filter the shading function to prevent aliasing artifacts.
 
     # from PDF Spec 1.7 table 4.28
     constant ShadingTypes = <Function Axial Radial FreeForm Lattice Coons Tensor>;
@@ -39,7 +43,7 @@ class PDF::DOM::Type::Shading
 	return  ::(self.WHAT.^name)::($type);
     }
 
-    method cb-setup-type( Hash $dict is rw ) {
+    method cb-init {
         for self.^mro {
             my Str $class-name = .^name;
 
@@ -55,13 +59,13 @@ class PDF::DOM::Type::Shading
 
 		my ShadingTypeInt $shading-type-int = ShadingNames{ $shading-type } + 1;
 
-		if $dict<ShadingType>:!exists {
-		    $dict<ShadingType> = $shading-type-int;
+		if self<ShadingType>:!exists {
+		    self<ShadingType> = $shading-type-int;
 		}
 		else {
 		    # /Subtype already set. check it agrees with the class name
-		    die "conflict between class-name $class-name /ShadingType. Expected $shading-type-int, got  $dict<ShadingType>"
-			unless $dict<ShadingType> == $shading-type-int;
+		    die "conflict between class-name $class-name /ShadingType. Expected $shading-type-int, got  self<ShadingType>"
+			unless self<ShadingType> == $shading-type-int;
 		}
 
                 last;

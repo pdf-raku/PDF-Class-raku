@@ -49,7 +49,7 @@ is $ximage-obj.encoded, "(binary data)", '$.encoded accessor';
 my $snoopy = ::('PDF::DOM::Type')::('XObject::Image').open("t/images/snoopy-happy-dance.jpg");
 is $snoopy.Width, 200, '$img.Width (jpeg)';
 is $snoopy.Height, 254, '$img.Height (jpeg)';
-is-deeply $snoopy.ColorSpace, (:name<DeviceRGB>), '$img.ColorSpace (jpeg)';
+is $snoopy.ColorSpace, 'DeviceRGB', '$img.ColorSpace (jpeg)';
 is $snoopy.BitsPerComponent, 8, '$img.BitsPerComponent (jpeg)';
 is $snoopy.Length, $snoopy.encoded.chars, '$img Length (jpeg)';
 

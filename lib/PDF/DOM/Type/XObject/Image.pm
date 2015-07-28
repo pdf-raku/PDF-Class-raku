@@ -17,7 +17,7 @@ class PDF::DOM::Type::XObject::Image
     has Numeric $!Width is entry(:required);      #| (Required) The width of the image, in samples.
     has Numeric $!Height is entry(:required);     #| (Required) The height of the image, in samples.
     subset NameOrArray of Any where PDF::Object::Name | PDF::Object::Array;
-    has NameOrArray $!ColorSpace is entry(:required);         #| (Required for images, except those that use the JPXDecode filter; not allowed for image masks) The color space in which image samples are specified; it can be any type of color space except Pattern.
+    has NameOrArray $!ColorSpace is entry;        #| (Required for images, except those that use the JPXDecode filter; not allowed for image masks) The color space in which image samples are specified; it can be any type of color space except Pattern.
     has Int $!BitsPerComponent is entry;          #| (Required except for image masks and images that use the JPXDecode filter)The number of bits used to represent each color component.
     has PDF::Object::Name $!Intent is entry;      #| (Optional; PDF 1.1) The name of a color rendering intent to be used in rendering the image
     has Bool $!ImageMask is entry;                #| (Optional) A flag indicating whether the image is to be treated as an image mask. If this flag is true, the value of BitsPerComponent must be 1 and Mask and ColorSpace should not be specified;
@@ -40,9 +40,7 @@ class PDF::DOM::Type::XObject::Image
     has Hash $!OC is entry;                       #| (Optional; PDF 1.5) An optional content group or optional content membership dictionary
 
     method open($spec! where Str | IO::Handle ) {
-        my $img = self.new;
-        $img.read($spec);
-        $img;
+        self.read($spec);
     }
 
     multi method read(Str $path! ) {
@@ -88,17 +86,20 @@ class PDF::DOM::Type::XObject::Image
                      'DeviceGray'}
         }
 
-        $fh.seek(0,0);
-        self.encoded( $fh.slurp-rest );
-
-        self<Width> = $width;
-        self<Height> = $height;
-        self<BitsPerComponent> = $bpc;
-        self<ColorSpace> = :name($color-space);
-        self<Filter> = :name<DCTDecode>
+        my $dict = {};
+        $dict<Width> = $width;
+        $dict<Height> = $height;
+        $dict<BitsPerComponent> = $bpc;
+        $dict<ColorSpace> = :name($color-space);
+        $dict<Filter> = :name<DCTDecode>
             if $is-dct;
 
-        return self;
+        my $obj = self.new( :$dict );
+        $fh.seek(0,0);
+        $obj.encoded( $fh.slurp-rest );
+        $fh.close;
+
+        return $obj;
     }
 
     multi method read(IO::Handle $fh!) is default {
