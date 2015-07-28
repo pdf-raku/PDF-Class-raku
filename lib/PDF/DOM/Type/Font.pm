@@ -11,14 +11,5 @@ class PDF::DOM::Type::Font
 
     has $.font-obj handles <encode decode filter height kern stringwidth>;
 
-    use PDF::Object::Tie;
-    use PDF::Object::Name;
-    use PDF::Object::Stream;
-
-    has PDF::Object::Name $!Name is entry;
-    has PDF::Object::Name $!BaseFont is entry;
-    subset NameOrDict of Any where PDF::Object::Name | PDF::Object::Dict;
-    has NameOrDict $!Encoding is entry;
-
 }
 

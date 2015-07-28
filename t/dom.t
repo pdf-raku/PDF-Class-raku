@@ -9,7 +9,7 @@ use PDF::Grammar::PDF::Actions;
 use lib '.';
 use t::Object :to-obj;
 
-plan 51;
+plan 52;
 
 # crosschecks on /Type
 require ::('PDF::DOM::Type::Catalog');
@@ -52,23 +52,24 @@ my $ind-obj = PDF::Storage::IndObj.new( :$input, |%( $ast.kv ) );
 my $tt-font-obj = $ind-obj.object;
 isa-ok $tt-font-obj, ::('PDF::DOM::Type::Font::TrueType');
 is $tt-font-obj.Type, 'Font', 'tt font $.Type';
-is $tt-font-obj.Subtype, 'TrueType', 'tt font $.Subype';
+is $tt-font-obj.Subtype, 'TrueType', 'tt font $.Subtype';
 is $tt-font-obj.Encoding, 'WinAnsiEncoding', 'tt font $.Encoding';
 is $tt-font-obj.type, 'Font', 'tt font type accessor';
 is $tt-font-obj.subtype, 'TrueType', 'tt font subtype accessor';
 
 require ::('PDF::DOM::Type::Font::Type0');
-$dict = to-obj :dict{ :BasedFont(:name<Wingdings-Regular>), :Encoding(:name<Identity-H>) };
+$dict = to-obj :dict{ :BaseFont(:name<Wingdings-Regular>), :Encoding(:name<Identity-H>), :DescendantFonts[:ind-ref[15, 0]] };
 my $t0-font-obj = ::('PDF::DOM::Type::Font::Type0').new( :$dict );
 is $t0-font-obj.Type, 'Font', 't0 font $.Type';
-is $t0-font-obj.Subtype, 'Type0', 't0 font $.Subype';
+is $t0-font-obj.Subtype, 'Type0', 't0 font $.Subtype';
 is $t0-font-obj.Encoding, 'Identity-H', 't0 font $.Encoding';
 
 use PDF::DOM::Type::Font::Type1;
 class SubclassedType1Font is PDF::DOM::Type::Font::Type1 {};
-my $sc-font-obj = SubclassedType1Font.new;
+my $sc-font-obj = SubclassedType1Font.new( :dict{ :BaseFont( :name<Helvetica> ) } );
 is $sc-font-obj.Type, 'Font', 'sc font $.Type';
-is $sc-font-obj.Subtype, 'Type1', 'sc font $.Subype';
+is $sc-font-obj.Subtype, 'Type1', 'sc font $.Subtype';
+is $sc-font-obj.BaseFont, 'Helvetica', 'sc font $.BaseFont';
 
 my $enc-ast = :ind-obj[5, 2, :dict{ :Type( :name<Encoding> ), :BaseEncoding( :name<MacRomanEncoding> ) } ];
 my $enc-ind-obj = PDF::Storage::IndObj.new( |%($enc-ast) );
