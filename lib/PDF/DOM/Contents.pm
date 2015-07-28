@@ -7,8 +7,6 @@ role PDF::DOM::Contents {
     use PDF::DOM::Type::XObject;
     use PDF::DOM::Op :OpNames;
 
-    method Contents is rw { self<Contents> }
-
     has PDF::DOM::Contents::Gfx $.pre-gfx = PDF::DOM::Contents::Gfx.new( :parent(self) ); #| prepended graphics
     has PDF::DOM::Contents::Gfx $.gfx     = PDF::DOM::Contents::Gfx.new( :parent(self) ); #| appended graphics
 

@@ -82,6 +82,8 @@ class PDF::DOM::Type::Catalog
 
     has PDF::Object::Bool $!NeedsRendering is entry;        #| (Optional; PDF 1.7) A flag used to expedite the display of PDF documents containing XFA forms. It specifies whether the document must be regenerated when the document is first opened.
 
+    has Hash $!Resources is entry;
+
     method cb-init {
         # vivify pages
 	self<Type> //= PDF::Object.compose( :name<Catalog> );

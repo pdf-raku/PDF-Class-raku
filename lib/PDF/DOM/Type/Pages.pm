@@ -22,6 +22,7 @@ class PDF::DOM::Type::Pages
     has Hash $!Parent is entry;            #| (Required except in root node; must be an indirect reference) The page tree node that is the immediate parent of this one.
     has Array $!Kids is entry(:required);  #| (Required) An array of indirect references to the immediate children of this node. The children may be page objects or other page tree nodes.
     has Int $!Count is entry(:required);   #| (Required) The number of leaf nodes (page objects) that are descendants of this node within the page tree.
+    has Hash $!Resources is entry;
 
     #| add new last page
     method add-page( $page = PDF::DOM::Type::Page.new ) {
