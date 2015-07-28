@@ -167,12 +167,15 @@ my $cs1 = $new-page.resource( $colorspace );
 is $cs1.key, 'Cs1', 'ColorSpace resource entry';
 
 use PDF::DOM::Type::Shading::Axial;
-my $shading = PDF::DOM::Type::Shading::Axial.new( :dict{ :ColorSpace( :name<DeviceRGB> ) } );
-my $sh1 = $new-page.resource( $shading );
+my $Shading = PDF::DOM::Type::Shading::Axial.new( :dict{ :ColorSpace(:name<DeviceRGB>),
+							 :Function(:ind-ref[15, 0]),
+							 :Coords[ 0.0, 0.0, 0.096, 0.0, 0.0, 1.0, 0],
+							 } );
+my $sh1 = $new-page.resource( $Shading );
 is $sh1.key, 'Sh1', 'Shading resource entry';
 
 use PDF::DOM::Type::Pattern::Shading;
-my $pat-obj = PDF::DOM::Type::Pattern::Shading.new( :dict{ :PaintType(1), :TilingType(2), :Shading{ :ShadingType(2), :ColorSpace( :name<DeviceRGB> ) } } );
+my $pat-obj = PDF::DOM::Type::Pattern::Shading.new( :dict{ :PaintType(1), :TilingType(2), :$Shading } );
 my $pt1 = $new-page.resource( $pat-obj );
 is $pt1.key, 'Pt1', 'Shading resource entry';
 
@@ -180,7 +183,7 @@ is-json-equiv $new-page.Resources, {
     :ExtGState({:Eg1($gs-obj)}),
     :ColorSpace{:Cs1($colorspace)},
     :Pattern{ :Pt1($pat-obj) },
-    :Shading({:Sh1($shading)}),
+    :Shading({:Sh1($Shading)}),
     :XObject({:Fm1($form1),
 	      :Fm2($form2),
 	      :Im1($image)}),

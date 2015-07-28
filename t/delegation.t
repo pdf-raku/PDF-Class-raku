@@ -22,7 +22,10 @@ is $form.Type, 'XObject', '$.Type init';
 is $form.Subtype, 'Form', '$.Subtype init';
 
 require ::('PDF::DOM::Type::Shading::Radial');
-my $shading = ::('PDF::DOM::Type::Shading::Radial').new( :dict{ :ColorSpace(:name<DeviceRGB>) } );
+my $shading = ::('PDF::DOM::Type::Shading::Radial').new( :dict{ :ColorSpace(:name<DeviceRGB>),
+								:Function(:ind-ref[15, 0]),
+								:Coords[ 0.0, 0.0, 0.096, 0.0, 0.0, 1.0, 0],
+							 } );
 is $shading.ShadingType, 3, '$.ShadingType init';
 
 require ::('PDF::DOM::Type::Function::PostScript');
