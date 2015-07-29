@@ -69,10 +69,10 @@ class PDF::DOM::Type::Page
     }
 
     #| produce an XObject form for this page
-    method to-xobject() {
+    method to-xobject(Array :$bbox = self.trim-box) {
 
         my %dict = (Resources => self.find-prop('Resources').clone,
-                    BBox => self.find-prop('MediaBox').clone);
+                    BBox => $bbox.clone);
 
         my $xobject = PDF::DOM::Type::XObject::Form.new(:%dict);
         $xobject.pre-gfx.ops(self.pre-gfx.ops);

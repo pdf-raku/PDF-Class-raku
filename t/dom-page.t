@@ -93,7 +93,7 @@ is-deeply [$contents[2].decoded.lines], ['', 'Q', 'BT', '(Hello, world!) Tj', 'E
 
 my $xobject = $page.to-xobject;
 isa-ok $xobject, ::('PDF::DOM::Type::XObject::Form');
-is-deeply $xobject.BBox, $page.MediaBox, 'xobject copied BBox';
+is-deeply $xobject.BBox, $page.trim-box, 'xobject copied trim-box';
 is-deeply [$xobject.decoded.lines], ['q',
                                      '%dummy stream',
                                      'Q', 'BT', '(Hello, world!) Tj', 'ET' ], 'xobject decoded';
