@@ -18,8 +18,6 @@ class PDF::DOM::Type::Catalog
     use PDF::Object::Dict;
     use PDF::Object::Name;
     use PDF::Object::Stream;
-
-    use PDF::Object::Tie;
     use PDF::DOM::Type::Pages;
 
     has PDF::Object::Name $!Version is entry;               #| (Optional; PDF 1.4) The version of the PDF specification to which the document conforms (for example, 1.4)

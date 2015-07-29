@@ -17,6 +17,7 @@ class PDF::DOM::Type::Pages
     does PDF::DOM::Resources {
 
     use PDF::Object::Tie;
+    use PDF::Object;
 
     # see [PDF 1.7 TABLE 3.26 Required entries in a page tree node
     has Hash $!Parent is entry;            #| (Required except in root node; must be an indirect reference) The page tree node that is the immediate parent of this one.
@@ -25,7 +26,7 @@ class PDF::DOM::Type::Pages
     has Hash $!Resources is entry;
 
     #| add new last page
-    method add-page( $page = PDF::DOM::Type::Page.new ) {
+    method add-page( $page = PDF::Object.compose( :dict{ :Type( :name<Page> ) } ) ) {
         my $sub-pages = self.Kids[*-1]
             if self.Kids;
 
