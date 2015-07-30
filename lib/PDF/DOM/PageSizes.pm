@@ -2,7 +2,7 @@ use v6;
 
 role PDF::DOM::PageSizes {
 
-    subset BoxName of Str where 'media' | 'crop' | 'bleed' | 'trim' | 'art';
+    my subset BoxName of Str where 'media' | 'crop' | 'bleed' | 'trim' | 'art';
     method !bbox-name(BoxName $box) {
 	{ :media<MediaBox>, :crop<CropBox>, :bleed<BleedBox>, :trim<TrimBox>, :art<ArtBox> }{$box}
     }

@@ -8,7 +8,7 @@ role PDF::DOM::Op {
     has @!ops;
 
     #| some convenient mnemomic names
-    BEGIN our Str enum OpNames is export(:OpNames) «
+    BEGIN my Str enum OpNames is export(:OpNames) «
         :BeginImage<BI> :ImageData<ID> :EndImage<EI>
         :BeginMarkedContent<BMC> :EndMarkedContent<EMC>
         :BeginText<BT> :EndText<ET>
@@ -34,8 +34,8 @@ role PDF::DOM::Op {
         :CurveTo2<y> :MoveSetShowText<"> :MoveShowText<'>
     »;
 
-    constant TextOps = set <T* Tc Td TD Tf Tj TJ TL Tm Tr Ts Tw Tz>;
-    constant GraphicOps = set <cm w J j M d ri i gs>;
+    my constant TextOps = set <T* Tc Td TD Tf Tj TJ TL Tm Tr Ts Tw Tz>;
+    my constant GraphicOps = set <cm w J j M d ri i gs>;
 
     has %.gstate = %(:CTM[ 1, 0, 0, 1, 0, 0 ]);
 

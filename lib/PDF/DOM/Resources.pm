@@ -7,7 +7,7 @@ role PDF::DOM::Resources {
     use PDF::DOM::Util::Font;
     use PDF::DOM::Type::Font;
 
-    role ResourceEntry {
+    my role ResourceEntry {
         has Str $.key is rw;
     }
 
