@@ -9,7 +9,7 @@ class PDF::DOM::Type::Function::Exponential
 
     use PDF::Object::Tie;
     # see [PDF 1.7 TABLE 3.37 Additional entries specific to a type 2 function dictionary]
-    has Array $!C0 is entry;            #| (Optional) An array of n numbers defining the function result when x = 0.0. Default value: [ 0.0 ].
-    has Array $!C1 is entry;            #| (Optional) An array of n numbers defining the function result when x = 1.0. Default value: [ 1.0 ].
+    has Array $.C0 is entry;            #| (Optional) An array of n numbers defining the function result when x = 0.0. Default value: [ 0.0 ].
+    has Array $.C1 is entry;            #| (Optional) An array of n numbers defining the function result when x = 1.0. Default value: [ 1.0 ].
     has Numeric $N is entry(:required); #| (Required) The interpolation exponent. Each input value x will return n values, given by yj = C0j + xN × (C1j − C0j ), for 0 ≤ j < n.
 }

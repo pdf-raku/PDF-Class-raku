@@ -14,6 +14,6 @@ class PDF::DOM::Type::Pattern::Shading
 
     # see [PDF 1.7 TABLE 4.26 Entries in a type 2 pattern dictionary]
     use PDF::DOM::Type::Shading;
-    has PDF::DOM::Type::Shading $!Shading is entry(:required); #| (Required) A shading object (see below) defining the shading pattern’s gradient fill.
-    has Hash $!ExtGState is entry;          #| (Optional) A graphics state parameter dictionary
+    has PDF::DOM::Type::Shading $.Shading is entry(:required); #| (Required) A shading object (see below) defining the shading pattern’s gradient fill.
+    has Hash $.ExtGState is entry;          #| (Optional) A graphics state parameter dictionary
 }

@@ -10,13 +10,13 @@ class PDF::DOM::Array::ColorSpace
     method type {'ColorSpace'}
     method subtype {$.Subtype}
     use PDF::Object::Name;
-    has PDF::Object::Name $!Subtype is index(0);
-    has Hash $!Dict is index(1);
-
+    has PDF::Object::Name $.Subtype is index(0);
     use PDF::Object::Tie;
+    has Hash $.Dict is index(1);
+
     # see [PDF 1.7 tables 4.13, 4.14, 4.15]
-    has Array $!WhitePoint is entry(:required); #| Required) An array of three numbers [ XW YW ZW ] specifying the tristimulus value, in the CIE 1931 XYZ space, of the diffuse white point
-    has Array $!BlackPoint is entry;            #| (Optional) An array of three numbers [ XB YB ZB ] specifying the tristimulus value, in the CIE 1931 XYZ space, of the diffuse black point
+    has Array $.WhitePoint is entry(:required); #| Required) An array of three numbers [ XW YW ZW ] specifying the tristimulus value, in the CIE 1931 XYZ space, of the diffuse white point
+    has Array $.BlackPoint is entry;            #| (Optional) An array of three numbers [ XB YB ZB ] specifying the tristimulus value, in the CIE 1931 XYZ space, of the diffuse black point
 
     constant ColorSpaceTypes = <CalGray CalRGB Lab>;
     constant ColorSpaceNames = %( ColorSpaceTypes.pairs.invert );

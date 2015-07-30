@@ -11,14 +11,14 @@ class PDF::DOM::Type::Shading
     use PDF::Object::Array;
     use PDF::Object::Name;
     subset ShadingTypeInt of Int where 1..7;
-    has ShadingTypeInt $!ShadingType is entry;
+    has ShadingTypeInt $.ShadingType is entry;
 
     # see [PDF 1.7 TABLE 4.28 Entries common to all shading dictionaries]
     subset NameOrArray of Any where PDF::Object::Array | PDF::Object::Name;
-    has NameOrArray $!ColorSpace is entry(:required); #| (Required) The color space in which color values are expressed.
-    has Array $!Background is entry;                  #| (Optional) An array of color components appropriate to the color space, specifying a single background color value.
-    has Array $!BBox is entry;                        #| (Optional) An array of four numbers giving the left, bottom, right, and top coordinates, respectively, of the shading’s bounding box
-    has Bool $!AntiAlias is entry;                    #| (Optional) A flag indicating whether to filter the shading function to prevent aliasing artifacts.
+    has NameOrArray $.ColorSpace is entry(:required); #| (Required) The color space in which color values are expressed.
+    has Array $.Background is entry;                  #| (Optional) An array of color components appropriate to the color space, specifying a single background color value.
+    has Array $.BBox is entry;                        #| (Optional) An array of four numbers giving the left, bottom, right, and top coordinates, respectively, of the shading’s bounding box
+    has Bool $.AntiAlias is entry;                    #| (Optional) A flag indicating whether to filter the shading function to prevent aliasing artifacts.
 
     # from PDF Spec 1.7 table 4.28
     constant ShadingTypes = <Function Axial Radial FreeForm Lattice Coons Tensor>;

@@ -13,13 +13,13 @@ class PDF::DOM
 
     use PDF::Object::Tie;
 
-    has Int $!Size is entry(:required);   #| 1 greater than the highest object number used in the file.
+    has Int $.Size is entry(:required);   #| 1 greater than the highest object number used in the file.
     use PDF::DOM::Type::Catalog;
-    has PDF::DOM::Type::Catalog $!Root is entry(:required,:indirect);
+    has PDF::DOM::Type::Catalog $.Root is entry(:required,:indirect);
                                           #| (Required; must be an indirect reference) The catalog dictionary for the PDF document contained in the file
-    has Hash $!Encrypt is entry;          #| (Required if document is encrypted; PDF 1.1) The document’s encryption dictionary
-    has Hash $!Info is entry(:indirect);  #| (Optional; must be an indirect reference) The document’s information dictionary 
-    has Array $!ID is entry;              #| (Optional, but strongly recommended; PDF 1.1) An array of two byte-strings constituting a file identifier
+    has Hash $.Encrypt is entry;          #| (Required if document is encrypted; PDF 1.1) The document’s encryption dictionary
+    has Hash $.Info is entry(:indirect);  #| (Optional; must be an indirect reference) The document’s information dictionary 
+    has Array $.ID is entry;              #| (Optional, but strongly recommended; PDF 1.1) An array of two byte-strings constituting a file identifier
 
     method Pages { self.Root.Pages }
     method page($page-num) { self.Pages.page($page-num) }

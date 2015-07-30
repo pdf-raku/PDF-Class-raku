@@ -36,9 +36,9 @@ class t::DOM::Catalog
 
     # see [PDF 1.7 TABLE 3.25 Entries in the catalog dictionary]
     use PDF::Object::Name;
-    has PDF::Object::Name $!Version is entry;        #| (Optional; PDF 1.4) The version of the PDF specification to which the document conforms (for example, /1.4) 
-    has Hash $!Pages is entry(:required, :indirect); #| (Required; must be an indirect reference) The page tree node
-    has Hash $!Resources is entry;
+    has PDF::Object::Name $.Version is entry;        #| (Optional; PDF 1.4) The version of the PDF specification to which the document conforms (for example, /1.4) 
+    has Hash $.Pages is entry(:required, :indirect); #| (Required; must be an indirect reference) The page tree node
+    has Hash $.Resources is entry;
 }
 
 #| subclassed Pages class
