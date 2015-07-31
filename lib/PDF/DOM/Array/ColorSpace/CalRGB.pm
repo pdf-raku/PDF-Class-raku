@@ -1,12 +1,14 @@
 use v6;
 
-use PDF::DOM::Array::ColorSpace::CalGray;
+use PDF::DOM::Array::ColorSpace;
 
 class PDF::DOM::Array::ColorSpace::CalRGB
-    is PDF::DOM::Array::ColorSpace::CalGray {
+    is PDF::DOM::Array::ColorSpace {
 
-    use PDF::Object::Tie;
     # see [PDF 1.7 TABLE 4.14 Entries in a CalRGB color space dictionary]
-    has Array $.Matrix is entry;  #| (Optional) An array of nine numbers [ XA YA ZA XB YB ZB XC YC ZC ] specifying the linear interpretation of the decoded A, B, and C components of the color space with respect to the final XYZ representation.
+    method WhitePoint is rw { self[1]<WhitePoint> }
+    method BlackPoint is rw { self[1]<BlackPoint> }
+    method Gamma is rw { self[1]<Gamma> }
+    method Matrix is rw { self[1]<Matrix> }
 
 }

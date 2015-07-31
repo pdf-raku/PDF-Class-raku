@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 10;
+plan 12;
 
 use PDF::DOM::Type;
 use PDF::Storage::IndObj;
@@ -29,12 +29,13 @@ my $color-space-obj = $ind-obj.object;
 isa-ok $color-space-obj, ::('PDF::DOM::Array')::('ColorSpace::CalRGB');
 is $color-space-obj.type, 'ColorSpace', '$.type accessor';
 is $color-space-obj.subtype, 'CalRGB', '$.subtype accessor';
-is-json-equiv $color-space-obj.Dict, { :WhitePoint[ 1.0, 1.0, 1.0 ] }, '$.dict accessor';
+is-json-equiv $color-space-obj[1], { :WhitePoint[ 1.0, 1.0, 1.0 ] }, 'array access';
+is-json-equiv $color-space-obj[1]<WhitePoint>, [ 1.0, 1.0, 1.0 ], 'WhitePoint dereference';
+is-json-equiv $color-space-obj.WhitePoint, $color-space-obj[1]<WhitePoint>, '$WhitePoint accessor';
 is-deeply $ind-obj.ast, $ast, 'ast regeneration';
 
 require ::('PDF::DOM::Array')::('ColorSpace::CalGray');
 my $cal-gray = ::('PDF::DOM::Array')::('ColorSpace::CalGray').new;
 isa-ok $cal-gray, ::('PDF::DOM::Array')::('ColorSpace::CalGray'), 'new CS class';
 is $cal-gray.subtype, 'CalGray', 'new CS subtype';
-todo "dict initialization";
-isa-ok $cal-gray.Dict, Hash, 'new CS Dict';
+isa-ok $cal-gray[1], Hash, 'new CS Dict';
