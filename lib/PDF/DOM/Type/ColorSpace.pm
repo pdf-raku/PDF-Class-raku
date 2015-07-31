@@ -4,7 +4,7 @@ use PDF::Object::Array;
 use PDF::Object::Tie;
 use PDF::Object::Tie::Array;
 
-class PDF::DOM::Array::ColorSpace
+class PDF::DOM::Type::ColorSpace
     is PDF::Object::Array {
 
     method type {'ColorSpace'}
@@ -14,12 +14,12 @@ class PDF::DOM::Array::ColorSpace
     has PDF::Object::Name $.Subtype is index(0);
 
     #| enforce tie-ins between self[0] & the class name. e.g.
-    #| PDF::DOM::Array::ColorSpace::CalGray should have self[0] == 'CalGray'
+    #| PDF::DOM::Type::ColorSpace::CalGray should have self[0] == 'CalGray'
     method cb-init {
         for self.^mro {
             my Str $class-name = .^name;
 
-            if $class-name ~~ /^ 'PDF::DOM::Array::' (\w+) '::' (\w+) $/ {
+            if $class-name ~~ /^ 'PDF::DOM::Type::' (\w+) '::' (\w+) $/ {
 
 		die "bad class-name $class-name"
 		    unless ~$0 eq $.type;

@@ -76,8 +76,8 @@ class PDF::DOM::Delegator
 
     multi method delegate(CIEBased-ColorSpace :$array!, *%opts) {
 	my $colorspace = from-ast $array[0];
-	require ::('PDF::DOM::Array::ColorSpace')::($colorspace);
-	::('PDF::DOM::Array::ColorSpace')::($colorspace);
+	require ::('PDF::DOM::Type::ColorSpace')::($colorspace);
+	::('PDF::DOM::Type::ColorSpace')::($colorspace);
     }
 
 }

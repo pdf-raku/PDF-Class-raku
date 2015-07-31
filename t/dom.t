@@ -160,9 +160,9 @@ is $gs-obj.TR, (:ind-ref[36, 0]), 'ExtGState TR';
 my $gs1 = $new-page.resource( $gs-obj );
 is-deeply $gs1.key, 'Eg1', 'ExtGState resource entry';
 
-use PDF::DOM::Array::ColorSpace::Lab;
-my $colorspace = PDF::DOM::Array::ColorSpace::Lab.new;
-isa-ok $colorspace, PDF::DOM::Array::ColorSpace::Lab;
+use PDF::DOM::Type::ColorSpace::Lab;
+my $colorspace = PDF::DOM::Type::ColorSpace::Lab.new;
+isa-ok $colorspace, PDF::DOM::Type::ColorSpace::Lab;
 my $cs1 = $new-page.resource( $colorspace );
 is $cs1.key, 'Cs1', 'ColorSpace resource entry';
 

@@ -1,9 +1,9 @@
 use v6;
 
-use PDF::DOM::Array::ColorSpace;
+use PDF::DOM::Type::ColorSpace;
 
-class PDF::DOM::Array::ColorSpace::CalRGB
-    is PDF::DOM::Array::ColorSpace {
+class PDF::DOM::Type::ColorSpace::CalRGB
+    is PDF::DOM::Type::ColorSpace {
 
     # see [PDF 1.7 TABLE 4.14 Entries in a CalRGB color space dictionary]
     method WhitePoint is rw { self[1]<WhitePoint> }

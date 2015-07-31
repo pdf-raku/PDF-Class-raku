@@ -26,7 +26,7 @@ my $ind-obj = PDF::Storage::IndObj.new( |%$ast);
 is $ind-obj.obj-num, 16, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $color-space-obj = $ind-obj.object;
-isa-ok $color-space-obj, ::('PDF::DOM::Array')::('ColorSpace::CalRGB');
+isa-ok $color-space-obj, ::('PDF::DOM::Type')::('ColorSpace::CalRGB');
 is $color-space-obj.type, 'ColorSpace', '$.type accessor';
 is $color-space-obj.subtype, 'CalRGB', '$.subtype accessor';
 is-json-equiv $color-space-obj[1], { :WhitePoint[ 1.0, 1.0, 1.0 ] }, 'array access';
@@ -34,8 +34,8 @@ is-json-equiv $color-space-obj[1]<WhitePoint>, [ 1.0, 1.0, 1.0 ], 'WhitePoint de
 is-json-equiv $color-space-obj.WhitePoint, $color-space-obj[1]<WhitePoint>, '$WhitePoint accessor';
 is-deeply $ind-obj.ast, $ast, 'ast regeneration';
 
-require ::('PDF::DOM::Array')::('ColorSpace::CalGray');
-my $cal-gray = ::('PDF::DOM::Array')::('ColorSpace::CalGray').new;
-isa-ok $cal-gray, ::('PDF::DOM::Array')::('ColorSpace::CalGray'), 'new CS class';
+require ::('PDF::DOM::Type')::('ColorSpace::CalGray');
+my $cal-gray = ::('PDF::DOM::Type')::('ColorSpace::CalGray').new;
+isa-ok $cal-gray, ::('PDF::DOM::Type')::('ColorSpace::CalGray'), 'new CS class';
 is $cal-gray.subtype, 'CalGray', 'new CS subtype';
 isa-ok $cal-gray[1], Hash, 'new CS Dict';
