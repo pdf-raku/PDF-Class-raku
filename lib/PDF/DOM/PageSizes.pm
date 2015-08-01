@@ -23,6 +23,40 @@ role PDF::DOM::PageSizes {
         self.media-box(0, 0, $ux, $uy)
     }
 
+    method get-page-size(Str $page-size-name) {
+	#| source: http://www.gnu.org/software/gv/
+	my constant PageSizes = { 
+	    :letter[612,792],
+	    :tabloid[792,1224],
+	    :ledger[1224,792],
+	    :legal[612,1008],
+	    :statement[396,612],
+	    :executive[540,720],
+	    :a0[2384,3371],
+	    :a1[1685,2384],
+	    :a2[1190,1684],
+	    :a3[842,1190],
+	    :a4[595,842],
+	    :a5[420,595],
+	    :b4[729,1032],
+	    :b5[516,729],
+	    :folio[612,936],
+	    :quarto[610,780],
+	    '10x14' => [720,1008],
+	};
+
+	die "invalid page size: $page-size-name. Please choose from: {PageSizes.keys.sort,join(', ')}"
+	    unless PageSizes{$page-size-name}:exists;
+
+	my $page-size = PageSizes{$page-size-name};
+	@(0, 0, $page-size[0], $page-size[1])
+    }
+
+    multi method bbox(Str $media-name!, Str $page-size-name! --> Array) {
+	my @page-size =self.get-page-size($page-size-name);
+	self.bbox($media-name, |@page-size);
+    }
+
     multi method bbox('media' --> Array) {
 	my $bbox = self!"get-prop"('media');
         $bbox // [0, 0, 612, 792];
