@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 42;
+plan 43;
 
 use PDF::Storage::IndObj;
 use PDF::DOM::Type;
@@ -80,6 +80,8 @@ $page.art-box(10,10,240,290);
 is-json-equiv $page.art-box, [10,10,240,290], '$.art-box - updated';
 $page.media-box('a3');
 is-json-equiv $page.media-box, [0,0,842,1190], 'media-box page-name setter';
+$page.media-box('a3', :landscape);
+is-json-equiv $page.media-box, [0,0,1190,842], 'media-box page-name setter :landscape';
 
 $page.gfx.ops(['BT', 'Tj' => [ :literal('Hello, world!') ], 'ET']);
 $page.cb-finish;

@@ -23,7 +23,8 @@ role PDF::DOM::PageSizes {
         self.media-box(0, 0, $ux, $uy)
     }
 
-    method get-page-size(Str $page-size-name) {
+    method get-page-size(Str $page-size-name, Bool :$landscape = False
+			 --> List) {
 	#| source: http://www.gnu.org/software/gv/
 	my constant PageSizes = { 
 	    :letter[612,792],
@@ -49,11 +50,14 @@ role PDF::DOM::PageSizes {
 	    unless PageSizes{$page-size-name}:exists;
 
 	my $page-size = PageSizes{$page-size-name};
-	@(0, 0, $page-size[0], $page-size[1])
+	$landscape
+	    ?? @(0, 0, $page-size[1], $page-size[0])
+	    !! @(0, 0, $page-size[0], $page-size[1]);
     }
 
-    multi method bbox(Str $media-name!, Str $page-size-name! --> Array) {
-	my @page-size =self.get-page-size($page-size-name);
+    multi method bbox(Str $media-name!, Str $page-size-name!, Bool :$landscape = False
+	--> Array) {
+	my @page-size =self.get-page-size($page-size-name, :$landscape);
 	self.bbox($media-name, |@page-size);
     }
 
@@ -72,10 +76,10 @@ role PDF::DOM::PageSizes {
         $bbox // self.bbox('crop');
     }
 
-    method media-box(*@args) { self.bbox('media', |@args) }
-    method crop-box(*@args) { self.bbox('crop', |@args) }
-    method bleed-box(*@args) { self.bbox('bleed', |@args) }
-    method trim-box(*@args) { self.bbox('trim', |@args) }
-    method art-box(*@args) { self.bbox('art', |@args) }
+    method media-box(*@a, *%o) { self.bbox('media', |@a, |%o) }
+    method crop-box(*@a, *%o) { self.bbox('crop', |@a, |%o) }
+    method bleed-box(*@a, *%o) { self.bbox('bleed', |@a, |%o) }
+    method trim-box(*@a, *%o) { self.bbox('trim', |@a, |%o) }
+    method art-box(*@a, *%o) { self.bbox('art', |@a, |%o) }
 
 }
