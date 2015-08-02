@@ -10,6 +10,9 @@
         "PDF::DOM::Type" : "lib/PDF/DOM/Type.pm",
 
         "PDF::DOM::Type::Catalog" : "lib/PDF/DOM/Type/Catalog.pm",
+        "PDF::DOM::Type::CMap" : "lib/PDF/DOM/Type/CMap.pm",
+
+        "PDF::DOM::Type::CIDSystemInfo" : "lib/PDF/DOM/Type/CIDSystemInfo.pm",
 
         "PDF::DOM::Type::ColorSpace" : "lib/PDF/DOM/Type/ColorSpace.pm",
         "PDF::DOM::Type::ColorSpace::CalGray" : "lib/PDF/DOM/Type/ColorSpace/CalGray.pm",

@@ -24,7 +24,8 @@ class PDF::DOM::Type::Font::Type1
 ## causes precomp issues
 ##    use PDF::DOM::Type::Encoding;
 ##    subset NameOrEncoding of Any where PDF::Object::Name | PDF::DOM::Type::Encoding;
-    has $.Encoding is entry;                #| (Optional) A specification of the font’s character encoding if different from its built-in encoding. The value of Encoding is either the name of a predefined encoding (MacRomanEncoding, MacExpertEncoding, or WinAnsiEncoding, as described in Appendix D) or an encoding dictionary that specifies differences from the font’s built-in encoding or from a specified predefined encoding
+    my subset NameOrEncoding of Any where PDF::Object::Name | PDF::Object:Dict;
+    has NameOrEncoding $.Encoding is entry;                #| (Optional) A specification of the font’s character encoding if different from its built-in encoding. The value of Encoding is either the name of a predefined encoding (MacRomanEncoding, MacExpertEncoding, or WinAnsiEncoding, as described in Appendix D) or an encoding dictionary that specifies differences from the font’s built-in encoding or from a specified predefined encoding
 
     has PDF::Object::Stream $.ToUnicode is entry;          #| (Optional; PDF 1.2) A stream containing a CMap file that maps character codes to Unicode values
 

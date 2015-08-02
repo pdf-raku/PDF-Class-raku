@@ -59,6 +59,11 @@ class PDF::DOM::Delegator
 	::('PDF::DOM::Type::Shading').delegate( :$dict );
     }
 
+    multi method delegate(Hash :$dict! where {($dict<Registry>:exists) && ($dict<Ordering>:exists)}) {
+	require ::('PDF::DOM::Type::CIDSystemInfo');
+	::('PDF::DOM::Type::CIDSystemInfo');
+    }
+
     multi method delegate(Hash :$dict!, *%opts) is default {
 	nextwith( :$dict, |%opts);
     }
