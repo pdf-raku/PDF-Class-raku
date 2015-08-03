@@ -383,9 +383,9 @@ role PDF::DOM::Op {
 			  *@args,
 	) {
 	my $op = OpNames.enums{$op-name};
-	my &op-meth = { self.op($op, |@args) };
+	my &op-meth = method (*@a) { self.op($op, |@a) };
         self.WHAT.^add_method($op-name, &op-meth );
-        &op-meth();
+        self."$op-name"(|@args);
     }
 
     multi method FALLBACK($name) is default { die "unknown method: $name\n" }

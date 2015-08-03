@@ -83,7 +83,7 @@ is-json-equiv $page.media-box, [0,0,842,1190], 'media-box page-name setter';
 $page.media-box('a3', :landscape);
 is-json-equiv $page.media-box, [0,0,1190,842], 'media-box page-name setter :landscape';
 
-$page.gfx.ops(['BT', 'Tj' => [ :literal('Hello, world!') ], 'ET']);
+$page.gfx.ops(['BT', :Tj[ :literal('Hello, world!') ], 'ET']);
 $page.cb-finish;
 
 my $contents = $page.Contents;

@@ -14,11 +14,11 @@ $pdf.Pages.add-page: $page;
 my $bold-font = $pdf.core-font( :family<Helvetica>, :weight<bold> );
 my $reg-font = $pdf.core-font( :family<Helvetica> );
 
-$gfx.op(BeginText);
+$gfx.BeginText;
 $gfx.text-move(50,100);
 $gfx.set-font($bold-font, $font-size);
 $gfx.say('Hello, World!', :$width, :kern);
-$gfx.op(EndText);
+$gfx.EndText;
 
 is-deeply [$gfx.content.lines], [
     "BT",
@@ -35,7 +35,7 @@ $width = 100;
 my $height = 80;
 my $x = 110;
 
-$gfx.op(BeginText);
+$gfx.BeginText;
 $gfx.set-font( $reg-font, 10);
 
 my $sample = q:to"--ENOUGH!!--".subst(/\n/, ' ', :g);
@@ -60,7 +60,7 @@ for <text top center bottom> -> $valign {
 
    $x += 125;
 }
-$gfx.op(EndText);
+$gfx.EndText;
 
 $page = $pdf.add-page;
 $gfx = $page.gfx;
@@ -71,7 +71,7 @@ my $y = 700;
 
 my $op-tab = OpNames.enums;
 
-$gfx.op(BeginText);
+$gfx.BeginText;
 $gfx.set-font($reg-font, 10);
 my %default-settings = :TextRise(0), :HorizScaling(100), :CharSpacing(0), :WordSpacing(0);
 
@@ -112,7 +112,7 @@ for (
 
 }
 
-$gfx.op(EndText);
+$gfx.EndText;
 
 $pdf.save-as('t/dom-page-text.pdf');
 

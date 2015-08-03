@@ -12,7 +12,7 @@ my $width = 150;
 my $font-size = 15;
 my $x = 35;
 
-$gfx.op(BeginText);
+$gfx.BeginText;
 
 for <left center right> -> $align {
     $gfx.text-move($x, 750, :abs);
@@ -34,10 +34,10 @@ for <left center right> -> $align {
 $gfx.block: {
     $gfx.text-move(240,600, :abs);
     $gfx.set-font($page.core-font('ZapfDingbats'), 24);
-    $gfx.op(SetWordSpacing, 16);
+    $gfx.SetWordSpacing(16);
     my $nbsp = "\c[NO-BREAK SPACE]";
     $gfx.print("♠ ♣$nbsp");
-    $gfx.op(SetFillRGB, 1, .3, .3);
+    $gfx.SetFillRGB( 1, .3, .3);
     $gfx.say("♦ ♥");
 };
 
@@ -48,7 +48,7 @@ $gfx.do($img, 232, 380, :width(150) );
 $gfx.text-move(100,300, :abs);
 $gfx.set-font( $header-font, 24);
 $gfx.say('Hello, world!');
-$gfx.op(EndText);
+$gfx.EndText;
 $pdf<Info><Author> = 't/helloworld.t';
 $pdf<Info><Creator> = 'PDF::Tools';
 ok $pdf.save-as('t/helloworld.pdf'), '.save-as';
