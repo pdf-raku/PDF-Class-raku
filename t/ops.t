@@ -37,7 +37,7 @@ is $g.CharSpacing, -.5, '$g.CharSpacing - updated';
 is-json-equiv $g.TextMatrix, [1, 0, 0, 1, 0, 0], '$g.TextMatrix - initial';
 $g.op(SetTextMatrix, 10, 1, 15, 2, 3, 4);
 is-json-equiv $g.TextMatrix, [10, 1, 15, 2, 3, 4], '$g.TextMatrix - updated';
-$g.op(SetTextMatrix, 10, 1, 15, 2, 3, 4);
+$g.SetTextMatrix( 10, 1, 15, 2, 3, 4);
 is-json-equiv $g.TextMatrix, [10, 1, 15, 2, 3, 4], '$g.TextMatrix - updated again';
 
 $g.op(Save);

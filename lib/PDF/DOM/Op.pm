@@ -378,4 +378,16 @@ role PDF::DOM::Op {
         $writer.write( :@content );
     }
 
+    # e.g. $.Restore :== $.op('Q', [])
+    multi method FALLBACK(Str $op-name where {OpNames.enums{$op-name}:exists},
+			  *@args,
+	) {
+	my $op = OpNames.enums{$op-name};
+	my &op-meth = { self.op($op, |@args) };
+        self.WHAT.^add_method($op-name, &op-meth );
+        &op-meth();
+    }
+
+    multi method FALLBACK($name) is default { die "unknown method: $name\n" }
+
 }
