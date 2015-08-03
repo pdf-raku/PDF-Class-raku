@@ -10,6 +10,8 @@ module PDF::DOM::Util::TransformMatrix {
     #
     # where a b c d e f are stored in a six digit array and the third column is implied.
 
+    my Int enum Abcdefg « :a(0) :b(1) :c(2) :d(3) :e(4) :f(5) »;
+
     sub deg2rad (Numeric $deg) {
         return $deg * pi / 180;
     }
@@ -40,17 +42,26 @@ module PDF::DOM::Util::TransformMatrix {
         [1, tan(deg2rad($x)), tan(deg2rad($y)), 1, 0, 0];
     }
 
+    #| multiply transform matrix $a X $b
     our sub multiply(TransformMatrix $a!, TransformMatrix $b! --> TransformMatrix) {
 
-        [ $b[0]*$a[0] + $b[2]*$a[1],
-          $b[1]*$a[0] + $b[3]*$a[1],
-          $b[0]*$a[2] + $b[2]*$a[3],
-          $b[1]*$a[2] + $b[3]*$a[3],
-          $b[0]*$a[4] + $b[2]*$a[5] + $b[4],
-          $b[1]*$a[4] + $b[3]*$a[5] + $b[5],
+        [ $b[a]*$a[a] + $b[c]*$a[b],
+          $b[b]*$a[a] + $b[d]*$a[b],
+          $b[a]*$a[c] + $b[c]*$a[d],
+          $b[b]*$a[c] + $b[d]*$a[d],
+          $b[a]*$a[e] + $b[c]*$a[f] + $b[e],
+          $b[b]*$a[e] + $b[d]*$a[f] + $b[f],
         ];
     }
 
+    #| Coordinate transfrom of x, y: See [PDF 1.7 Sectiono 4.2.3 Transformation Matrices]
+    #|  x' = a.x  + c.y + e; y' = b.x + d.y +f
+    our sub transform(TransformMatrix $tm!, Numeric $x, Numeric $y) {
+	($tm[a]*$x + $tm[c]*$y + $tm[e],
+	 $tm[b]*$x + $tm[d]*$y + $tm[f])
+    }
+
+    #| Compute: $a = $a X $b
     our sub apply(TransformMatrix $a! is rw, TransformMatrix $b! --> TransformMatrix) {
 	$a = multiply($a, $b);
     }
@@ -67,7 +78,10 @@ module PDF::DOM::Util::TransformMatrix {
     multi sub vect(Numeric $n! --> List) {@($n, $n)}
     multi sub vect(Array $v where {+$v == 2} --> List) {$v.flat}
 
-    our sub transform(
+    #| 3 [PDF 1.7 Section 4.2.2 Common Transforms
+    #| order of transforms is: 1. Translate  2. Rotate 3. Scale/Skew
+
+    our sub transformation(
 	:$translate,
 	:$rotate?,
 	:$scale?,
