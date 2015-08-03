@@ -70,7 +70,7 @@ class PDF::DOM::Delegator
     }
 
     #| PDF Spec 1.7 Section 4.5.4 CIE-Based Color Spaces
-    subset CIEBased-ColorSpace of Array where {
+    subset ColorSpace-Array-CIE where {
 	.elems == 2 && do {
 	    my $t = from-ast .[0];
 	    if $t ~~  PDF::Object::Name {
@@ -84,7 +84,22 @@ class PDF::DOM::Delegator
 	}
     }
 
-    multi method delegate(CIEBased-ColorSpace :$array!, *%opts) {
+    #| PDF Spec 1.7 Section 4.5.5 Special Color Spaces
+    subset ColorSpace-Array-Special where {
+	my $a = $_;
+	$a.elems == 4 && do {
+	    my $t = from-ast $a[0];
+	    $t ~~  PDF::Object::Name && do given $t {
+		when 'Indexed'    { my $hival = from-ast($a[2]); $hival ~~ UInt }
+		when 'Separation' { from-ast($a[1]) ~~ PDF::Object::Name }
+		default {False}
+	    }
+	}
+    }
+
+    subset ColorSpace-Array of Array where ColorSpace-Array-CIE | ColorSpace-Array-Special;
+
+    multi method delegate(ColorSpace-Array :$array!, *%opts) {
 	my $colorspace = from-ast $array[0];
 	require ::('PDF::DOM::Type::ColorSpace')::($colorspace);
 	::('PDF::DOM::Type::ColorSpace')::($colorspace);
