@@ -81,12 +81,13 @@ module PDF::DOM::Util::TransformMatrix {
     #| 3 [PDF 1.7 Section 4.2.2 Common Transforms
     #| order of transforms is: 1. Translate  2. Rotate 3. Scale/Skew
 
-    our sub transformation(
+    our sub transform-matrix(
 	:$translate,
 	:$rotate?,
 	:$scale?,
 	:$skew?,
 	:$matrix?,
+	--> TransformMatrix
 	) {
 	my TransformMatrix $t = identity();
 	apply($t, translate( |@( vect($translate) ) )) if $translate.defined;

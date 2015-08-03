@@ -18,6 +18,7 @@
         "PDF::DOM::Type::ColorSpace::CalGray" : "lib/PDF/DOM/Type/ColorSpace/CalGray.pm",
         "PDF::DOM::Type::ColorSpace::CalRGB" : "lib/PDF/DOM/Type/ColorSpace/CalRGB.pm",
         "PDF::DOM::Type::ColorSpace::Lab" : "lib/PDF/DOM/Type/ColorSpace/Lab.pm",
+        "PDF::DOM::Type::ColorSpace::ICCBased" : "lib/PDF/DOM/Type/ColorSpace/ICCBased.pm",
 
         "PDF::DOM::Type::Encoding" : "lib/PDF/DOM/Type/Encoding.pm",
 

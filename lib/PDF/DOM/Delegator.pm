@@ -1,6 +1,7 @@
 use v6;
 
 use PDF::Object;
+use PDF::Object::Name;
 use PDF::Object::Delegator;
 
 class PDF::DOM::Delegator {...}
@@ -72,9 +73,13 @@ class PDF::DOM::Delegator
     subset CIEBased-ColorSpace of Array where {
 	.elems == 2 && do {
 	    my $t = from-ast .[0];
-	    $t ~~ Str && $t eq 'CalGray'|'CalRGB'|'Lab' && do {
+	    if $t ~~  PDF::Object::Name {
 		my $d = from-ast .[1];
-		($d ~~ Hash) && ($d<WhitePoint>:exists);
+		$d ~~ Hash && do given $t {
+		    when 'CalGray'|'CalRGB'|'Lab' { $d<WhitePoint>:exists}
+		    when 'ICCBased'               { $d<N>:exists }
+		    default {False}
+		}
 	    }
 	}
     }

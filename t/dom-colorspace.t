@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 12;
+plan 19;
 
 use PDF::DOM::Type;
 use PDF::Storage::IndObj;
@@ -39,3 +39,23 @@ my $cal-gray = ::('PDF::DOM::Type')::('ColorSpace::CalGray').new;
 isa-ok $cal-gray, ::('PDF::DOM::Type')::('ColorSpace::CalGray'), 'new CS class';
 is $cal-gray.subtype, 'CalGray', 'new CS subtype';
 isa-ok $cal-gray[1], Hash, 'new CS Dict';
+
+$input = q:to"--END-OBJ--";
+10 0 obj
+  [/ICCBased << /N 3 /Alternate /DeviceRGB >>]
+endobj
+--END-OBJ--
+
+PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
+    // die "parse failed";
+$ast = $/.ast;
+$ind-obj = PDF::Storage::IndObj.new( |%$ast);
+is $ind-obj.obj-num, 10, '$.obj-num';
+is $ind-obj.gen-num, 0, '$.gen-num';
+$color-space-obj = $ind-obj.object;
+isa-ok $color-space-obj, ::('PDF::DOM::Type')::('ColorSpace::ICCBased');
+is $color-space-obj.type, 'ColorSpace', '$.type accessor';
+is $color-space-obj.subtype, 'ICCBased', '$.subtype accessor';
+is $color-space-obj.N, 3, 'N accessor';
+is $color-space-obj.Alternate, 'DeviceRGB', 'DeviceRGB accessor';
+
