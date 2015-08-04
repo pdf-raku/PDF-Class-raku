@@ -6,8 +6,6 @@ use PDF::DOM::Op :OpNames;
 class T does PDF::DOM::Op {};
 my $g = T.new;
 
-dies-ok {$g.op('TJ', ['grrr'])}, "Text before BT - dies";
-
 is-json-equiv $g.BeginText, (:BT[]), 'BeginText';
 
 is-json-equiv $g.op('Tf', 'F1', 16), (:Tf[ :name<F1>, :real(16) ]), 'Tf';
