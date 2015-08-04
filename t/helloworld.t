@@ -55,6 +55,7 @@ $gfx.block: {
 $gfx.block: {
     $gfx.transform( :translate[285, 250]);
     $gfx.transform( :rotate(-10), :scale(1.5) );
+    $gfx.set-graphics( :transparency(.5) );
     $gfx.Rectangle(0, 0, 50, 50);
     $gfx.Fill;
 }

@@ -21,11 +21,14 @@ role PDF::DOM::Resources {
         };
     }
 
-    method resource(PDF::Object $object) {
+    method resource(PDF::Object $object, Bool :$eqv=False ) {
         my Str $type = $object.?type
             // die "not a resource object: {$object.WHAT}";
 
-        self!"find-resource"(sub ($_){$_ === $object}, :$type)
+	my &match = $eqv
+	    ?? sub ($_){$_ eqv $object}
+	    !! sub ($_){$_ === $object};
+        self!"find-resource"(&match, :$type)
             //  self!"register-resource"( $object );
     }
 
@@ -78,7 +81,7 @@ role PDF::DOM::Resources {
 
         do given $type {
 	    when 'ColorSpace' {'Cs'}
-            when 'ExtGState'  {'Eg'}
+            when 'ExtGState'  {'Gs'}
             when 'Font'       {'F'}
             when 'Pattern'    {'Pt'}
 	    when 'Shading'    {'Sh'}

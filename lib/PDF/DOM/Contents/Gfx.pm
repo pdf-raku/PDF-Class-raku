@@ -111,6 +111,21 @@ class PDF::DOM::Contents::Gfx
         $.op(SetFont, $font-entry, $size);
     }
 
+    use PDF::DOM::Type::ExtGState;
+    method set-graphics($gs = PDF::DOM::Type::ExtGState.new,
+			Numeric :$transparency,
+			Numeric :$opacity,
+	) {
+	$gs.transparency($transparency)
+	    if $transparency.defined;
+
+	$gs.transparancy(1 - $opacity)
+	    if $opacity.defined;
+
+	my $gs-entry = self.parent.resource($gs, :eqv);
+	self.SetGraphicsState($gs-entry.key);
+    }
+
     #! output text leave the text position at the end of the current line
     method print(Str $text,
                  Bool :$dry-run = False,

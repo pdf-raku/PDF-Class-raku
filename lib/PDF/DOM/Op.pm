@@ -18,7 +18,7 @@ role PDF::DOM::Op {
         :SetFillColorSpace<cs> :SetStrokeColorSpace<CS> :SetDash<d>
         :SetCharWidth<d0> :SetCacheDevice<d1> :XObject<Do>
         :MarkPoint<DP> :EOFill<f*> :Fill<f> :SetStrokeGray<G>
-        :SetFillGray<g> :SetExtGState<gs> :ClosePath<h> :SetFlat<i>
+        :SetFillGray<g> :SetGraphicsState<gs> :ClosePath<h> :SetFlat<i>
         :SetLineJoin<j> :SetLineCap<J> :SetFillCMYK<k>
         :SetStrokeCMYK<K> :LineTo<l> :MoveTo<m> :SetMiterLimit<M>
         :MarkPoint2<MP> :EndPath<n> :Save<q> :Restore<Q>

@@ -158,7 +158,7 @@ is-deeply $gs-obj.OP, True, 'ExtGState.OP after assignment';
 is $gs-obj.TR, (:ind-ref[36, 0]), 'ExtGState TR';
 
 my $gs1 = $new-page.resource( $gs-obj );
-is-deeply $gs1.key, 'Eg1', 'ExtGState resource entry';
+is-deeply $gs1.key, 'Gs1', 'ExtGState resource entry';
 
 use PDF::DOM::Type::ColorSpace::Lab;
 my $colorspace = PDF::DOM::Type::ColorSpace::Lab.new;
@@ -180,7 +180,7 @@ my $pt1 = $new-page.resource( $pat-obj );
 is $pt1.key, 'Pt1', 'Shading resource entry';
 
 is-json-equiv $new-page.Resources, {
-    :ExtGState({:Eg1($gs-obj)}),
+    :ExtGState({:Gs1($gs-obj)}),
     :ColorSpace{:Cs1($colorspace)},
     :Pattern{ :Pt1($pat-obj) },
     :Shading({:Sh1($Shading)}),
