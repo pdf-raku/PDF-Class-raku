@@ -24,7 +24,7 @@ class PDF::DOM::Type::Function
     method subtype { FunctionTypes[ $!FunctionType ] }
 
     #| see also PDF::DOM::Delegator
-    method delegate(Hash :$dict!) {
+    method delegate-function(Hash :$dict!) {
 
 	use PDF::Object::Util :from-ast;
 	my Int $function-type-int = from-ast $dict<FunctionType>;

@@ -27,7 +27,7 @@ class PDF::DOM::Type::Shading
     method subtype { ShadingTypes[ $!ShadingType - 1] }
 
     #| see also PDF::DOM::Delegator
-    method delegate(Hash :$dict!) {
+    method delegate-shading(Hash :$dict!) {
 
 	use PDF::Object::Util :from-ast;
 	my Int $type-int = from-ast $dict<ShadingType>;

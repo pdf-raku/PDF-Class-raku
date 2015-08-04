@@ -34,7 +34,7 @@ role PDF::DOM::Type
                     my Str $subtype-name = ~$1;
 
                     if self<Subtype>:!exists {
-                        self<Subtype> = PDF::Object.compose( :name($subtype-name) );
+                        self<Subtype> = PDF::Object.coerce( :name($subtype-name) );
                     }
                     else {
                         # /Subtype already set. check it agrees with the class name

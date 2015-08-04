@@ -47,17 +47,17 @@ class PDF::DOM::Delegator
 
     multi method delegate(Hash :$dict! where {$dict<FunctionType>:exists}) {
 	require ::('PDF::DOM::Type::Function');
-	::('PDF::DOM::Type::Function').delegate( :$dict );
+	::('PDF::DOM::Type::Function').delegate-function( :$dict );
     }
 
     multi method delegate(Hash :$dict! where {$dict<PatternType>:exists}) {
 	require ::('PDF::DOM::Type::Pattern');
-	::('PDF::DOM::Type::Pattern').delegate( :$dict );
+	::('PDF::DOM::Type::Pattern').delegate-pattern( :$dict );
     }
 
     multi method delegate(Hash :$dict! where {$dict<ShadingType>:exists}) {
 	require ::('PDF::DOM::Type::Shading');
-	::('PDF::DOM::Type::Shading').delegate( :$dict );
+	::('PDF::DOM::Type::Shading').delegate-shading( :$dict );
     }
 
     multi method delegate(Hash :$dict! where {($dict<Registry>:exists) && ($dict<Ordering>:exists)}) {

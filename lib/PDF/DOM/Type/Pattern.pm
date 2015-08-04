@@ -23,7 +23,7 @@ role PDF::DOM::Type::Pattern
     method subtype { PatternNames[ self<PatternType> ] }
 
     #| see also PDF::DOM::Delegator
-    method delegate(Hash :$dict!) {
+    method delegate-pattern(Hash :$dict!) {
 
 	use PDF::Object::Util :from-ast;
 	my Int $type-int = from-ast $dict<PatternType>;
