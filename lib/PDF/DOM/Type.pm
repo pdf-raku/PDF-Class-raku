@@ -22,7 +22,7 @@ role PDF::DOM::Type
                 my Str $type-name = ~$0;
 
                 if self<Type>:!exists {
-                    self<Type> = PDF::Object.compose( :name($type-name) );
+                    self<Type> = PDF::Object.coerce( :name($type-name) );
                 }
                 else {
                     # /Type already set. check it agrees with the class name

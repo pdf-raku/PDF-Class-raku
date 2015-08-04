@@ -25,7 +25,7 @@ ok $hb-afm-again === $hb-afm, 'font caching';
 
 my %params = $hbi-afm.to-dom('Font');
 
-my $font = PDF::Object.compose( |%params );
+my $font = PDF::Object.coerce( |%params );
 isa-ok $font, ::('PDF::DOM::Type::Font::Type1');
 is $font.BaseFont, 'Helvetica-BoldOblique', '.BaseFont';
 is $font.Encoding, 'WinAnsiEncoding', '.Encoding';
@@ -51,7 +51,7 @@ is $zapf.encode("♥♣✔").join, "ª¨4", '.encode(...)'; # /a110 /a112 /a20
 
 %params = $zapf.to-dom('Font');
 
-my $zapf-font = PDF::Object.compose( |%params );
+my $zapf-font = PDF::Object.coerce( |%params );
 isa-ok $zapf-font, ::('PDF::DOM::Type::Font::Type1');
 is $zapf-font.BaseFont, 'ZapfDingbats', '.BaseFont';
 ok !$zapf-font.Encoding.defined, '!.Encoding';
@@ -63,7 +63,7 @@ is $sym.encode("ΑΒΓ").join, "ABG", '.encode(...)'; # /Alpha /Beta /Gamma
 
 %params = $sym.to-dom('Font');
 
-my $sym-font = PDF::Object.compose( |%params );
+my $sym-font = PDF::Object.coerce( |%params );
 isa-ok $sym-font, ::('PDF::DOM::Type::Font::Type1');
 is $sym-font.BaseFont, 'Symbol', '.BaseFont';
 ok !$sym-font.Encoding.defined, '!.Encoding';

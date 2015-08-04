@@ -84,7 +84,7 @@ class PDF::DOM::Type::Catalog
 
     method cb-init {
         # vivify pages
-	self<Type> //= PDF::Object.compose( :name<Catalog> );
+	self<Type> //= PDF::Object.coerce( :name<Catalog> );
 	die "invalid /Type {self<Type>}" unless self<Type> eq 'Catalog';
         self<Pages> //= PDF::DOM::Type::Pages.new(
             :dict{

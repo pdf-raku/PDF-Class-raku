@@ -16,7 +16,7 @@ role PDF::DOM::Resources {
         self!"find-resource"(sub ($_){.isa(PDF::DOM::Type::Font) && .font-obj === $core-font}, :type<Font>)
             // do {
                 my %params = $core-font.to-dom('Font');
-                my $new-obj = PDF::Object.compose( |%params );
+                my $new-obj = PDF::Object.coerce( |%params );
                 self!"register-resource"( $new-obj );
         };
     }

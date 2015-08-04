@@ -27,7 +27,7 @@ class PDF::DOM::Type::ColorSpace
                 my Str $subtype = ~$1;
 
                 if ! self.Subtype {
-                    self.Subtype = PDF::Object.compose( :name($subtype) );
+                    self.Subtype = PDF::Object.coerce( :name($subtype) );
                 }
                 else {
                     # /Type already set. check it agrees with the class name

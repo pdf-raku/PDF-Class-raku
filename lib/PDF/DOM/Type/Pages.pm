@@ -26,7 +26,7 @@ class PDF::DOM::Type::Pages
     has Hash $.Resources is entry;
 
     #| add new last page
-    method add-page( $page = PDF::Object.compose( :dict{ :Type( :name<Page> ) } ) ) {
+    method add-page( $page = PDF::Object.coerce( { :Type( :name<Page> ) } ) ) {
         my $sub-pages = self.Kids[*-1]
             if self.Kids;
 
@@ -119,7 +119,7 @@ class PDF::DOM::Type::Pages
     }
 
     method cb-init {
-	self<Type> = PDF::Object.compose( :name<Pages> );
+	self<Type> = PDF::Object.coerce( :name<Pages> );
 	unless (self<Kids>:exists) || (self<Count>:exists) {
 	    self<Kids> = [];
 	    self<Count> = 0;
