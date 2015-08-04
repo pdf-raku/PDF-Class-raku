@@ -36,7 +36,7 @@ role PDF::DOM::Op {
 
     my constant TextOps = set <T* Tc Td TD Tf Tj TJ TL Tm Tr Ts Tw Tz>;
     my constant GraphicOps = set <cm w J j M d ri i gs>;
-
+    my constant ShadingOps = set <CS cs SC SCN sc scn G g RG rg K k>;
     has %.gstate = %(:CTM[ 1, 0, 0, 1, 0, 0 ]);
 
     has Array:_ $!Tm;      #| text matrix
@@ -258,11 +258,16 @@ role PDF::DOM::Op {
 	    $op-name = $opn.Str;
 	}
 
-	die "text operation '$op-name' outside of a BT ... ET text block\n"
+	warn "text operation '$op-name' outside of a BT ... ET text block\n"
 	    if $op-name ∈ TextOps && !$!in-text-block;
 
-	die "graphics operator '$op-name' outside of a q ... Q graphics block\n"
-	    if ($op-name ∈ GraphicOps) && !@!gsave;
+	if !@!gsave {
+	    warn "graphics operation '$op-name' outside of a q ... Q graphics block\n"
+		if $op-name ∈ GraphicOps;
+
+	    warn "shading operation '$op-name' outside of a q ... Q graphics block\n"
+		if $op-name ∈ ShadingOps;
+	}
 
 	@!ops.push($opn);
         $.g-track($op-name, |@args );

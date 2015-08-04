@@ -76,16 +76,22 @@ class PDF::DOM::Contents::Gfx
             default { die "not an xobject form or image: {.perl}" }
         }
 
-        $.op(Save);
-        $.op(ConcatMatrix, $width, 0, 0, $height, $x + $dx, $y + $dy);
-        if $inline && $obj.Subtype eq 'Image' {
-            # serialize the image to the content stream, aka: :BI[:$dict], :ID[:$stream], :EI[]
-            $.ops( $obj.content(:inline) );
-        }
-        else {
-            $.op(XObject, $.parent.resource($obj).key );
-        }
-        $.op(Restore);
+        self.block: {
+	    $.op(ConcatMatrix, $width, 0, 0, $height, $x + $dx, $y + $dy);
+	    if $inline && $obj.Subtype eq 'Image' {
+		# serialize the image to the content stream, aka: :BI[:$dict], :ID[:$stream], :EI[]
+		$.ops( $obj.content(:inline) );
+	    }
+	    else {
+		$.op(XObject, $.parent.resource($obj).key );
+	    }
+        };
+    }
+
+    method transform( *%transforms ) {
+	use PDF::DOM::Util::TransformMatrix;
+	my $transform-matrix =  PDF::DOM::Util::TransformMatrix::transform-matrix( |%transforms );
+	$.ConcatMatrix( @$transform-matrix );
     }
 
     #| set the current text position on the page/form

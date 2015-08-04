@@ -43,7 +43,7 @@ is-json-equiv $pattern-obj.BBox, [ 0, 0, 100, 100 ], '$.BBox accessor';
 my $zfont = $pattern-obj.core-font('ZapfDingbats');
 $pattern-obj.gfx.ops: [
     'BT',                              # Begin text object
-
+    'q',
     :Tf[$zfont.key, 1],                # Set text font and size
     :Tm[64, 0, 0, 64, 7.1771, 2.4414], # Set text matrix
     :Tc[0],                            # Set character spacing
@@ -63,7 +63,7 @@ $pattern-obj.gfx.ops: [
     :TD[0.6913, 0.007],                # Move text position
     :rg[0.0, 0.0, 0.0],                # Set nonstroking color to black
     :Tj($zfont.encode("♣")),           # Show club glyph
-
+    'Q',
     'ET'                               # End text object
     ];
 
@@ -71,13 +71,14 @@ $pattern-obj.cb-finish;
 
 my $contents = $pattern-obj.decoded;
 my @lines = $contents.lines;
-is-deeply [ @lines[0..2] ], ['', 'BT', '/F1 1 Tf'], 'first three lines of content';
-is-deeply [ @lines[*-4..*] ], ['0.6913 0.007 TD', '0 0 0 rg', '(\250) Tj', 'ET'], 'last 5 lines of content';
+is-deeply [ @lines[0..3] ], ['', 'BT', 'q', '/F1 1 Tf'], 'first four lines of content';
+is-deeply [ @lines[*-4..*] ], ['0 0 0 rg', '(\250) Tj', 'Q', 'ET'], 'last 5 lines of content';
 
 my $pdf = PDF::DOM.new;
 my $page = $pdf.Pages.add-page;
 $page.media-box(230,210);
 $page.gfx.ops: [
+    :q[],                                   # Graphics save
     :G[0.0],                                # Set stroking color to black
     :rg[1.0, 1.0, 0.0],                     # Set nonstroking color to yellow
     :re[25, 175, 175, -150],                # Construct rectangular path
@@ -110,6 +111,7 @@ $page.gfx.ops: [
     :l[175, 50],        # Construct triangular path
     :l[112.5, 158.253],
     :b[],               # Close, fill, and stroke path
+    :Q[],               # Graphics restore
     ];
 
 $pdf.save-as('t/dom-pattern.pdf');

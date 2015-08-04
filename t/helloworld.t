@@ -41,6 +41,24 @@ $gfx.block: {
     $gfx.say("♦ ♥");
 };
 
+$gfx.block: {
+    $gfx.SetFillRGB(0.9, 0.5, 0.0);
+    $gfx.Rectangle(350, 300, 100, 100);
+    $gfx.Fill;
+    $gfx.block: {
+	$gfx.SetFillRGB(0.1, 0.9, 0.5);
+	$gfx.Rectangle(100, 200, 200, 200);
+	$gfx.Fill;
+    }
+}
+
+$gfx.block: {
+    $gfx.transform( :translate[285, 250]);
+    $gfx.transform( :rotate(-10), :scale(1.5) );
+    $gfx.Rectangle(0, 0, 50, 50);
+    $gfx.Fill;
+}
+
 my $img = $gfx.image("t/images/snoopy-happy-dance.jpg");
 ok $img.Width, '$img.Width';
 $gfx.do($img, 232, 380, :width(150) );
@@ -49,6 +67,7 @@ $gfx.text-move(100,300, :abs);
 $gfx.set-font( $header-font, 24);
 $gfx.say('Hello, world!');
 $gfx.EndText;
+
 $pdf<Info><Author> = 't/helloworld.t';
 $pdf<Info><Creator> = 'PDF::Tools';
 ok $pdf.save-as('t/helloworld.pdf'), '.save-as';
