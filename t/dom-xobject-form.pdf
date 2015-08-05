@@ -4,35 +4,12 @@
 << /Type /Catalog /Pages 2 0 R >>
 endobj
 2 0 obj
-<< /Type /Pages /Count 2 /Kids [ 5 0 R 7 0 R ] /MediaBox [ 0 0 220 220 ] /Resources << /Procset [ /PDF /Text ] /XObject << /Fm1 3 0 R >> >> >>
+<< /Type /Pages /Count 2 /Kids [ 3 0 R 5 0 R ] /MediaBox [ 0 0 220 220 ] /Resources << /Procset [ /PDF /Text ] /XObject << /Fm1 7 0 R >> >> >>
 endobj
 3 0 obj
-<< /Type /XObject /Subtype /Form /BBox [ 0 0 200 200 ] /FormType 1 /Matrix [ 1 0 0 1 0 0 ] /Resources << /Font << /F1 4 0 R >> /ProcSet [ /PDF ] >> /Length 112 >>
-stream
-q
-0 0 m
-0 200 l
-200 200 l
-200 0 l
-f
-Q
-BT
-50 50 Td
-0.5 0.95 0.5 rg
-/F1 16 Tf
-17.6 TL
-[ (Hello, again!) ] TJ
-T*
-ET
-endstream
+<< /Type /Page /Contents 4 0 R /Parent 2 0 R >>
 endobj
 4 0 obj
-<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
-endobj
-5 0 obj
-<< /Type /Page /Contents 6 0 R /Parent 2 0 R >>
-endobj
-6 0 obj
 << /Length 111 >>
 stream
 
@@ -52,10 +29,10 @@ Q
 Q
 endstream
 endobj
-7 0 obj
-<< /Type /Page /Contents 8 0 R /Parent 2 0 R >>
+5 0 obj
+<< /Type /Page /Contents 6 0 R /Parent 2 0 R >>
 endobj
-8 0 obj
+6 0 obj
 << /Length 305 >>
 stream
 
@@ -97,17 +74,40 @@ q
 Q
 endstream
 endobj
+7 0 obj
+<< /Type /XObject /Subtype /Form /BBox [ 0 0 200 200 ] /FormType 1 /Matrix [ 1 0 0 1 0 0 ] /Resources << /Font << /F1 8 0 R >> /ProcSet [ /PDF ] >> /Length 112 >>
+stream
+q
+0 0 m
+0 200 l
+200 200 l
+200 0 l
+f
+Q
+BT
+50 50 Td
+0.5 0.95 0.5 rg
+/F1 16 Tf
+17.6 TL
+[ (Hello, again!) ] TJ
+T*
+ET
+endstream
+endobj
+8 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
 xref
 0 9
 0000000000 65535 f 
 0000000014 00000 n 
 0000000063 00000 n 
 0000000221 00000 n 
-0000000529 00000 n 
-0000000631 00000 n 
-0000000694 00000 n 
-0000000856 00000 n 
-0000000919 00000 n 
+0000000284 00000 n 
+0000000446 00000 n 
+0000000509 00000 n 
+0000000865 00000 n 
+0000001173 00000 n 
 trailer
 << /Root 1 0 R /Size 9 >>
 startxref
