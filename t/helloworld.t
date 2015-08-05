@@ -71,6 +71,7 @@ $gfx.EndText;
 
 $pdf<Info><Author> = 't/helloworld.t';
 $pdf<Info><Creator> = 'PDF::Tools';
+is $pdf.Info<Author>, 't/helloworld.t', '$root.Info accessor';
 ok $pdf.save-as('t/helloworld.pdf'), '.save-as';
 ok $pdf.save-as('t/helloworld-compressed.pdf', :compress), '.save-as( :compress )';
 
