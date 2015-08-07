@@ -29,7 +29,7 @@ role PDF::DOM::RootObject {
         my $serializer = PDF::Storage::Serializer.new;
 	my Hash $trailer = self.content.value;
         my Hash $body = $serializer.body( $reader, :updates, :$compress, :$trailer );
-        my Pair $root = $reader.root.ind-ref;
+        my Pair $root = $reader.root.content;
         my Int $prev = $body<trailer><dict><Prev>.value;
         my $writer = PDF::Writer.new( :$root, :$offset, :$prev );
         my Str $new-body = "\n" ~ $writer.write( :$body );
@@ -58,8 +58,6 @@ role PDF::DOM::RootObject {
         ) {
 
 	my $serializer = PDF::Storage::Serializer.new;
-	my Hash $trailer = self.content.value;
-	my PDF::Object $root-object = self.Root;
-	$serializer.save-as( $file-name, :$root-object, :$type, :$version, :$compress, :$trailer);
+	$serializer.save-as( $file-name, self, :$type, :$version, :$compress);
     }
 }
