@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 8;
+plan 9;
 
 use PDF::DOM::Type;
 use PDF::Storage::IndObj;
@@ -20,10 +20,10 @@ my $input = q:to"--END-OBJ--";
 >>
 stream
 { 360 mul sin
-2 div
-exch 360 mul sin
-2 div
-add
+  2 div
+  exch 360 mul sin
+  2 div
+  add
 }
 endstream
 endobj
@@ -42,3 +42,4 @@ is $function-obj.type, 'Function', '$.type accessor';
 is $function-obj.subtype, 'PostScript', '$.subtype accessor';
 is-json-equiv $function-obj.Domain, [ -1.0, 1.0, -1.0, 1.0 ], '$.Domain accessor';
 is-json-equiv $function-obj.Length, 71, '$.Length accessor';
+is-json-equiv $function-obj.parse, {:expr([:int(360), :op<mul>, :op<sin>, :int(2), :op<div>, :op<exch>, :int(360), :op<mul>, :op<sin>, :int(2), :op<div>, :op<add>])}, '$.parse accessor';

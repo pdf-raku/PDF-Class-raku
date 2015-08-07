@@ -20,14 +20,17 @@ class PDF::DOM::Contents::Gfx
         PDF::DOM::Type::XObject::Image.open( $spec );
     }
 
+    my subset Align of Str where 'left' | 'center' | 'right';
+    my subset Valign of Str where 'top'  | 'center' | 'bottom';
+
     #| place an image, or form object
     method do(PDF::DOM::Type::XObject $obj!,
               Numeric $x!,
               Numeric $y!,
               Numeric :$width is copy,
               Numeric :$height is copy,
-              Str :$align  where {$_ eq 'left' | 'center' | 'right'}  = 'left',
-              Str :$valign where {$_ eq 'top'  | 'center' | 'bottom'} = 'bottom',
+              Align :$align   = 'left',
+              Valign :$valign = 'bottom',
               Bool :$inline = False,
         )  {
 
