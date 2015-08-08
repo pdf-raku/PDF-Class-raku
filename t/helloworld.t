@@ -75,4 +75,16 @@ is $pdf.Info<Author>, 't/helloworld.t', '$root.Info accessor';
 ok $pdf.save-as('t/helloworld.pdf'), '.save-as';
 ok $pdf.save-as('t/helloworld-compressed.pdf', :compress), '.save-as( :compress )';
 
+lives-ok {$pdf = PDF::DOM.open: 't/helloworld-compressed.pdf'}, 'pdf reload lives';
+
+isa-ok $pdf.page(1), ::('PDF::DOM::Type::Page'), 'first pages';
+is $pdf.page(1).Contents.Filter, 'FlateDecode', 'page stream is compressed';
+
+my $contents-ast;
+lives-ok {$contents-ast =  $pdf.page(1).contents-parse}, 'page contents-parse - lives';
+isa-ok $contents-ast, Array, '.contents type';
+ok +$contents-ast > 24, '.contents elems';
+is-deeply $contents-ast[0], (:BT[]), '.contents first elem';
+is-deeply $contents-ast[*-1], (:ET[]), '.contents last elem';
+
 done;

@@ -10,6 +10,14 @@ role PDF::DOM::Contents {
     has PDF::DOM::Contents::Gfx $.pre-gfx = PDF::DOM::Contents::Gfx.new( :parent(self) ); #| prepended graphics
     has PDF::DOM::Contents::Gfx $.gfx     = PDF::DOM::Contents::Gfx.new( :parent(self) ); #| appended graphics
 
+    method contents-parse(Str $contents = $.contents ) {
+	PDF::DOM::Contents::Gfx.parse($contents);
+    }
+
+    method contents returns Str {
+	$.decoded;
+    }
+
     method cb-finish {
 
         if $!pre-gfx.ops || $!gfx.ops {

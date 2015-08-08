@@ -59,13 +59,17 @@ class PDF::DOM::Type::Page
     has $.VP is entry;                           #| Optional; PDF 1.6) An array of viewport dictionaries
 
     #| contents may either be a stream on an array of streams
-    method contents {
+    method content-streams returns Array {
         given $.Contents {
             when !.defined { [] }
             when Array     { $_ }
             when Hash      { [$_] }
             default { die "unexpected page content: {.perl}" }
         }
+    }
+
+    method contents returns Str {
+	$.content-streams.map({ .decoded }).join
     }
 
     #| produce an XObject form for this page
@@ -78,11 +82,11 @@ class PDF::DOM::Type::Page
         $xobject.pre-gfx.ops(self.pre-gfx.ops);
         $xobject.gfx.ops(self.gfx.ops);
 
-        my Array $contents = $.contents;
-        $xobject.edit-stream( :append([~] $contents.map({.decoded})) );
-        if +$contents {
+	my Array $content-streams = $.content-streams;
+        $xobject.edit-stream( :append( [~] $content-streams.map({.decoded})));
+        if +$content-streams {
             # inherit compression from the first stream segment
-            for $contents[0] {
+            for $content-streams[0] {
                 $xobject<Filter> = .<Filter>.clone
                     if .<Filter>:exists;
                 $xobject<DecodeParms> = .<DecodeParms>.clone
@@ -99,24 +103,24 @@ class PDF::DOM::Type::Page
 
             if $!pre-gfx.ops || $!gfx.ops {
                 # handle new content.
-                my @contents = @$.contents;
-                if +@contents {
+                my @content-streams = @$.content-streams;
+                if +@content-streams {
 		    # dont trust existing content. wrap it in q ... Q
                     $!pre-gfx.ops.push: OpNames::Save;
                     $!gfx.ops.unshift: OpNames::Restore;
                 }
 
-                @contents.unshift: PDF::Object::Stream.new( :decoded( $!pre-gfx.content ~ "\n") )
+                @content-streams.unshift: PDF::Object::Stream.new( :decoded( $!pre-gfx.content ~ "\n") )
                     if $!pre-gfx.ops;
 
-                @contents.push: PDF::Object::Stream.new( :decoded("\n" ~ $!gfx.content ) )
+                @content-streams.push: PDF::Object::Stream.new( :decoded("\n" ~ $!gfx.content ) )
                     if $!gfx.ops;
 
 		$!pre-gfx.ops = ();
 		$!gfx.ops = ();
-                self<Contents> = @contents == 1 
-		    ?? @contents[0]
-		    !! @contents.item;
+                self<Contents> = @content-streams == 1 
+		    ?? @content-streams[0]
+		    !! @content-streams.item;
             }
         }
     }

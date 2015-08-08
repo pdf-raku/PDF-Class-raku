@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 43;
+plan 44;
 
 use PDF::Storage::IndObj;
 use PDF::DOM::Type;
@@ -40,7 +40,8 @@ is-deeply $ind-obj.ast, $ast, 'ast regeneration';
 
 $page.Contents = $dummy-stream;
 is-deeply $page.Contents, ($dummy-stream), '$.Contents accessor';
-is-deeply $page.contents, [$dummy-stream], '$.contents accessor';
+is-deeply $page.content-streams, [$dummy-stream], '$.contents accessor';
+is-deeply $page.contents, '%dummy stream', '$.contents accessor';
 
 my $font = $page.core-font( 'Helvetica' );
 isa-ok $font, ::('PDF::DOM::Type::Font::Type1');
