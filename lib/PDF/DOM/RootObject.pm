@@ -17,6 +17,11 @@ role PDF::DOM::RootObject {
 
     #| perform an incremental save back to the opened input file
     method update(:$compress) {
+
+	self<Root>:exists
+	    ?? self<Root>.?cb-finish
+	    !! warn "no top-level Root entry";
+
         my $reader = $.reader
             // die "pdf is not associated with an input source";
 
@@ -27,11 +32,9 @@ role PDF::DOM::RootObject {
         my Numeric $offset = $reader.input.chars + 1;
 
         my $serializer = PDF::Storage::Serializer.new;
-	my Hash $trailer = self.content.value;
-        my Hash $body = $serializer.body( $reader, :updates, :$compress, :$trailer );
-        my Pair $root = $reader.root.content;
+        my Hash $body = $serializer.body( $reader, :updates, :$compress );
         my Int $prev = $body<trailer><dict><Prev>.value;
-        my $writer = PDF::Writer.new( :$root, :$offset, :$prev );
+        my $writer = PDF::Writer.new( :$offset, :$prev );
         my Str $new-body = "\n" ~ $writer.write( :$body );
         $reader.input.?close;
         $reader.input = Any;
@@ -56,6 +59,10 @@ role PDF::DOM::RootObject {
                          :$type='PDF',     #| e.g. 'PDF', 'FDF;
                          :$compress = False,
         ) {
+
+	self<Root>:exists
+	    ?? self<Root>.?cb-finish
+	    !! warn "no top-level Root entry";
 
 	my $serializer = PDF::Storage::Serializer.new;
 	$serializer.save-as( $file-name, self, :$type, :$version, :$compress);

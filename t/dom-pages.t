@@ -43,7 +43,7 @@ is $pages-obj.Kids[2].Type, 'Page', 'new Kid Type';
 my $fdf-input = 't/pdf/fdf-PageTree.in';
 my $reader = PDF::Reader.new( );
 $reader.open( $fdf-input );
-my $pages = $reader.root;
+my $pages = $reader.trailer<Root>;
 
 is $pages.Count, 62, 'number of pages';
 is $pages[0].obj-num, 3, 'first page';

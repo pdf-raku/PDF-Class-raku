@@ -4,15 +4,15 @@
       {
         "trailer" : {
           "dict" : {
-            "Root" : {
-              "ind-ref" : [
-                2,
-                0
-              ]
-            },
             "Info" : {
               "ind-ref" : [
                 1,
+                0
+              ]
+            },
+            "Root" : {
+              "ind-ref" : [
+                2,
                 0
               ]
             },
