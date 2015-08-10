@@ -9,10 +9,10 @@ role PDF::DOM::RootObject {
     #| open an input file
     method open(Str $file-name) {
         my $reader = PDF::Reader.new;
+        my $root = self.new;
+        $reader.install-trailer( $root );
         $reader.open($file-name);
-	my Hash $dict = $reader.trailer;
-        my $obj = self.new( :$dict, :$reader );
-	$obj;
+        $root;
     }
 
     #| perform an incremental save back to the opened input file

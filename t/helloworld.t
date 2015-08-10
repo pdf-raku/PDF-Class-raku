@@ -76,7 +76,7 @@ ok $pdf.save-as('t/helloworld.pdf'), '.save-as';
 ok $pdf.save-as('t/helloworld-compressed.pdf', :compress), '.save-as( :compress )';
 
 lives-ok {$pdf = PDF::DOM.open: 't/helloworld-compressed.pdf'}, 'pdf reload lives';
-
+isa-ok $pdf.reader.trailer, PDF::DOM, 'trailer type';
 isa-ok $pdf.page(1), ::('PDF::DOM::Type::Page'), 'first pages';
 is $pdf.page(1).Contents.Filter, 'FlateDecode', 'page stream is compressed';
 
