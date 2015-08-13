@@ -9,7 +9,7 @@ use PDF::Grammar::PDF::Actions;
 use lib '.';
 use t::Object :to-obj;
 
-plan 57;
+plan 66;
 
 # crosschecks on /Type
 require ::('PDF::DOM::Type::Catalog');
@@ -156,6 +156,20 @@ $gs-obj<OP> = False;
 lives-ok {$gs-obj<OP> = True}, 'Valid property assignment';
 is-deeply $gs-obj.OP, True, 'ExtGState.OP after assignment';
 is $gs-obj.TR, (:ind-ref[36, 0]), 'ExtGState TR';
+
+$gs-obj.transparency(.5);
+is $gs-obj.CA, 0.5, 'transparency setter';
+is $gs-obj.ca, 0.5, 'transparency setter';
+lives-ok {$gs-obj.fill-alpha = .7}, 'transparency setter - alias';
+is $gs-obj.fill-alpha, .7, 'transparency getter - alias';
+is $gs-obj.stroking-alpha, .5, 'transparency getter - alias';
+
+$gs-obj.BG = {};
+is-deeply $gs-obj.black-generation, {}, 'black-generation accessor';
+$gs-obj.black-generation = PDF::Object.coerce: :name<MyFunc>;
+is $gs-obj.BG2, 'MyFunc', 'BG2 accessor';
+ok !$gs-obj.BG.defined, 'BG accessor';
+is $gs-obj.black-generation, 'MyFunc', 'black-generation accessor';
 
 my $gs1 = $new-page.resource( $gs-obj );
 is-deeply $gs1.key, 'Gs1', 'ExtGState resource entry';
