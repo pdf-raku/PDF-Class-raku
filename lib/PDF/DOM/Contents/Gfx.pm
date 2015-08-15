@@ -116,12 +116,9 @@ class PDF::DOM::Contents::Gfx
 
     use PDF::DOM::Type::ExtGState;
     method set-graphics($gs = PDF::DOM::Type::ExtGState.new,
-			Numeric :$transparency,
 			Numeric :$opacity,
 			*%settings,
 	) {
-	$gs.transparency = $transparency
-	    if $transparency.defined;
 
 	$gs.transparancy = 1 - $opacity
 	    if $opacity.defined;
