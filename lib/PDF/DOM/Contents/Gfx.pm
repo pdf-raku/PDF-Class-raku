@@ -118,12 +118,22 @@ class PDF::DOM::Contents::Gfx
     method set-graphics($gs = PDF::DOM::Type::ExtGState.new,
 			Numeric :$transparency,
 			Numeric :$opacity,
+			*%settings,
 	) {
-	$gs.transparency($transparency)
+	$gs.transparency = $transparency
 	    if $transparency.defined;
 
-	$gs.transparancy(1 - $opacity)
+	$gs.transparancy = 1 - $opacity
 	    if $opacity.defined;
+
+	for %settings.keys.sort {
+	    if $gs.can($_) {
+		$gs."$_"() = %settings{$_}
+	    }
+	    else {
+		warn "ignoring graphics state option: $_";
+	    }
+	}
 
 	my $gs-entry = self.parent.resource($gs, :eqv);
 	self.SetGraphicsState($gs-entry.key);

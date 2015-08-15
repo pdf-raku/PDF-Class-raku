@@ -9,25 +9,10 @@ use PDF::Grammar::PDF::Actions;
 use lib '.';
 use t::Object :to-obj;
 
-plan 66;
-
-# crosschecks on /Type
+plan 52;
 require ::('PDF::DOM::Type::Catalog');
 my $dict = { :Outlines(:ind-ref[2, 0]), :Type( :name<Catalog> ), :Pages{ :Type( :name<Pages> ) } };
 my $catalog-obj = ::('PDF::DOM::Type::Catalog').new( :$dict );
-isa-ok $catalog-obj, ::('PDF::DOM::Type::Catalog');
-isa-ok $catalog-obj.Type, Str, 'catalog $.Type';
-is $catalog-obj.Type, 'Catalog', 'catalog $.Type';
-is $catalog-obj.type, 'Catalog', 'catalog $.type';
-ok ! $catalog-obj.subtype.defined, 'catalog $.subtype';
-
-$dict<Type>:delete;
-lives-ok {$catalog-obj = ::('PDF::DOM::Type::Catalog').new( :$dict )}, 'catalog .new with valid /Type - lives';
-isa-ok $catalog-obj.Type, Str, 'catalog $.Type';
-is $catalog-obj.Type, 'Catalog', 'catalog $.Type';
-
-$dict<Type> = :name<Wtf>;
-dies-ok {::('PDF::DOM::Type::Catalog').new( :$dict )}, 'catalog .new with invalid /Type - dies';
 
 my $input = q:to"--END--";
 16 0 obj
@@ -157,12 +142,12 @@ lives-ok {$gs-obj<OP> = True}, 'Valid property assignment';
 is-deeply $gs-obj.OP, True, 'ExtGState.OP after assignment';
 is $gs-obj.TR, (:ind-ref[36, 0]), 'ExtGState TR';
 
-$gs-obj.transparency(.5);
+$gs-obj.transparency = .5;
 is $gs-obj.CA, 0.5, 'transparency setter';
 is $gs-obj.ca, 0.5, 'transparency setter';
 lives-ok {$gs-obj.fill-alpha = .7}, 'transparency setter - alias';
 is $gs-obj.fill-alpha, .7, 'transparency getter - alias';
-is $gs-obj.stroking-alpha, .5, 'transparency getter - alias';
+is $gs-obj.stroke-alpha, .5, 'transparency getter - alias';
 
 $gs-obj.BG = {};
 is-deeply $gs-obj.black-generation, {}, 'black-generation accessor';
@@ -204,32 +189,3 @@ is-json-equiv $new-page.Resources, {
     :Font({:F1($font)}),
 }, 'Resources';
 
-$input = q:to"--END--";
-22 0 obj
-<< /Type /CMap
-/CMapName /90ms-RKSJ-H
-/CIDSystemInfo << /Registry (Adobe)
-                  /Ordering (Japan1)
-                  /Supplement 2
->>
-/WMode 0
->>
-stream
-%!PS-Adobe-3.0 Resource-CMap
-%%DocumentNeededResources : ProcSet ( CIDInit )
-...
-endstream
-endobj
---END--
-
-PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
-    // die "parse failed: $input";
-$ast = $/.ast;
-
-$ind-obj = PDF::Storage::IndObj.new( :$input, |%( $ast.kv ) );
-my $cmap-obj = $ind-obj.object;
-isa-ok $cmap-obj, ::('PDF::DOM::Type::CMap');
-is $cmap-obj.Type, 'CMap', 'CMap Type';
-is $cmap-obj.CMapName, '90ms-RKSJ-H', 'CMapName';
-isa-ok $cmap-obj.CIDSystemInfo, ::('PDF::DOM::Type::CIDSystemInfo');
-like $cmap-obj.decoded, rx/^'%!PS-Adobe-3.0 Resource-CMap'/, 'CMap stream content';

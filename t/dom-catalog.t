@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 19;
+plan 26;
 
 use PDF::DOM::Type;
 use PDF::Storage::IndObj;
@@ -45,6 +45,8 @@ is-json-equiv $catalog.PieceInfo, { :MarkedPDF{ :LastModified<D:20081012130709> 
 is-json-equiv $catalog.StructTreeRoot, (:ind-ref[25, 0]), '$catalog.StructTreeRoot';
 is-json-equiv $ind-obj.ast, $ast, 'ast regeneration';
 is-json-equiv $catalog.Type, 'Catalog', '$catalog.Type';
+isa-ok $catalog.Type, Str, 'catalog $.Type';
+ok ! $catalog.subtype.defined, 'catalog $.subtype';
 
 lives-ok {$catalog.core-font('Helvetica')}, 'can add resource (core-font) to catalog';
 is-json-equiv $catalog.Resources, {:Font{
@@ -55,3 +57,15 @@ is-json-equiv $catalog.Resources, {:Font{
 
 $catalog<Dests> = { :Foo(:name<Bar>) };
 ok $catalog.Dests.obj-num, 'entry(:indirect)';
+
+# crosschecks on /Type
+my $dict = { :Type( :name<Catalog> ) };
+lives-ok {$catalog = ::('PDF::DOM::Type::Catalog').new( :$dict )}, 'catalog .new with valid /Type - lives';
+$dict<Type>:delete;
+
+lives-ok {$catalog = ::('PDF::DOM::Type::Catalog').new( :$dict )}, 'catalog .new default /Type - lives';
+isa-ok $catalog.Type, Str, 'catalog $.Type';
+is $catalog.Type, 'Catalog', 'catalog $.Type';
+
+$dict<Type> = :name<Wtf>;
+dies-ok {::('PDF::DOM::Type::Catalog').new( :$dict )}, 'catalog .new with invalid /Type - dies';

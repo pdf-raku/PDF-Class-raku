@@ -59,16 +59,29 @@ class PDF::DOM::Type::ExtGState
     has Bool $.SA is entry(:alias<auto-stroke-adjust>);      #| (Optional) A flag specifying whether to apply automatic stroke adjustment
     has $.BM is entry(:alias<blend-mode>);                   #| (Optional; PDF 1.4) The current blend mode to be used in the transparent imaging model
     has $.SMask is entry(:alias<soft-mask>);                 #| (Optional; PDF 1.4) The current soft mask, specifying the mask shape or mask opacity values to be used in the transparent imaging mode
-    has Numeric $.CA is entry(:alias<stroking-alpha>);       #| (Optional; PDF 1.4) The current stroking alpha constant, specifying the constant shape or constant opacity value to be used for stroking operations in the transparent imaging model
-    has Numeric $.ca is entry(:alias<fill-alpha>);           #| (Optional; PDF 1.4) Same as CA, but for nonstroking operations
+    subset Alpha of Numeric where 0.0 .. 1.0;
+    has Alpha $.CA is entry(:alias<stroke-alpha>);         #| (Optional; PDF 1.4) The current stroking alpha constant, specifying the constant shape or constant opacity value to be used for stroking operations in the transparent imaging model
+    has Alpha $.ca is entry(:alias<fill-alpha>);           #| (Optional; PDF 1.4) Same as CA, but for nonstroking operations
     has Bool $.AIS is entry(:alias<alpha-source>);           #| (Optional; PDF 1.4) The alpha source flag (“alpha is shape”), specifying whether the current soft mask and alpha constant are to be interpreted as shape values (true) or opacity values (false).
     has Bool $.TK is entry(:alias<text-knockout>);           #| (Optional; PDF 1.4) The text knockout flag, which determines the behavior of overlapping glyphs within a text object in the transparent imaging model
 
     # The graphics tranparency , with 0 being fully opaque and 1 being fully transparent.
     # This is a convenience method setting proper values for strokeaplha and fillalpha.
-    method transparency(Numeric $alpha! where 0.0 .. 1.0) {
-	self.stroking-alpha = $alpha;
-	self.fill-alpha = $alpha;
+    sub transparency-accessor($obj) {
+	Proxy.new( 
+	    FETCH => method {
+		my $fill-alpha = $obj.fill-alpha;
+		$fill-alpha eqv $obj.stroke-alpha
+		    ?? $fill-alpha
+		    !! Mu
+	    },
+	    STORE => method (Alpha $val is copy) {
+		$obj.fill-alpha = $obj.stroke-alpha = $val;
+	    });
+    }
+
+    method transparency is rw {
+	transparency-accessor(self)
     }
 
 }
