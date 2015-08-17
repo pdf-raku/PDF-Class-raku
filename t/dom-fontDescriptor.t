@@ -30,4 +30,4 @@ is $font-descriptor-obj.FontFamily, 'Wingdings', '$.FontFamily accessor';
 is $font-descriptor-obj.Ascent, 898, '$.Ascent accessor';
 is $font-descriptor-obj.CapHeight, 0, '$.CapHeight accessor';
 is-json-equiv $font-descriptor-obj.FontBBox, [ 0, -211, 1359, 899, ], '$.CapHeight accessor';
-is-deeply $ind-obj.ast, $ast, 'ast regeneration';
+is-json-equiv $ind-obj.ast, $ast, 'ast regeneration';

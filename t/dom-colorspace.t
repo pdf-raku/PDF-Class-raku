@@ -32,7 +32,7 @@ is $color-space-obj.subtype, 'CalRGB', '$.subtype accessor';
 is-json-equiv $color-space-obj[1], { :WhitePoint[ 1.0, 1.0, 1.0 ] }, 'array access';
 is-json-equiv $color-space-obj[1]<WhitePoint>, [ 1.0, 1.0, 1.0 ], 'WhitePoint dereference';
 is-json-equiv $color-space-obj.WhitePoint, $color-space-obj[1]<WhitePoint>, '$WhitePoint accessor';
-is-deeply $ind-obj.ast, $ast, 'ast regeneration';
+is-json-equiv $ind-obj.ast, $ast, 'ast regeneration';
 
 require ::('PDF::DOM::Type')::('ColorSpace::CalGray');
 my $cal-gray = ::('PDF::DOM::Type')::('ColorSpace::CalGray').new;

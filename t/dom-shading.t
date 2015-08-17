@@ -7,6 +7,7 @@ use PDF::DOM::Type;
 use PDF::Storage::IndObj;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
+use PDF::Grammar::Test :is-json-equiv;
 
 my $actions = PDF::Grammar::PDF::Actions.new;
 
@@ -33,4 +34,4 @@ is $shading-obj.ShadingType, 3, '$.ShadingType accessor';
 is $shading-obj.type, 'Shading', '$.type accessor';
 is $shading-obj.subtype, 'Radial', '$.subtype accessor';
 is $shading-obj.ColorSpace, 'DeviceCMYK', '$.ColorSpace accessor';
-is-deeply $ind-obj.ast, $ast, 'ast regeneration';
+is-json-equiv $ind-obj.ast, $ast, 'ast regeneration';

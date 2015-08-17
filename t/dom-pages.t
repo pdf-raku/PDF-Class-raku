@@ -35,7 +35,7 @@ is $pages-obj.Count, 2, '$.Count accessor';
 is-json-equiv $pages-obj.Kids, [ :ind-ref[4, 0], :ind-ref[5, 0] ], '$.Kids accessor';
 is-json-equiv $pages-obj[0], (:ind-ref[4, 0]), '$pages[0] accessor';
 is-json-equiv $pages-obj[1], (:ind-ref[5, 0]), '$pages[1] accessor';
-is-deeply $ind-obj.ast, $ast, 'ast regeneration';
+is-json-equiv $ind-obj.ast, $ast, 'ast regeneration';
 my $new-page = $pages-obj.add-page();
 is $pages-obj.Count, 3, '$.Count accessor';
 is $pages-obj.Kids[2].Type, 'Page', 'new Kid Type';

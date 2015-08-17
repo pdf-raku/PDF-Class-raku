@@ -36,7 +36,7 @@ my $dummy-stream = PDF::Object::Stream.new( :decoded('%dummy stream') );
 is $page<Parent>, (:ind-ref[3, 0]), '$page<Parent>';
 is $page.Resources, { :Font{ :F1( :ind-ref[7, 0] )}, :ProcSet( :ind-ref[6, 0]) }, '$.Resources accessor';
 
-is-deeply $ind-obj.ast, $ast, 'ast regeneration';
+is-json-equiv $ind-obj.ast, $ast, 'ast regeneration';
 
 $page.Contents = $dummy-stream;
 is-deeply $page.Contents, ($dummy-stream), '$.Contents accessor';
