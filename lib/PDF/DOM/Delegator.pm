@@ -14,17 +14,16 @@ class PDF::DOM::Delegator
 
     method class-paths {<PDF::DOM::Type PDF::Object::Type>}
 
-    multi method find-delegate( :$subclass! where { self.handler{$_}:exists } ) {
+    multi method find-delegate( Str $subclass! where { self.handler{$_}:exists } ) {
         self.handler{$subclass}
     }
 
-    multi method find-delegate( Str :$subclass! where 'XRef' | 'ObjStm', :$fallback) {
+    multi method find-delegate( Str $subclass! where 'XRef' | 'ObjStm') {
 	require ::('PDF::Object::Type')::($subclass);
-	my $handler-class = ::('PDF::Object::Type')::($subclass);
-        self.install-delegate( :$subclass, :$handler-class );
+	self.install-delegate( :$subclass, ::('PDF::Object::Type')::($subclass) );
     }
 
-    multi method find-delegate( Str :$subclass!, :$fallback!) is default {
+    multi method find-delegate( Str $subclass!, :$fallback!) is default {
 
         my $handler-class = $fallback;
         my Bool $resolved;
@@ -42,7 +41,7 @@ class PDF::DOM::Delegator
            note "No DOM handler class {self.class-paths}::{$subclass}";
         }
 
-        self.install-delegate( :$subclass, :$handler-class );
+        self.install-delegate( $subclass, $handler-class );
     }
 
     multi method delegate(Hash :$dict! where {$dict<FunctionType>:exists}) {
