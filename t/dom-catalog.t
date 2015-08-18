@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 26;
+plan 28;
 
 use PDF::DOM::Type;
 use PDF::Storage::IndObj;
@@ -18,6 +18,7 @@ my $input = q:to"--END-OBJ--";
    /Outlines 18 0 R /PageLabels 210 0 R /PageLayout /OneColumn /Pages 212 0 R
    /PieceInfo << /MarkedPDF << /LastModified (D:20081012130709) >> >>
    /StructTreeRoot 25 0 R
+   /AcroForm << /Fields [] >>
    /Type /Catalog
 >>
 endobj
@@ -47,6 +48,10 @@ is-json-equiv $ind-obj.ast, $ast, 'ast regeneration';
 is-json-equiv $catalog.Type, 'Catalog', '$catalog.Type';
 isa-ok $catalog.Type, Str, 'catalog $.Type';
 ok ! $catalog.subtype.defined, 'catalog $.subtype';
+
+my $acroform = $catalog.AcroForm;
+ok $acroform ~~ ::('PDF::DOM::Type::AcroForm'), '$.AcroForm role';
+is-json-equiv $acroform.Fields, [], '$.AcroForm.Fields';
 
 lives-ok {$catalog.core-font('Helvetica')}, 'can add resource (core-font) to catalog';
 is-json-equiv $catalog.Resources, {:Font{

@@ -9,6 +9,8 @@
         "PDF::DOM" : "lib/PDF/DOM.pm",
         "PDF::DOM::Type" : "lib/PDF/DOM/Type.pm",
 
+        "PDF::DOM::Type::AcroForm" : "lib/PDF/DOM/Type/AcroForm.pm",
+
         "PDF::DOM::Type::Catalog" : "lib/PDF/DOM/Type/Catalog.pm",
         "PDF::DOM::Type::CMap" : "lib/PDF/DOM/Type/CMap.pm",
 

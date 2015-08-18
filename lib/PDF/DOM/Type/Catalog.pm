@@ -52,7 +52,9 @@ class PDF::DOM::Type::Catalog
 
     has PDF::Object::Dict $.URI is entry;                   #| (Optional; PDF 1.1) A URI dictionary containing document-level information for URI
 
-    has PDF::Object::Dict $.AcroForm is entry;              #| (Optional; PDF 1.2) The document’s interactive form (AcroForm) dictionary
+    use PDF::DOM::Type::AcroForm;
+    has PDF::Object::Dict $.AcroForm is entry( :does(PDF::DOM::Type::AcroForm) );
+                                                            #| (Optional; PDF 1.2) The document’s interactive form (AcroForm) dictionary
 
     has PDF::Object::Stream $.Metadata is entry(:indirect); #| (Optional; PDF 1.4; must be an indirect reference) A metadata streamcontaining metadata for the document
 
