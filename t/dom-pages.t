@@ -47,9 +47,9 @@ my $pages = $reader.trailer<Root>;
 
 is $pages.Count, 62, 'number of pages';
 is $pages[0].obj-num, 3, 'first page';
-is $pages[0].find-prop('Rotate'), 180, 'inheritance';
+is $pages[0].Rotate, 180, 'inheritance';
 
-is $pages[1].find-prop('Rotate'), 90, 'inheritance';
+is $pages[1].Rotate, 90, 'inheritance';
 
 is $pages[5].obj-num, 37, 'sixth page';
 
@@ -58,12 +58,12 @@ is $pages[6].obj-num, 42, 'seventh page';
 is $pages[60].obj-num, 324, 'second-last page';
 
 is $pages[61].obj-num, 330, 'last page';
-is $pages[61].find-prop('Rotate'), 270, 'inheritance';
+is $pages[61].Rotate, 270, 'inheritance';
 
 lives-ok {$new-page = $pages.add-page}, 'add-page - lives';
 isa-ok $new-page, PDF::DOM::Type::Page;
 is $pages.Count, 63, 'number of pages';
-is $pages[62].find-prop('Rotate'), 270, 'new page - inheritance';
+is $pages[62].Rotate, 270, 'new page - inheritance';
 
 $pages.core-font('Helvetica');
 is-json-equiv $pages.Resources, {:Font{

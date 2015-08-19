@@ -3,7 +3,6 @@ use v6;
 use PDF::Object::Dict;
 use PDF::DOM::Type;
 use PDF::DOM::Type::Page;
-use PDF::Object::Inheritance;
 use PDF::DOM::Resources;
 use PDF::DOM::PageSizes;
 
@@ -12,7 +11,6 @@ use PDF::DOM::PageSizes;
 class PDF::DOM::Type::Pages
     is PDF::Object::Dict
     does PDF::DOM::Type
-    does PDF::Object::Inheritance
     does PDF::DOM::PageSizes
     does PDF::DOM::Resources {
 
@@ -20,10 +18,10 @@ class PDF::DOM::Type::Pages
     use PDF::Object;
 
     # see [PDF 1.7 TABLE 3.26 Required entries in a page tree node
-    has Hash $.Parent is entry;            #| (Required except in root node; must be an indirect reference) The page tree node that is the immediate parent of this one.
+    has Hash $.Parent is entry(:indirect); #| (Required except in root node; must be an indirect reference) The page tree node that is the immediate parent of this one.
     has Array $.Kids is entry(:required);  #| (Required) An array of indirect references to the immediate children of this node. The children may be page objects or other page tree nodes.
     has Int $.Count is entry(:required);   #| (Required) The number of leaf nodes (page objects) that are descendants of this node within the page tree.
-    has Hash $.Resources is entry;
+    has Hash $.Resources is entry(:inherit);
 
     #| add new last page
     method add-page( $page = PDF::Object.coerce( { :Type( :name<Page> ) } ) ) {

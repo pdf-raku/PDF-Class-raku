@@ -2,7 +2,6 @@ use v6;
 
 use PDF::Object::Dict;
 use PDF::Object::Stream;
-use PDF::Object::Inheritance;
 use PDF::DOM::Type;
 use PDF::DOM::Contents;
 use PDF::DOM::Resources;
@@ -12,7 +11,6 @@ use PDF::DOM::PageSizes;
 
 class PDF::DOM::Type::Page
     is PDF::Object::Dict
-    does PDF::Object::Inheritance
     does PDF::DOM::Type
     does PDF::DOM::Contents
     does PDF::DOM::Resources
@@ -25,12 +23,12 @@ class PDF::DOM::Type::Page
     use PDF::Object::Stream;
 
     # see [PDF 1.7 TABLE 3.27 Entries in a page object]
-    has Hash $.Parent is entry;                  #| (Required; must be an indirect reference) The page tree node that is the immediate parent of this page object.
+    has Hash $.Parent is entry(:indirect);       #| (Required; must be an indirect reference) The page tree node that is the immediate parent of this page object.
     has Str $.LastModified is entry;             #| (Required if PieceInfo is present; optional otherwise; PDF 1.3) The date and time when the page’s contents were most recently modified
-    has Hash $.Resources is entry;               #| (Required; inheritable) A dictionary containing any resources required by the page
+    has Hash $.Resources is entry(:inherit);     #| (Required; inheritable) A dictionary containing any resources required by the page
     subset BoxArray of Array where {.elems == 4}
-    has BoxArray $.MediaBox is entry;            #| (Required; inheritable) A rectangle, expressed in default user space units, defining the boundaries of the physical medium on which the page is intended to be displayed or printed
-    has BoxArray $.CropBox is entry;             #| Optional; inheritable) A rectangle, expressed in default user space units, defining the visible region of default user space. When the page is displayed or printed, its contents are to be clipped (cropped) to this rectangle and then imposed on the output medium in some implementation-defined manner
+    has BoxArray $.MediaBox is entry(:inherit);  #| (Required; inheritable) A rectangle, expressed in default user space units, defining the boundaries of the physical medium on which the page is intended to be displayed or printed
+    has BoxArray $.CropBox is entry(:inherit);   #| Optional; inheritable) A rectangle, expressed in default user space units, defining the visible region of default user space. When the page is displayed or printed, its contents are to be clipped (cropped) to this rectangle and then imposed on the output medium in some implementation-defined manner
     has BoxArray $.BleedBox is entry;            #| (Optional; PDF 1.3) A rectangle, expressed in default user space units, defining the region to which the contents of the page should be clipped when output in a production environment
     has BoxArray $.TrimBox is entry;             #| Optional; PDF 1.3) A rectangle, expressed in default user space units, defining the intended dimensions of the finished page after trimming
     has BoxArray $.ArtBox is entry;              #| (Optional; PDF 1.3) A rectangle, expressed in default user space units, defining the extent of the page’s meaningful content (including potential white space) as intended by the page’s creator
@@ -38,7 +36,7 @@ class PDF::DOM::Type::Page
     subset StreamOrArray of Any where PDF::Object::Stream | Array;
     has StreamOrArray $.Contents is entry;       #| (Optional) A content stream (see Section 3.7.1, “Content Streams”) describing the contents of this page. If this entry is absent, the page is empty
     subset NinetyDegreeAngle of Int where { $_ %% 90}
-    has NinetyDegreeAngle $.Rotate is entry;     #| (Optional; inheritable) The number of degrees by which the page should be rotated clockwise when displayed or printed
+    has NinetyDegreeAngle $.Rotate is entry(:inherit);     #| (Optional; inheritable) The number of degrees by which the page should be rotated clockwise when displayed or printed
     has Hash $.Group is entry;                   #| (Optional; PDF 1.4) A group attributes dictionary specifying the attributes of the page’s page group for use in the transparent imaging model
     has PDF::Object::Stream $.Thumb is entry;    #| (Optional) A stream object defining the page’s thumbnail image
     has Array $.B is entry;                      #| (Optional; PDF 1.1; recommended if the page contains article beads) An array of indirect references to article beads appearing on the page
@@ -75,7 +73,7 @@ class PDF::DOM::Type::Page
     #| produce an XObject form for this page
     method to-xobject(Array :$bbox = self.trim-box) {
 
-        my %dict = (Resources => self.find-prop('Resources').clone,
+        my %dict = (Resources => self.Resources.clone,
                     BBox => $bbox.clone);
 
         my $xobject = PDF::DOM::Type::XObject::Form.new(:%dict);
