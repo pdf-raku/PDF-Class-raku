@@ -157,13 +157,13 @@ ok !$gs-obj.BG.defined, 'BG accessor';
 is $gs-obj.black-generation, 'MyFunc', 'black-generation accessor';
 
 my $gs1 = $new-page.resource( $gs-obj );
-is-deeply $gs1.key, 'Gs1', 'ExtGState resource entry';
+is-deeply $gs1.key, 'GS1', 'ExtGState resource entry';
 
 use PDF::DOM::Type::ColorSpace::Lab;
 my $colorspace = PDF::DOM::Type::ColorSpace::Lab.new;
 isa-ok $colorspace, PDF::DOM::Type::ColorSpace::Lab;
 my $cs1 = $new-page.resource( $colorspace );
-is $cs1.key, 'Cs1', 'ColorSpace resource entry';
+is $cs1.key, 'CS1', 'ColorSpace resource entry';
 
 use PDF::DOM::Type::Shading::Axial;
 my $Shading = PDF::DOM::Type::Shading::Axial.new( :dict{ :ColorSpace(:name<DeviceRGB>),
@@ -179,8 +179,8 @@ my $pt1 = $new-page.resource( $pat-obj );
 is $pt1.key, 'Pt1', 'Shading resource entry';
 
 is-json-equiv $new-page.Resources, {
-    :ExtGState({:Gs1($gs-obj)}),
-    :ColorSpace{:Cs1($colorspace)},
+    :ExtGState({:GS1($gs-obj)}),
+    :ColorSpace{:CS1($colorspace)},
     :Pattern{ :Pt1($pat-obj) },
     :Shading({:Sh1($Shading)}),
     :XObject({:Fm1($form1),

@@ -80,8 +80,8 @@ role PDF::DOM::Resources {
             // die "not a resource object: {$object.WHAT}";
 
         do given $type {
-	    when 'ColorSpace' {'Cs'}
-            when 'ExtGState'  {'Gs'}
+	    when 'ColorSpace' {'CS'}
+            when 'ExtGState'  {'GS'}
             when 'Font'       {'F'}
             when 'Pattern'    {'Pt'}
 	    when 'Shading'    {'Sh'}
