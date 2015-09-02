@@ -69,4 +69,4 @@ is $sym-font.BaseFont, 'Symbol', '.BaseFont';
 ok !$sym-font.Encoding.defined, '!.Encoding';
 is $sym-font.encode("ΑΒΓ").join, "ABG", '.encode(...)'; # /Alpha /Beta /Gamma
 
-done;
+done-testing;

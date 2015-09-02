@@ -32,4 +32,4 @@ my $tform = PDF::DOM::Util::TransformMatrix::transform-matrix(
 
 is-deeply [ PDF::DOM::Util::TransformMatrix::transform($tform, 5, 15) ], [(10 + 5) * 2, (20 + 15) * 2], 'transform';
 is-deeply [ PDF::DOM::Util::TransformMatrix::transform($tform, 25, 30) ], [(10 + 25) * 2, (20 + 30) * 2], 'transform';
-done;
+done-testing;

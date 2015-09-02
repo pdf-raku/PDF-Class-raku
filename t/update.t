@@ -24,4 +24,4 @@ ok $p2 === $p2-again, 'delete page returned';
 is $pdf.page-count, 1, 'pages after deletion';
 
 
-done;
+done-testing;

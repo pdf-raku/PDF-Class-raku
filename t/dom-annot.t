@@ -70,4 +70,4 @@ isa-ok $link-annot, ::('PDF::DOM::Type::Annot::Link');
 is-json-equiv $link-annot.Border, [ 16, 16, 1 ], '.Border';
 is-json-equiv $link-annot.Dest, [ :ind-ref[3, 0], 'FitR', -4, 399, 199, 533], '.Dest';
 
-done;
+done-testing;

@@ -37,4 +37,4 @@ is $cmap-obj.CMapName, '90ms-RKSJ-H', 'CMapName';
 isa-ok $cmap-obj.CIDSystemInfo, ::('PDF::DOM::Type::CIDSystemInfo');
 like $cmap-obj.decoded, rx/^'%!PS-Adobe-3.0 Resource-CMap'/, 'CMap stream content';
 
-done;
+done-testing;

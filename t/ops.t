@@ -103,5 +103,5 @@ is-json-equiv [ $g.ops[*-4..*] ], [ :BT[],
 				    :Tj[:literal<Hi>],
 				    :ET[] ], 'Text block parse';
 
-done;
+done-testing;
 

@@ -87,4 +87,4 @@ ok +$contents-ast > 24, '.contents elems';
 is-deeply $contents-ast[0], (:BT[]), '.contents first elem';
 is-deeply $contents-ast[*-1], (:ET[]), '.contents last elem';
 
-done;
+done-testing;

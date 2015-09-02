@@ -116,4 +116,4 @@ $gfx.EndText;
 
 $pdf.save-as('t/dom-page-text.pdf');
 
-done;
+done-testing;
