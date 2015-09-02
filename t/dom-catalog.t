@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 28;
+plan 31;
 
 use PDF::DOM::Type;
 use PDF::Storage::IndObj;
@@ -19,6 +19,7 @@ my $input = q:to"--END-OBJ--";
    /PieceInfo << /MarkedPDF << /LastModified (D:20081012130709) >> >>
    /StructTreeRoot 25 0 R
    /AcroForm << /Fields [] >>
+   /ViewerPreferences << /HideToolbar true /Direction /R2L >>
    /Type /Catalog
 >>
 endobj
@@ -35,6 +36,9 @@ isa-ok $catalog, ::('PDF::DOM::Type')::('Catalog');
 is $catalog<PageLayout>, 'OneColumn', 'dict lookup';
 is-json-equiv $catalog.Lang, 'EN-US', '$catalog.Lang';
 # last modified is not listed as a property in [ PDF 1.7 TABLE 3.25 Entries in the catalog dictionary]
+is-json-equiv $catalog.Type, 'Catalog', '$catalog.Type';
+isa-ok $catalog.Type, Str, 'catalog $.Type';
+ok ! $catalog.subtype.defined, 'catalog $.subtype';
 is-json-equiv $catalog<LastModified>, 'D:20081012130709', '$catalog<LastModified>';
 is-json-equiv $catalog.MarkInfo, { :LetterspaceFlags(0), :Marked }, '$object.MarkInfo'; 
 is-json-equiv $catalog.Metadata, (:ind-ref[10, 0]), '$catalog.Metadata';
@@ -45,13 +49,15 @@ is-json-equiv $catalog.Pages, (:ind-ref[212, 0]), '$catalog.Pages';
 is-json-equiv $catalog.PieceInfo, { :MarkedPDF{ :LastModified<D:20081012130709> } }, '$catalog.PieceInfo';
 is-json-equiv $catalog.StructTreeRoot, (:ind-ref[25, 0]), '$catalog.StructTreeRoot';
 is-json-equiv $ind-obj.ast, $ast, 'ast regeneration';
-is-json-equiv $catalog.Type, 'Catalog', '$catalog.Type';
-isa-ok $catalog.Type, Str, 'catalog $.Type';
-ok ! $catalog.subtype.defined, 'catalog $.subtype';
 
 my $acroform = $catalog.AcroForm;
-ok $acroform ~~ ::('PDF::DOM::Type::AcroForm'), '$.AcroForm role';
+does-ok $acroform, ::('PDF::DOM::Type::AcroForm'), '$.AcroForm role';
 is-json-equiv $acroform.Fields, [], '$.AcroForm.Fields';
+
+my $viewer-preferences = $catalog.ViewerPreferences;
+does-ok $viewer-preferences, ::('PDF::DOM::Type::ViewerPreferences'), '$.ViewerPreferences role';
+is-json-equiv $viewer-preferences.HideToolbar, True, '$.ViewerPreferences.HideToolbar';
+is-json-equiv $viewer-preferences.Direction, 'R2L', '$.ViewerPreferences.Direction';
 
 lives-ok {$catalog.core-font('Helvetica')}, 'can add resource (core-font) to catalog';
 is-json-equiv $catalog.Resources, {:Font{

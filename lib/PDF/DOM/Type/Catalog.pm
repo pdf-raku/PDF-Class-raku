@@ -32,7 +32,8 @@ class PDF::DOM::Type::Catalog
 
     has PDF::Object::Dict $.Dests is entry(:indirect);      #| (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
 
-    has PDF::Object::Dict $.ViewPreferences is entry;       #| (Optional; PDF 1.2) A viewer preferences dictionary specifying the way the document is to be displayed on the screen.
+    use PDF::DOM::Type::ViewerPreferences;
+    has PDF::DOM::Type::ViewerPreferences $.ViewerPreferences is entry( :coerce );  #| (Optional; PDF 1.2) A viewer preferences dictionary specifying the way the document is to be displayed on the screen.
 
     subset PageLayout of PDF::Object::Name where 'SinglePage'|'OneColumn'|'TwoColumnLeft'|'TwoColumnRight'|'TwoPageLeft'|'TwoPageRight';
     has PageLayout $.PageLayout is entry;                   #| (Optional) A name object specifying the page layout to be used when the document is opened

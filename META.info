@@ -65,6 +65,8 @@
         "PDF::DOM::Type::Shading::Coons" : "lib/PDF/DOM/Type/Shading/Coons.pm",
         "PDF::DOM::Type::Shading::Tensor" : "lib/PDF/DOM/Type/Shading/Tensor.pm",
 
+        "PDF::DOM::Type::ViewerPreferences" : "lib/PDF/DOM/Type/ViewerPreferences.pm",
+
         "PDF::DOM::Type::XObject" : "lib/PDF/DOM/Type/XObject.pm",
         "PDF::DOM::Type::XObject::Form" : "lib/PDF/DOM/Type/XObject/Form.pm",
         "PDF::DOM::Type::XObject::Image" : "lib/PDF/DOM/Type/XObject/Image.pm",

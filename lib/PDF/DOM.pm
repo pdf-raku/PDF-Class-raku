@@ -14,13 +14,27 @@ class PDF::DOM
     use PDF::DOM::Type::Catalog;
     has PDF::DOM::Type::Catalog $.Root is entry(:required,:indirect);
 
-    method Pages { self.Root.Pages }
-    method page($page-num) { self.Pages.page($page-num) }
-    method page-count { self.Pages.Count }
-    method add-page { self.Pages.add-page }
-    method delete-page($page-num) { self.Pages.delete-page($page-num) }
-    method media-box(*@a) { self.Pages.media-box( |@a ) }
-    method core-font(*@a, *%o) { self.Pages.core-font( |@a, |%o ) }
+    use PDF::DOM::Type::Page;
+    use PDF::DOM::Type::Font;
+
+    method Pages           returns PDF::DOM::Type::Pages { self.Root.Pages }
+
+    method add-page        returns PDF::DOM::Type::Page { self.Pages.add-page }
+    method core-font(|c)   returns PDF::DOM::Type::Font { self.Pages.core-font(|c) }
+    method delete-page(|c) returns PDF::DOM::Type::Page { self.Pages.delete-page(|c) }
+    method media-box(|c)   returns Array                { self.Pages.media-box(|c) }
+    method page(|c)        returns PDF::DOM::Type::Page { self.Pages.page(|c) }
+    method page-count      returns UInt                 { self.Pages.Count }
+    method pdf-version     returns Version:_ {
+	my $version = self.Root.Version;
+	# reader extracts version from the PDF Header, e.g.: '%PDF-1.4'
+	$version //= self.reader.version
+	    if self.reader;
+
+	$version
+	    ?? Version.new( $version )
+	    !! Nil
+    }
 
     method update(|c) {
 	self<Root>:exists
