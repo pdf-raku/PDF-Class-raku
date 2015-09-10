@@ -52,7 +52,7 @@ role PDF::DOM::Resources {
 
         my $resources = self.Resources;
 
-       $resources // {};
+	$resources // {};
 
         my $entry;
 
@@ -105,7 +105,7 @@ role PDF::DOM::Resources {
         my $resources = self.Resources;
 
         $resources //= do {
-            self.Resources = {};
+            self<Resources> = {};
             self.Resources
         };
 

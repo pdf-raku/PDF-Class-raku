@@ -3,9 +3,11 @@ use v6;
 role PDF::DOM::PageSizes {
 
     my subset BoxName of Str where 'media' | 'crop' | 'bleed' | 'trim' | 'art';
+
     method !bbox-name(BoxName $box) {
 	{ :media<MediaBox>, :crop<CropBox>, :bleed<BleedBox>, :trim<TrimBox>, :art<ArtBox> }{$box}
     }
+
     method !get-prop(BoxName $box) {
 	my $bbox = self!"bbox-name"($box);
         my $media-box = self."$bbox"();

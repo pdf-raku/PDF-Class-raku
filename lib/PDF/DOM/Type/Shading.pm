@@ -24,7 +24,7 @@ class PDF::DOM::Type::Shading
     constant ShadingTypes = <Function Axial Radial FreeForm Lattice Coons Tensor>;
     constant ShadingNames = %( ShadingTypes.pairs.invert );
     method type {'Shading'}
-    method subtype { ShadingTypes[ $!ShadingType - 1] }
+    method subtype { ShadingTypes[ $.ShadingType - 1] }
 
     #| see also PDF::DOM::Delegator
     method delegate-shading(Hash :$dict!) {

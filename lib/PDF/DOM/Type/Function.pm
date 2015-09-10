@@ -21,7 +21,7 @@ class PDF::DOM::Type::Function
     constant FunctionTypes = <Sampled n/a Exponential Stitching PostScript>;
     constant FunctionNames = %( FunctionTypes.pairs.invert );
     method type {'Function'}
-    method subtype { FunctionTypes[ $!FunctionType ] }
+    method subtype { FunctionTypes[ $.FunctionType ] }
 
     #| see also PDF::DOM::Delegator
     method delegate-function(Hash :$dict!) {
