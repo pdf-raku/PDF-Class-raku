@@ -8,9 +8,7 @@ role PDF::DOM::PageSizes {
     }
     method !get-prop(BoxName $box) {
 	my $bbox = self!"bbox-name"($box);
-        my $media-box = self.can('find-prop')
-            ?? self.find-prop($bbox)
-            !! self{$bbox};
+        my $media-box = self."$bbox"();
     }
 
     multi method bbox(BoxName $box!, Numeric $lx!, Numeric $ly!, Numeric $ux!, Numeric $uy!

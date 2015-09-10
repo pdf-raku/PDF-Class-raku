@@ -33,9 +33,7 @@ role PDF::DOM::Resources {
     }
 
     method resource-entry(Str $type!, Str $key!) {
-        my $resources = self.can('find-prop')
-            ?? self.find-prop('Resources')
-            !! self.Resources;
+        my $resources = self.Resources;
 
         return unless
             $resources.defined
@@ -52,9 +50,7 @@ role PDF::DOM::Resources {
 
     method !find-resource( &match, Str :$type! ) {
 
-        my $resources = self.can('find-prop')
-            ?? self.find-prop('Resources')
-            !! self.Resources;
+        my $resources = self.Resources;
 
        $resources // {};
 
@@ -106,9 +102,7 @@ role PDF::DOM::Resources {
 	    unless $type.defined;
 
         my Str $id = $object.id;
-        my $resources = self.can('find-prop')
-            ?? self.find-prop('Resources')
-            !! self.Resources;
+        my $resources = self.Resources;
 
         $resources //= do {
             self.Resources = {};

@@ -46,7 +46,7 @@ $g.ConcatMatrix( 10, 1, 15, 2, 3, 4);
 is-json-equiv $g.GraphicsMatrix, [115, 12, 180, 19, 93, 15], '$g.GraphicMatrix - updated again';
 
 is-json-equiv $g.op('scn', 0.30, 'int' => 1, 0.21, 'P2'), (:scn[ :real(.30), :int(1), :real(.21), :name<P2> ]), 'scn';
-is-json-equiv $g.op('TJ', [ 'hello', 42, 'world']), (:TJ[ :array[ :literal<hello>, :int(42), :literal<world> ] ]), 'TJ';
+is-json-equiv $g.op('TJ', $[ 'hello', 42, 'world']), (:TJ[ :array[ :literal<hello>, :int(42), :literal<world> ] ]), 'TJ';
 is-json-equiv $g.SetStrokeColorSpace('DeviceGray'), (:CS[ :name<DeviceGray> ]), 'Named operator';
 dies-ok {$g.op('Tf', 42, 125)}, 'invalid argument dies';
 dies-ok {$g.op('Junk', 42)}, 'invalid operator dies';

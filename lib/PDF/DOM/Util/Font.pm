@@ -133,7 +133,8 @@ module PDF::DOM::Util::Font {
                 .map({ $!glyphs{$_} })\
                 .grep({ .defined })\
                 .map({ $!encoding{$_} })\
-                .grep({ .defined });
+                .grep({ .defined })\
+		.Slip;
         }
 
     }

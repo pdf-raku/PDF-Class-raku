@@ -199,8 +199,9 @@ role PDF::DOM::Op {
         $op => [ @args ]
     }
     # c1, ..., cn [name]      scn | SCN
-    multi sub op(Str $op! where 'scn' | 'SCN', *@args is copy) {
+    multi sub op(Str $op! where 'scn' | 'SCN', *@_args) {
 
+	my @args = @_args;
         # scn & SCN have an optional trailing name
         my Str $name = @args.pop
             if +@args && @args[*-1] ~~ Str;

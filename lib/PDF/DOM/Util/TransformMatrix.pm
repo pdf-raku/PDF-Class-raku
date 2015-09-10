@@ -76,7 +76,7 @@ module PDF::DOM::Util::TransformMatrix {
     }
 
     multi sub vect(Numeric $n! --> List) {@($n, $n)}
-    multi sub vect(Array $v where {+$v == 2} --> List) {$v.flat}
+    multi sub vect(Array $v where {+$v == 2} --> List) {@$v}
 
     #| 3 [PDF 1.7 Section 4.2.2 Common Transforms
     #| order of transforms is: 1. Translate  2. Rotate 3. Scale/Skew

@@ -10,7 +10,7 @@ my $gfx = PDF::DOM::Contents::Gfx.new;
 $gfx.Save;
 lives-ok {$gfx.op(BeginText)}, 'basic op';
 lives-ok {$gfx.op('Tj' => [ :literal('Hello, world!') ])}, 'push raw content';
-lives-ok {$gfx.op('TJ' => [[ 'bye', :hex-string('bye') ]])}, 'push raw content';
+lives-ok {$gfx.op('TJ' => [[ 'bye', :hex-string('bye') ], ])}, 'push raw content';
 dies-ok {$gfx.op('Tjunk' => [ :literal('wtf?') ])}, "can't push bad raw content";
 $gfx.op('ET');
 $gfx.Restore;

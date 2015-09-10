@@ -6,8 +6,6 @@ use PDF::DOM::Type;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
-use lib '.';
-use t::Object :to-obj;
 
 plan 52;
 require ::('PDF::DOM::Type::Catalog');
@@ -43,7 +41,7 @@ is $tt-font-obj.type, 'Font', 'tt font type accessor';
 is $tt-font-obj.subtype, 'TrueType', 'tt font subtype accessor';
 
 require ::('PDF::DOM::Type::Font::Type0');
-$dict = to-obj :dict{ :BaseFont(:name<Wingdings-Regular>), :Encoding(:name<Identity-H>), :DescendantFonts[:ind-ref[15, 0]] };
+$dict = { :BaseFont(:name<Wingdings-Regular>), :Encoding(:name<Identity-H>), :DescendantFonts[:ind-ref[15, 0]] };
 my $t0-font-obj = ::('PDF::DOM::Type::Font::Type0').new( :$dict );
 is $t0-font-obj.Type, 'Font', 't0 font $.Type';
 is $t0-font-obj.Subtype, 'Type0', 't0 font $.Subtype';

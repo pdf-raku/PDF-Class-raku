@@ -25,15 +25,15 @@ class PDF::DOM::Contents::Text::Block {
 
     multi submethod BUILD(Str :$text!,
                           :$font!,
-			  :$!font-size=16,
-                          :$kern = False,
+			  :$!font-size = 16,
+                          :$kern       = False,
                           *%etc) {
 
 	$!font-height = $font.height( $!font-size );
 	$!font-base-height = $font.height( $!font-size, :from-baseline );
         $!space-width = $font.stringwidth( ' ', $!font-size );
 
-        my @chunks = $text.comb(/ [ <![ - ]> [ \w | <:Punctuation> ] ]+ '-'?
+        my @chunks = flat $text.comb(/ [ <![ - ]> [ \w | <:Punctuation> ] ]+ '-'?
                                 || .
                                 /).map( -> $word {
                                     $kern
@@ -82,7 +82,7 @@ class PDF::DOM::Contents::Text::Block {
         self.BUILD( :@atoms, |%etc );
     }
 
-    multi submethod BUILD(:@atoms! is copy,
+    multi submethod BUILD(:@atoms!,
                           Numeric :$!line-height = $!font-size * 1.1,
 			  Numeric :$!horiz-scaling = 100,
 			  Numeric :$!char-spacing = 0,
@@ -96,6 +96,8 @@ class PDF::DOM::Contents::Text::Block {
         my PDF::DOM::Contents::Text::Line $line;
         my Numeric $line-width = 0.0;
 	my Numeric $char-count = 0.0;
+
+	@atoms = @atoms;
 
         while @atoms {
 

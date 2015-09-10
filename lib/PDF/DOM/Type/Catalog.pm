@@ -6,7 +6,7 @@ use PDF::DOM::Resources;
 
 # /Type /Catalog - usually the document root in a PDF
 # See [PDF 1.7 Section 3.6.1 Document Catalog]
-class PDF::DOM::Type::Catalog
+my class Catalog
     is PDF::Object::Dict
     does PDF::DOM::Type
     does PDF::DOM::Resources {
@@ -100,5 +100,6 @@ class PDF::DOM::Type::Catalog
     method cb-finish {
         self<Pages>.cb-finish;
     }
-
 }
+
+class PDF::DOM::Type::Catalog is Catalog {};
