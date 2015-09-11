@@ -4,6 +4,25 @@ use PDF::DOM;
 use PDF::Storage::Input::Str;
 use PDF::Storage::Input::IOH;
 
+multi sub pretty-print(DateTime $dt --> Str) {
+    sprintf('%s %s %02d %02d:%02d:%02d %04d',
+	    <Mon Tue Wed Thu Fri Sat Sun>[$dt.day-of-week - 1],
+	    <Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec>[$dt.month - 1],
+	    $dt.day-of-month,
+	    $dt.hour, $dt.minute, $dt.second,
+	    $dt.year)
+}
+
+multi sub pretty-print(Mu $val is copy --> Str) is default {
+    if $val ~~ s/^ $<bom>=[\xFE \xFF]// {
+    warn $val.perl;
+	$val = $val.ords.map( -> $b1, $b2 {
+	    chr($b1 +< 8  +  $b2)
+	}).join: '';
+    }
+    ~$val;
+}
+
 # a port of pdfinfo.pl from the Perl 5 CAM::PDF module to PDF::DOM and Perl 6
 
 multi sub MAIN(Bool :$version! where $_) {
@@ -25,7 +44,7 @@ multi sub MAIN(Str $file) {
     my UInt $pages = $doc.page-count;
 ##	my @prefs = $doc->getPrefs();
     my Version $pdf-version = $doc.pdf-version;
-    my Hash $pdf-info = $doc<Info>;
+    my Hash $pdf-info = $doc.Info;
     my $box = $doc.Pages<MediaBox>;
     my UInt @page-size = $box
 	?? ($box[2] - $box[0],  $box[3] - $box[1])
@@ -36,26 +55,7 @@ multi sub MAIN(Str $file) {
     say "Pages:        $pages";
     if $pdf-info {
 	for $pdf-info.keys -> $key {
-	    my Str $val = $pdf-info{$key};
-	    if $val ~~ m{'D:' $<year>=\d**4 $<month>=\d**2 $<day>=\d**2 $<hour>=\d**2 $<min>=\d**2 $<sec>=\d**2
-			      $<tz-sign>=< + - Z > $<tz-hour>=\d**2 \' $<tz-min>=\d**2 \' } {
-
-		my Str $iso-date = sprintf("%04d-%02d-%02dT%02d:%0d:%02d", $<year>, $<month>, $<day>, $<hour>, $<min>, $<sec> )
-		    ~ ($<tz-sign> eq 'Z'
-		       ?? 'Z'
-		       !! sprintf '%s%02d%0d2', $<tz-sign>, $<tz-hour>, $<tz-min> );
-
-		my $dt = DateTime.new: $iso-date;
-
-		$val = sprintf('%s %s %02d %02d:%02d:%02d %04d',
-			       <Mon Tue Wed Thu Fri Sat Sun>[$dt.day-of-week - 1],
-			       <Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec>[$dt.month - 1],
-			       $dt.day-of-month,
-			       $dt.hour, $dt.minute, $dt.second,
-			       $dt.year);
-
-	    }
-	    printf "%-13s %s\n", $key ~ q{:}, $val;
+	    printf "%-13s %s\n", $key ~ q{:}, pretty-print( $pdf-info{$key} );
 	}
     }
     say 'Page Size:    ' ~ (@page-size[0] ?? "@page-size[0] x @page-size[1] pts" !! 'variable');
