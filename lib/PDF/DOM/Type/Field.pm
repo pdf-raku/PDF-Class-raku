@@ -12,6 +12,8 @@ class PDF::DOM::Type::Field
     use PDF::Object::Tie;
     # see [PDF 1.7 TABLE 8.69 Entries common to all field dictionaries]
 
+    use PDF::Object::TextString;
+
     subset FieldTypeName of PDF::Object::Name
 	where ( 'Btn' # Button
 	      | 'Tx'  # Text
@@ -25,11 +27,11 @@ class PDF::DOM::Type::Field
     has Array $.Kids is entry;                  #| (Sometimes required, as described below) An array of indirect references to the immediate children of this field.
                                                 #| In a non-terminal field, the Kids array is required to refer to field dictionaries that are immediate descendants of this field. In a terminal field, the Kids array ordinarily must refer to one or more separate widget annotations that are associated with this field. However, if there is only one associated widget annotation, and its contents have been merged into the field dictionary, Kids must be omitted.
 
-    has Str $.T is entry;                       #| Optional) The partial field name
+    has PDF::Object::TextString $.T is entry;                       #| Optional) The partial field name
 
-    has Str $.TU is entry;                      #| (Optional; PDF 1.3) An alternate field name to be used in place of the actual field name wherever the field must be identified in the user interface (such as in error or status messages referring to the field). This text is also useful when extracting the document’s contents in support of accessibility to users with disabilities or for other purposes
+    has PDF::Object::TextString $.TU is entry;                      #| (Optional; PDF 1.3) An alternate field name to be used in place of the actual field name wherever the field must be identified in the user interface (such as in error or status messages referring to the field). This text is also useful when extracting the document’s contents in support of accessibility to users with disabilities or for other purposes
 
-    has Str $.TM is entry;                      #| (Optional; PDF 1.3) The mapping name to be used when exporting interactive form field data from the document.
+    has PDF::Object::TextString $.TM is entry;                      #| (Optional; PDF 1.3) The mapping name to be used when exporting interactive form field data from the document.
 
     my subset FieldFlags of UInt where 0..7;
     has FieldFlags $.Ff is entry(:inherit);     #| Optional; inheritable) A set of flags specifying various characteristics of the field
@@ -53,7 +55,10 @@ class PDF::DOM::Type::Field
     has Str $.DS is entry;                      #| Optional; PDF 1.5) A default style string
 
     use PDF::Object::Stream;
-    my subset TextOrStream of Any where Str | PDF::Object::Stream;
-    has TextOrStream $.RV is entry;             #| (Optional; PDF 1.5) A rich text string
+    my subset TextOrStream of Any where PDF::Object::TextString | PDF::Object::Stream;
+    multi sub coerce(Str $value is rw) {
+	$value = PDF::Object::TextString.new( :$value );
+    }
+    has TextOrStream $.RV is entry( :&coerce );             #| (Optional; PDF 1.5) A rich text string
     
 }

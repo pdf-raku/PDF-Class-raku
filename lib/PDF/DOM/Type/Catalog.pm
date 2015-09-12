@@ -33,7 +33,7 @@ my class Catalog
     has PDF::Object::Dict $.Dests is entry(:indirect);      #| (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
 
     use PDF::DOM::Type::ViewerPreferences;
-    has PDF::DOM::Type::ViewerPreferences $.ViewerPreferences is entry( :coerce );  #| (Optional; PDF 1.2) A viewer preferences dictionary specifying the way the document is to be displayed on the screen.
+    has PDF::DOM::Type::ViewerPreferences $.ViewerPreferences is entry;  #| (Optional; PDF 1.2) A viewer preferences dictionary specifying the way the document is to be displayed on the screen.
 
     subset PageLayout of PDF::Object::Name where 'SinglePage'|'OneColumn'|'TwoColumnLeft'|'TwoColumnRight'|'TwoPageLeft'|'TwoPageRight';
     has PageLayout $.PageLayout is entry;                   #| (Optional) A name object specifying the page layout to be used when the document is opened
@@ -54,7 +54,7 @@ my class Catalog
     has PDF::Object::Dict $.URI is entry;                   #| (Optional; PDF 1.1) A URI dictionary containing document-level information for URI
 
     use PDF::DOM::Type::AcroForm;
-    has PDF::DOM::Type::AcroForm $.AcroForm is entry( :coerce );
+    has PDF::DOM::Type::AcroForm $.AcroForm is entry;
                                                             #| (Optional; PDF 1.2) The document’s interactive form (AcroForm) dictionary
 
     has PDF::Object::Stream $.Metadata is entry(:indirect); #| (Optional; PDF 1.4; must be an indirect reference) A metadata streamcontaining metadata for the document
