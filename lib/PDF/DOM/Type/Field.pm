@@ -1,12 +1,10 @@
 use v6;
 
-use PDF::Object::Dict;
+use PDF::Object::Tie::Hash;
 use PDF::DOM::Type;
 
-# /Type /OutputIntent
-
-class PDF::DOM::Type::Field
-    is PDF::Object::Dict
+role PDF::DOM::Type::Field
+    does PDF::Object::Tie::Hash
     does PDF::DOM::Type['FT'] {
 
     use PDF::Object::Tie;
@@ -14,12 +12,38 @@ class PDF::DOM::Type::Field
 
     use PDF::Object::TextString;
 
-    subset FieldTypeName of PDF::Object::Name
+    my subset FieldTypeName of PDF::Object::Name
 	where ( 'Btn' # Button
 	      | 'Tx'  # Text
               | 'Ch'  # Choice
 	      | 'Sig' # Signature
 	      );
+
+    multi method field-delegate( PDF::Object::Dict $dict where { .<FT>:exists && .<FT> ~~ FieldTypeName }) {
+	my $subclass = do given $dict<FT> {
+	    when 'Btn' {'Button'}
+            when 'Tx'  {'Text'}
+            when 'Ch'  {'Choice'}
+            when 'Sig' {'Signature'}
+	};
+	require ::('PDF::DOM::Type::Field')::($subclass);
+	::('PDF::DOM::Type::Field')::($subclass);
+    }
+
+    multi method field-delegate( PDF::Object::Dict $dict)  {
+	if $dict<FT> {
+	    warn "ignoring Field /FT entry: $dict<FT>"
+	}
+	else {
+	    warn "terminal Field lacks /FT entry"
+		unless $dict<Kids>:exists
+	}
+	PDF::DOM::Type::Field;
+    }
+
+    multi method coerce( PDF::Object::Dict $dict is rw, PDF::DOM::Type::Field $field ) {
+	PDF::Object.coerce( $dict, $field.field-delegate( $dict ) );
+    }
 
     has FieldTypeName $.FT is entry(:inherit);  #| Required for terminal fields; inheritable) The type of field that this dictionary describes
     has Hash $.Parent is entry(:indirect);      #| (Required if this field is the child of another in the field hierarchy; absent otherwise) The field that is the immediate parent of this one (the field, if any, whose Kids array includes this field). A field can have at most one parent; that is, it can be included in the Kids array of at most one other field.
@@ -52,12 +76,12 @@ class PDF::DOM::Type::Field
                                                 #| 1: 1Centered
                                                 #| 2: Right-justified
 
-    has Str $.DS is entry;                      #| Optional; PDF 1.5) A default style string
+    has PDF::Object::TextString $.DS is entry;                      #| Optional; PDF 1.5) A default style string
 
     use PDF::Object::Stream;
     my subset TextOrStream of Any where PDF::Object::TextString | PDF::Object::Stream;
-    multi sub coerce(Str $value is rw) {
-	$value = PDF::Object::TextString.new( :$value );
+    multi sub coerce(Str $value is rw, PDF::Object::TextString:U $type) {
+	$value = PDF::Object.coerce( $value, $type );
     }
     has TextOrStream $.RV is entry( :&coerce );             #| (Optional; PDF 1.5) A rich text string
     

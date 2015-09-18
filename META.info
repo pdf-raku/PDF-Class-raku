@@ -27,6 +27,9 @@
         "PDF::DOM::Type::Encoding" : "lib/PDF/DOM/Type/Encoding.pm",
 
         "PDF::DOM::Type::Field" : "lib/PDF/DOM/Type/Field.pm",
+        "PDF::DOM::Type::Field::Button" : "lib/PDF/DOM/Type/Field/Button.pm",
+        "PDF::DOM::Type::Field::Choice" : "lib/PDF/DOM/Type/Field/Choice.pm",
+        "PDF::DOM::Type::Field::Text" : "lib/PDF/DOM/Type/Field/Text.pm",
 
         "PDF::DOM::Type::Font" : "lib/PDF/DOM/Type/Font.pm",
         "PDF::DOM::Type::Font::CIDFontType0" : "lib/PDF/DOM/Type/Font/CIDFontType0.pm",
