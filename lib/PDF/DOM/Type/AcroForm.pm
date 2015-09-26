@@ -12,12 +12,10 @@ role PDF::DOM::Type::AcroForm
     # see [PDF 1.7 TABLE 8.67 Entries in the interactive form dictionary]
     use PDF::DOM::Type::Field;
     use PDF::Object;
-    my subset ArrayOfFields of Array where {  !.first( !*.isa(PDF::DOM::Type::Field) ) };
-    sub coerce(Array $fields, ArrayOfFields) {
-        PDF::DOM::Type::Field.coerce($fields[$_], PDF::DOM::Type::Field)
-	    for $fields.keys
+    multi sub coerce(PDF::Object::Dict $dict is rw, PDF::DOM::Type::Field) {
+	PDF::DOM::Type::Field.coerce($dict)
     }
-    has ArrayOfFields $.Fields is entry(:required, :&coerce);    #| (Required) An array of references to the document’s root fields (those with no ancestors in the field hierarchy).
+    has PDF::DOM::Type::Field @.Fields is entry(:required, :&coerce);    #| (Required) An array of references to the document’s root fields (those with no ancestors in the field hierarchy).
 
     has Bool $.NeedAppearances is entry;       #| (Optional) A flag specifying whether to construct appearance streams and appearance dictionaries for all widget annotations in the document
 

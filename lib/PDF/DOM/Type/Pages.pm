@@ -19,7 +19,8 @@ class PDF::DOM::Type::Pages
 
     # see [PDF 1.7 TABLE 3.26 Required entries in a page tree node
     has Hash $.Parent is entry(:indirect); #| (Required except in root node; must be an indirect reference) The page tree node that is the immediate parent of this one.
-    has Array $.Kids is entry(:required);  #| (Required) An array of indirect references to the immediate children of this node. The children may be page objects or other page tree nodes.
+    my subset PageNode of PDF::Object::Dict where PDF::DOM::Type::Page | PDF::DOM::Type::Pages;
+    has PageNode @.Kids is entry(:required, :indirect);  #| (Required) An array of indirect references to the immediate children of this node. The children may be page objects or other page tree nodes.
     has Int $.Count is entry(:required);   #| (Required) The number of leaf nodes (page objects) that are descendants of this node within the page tree.
     has Hash $.Resources is entry(:inherit);
 

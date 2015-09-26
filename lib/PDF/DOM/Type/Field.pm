@@ -48,7 +48,7 @@ role PDF::DOM::Type::Field
     has FieldTypeName $.FT is entry(:inherit);  #| Required for terminal fields; inheritable) The type of field that this dictionary describes
     has Hash $.Parent is entry(:indirect);      #| (Required if this field is the child of another in the field hierarchy; absent otherwise) The field that is the immediate parent of this one (the field, if any, whose Kids array includes this field). A field can have at most one parent; that is, it can be included in the Kids array of at most one other field.
 
-    has Array $.Kids is entry;                  #| (Sometimes required, as described below) An array of indirect references to the immediate children of this field.
+    has @.Kids is entry(:indirect);                  #| (Sometimes required, as described below) An array of indirect references to the immediate children of this field.
                                                 #| In a non-terminal field, the Kids array is required to refer to field dictionaries that are immediate descendants of this field. In a terminal field, the Kids array ordinarily must refer to one or more separate widget annotations that are associated with this field. However, if there is only one associated widget annotation, and its contents have been merged into the field dictionary, Kids must be omitted.
 
     has PDF::Object::TextString $.T is entry;                       #| Optional) The partial field name
