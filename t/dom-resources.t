@@ -25,7 +25,8 @@ endobj
 --END--
 
 my $actions = PDF::Grammar::PDF::Actions.new;
-PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
+my $grammar = PDF::Grammar::PDF;
+$grammar.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed: $input";
 my $ast = $/.ast;
 
@@ -124,7 +125,7 @@ $input = q:to"--END--";
 endobj
 --END--
 
-PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
+$grammar.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed: $input";
 $ast = $/.ast;
 
