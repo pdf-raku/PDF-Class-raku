@@ -22,7 +22,7 @@ class PDF::DOM::Type::FontDescriptor
     has FontWeightValue $.FontWeight is entry;            #| Optional; PDF 1.5; strongly recommended for Type 3 fonts in Tagged PDF documents) The weight (thickness) component of the fully-qualified font name or font specifier.
     subset FontFlags of Int where 0 ..^ (2 +< 7);
     has FontFlags $.Flags is entry;                       #| (Required) A collection of flags defining various characteristics of the font
-    has Array $.FontBBox is entry;                        #| (Required, except for Type 3 fonts) A rectangle, expressed in the glyph coordinate system, specifying the font bounding box.
+    has Numeric @.FontBBox is entry;                      #| (Required, except for Type 3 fonts) A rectangle, expressed in the glyph coordinate system, specifying the font bounding box.
     has Numeric $.ItalicAngle is entry;                   #| (Required) The angle, expressed in degrees counterclockwise from the vertical, of the dominant vertical strokes of the font. (
     has Numeric $.Ascent is entry;                        #| (Required, except for Type 3 fonts) The maximum height above the baseline reached by glyphs in this font, excluding the height of glyphs for accented characters.
     has Numeric $.Descent is entry;                       #| (Required, except for Type 3 fonts) The maximum depth below the baseline reached by glyphs in this font. The value is a negative number.

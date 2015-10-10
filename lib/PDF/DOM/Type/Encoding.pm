@@ -13,6 +13,6 @@ class PDF::DOM::Type::Encoding
     use PDF::Object::Tie;
     use PDF::Object::Name;
     has PDF::Object::Name $.BaseEncoding is entry; #| (Optional) The base encoding—that is, the encoding from which the Differencesentry (if present) describes differences—
-    has Array $.Differences is entry;              #| (Optional; not recommended with TrueType fonts) An array describing the differences from the encoding specified by BaseEncoding or, if BaseEncoding is absent, from an implicit base encoding.
+    has @.Differences is entry;              #| (Optional; not recommended with TrueType fonts) An array describing the differences from the encoding specified by BaseEncoding or, if BaseEncoding is absent, from an implicit base encoding.
 
 }

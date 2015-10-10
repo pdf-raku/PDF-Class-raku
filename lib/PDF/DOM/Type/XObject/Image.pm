@@ -23,9 +23,9 @@ class PDF::DOM::Type::XObject::Image
     has Bool $.ImageMask is entry;                #| (Optional) A flag indicating whether the image is to be treated as an image mask. If this flag is true, the value of BitsPerComponent must be 1 and Mask and ColorSpace should not be specified;
     subset StreamOrArray of PDF::Object where PDF::Object::Stream | PDF::Object::Array;
     has StreamOrArray $.Mask is entry;            #| (Optional) A flag indicating whether the image is to be treated as an image mask (see Section 4.8.5, “Masked Images”). If this flag is true, the value of BitsPerComponent must be 1 and Mask and ColorSpace should not be specified;
-    has Array $.Decode is entry;                  #| (Optional) An array of numbers describing how to map image samples into the range of values appropriate for the image’s color space
+    has Numeric @.Decode is entry;                 #| (Optional) An array of numbers describing how to map image samples into the range of values appropriate for the image’s color space
     has Bool $.Interpolate is entry;              #| (Optional) A flag indicating whether image interpolation is to be performed
-    has Array $.Alternatives is entry;            #| An array of alternate image dictionaries for this image
+    has Hash @.Alternatives is entry;             #| An array of alternate image dictionaries for this image
     has PDF::Object::Stream $.SMask is entry;     #| (Optional; PDF 1.4) A subsidiary image XObject defining a soft-mask image
     subset SMaskInInt of Int where 0|1|2;
     has SMaskInInt $.SMaskInData is entry;        #| (Optional for images that use the JPXDecode filter, meaningless otherwise; A code specifying how soft-mask information encoded with image samples should be used:
