@@ -9,13 +9,13 @@ role PDF::DOM::PageSizes {
     }
 
     method !get-prop(BoxName $box) {
-	my $bbox = self!"bbox-name"($box);
+	my $bbox = self!bbox-name($box);
         my $media-box = self."$bbox"();
     }
 
     multi method bbox(BoxName $box!, Numeric $lx!, Numeric $ly!, Numeric $ux!, Numeric $uy!
 	--> Array) {
-        self{ self!"bbox-name"($box) } = [$lx, $ly, $ux, $uy ]
+        self{ self!bbox-name($box) } = [$lx, $ly, $ux, $uy ]
     }
 
     multi method bbox(BoxName $box!, Numeric $ux!, Numeric $uy!

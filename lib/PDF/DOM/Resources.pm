@@ -13,11 +13,11 @@ role PDF::DOM::Resources {
 
     method core-font( *@arg, *%opt ) {
         my $core-font = PDF::DOM::Util::Font::core-font( |@arg, |%opt );
-        self!"find-resource"(sub ($_){.isa(PDF::DOM::Type::Font) && .font-obj === $core-font}, :type<Font>)
+        self!find-resource(sub ($_){.isa(PDF::DOM::Type::Font) && .font-obj === $core-font}, :type<Font>)
             // do {
                 my %params = $core-font.to-dom('Font');
                 my $new-obj = PDF::Object.coerce( |%params );
-                self!"register-resource"( $new-obj );
+                self!register-resource( $new-obj );
         };
     }
 
@@ -28,8 +28,8 @@ role PDF::DOM::Resources {
 	my &match = $eqv
 	    ?? sub ($_){$_ eqv $object}
 	    !! sub ($_){$_ === $object};
-        self!"find-resource"(&match, :$type)
-            //  self!"register-resource"( $object );
+        self!find-resource(&match, :$type)
+            //  self!register-resource( $object );
     }
 
     method resource-entry(Str $type!, Str $key!) {
