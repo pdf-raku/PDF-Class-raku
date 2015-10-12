@@ -14,13 +14,7 @@ multi sub pretty-print(DateTime $dt --> Str) {
 }
 
 multi sub pretty-print(Mu $val is copy --> Str) is default {
-    if $val ~~ s/^ $<bom>=[\xFE \xFF]// {
-    warn $val.perl;
-	$val = $val.ords.map( -> $b1, $b2 {
-	    chr($b1 +< 8  +  $b2)
-	}).join: '';
-    }
-    ~$val;
+    ~$val
 }
 
 # a port of pdfinfo.pl from the Perl 5 CAM::PDF module to PDF::DOM and Perl 6
@@ -30,6 +24,11 @@ multi sub MAIN(Bool :$version! where $_) {
     say "DOM::PDF {$DOM::PDF.^version}";
     say "this script was ported from the CAM::PDF PDF Manipulation library";
     say "see - https://metacpan.org/pod/CAM::PDF";
+}
+
+use PDF::Object::Int;
+sub flag(PDF::Object::Int $flags, UInt $flag-num) {
+    $flags.flag-is-set( $flag-num ) ?? 'yes' !! 'no';
 }
 
 multi sub MAIN(Str $file) {
@@ -42,10 +41,15 @@ multi sub MAIN(Str $file) {
 
     my UInt $size = $input.chars;
     my UInt $pages = $doc.page-count;
-##	my @prefs = $doc->getPrefs();
     my Version $pdf-version = $doc.pdf-version;
     my Hash $pdf-info = $doc.Info;
-    my $box = $doc.Pages<MediaBox>;
+    my $box = $doc.Pages.MediaBox;
+    my $encrypt = $doc.Encrypt;
+
+    my $perms = $encrypt.P
+        if $encrypt;
+    $perms //= PDF::Object.coerce( :int(0xFFFF) );
+
     my UInt @page-size = $box
 	?? ($box[2] - $box[0],  $box[3] - $box[1])
 	!! (0, 0);
@@ -61,7 +65,9 @@ multi sub MAIN(Str $file) {
     say 'Page Size:    ' ~ (@page-size[0] ?? "@page-size[0] x @page-size[1] pts" !! 'variable');
 ##	print 'Optimized:    '.($doc->isLinearized()?'yes':'no')."\n";
 	say "PDF version:  $pdf-version";
-##	print "Security\n";
+        use PDF::Object::Type::Encrypt :Permissions;
+
+	print "Security\n";
 ##	if ($prefs[0] || $prefs[1])
 ##	{
 ##	    print "  Passwd:     '$prefs[0]', '$prefs[1]'\n";
@@ -70,10 +76,10 @@ multi sub MAIN(Str $file) {
 ##	{
 ##	    print "  Passwd:     none\n";
 ##	}
-##	print '  Print:      '.($prefs[2]?'yes':'no')."\n";
-##	print '  Modify:     '.($prefs[3]?'yes':'no')."\n";
-##	print '  Copy:       '.($prefs[4]?'yes':'no')."\n";
-##	print '  Add:        '.($prefs[5]?'yes':'no')."\n";
+	say '  Print:      ' ~ flag( $perms, Permissions::Print );
+	say '  Modify:     ' ~ flag( $perms, Permissions::Modify );
+	say '  Copy:       ' ~ flag( $perms, Permissions::Copy );
+	say '  Add:        ' ~ flag( $perms, Permissions::Add );
 ##	if (@ARGV > 0)
 ##	{
 ##	    print "---------------------------------\n";

@@ -24,6 +24,10 @@ class PDF::DOM::Type::Pages
     has Int $.Count is entry(:required);   #| (Required) The number of leaf nodes (page objects) that are descendants of this node within the page tree.
     has Hash $.Resources is entry(:inherit);
 
+    #| inheritable page properties
+    has Numeric @.MediaBox is entry(:inherit);
+    has Numeric @.CropBox is entry(:inherit);
+
     #| add new last page
     method add-page( $page = PDF::Object.coerce( { :Type( :name<Page> ) } ) ) {
         my $sub-pages = self.Kids[*-1]
@@ -113,6 +117,7 @@ class PDF::DOM::Type::Pages
         die "unable to locate page: $page-num";
     }
 
+    # allow array indexing of pages $pages[9] :== $.pages.page(10);
     method AT-POS($pos) is rw {
         self.page($pos + 1)
     }

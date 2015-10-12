@@ -14,21 +14,21 @@ class PDF::DOM::Type::XObject::Form
     use PDF::Object::Tie;
     #|See [PDF Spec 1.7 Section 4.9.1 TABLE 4.45 Additional entries specific to a type 1 form dictionary]
     subset FormTypeInt of Int where 1;
-    has FormTypeInt $.FormType is entry;  #| (Optional) A code identifying the type of form XObject that this dictionary describes. The only valid value is 1.
-    has Array $.BBox is entry(:required); #| (Required) An array of four numbers in the form coordinate system (see above), giving the coordinates of the left, bottom, right, and top edges, respectively, of the form XObject’s bounding box.
-    has Array $.Matrix is entry;          #| (Optional) An array of six numbers specifying the form matrix, which maps form space into user space
-    has Hash $.Resources is entry;        #| (Optional but strongly recommended; PDF 1.2) A dictionary specifying any resources (such as fonts and images) required by the form XObject
-    has Hash $.Group is entry;            #| (Optional; PDF 1.4) A group attributes dictionary indicating that the contents of the form XObject are to be treated as a group and specifying the attributes of that group
-    has Hash $.Ref is entry;              #| (Optional; PDF 1.4) A reference dictionary identifying a page to be imported from another PDF file, and for which the form XObject serves as a proxy
+    has FormTypeInt $.FormType is entry;    #| (Optional) A code identifying the type of form XObject that this dictionary describes. The only valid value is 1.
+    has Numeric @.BBox is entry(:required); #| (Required) An array of four numbers in the form coordinate system (see above), giving the coordinates of the left, bottom, right, and top edges, respectively, of the form XObject’s bounding box.
+    has Numeric @.Matrix is entry;          #| (Optional) An array of six numbers specifying the form matrix, which maps form space into user space
+    has Hash $.Resources is entry;          #| (Optional but strongly recommended; PDF 1.2) A dictionary specifying any resources (such as fonts and images) required by the form XObject
+    has Hash $.Group is entry;              #| (Optional; PDF 1.4) A group attributes dictionary indicating that the contents of the form XObject are to be treated as a group and specifying the attributes of that group
+    has Hash $.Ref is entry;                #| (Optional; PDF 1.4) A reference dictionary identifying a page to be imported from another PDF file, and for which the form XObject serves as a proxy
 ## issue#8 build woes
 ##    use PDF::Object:Stream;
 ##    has PDF::Object::Stream $.Metadata is entry;
-    has Hash $.Metadata is entry;         #| (Optional; PDF 1.4) A metadata stream containing metadata for the form XObject
-    has Hash $.PieceInfo is entry;        #| (Optional; PDF 1.3) A page-piece dictionary associated with the form XObject
-    has Str $.LastModified is entry;      #| (Required if PieceInfo is present; optional otherwise; PDF 1.3) The date and time (see Section 3.8.3, “Dates”) when the form XObject’s contents were most recently modified
-    has Int $.StructParent is entry;      #| (Required if the form XObject is a structural content item; PDF 1.3) The integer key of the form XObject’s entry in the structural parent tree
-    has Int $.StructParents is entry;     #| (Required if the form XObject contains marked-content sequences that are structural content items; PDF 1.3) The integer key of the form XObject’s entry in the structural parent tree
-    has Hash $.OPI is entry;              #| (Optional; PDF 1.2) An OPI version dictionary for the form XObject
-    has Hash $.OC is entry;               #| (Optional; PDF 1.5) An optional content group or optional content membership dictionary
+    has Hash $.Metadata is entry;           #| (Optional; PDF 1.4) A metadata stream containing metadata for the form XObject
+    has Hash $.PieceInfo is entry;          #| (Optional; PDF 1.3) A page-piece dictionary associated with the form XObject
+    has Str $.LastModified is entry;        #| (Required if PieceInfo is present; optional otherwise; PDF 1.3) The date and time (see Section 3.8.3, “Dates”) when the form XObject’s contents were most recently modified
+    has Int $.StructParent is entry;        #| (Required if the form XObject is a structural content item; PDF 1.3) The integer key of the form XObject’s entry in the structural parent tree
+    has Int $.StructParents is entry;       #| (Required if the form XObject contains marked-content sequences that are structural content items; PDF 1.3) The integer key of the form XObject’s entry in the structural parent tree
+    has Hash $.OPI is entry;                #| (Optional; PDF 1.2) An OPI version dictionary for the form XObject
+    has Hash $.OC is entry;                 #| (Optional; PDF 1.5) An optional content group or optional content membership dictionary
 
 }

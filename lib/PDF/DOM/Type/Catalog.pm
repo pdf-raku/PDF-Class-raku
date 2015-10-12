@@ -44,7 +44,7 @@ my class Catalog
     use PDF::DOM::Type::Outlines;
     has PDF::DOM::Type::Outlines $.Outlines is entry(:indirect); #| (Optional; must be an indirect reference) The outline dictionary that is the root of the document’s outline hierarchy
 
-    has PDF::Object::Array $.Threads is entry;              #| (Optional; PDF 1.1; must be an indirect reference) An array of thread dictionaries representing the document’s article threads
+    has PDF::Object::Array $.Threads is entry(:indirect);        #| (Optional; PDF 1.1; must be an indirect reference) An array of thread dictionaries representing the document’s article threads
 
     subset ArrayOrDict of PDF::Object where PDF::Object::Array|PDF::Object::Dict;
     has ArrayOrDict $.OpenAction is entry;                  #| (Optional; PDF 1.1) A value specifying a destination to be displayed or an action to be performed when the document is opened.
