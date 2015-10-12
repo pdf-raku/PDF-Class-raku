@@ -5,7 +5,7 @@ use PDF::DOM::Type::Field;
 role PDF::DOM::Type::Field::Text
     does PDF::DOM::Type::Field {
 
-    use PDF::Object::Tie;
+    use PDF::DAO::Tie;
 
     # [PDF 1.7 TABLE 8.78 Additional entry specific to a text field]
 

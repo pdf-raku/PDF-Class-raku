@@ -7,7 +7,7 @@ use PDF::DOM::Type::Function;
 class PDF::DOM::Type::Function::Stitching
     is PDF::DOM::Type::Function {
 
-    use PDF::Object::Tie;
+    use PDF::DAO::Tie;
 
     # see [PDF 1.7 TABLE 3.38 Additional entries specific to a type 3 function dictionary]
     has @.Functions is entry(:required);       #| (Required) An array of k 1-input functions making up the stitching function. The output dimensionality of all functions must be the same, and compatible with the value of Range if Range is present.

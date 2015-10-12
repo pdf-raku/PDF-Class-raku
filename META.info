@@ -2,7 +2,7 @@
     "name"        : "PDF::DOM",
     "version"     : "0.1",
     "description" : "PDF Document Object Model",
-    "depends"     : [ "PDF", "PDF::Grammar", "Font::AFM" ],
+    "depends"     : [ "PDF::DAO", "PDF::Grammar", "Font::AFM" ],
     "source-url"  : "git://github.com/p6-css/p6-PDF-Tools.git",
     "provides"    : {
 

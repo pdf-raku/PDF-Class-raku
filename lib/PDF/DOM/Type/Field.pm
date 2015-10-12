@@ -1,25 +1,25 @@
 use v6;
 
-use PDF::Object::Tie::Hash;
+use PDF::DAO::Tie::Hash;
 use PDF::DOM::Type;
 
 role PDF::DOM::Type::Field
-    does PDF::Object::Tie::Hash
+    does PDF::DAO::Tie::Hash
     does PDF::DOM::Type['FT'] {
 
-    use PDF::Object::Tie;
+    use PDF::DAO::Tie;
     # see [PDF 1.7 TABLE 8.69 Entries common to all field dictionaries]
 
-    use PDF::Object::TextString;
+    use PDF::DAO::TextString;
 
-    my subset FieldTypeName of PDF::Object::Name
+    my subset FieldTypeName of PDF::DAO::Name
 	where ( 'Btn' # Button
 	      | 'Tx'  # Text
               | 'Ch'  # Choice
 	      | 'Sig' # Signature
 	      );
 
-    multi method field-delegate( PDF::Object::Dict $dict where { .<FT>:exists && .<FT> ~~ FieldTypeName }) {
+    multi method field-delegate( PDF::DAO::Dict $dict where { .<FT>:exists && .<FT> ~~ FieldTypeName }) {
 	my $subclass = do given $dict<FT> {
 	    when 'Btn' {'Button'}
             when 'Tx'  {'Text'}
@@ -30,7 +30,7 @@ role PDF::DOM::Type::Field
 	::('PDF::DOM::Type::Field')::($subclass);
     }
 
-    multi method field-delegate( PDF::Object::Dict $dict)  {
+    multi method field-delegate( PDF::DAO::Dict $dict)  {
 	if $dict<FT> {
 	    warn "ignoring Field /FT entry: $dict<FT>"
 	}
@@ -41,8 +41,8 @@ role PDF::DOM::Type::Field
 	PDF::DOM::Type::Field;
     }
 
-    multi method coerce( PDF::Object::Dict $dict is rw, PDF::DOM::Type::Field $field ) {
-	PDF::Object.coerce( $dict, $field.field-delegate( $dict ) );
+    multi method coerce( PDF::DAO::Dict $dict is rw, PDF::DOM::Type::Field $field ) {
+	PDF::DAO.coerce( $dict, $field.field-delegate( $dict ) );
     }
 
     has FieldTypeName $.FT is entry(:inherit);  #| Required for terminal fields; inheritable) The type of field that this dictionary describes
@@ -51,11 +51,11 @@ role PDF::DOM::Type::Field
     has @.Kids is entry(:indirect);                  #| (Sometimes required, as described below) An array of indirect references to the immediate children of this field.
                                                 #| In a non-terminal field, the Kids array is required to refer to field dictionaries that are immediate descendants of this field. In a terminal field, the Kids array ordinarily must refer to one or more separate widget annotations that are associated with this field. However, if there is only one associated widget annotation, and its contents have been merged into the field dictionary, Kids must be omitted.
 
-    has PDF::Object::TextString $.T is entry;                       #| Optional) The partial field name
+    has PDF::DAO::TextString $.T is entry;                       #| Optional) The partial field name
 
-    has PDF::Object::TextString $.TU is entry;                      #| (Optional; PDF 1.3) An alternate field name to be used in place of the actual field name wherever the field must be identified in the user interface (such as in error or status messages referring to the field). This text is also useful when extracting the document’s contents in support of accessibility to users with disabilities or for other purposes
+    has PDF::DAO::TextString $.TU is entry;                      #| (Optional; PDF 1.3) An alternate field name to be used in place of the actual field name wherever the field must be identified in the user interface (such as in error or status messages referring to the field). This text is also useful when extracting the document’s contents in support of accessibility to users with disabilities or for other purposes
 
-    has PDF::Object::TextString $.TM is entry;                      #| (Optional; PDF 1.3) The mapping name to be used when exporting interactive form field data from the document.
+    has PDF::DAO::TextString $.TM is entry;                      #| (Optional; PDF 1.3) The mapping name to be used when exporting interactive form field data from the document.
 
     my subset FieldFlags of UInt where 0..7;
     has FieldFlags $.Ff is entry(:inherit);     #| Optional; inheritable) A set of flags specifying various characteristics of the field
@@ -76,12 +76,12 @@ role PDF::DOM::Type::Field
                                                 #| 1: 1Centered
                                                 #| 2: Right-justified
 
-    has PDF::Object::TextString $.DS is entry;                      #| Optional; PDF 1.5) A default style string
+    has PDF::DAO::TextString $.DS is entry;                      #| Optional; PDF 1.5) A default style string
 
-    use PDF::Object::Stream;
-    my subset TextOrStream of Any where PDF::Object::TextString | PDF::Object::Stream;
-    multi sub coerce(Str $value is rw, PDF::Object::TextString:U $type) {
-	$value = PDF::Object.coerce( $value, $type );
+    use PDF::DAO::Stream;
+    my subset TextOrStream of Any where PDF::DAO::TextString | PDF::DAO::Stream;
+    multi sub coerce(Str $value is rw, PDF::DAO::TextString:U $type) {
+	$value = PDF::DAO.coerce( $value, $type );
     }
     has TextOrStream $.RV is entry( :&coerce );             #| (Optional; PDF 1.5) A rich text string
     

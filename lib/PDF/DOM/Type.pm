@@ -1,13 +1,13 @@
 use v6;
 
-use PDF::Object;
-use PDF::Object::Type;
+use PDF::DAO;
+use PDF::DAO::Type;
 use PDF::DOM::Delegator;
 
 # autoload from PDF::DOM::Type
 
 role PDF::DOM::Type[$type-entry = 'Type', $subtype-entry = 'Subtype']
-    does PDF::Object::Type {
+    does PDF::DAO::Type {
 
     #| enforce tie-ins between /Type, /Subtype & the class name. e.g.
     #| PDF::DOM::Type::Catalog should have /Type = /Catalog
@@ -22,7 +22,7 @@ role PDF::DOM::Type[$type-entry = 'Type', $subtype-entry = 'Subtype']
                 my Str $type-name = ~$0;
 
                 if self{$type-entry}:!exists {
-                    self{$type-entry} = PDF::Object.coerce( :name($type-name) );
+                    self{$type-entry} = PDF::DAO.coerce( :name($type-name) );
                 }
                 else {
                     # /Type already set. check it agrees with the class name
@@ -34,7 +34,7 @@ role PDF::DOM::Type[$type-entry = 'Type', $subtype-entry = 'Subtype']
                     my Str $subtype-name = ~$1;
 
                     if self{$subtype-entry}:!exists {
-                        self{$subtype-entry} = PDF::Object.coerce( :name($subtype-name) );
+                        self{$subtype-entry} = PDF::DAO.coerce( :name($subtype-name) );
                     }
                     else {
                         # /Subtype already set. check it agrees with the class name

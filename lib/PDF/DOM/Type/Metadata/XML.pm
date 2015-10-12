@@ -1,9 +1,9 @@
 use v6;
 
-use PDF::Object::Stream;
+use PDF::DAO::Stream;
 use PDF::DOM::Type;
 
 class PDF::DOM::Type::Metadata::XML
-    is PDF::Object::Stream
+    is PDF::DAO::Stream
     does PDF::DOM::Type {
 }

@@ -6,10 +6,10 @@ role PDF::DOM::Type::Field::Button
     does PDF::DOM::Type::Field {
 
     # [PDF 1.7 TABLE 8.76 Additional entry specific to check box and radio button fields]
-    use PDF::Object::Tie;
+    use PDF::DAO::Tie;
 
-    use PDF::Object::TextString;
-    my subset ArrayOfTextStrings of Array where { !.first( !*.isa(PDF::Object::TextString) ) }
+    use PDF::DAO::TextString;
+    my subset ArrayOfTextStrings of Array where { !.first( !*.isa(PDF::DAO::TextString) ) }
     sub coerce(Array $fields, ArrayOfTextStrings) {
         PDF::DOM::Type::Field.coerce($fields[$_], PDF::DOM::Object::TextString)
 	    for $fields.keys

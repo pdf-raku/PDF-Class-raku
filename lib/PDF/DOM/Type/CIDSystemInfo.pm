@@ -1,13 +1,13 @@
 use v6;
 
-use PDF::Object::Dict;
-use PDF::Object::Type;
+use PDF::DAO::Dict;
+use PDF::DAO::Type;
 
 class PDF::DOM::Type::CIDSystemInfo
-    is PDF::Object::Dict {
+    is PDF::DAO::Dict {
 
     # see [PDF 1.7 TABLE 5.13 Entries in a CIDSystemInfo dictionary]
-    use PDF::Object::Tie;
+    use PDF::DAO::Tie;
 
     has Str $.Registry is entry(:required);   #| A string identifying the issuer of the character collection—for example, Adobe.
     has Str $.Ordering is entry(:required);   #| (Required) A string that uniquely names the character collection within the specified registry—for example, Japan1

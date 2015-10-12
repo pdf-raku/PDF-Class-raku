@@ -2,15 +2,15 @@ use v6;
 
 class PDF::DOM {...}
 
-use PDF::Object;
-use PDF::Object::Doc;
+use PDF::DAO;
+use PDF::DAO::Doc;
 
 #| DOM entry-point. either a trailer dict or an XRef stream
 class PDF::DOM
-    is PDF::Object::Doc {
+    is PDF::DAO::Doc {
 
     # base class declares: $.Size, $.Encrypt, $.Info, $.ID
-    use PDF::Object::Tie;
+    use PDF::DAO::Tie;
     use PDF::DOM::Type::Catalog;
     has PDF::DOM::Type::Catalog $.Root is entry(:required,:indirect);
 

@@ -1,7 +1,7 @@
 use v6;
 
 use PDF::Writer;
-use PDF::Object::Util :from-ast;
+use PDF::DAO::Util :from-ast;
 
 role PDF::DOM::Op {
 

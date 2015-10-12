@@ -2,7 +2,7 @@ use v6;
 
 role PDF::DOM::Resources {
 
-    use PDF::Object;
+    use PDF::DAO;
     use PDF::DOM::Type;
     use PDF::DOM::Util::Font;
     use PDF::DOM::Type::Font;
@@ -16,12 +16,12 @@ role PDF::DOM::Resources {
         self!find-resource(sub ($_){.isa(PDF::DOM::Type::Font) && .font-obj === $core-font}, :type<Font>)
             // do {
                 my %params = $core-font.to-dom('Font');
-                my $new-obj = PDF::Object.coerce( |%params );
+                my $new-obj = PDF::DAO.coerce( |%params );
                 self!register-resource( $new-obj );
         };
     }
 
-    method resource(PDF::Object $object, Bool :$eqv=False ) {
+    method resource(PDF::DAO $object, Bool :$eqv=False ) {
         my Str $type = $object.?type
             // die "not a resource object: {$object.WHAT}";
 
@@ -71,7 +71,7 @@ role PDF::DOM::Resources {
         $entry;
     }
 
-    multi method base-name( PDF::Object $object ) is default {
+    multi method base-name( PDF::DAO $object ) is default {
         my Str $type = $object.?type
             // die "not a resource object: {$object.WHAT}";
 
@@ -94,7 +94,7 @@ role PDF::DOM::Resources {
 
     #| ensure that the object is registered as a page resource. Return a unique
     #| name for it.
-    method !register-resource(PDF::Object $object,
+    method !register-resource(PDF::DAO $object,
                              Str :$base-name = $.base-name($object),
                              :$type = $object.?type) {
 

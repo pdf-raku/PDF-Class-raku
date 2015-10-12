@@ -1,16 +1,16 @@
 use v6;
 
-use PDF::Object::Dict;
+use PDF::DAO::Dict;
 use PDF::DOM::Type;
 
 #| /Type /Annot Annotations
 #| See [PDF 1.7 Section 8.4.1 - Annotation Dictionaries ]
 class PDF::DOM::Type::Annot
-    is PDF::Object::Dict
+    is PDF::DAO::Dict
     does PDF::DOM::Type {
 
-    use PDF::Object::Tie;
-    use PDF::Object::Name;
+    use PDF::DAO::Tie;
+    use PDF::DAO::Name;
 
     # See [PDF Spec 1.7 table 8.15 - Entries common to all annotation dictionaries ]
     has Array $.Rect is entry(:required); #| (Required) The annotation rectangle, defining the location of the annotation on the page in default user space units.
@@ -21,7 +21,7 @@ class PDF::DOM::Type::Annot
     subset AnnotFlagsInt of Int where 0 ..^ 2 +< 9;
     has AnnotFlagsInt $.F is entry;       #| (Optional; PDF 1.1) A set of flags specifying various characteristics of the annotation
     has Hash $.AP is entry;               #| (Optional; PDF 1.2) An appearance dictionary specifying how the annotation is presented visually on the page
-    has PDF::Object::Name $.AS is entry;  #| (Required if the appearance dictionary AP contains one or more subdictionaries; PDF 1.2) The annotation’s appearance state, which selects the applicable appearance stream from an appearance subdictionary
+    has PDF::DAO::Name $.AS is entry;  #| (Required if the appearance dictionary AP contains one or more subdictionaries; PDF 1.2) The annotation’s appearance state, which selects the applicable appearance stream from an appearance subdictionary
     has Array $.Border is entry;          #| (Optional) An array specifying the characteristics of the annotation’s border. The border is specified as a rounded rectangle.
     has Array $.C is entry;               #| (Optional; PDF 1.1) An array of numbers in the range 0.0 to 1.0, representing a color used for (*) background, when closed, (*) title bar of pop-up window, (*) link border
     has Int $.StructParent is entry;      #| (Required if the annotation is a structural content item; PDF 1.3) The integer key of the annotation’s entry in the structural parent tree

@@ -11,7 +11,7 @@ class PDF::DOM::Type::XObject::Form
     does PDF::DOM::Contents
     does PDF::DOM::Resources {
 
-    use PDF::Object::Tie;
+    use PDF::DAO::Tie;
     #|See [PDF Spec 1.7 Section 4.9.1 TABLE 4.45 Additional entries specific to a type 1 form dictionary]
     subset FormTypeInt of Int where 1;
     has FormTypeInt $.FormType is entry;    #| (Optional) A code identifying the type of form XObject that this dictionary describes. The only valid value is 1.
@@ -21,8 +21,8 @@ class PDF::DOM::Type::XObject::Form
     has Hash $.Group is entry;              #| (Optional; PDF 1.4) A group attributes dictionary indicating that the contents of the form XObject are to be treated as a group and specifying the attributes of that group
     has Hash $.Ref is entry;                #| (Optional; PDF 1.4) A reference dictionary identifying a page to be imported from another PDF file, and for which the form XObject serves as a proxy
 ## issue#8 build woes
-##    use PDF::Object:Stream;
-##    has PDF::Object::Stream $.Metadata is entry;
+##    use PDF::DAO:Stream;
+##    has PDF::DAO::Stream $.Metadata is entry;
     has Hash $.Metadata is entry;           #| (Optional; PDF 1.4) A metadata stream containing metadata for the form XObject
     has Hash $.PieceInfo is entry;          #| (Optional; PDF 1.3) A page-piece dictionary associated with the form XObject
     has Str $.LastModified is entry;        #| (Required if PieceInfo is present; optional otherwise; PDF 1.3) The date and time (see Section 3.8.3, “Dates”) when the form XObject’s contents were most recently modified

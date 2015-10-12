@@ -7,7 +7,7 @@ use PDF::DOM::Type::Function;
 class PDF::DOM::Type::Function::Exponential
     is PDF::DOM::Type::Function {
 
-    use PDF::Object::Tie;
+    use PDF::DAO::Tie;
     # see [PDF 1.7 TABLE 3.37 Additional entries specific to a type 2 function dictionary]
     has Array $.C0 is entry;            #| (Optional) An array of n numbers defining the function result when x = 0.0. Default value: [ 0.0 ].
     has Array $.C1 is entry;            #| (Optional) An array of n numbers defining the function result when x = 1.0. Default value: [ 1.0 ].

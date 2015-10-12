@@ -7,7 +7,7 @@ use PDF::DOM::Type::Shading;
 class PDF::DOM::Type::Shading::FreeForm
     is PDF::DOM::Type::Shading {
     # see [PDF 1.7 TABLE 4.32 Additional entries specific to a type 4 shading dictionary]
-    use PDF::Object::Tie;
+    use PDF::DAO::Tie;
 
     has Int $.BitsPerCoordinate is entry(:required); #| (Required) The number of bits used to represent each vertex coordinate. Valid values are 1, 2, 4, 8, 12, 16, 24, and 32.
     has Int $.BitsPerComponent is entry(:required);  #| (Required) The number of bits used to represent each color component. Valid values are 1, 2, 4, 8, 12, and 16.

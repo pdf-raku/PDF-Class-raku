@@ -8,7 +8,7 @@ use PDF::DOM::Type;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
-use PDF::Object::Stream;
+use PDF::DAO::Stream;
 
 my $actions = PDF::Grammar::PDF::Actions.new;
 
@@ -32,7 +32,7 @@ is $ind-obj.gen-num, 0, '$.gen-num';
 my $page = $ind-obj.object;
 isa-ok $page, ::('PDF::DOM::Type')::('Page');
 is $page.Type, 'Page', '$.Type accessor';
-my $dummy-stream = PDF::Object::Stream.new( :decoded('%dummy stream') );
+my $dummy-stream = PDF::DAO::Stream.new( :decoded('%dummy stream') );
 is $page<Parent>, (:ind-ref[3, 0]), '$page<Parent>';
 is $page.Resources, { :Font{ :F1( :ind-ref[7, 0] )}, :ProcSet( :ind-ref[6, 0]) }, '$.Resources accessor';
 
@@ -91,7 +91,7 @@ my $contents = $page.Contents;
 isa-ok $contents, Array, 'finished Contents';
 is-deeply +$contents, 3, 'finished Contents count';
 
-isa-ok $contents[0], ::('PDF::Object::Stream'), 'finished Contents';
+isa-ok $contents[0], ::('PDF::DAO::Stream'), 'finished Contents';
 is $contents[0].decoded, "q\n", 'finished Contents pretext';
 is $contents[1].decoded, '%dummy stream', 'finished Contents existing text';
 is-deeply [$contents[2].decoded.lines], ['', 'Q', 'BT', '(Hello, world!) Tj', 'ET'], 'finished Contents post-text';

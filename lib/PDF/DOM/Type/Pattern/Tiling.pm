@@ -1,15 +1,15 @@
 use v6;
 
-use PDF::Object::Stream;
+use PDF::DAO::Stream;
 use PDF::DOM::Type::Pattern;
 
 #| /ShadingType 2 - Axial
 
 class PDF::DOM::Type::Pattern::Tiling
-    is PDF::Object::Stream
+    is PDF::DAO::Stream
     does PDF::DOM::Type::Pattern {
 
-    use PDF::Object::Tie;
+    use PDF::DAO::Tie;
 
     # see [PDF 1.7 TABLE 4.25 Additional entries specific to a type 1 pattern dictionary]
     subset PaintCode of Int where 1|2;

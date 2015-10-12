@@ -1,16 +1,16 @@
 use v6;
 
-use PDF::Object::Dict;
+use PDF::DAO::Dict;
 use PDF::DOM::Type;
 
 # /Type /ExtGState
 
 class PDF::DOM::Type::ExtGState
-    is PDF::Object::Dict
+    is PDF::DAO::Dict
     does PDF::DOM::Type {
 
-    use PDF::Object::Tie;
-    use PDF::Object::Name;
+    use PDF::DAO::Tie;
+    use PDF::DAO::Name;
 
     sub dual-entries(PDF::DOM::Type::ExtGState $obj, Str $entry, Str $entry2) is rw {
 	Proxy.new( 
@@ -33,7 +33,7 @@ class PDF::DOM::Type::ExtGState
     has Int $.LJ is entry(:alias<line-join-style>);                 #| (Optional; PDF 1.3) The line join style
     has Numeric $.ML is entry(:alias<miter-limit>);                 #| (Optional; PDF 1.3) The miter limit
     has Array $.D is entry;(:alias<dash-pattern>);                  #| (Optional; PDF 1.3) The line dash pattern, expressed as an array of the form [ dashArray dashPhase ], where dashArray is itself an array and dashPhase is an integer
-    has PDF::Object::Name $.RI is entry(:alias<rendering-intent>);  #| (Optional; PDF 1.3) The name of the rendering intent
+    has PDF::DAO::Name $.RI is entry(:alias<rendering-intent>);  #| (Optional; PDF 1.3) The name of the rendering intent
     has Bool $.OP is entry(:alias<overprint-paint>);                #| (Optional) A flag specifying whether to apply overprint
     has Bool $.op is entry(:alias<overprint-stroke>);               #| (Optional; PDF 1.3) A flag specifying whether to apply overprint for painting operations other than stroking
     has Int $.OPM is entry(:alias<overprint-mode>);                 #| (Optional; PDF 1.3) The overprint mode

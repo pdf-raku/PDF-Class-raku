@@ -7,7 +7,7 @@ use PDF::DOM::Type::Function;
 class PDF::DOM::Type::Function::Sampled
     is PDF::DOM::Type::Function {
 
-    use PDF::Object::Tie;
+    use PDF::DAO::Tie;
     # see [PDF 1.7 TABLE 3.36 Additional entries specific to a type 0 function dictionary]
 
     has UInt @.Size is entry(:required);  #| (Required) An array of m positive integers specifying the number of samples in each input dimension of the sample table.

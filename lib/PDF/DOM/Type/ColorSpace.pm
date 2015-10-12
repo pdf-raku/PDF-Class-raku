@@ -1,17 +1,17 @@
 use v6;
 
-use PDF::Object::Array;
-use PDF::Object::Tie;
-use PDF::Object::Tie::Array;
+use PDF::DAO::Array;
+use PDF::DAO::Tie;
+use PDF::DAO::Tie::Array;
 
 class PDF::DOM::Type::ColorSpace
-    is PDF::Object::Array {
+    is PDF::DAO::Array {
 
     method type {'ColorSpace'}
     method subtype {$.Subtype}
-    use PDF::Object::Name;
-    use PDF::Object::Tie;
-    has PDF::Object::Name $.Subtype is index(0);
+    use PDF::DAO::Name;
+    use PDF::DAO::Tie;
+    has PDF::DAO::Name $.Subtype is index(0);
 
     #| enforce tie-ins between self[0] & the class name. e.g.
     #| PDF::DOM::Type::ColorSpace::CalGray should have self[0] == 'CalGray'
@@ -27,7 +27,7 @@ class PDF::DOM::Type::ColorSpace
                 my Str $subtype = ~$1;
 
                 if ! self.Subtype {
-                    self.Subtype = PDF::Object.coerce( :name($subtype) );
+                    self.Subtype = PDF::DAO.coerce( :name($subtype) );
                 }
                 else {
                     # /Type already set. check it agrees with the class name

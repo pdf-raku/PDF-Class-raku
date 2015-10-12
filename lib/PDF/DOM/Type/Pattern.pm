@@ -1,6 +1,6 @@
 use v6;
 
-use PDF::Object::Stream;
+use PDF::DAO::Stream;
 use PDF::DOM::Contents;
 use PDF::DOM::Resources;
 
@@ -8,10 +8,10 @@ role PDF::DOM::Type::Pattern
     does PDF::DOM::Contents
     does PDF::DOM::Resources {
 
-    use PDF::Object::Tie;
-    use PDF::Object::Name;
+    use PDF::DAO::Tie;
+    use PDF::DAO::Name;
     #| /Type entry is optional, but should be /Pattern when present
-    has PDF::Object::Name $.Type is entry;
+    has PDF::DAO::Name $.Type is entry;
     my subset PatternTypeInt of Int where 1|2;
     has PatternTypeInt $.PatternType is entry(:required);  #| (Required) A code identifying the type of pattern that this dictionary describes; must be 1 for a tiling pattern, or 2 for a shading pattern.
     has Array $.Matrix is entry;                           #| (Optional) An array of six numbers specifying the pattern matrix (see Section 4.6.1, “General Properties of Patterns”). Default value: the identity matrix [ 1 0 0 1 0 0 ].
@@ -25,7 +25,7 @@ role PDF::DOM::Type::Pattern
     #| see also PDF::DOM::Delegator
     method delegate-pattern(Hash :$dict!) {
 
-	use PDF::Object::Util :from-ast;
+	use PDF::DAO::Util :from-ast;
 	my Int $type-int = from-ast $dict<PatternType>;
 
 	unless $type-int ~~ PatternTypeInt {

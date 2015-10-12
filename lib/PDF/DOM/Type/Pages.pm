@@ -1,6 +1,6 @@
 use v6;
 
-use PDF::Object::Dict;
+use PDF::DAO::Dict;
 use PDF::DOM::Type;
 use PDF::DOM::Type::Page;
 use PDF::DOM::Resources;
@@ -9,17 +9,17 @@ use PDF::DOM::PageSizes;
 # /Type /Pages - a node in the page tree
 
 class PDF::DOM::Type::Pages
-    is PDF::Object::Dict
+    is PDF::DAO::Dict
     does PDF::DOM::Type
     does PDF::DOM::PageSizes
     does PDF::DOM::Resources {
 
-    use PDF::Object::Tie;
-    use PDF::Object;
+    use PDF::DAO::Tie;
+    use PDF::DAO;
 
     # see [PDF 1.7 TABLE 3.26 Required entries in a page tree node
     has Hash $.Parent is entry(:indirect); #| (Required except in root node; must be an indirect reference) The page tree node that is the immediate parent of this one.
-    my subset PageNode of PDF::Object::Dict where PDF::DOM::Type::Page | PDF::DOM::Type::Pages;
+    my subset PageNode of PDF::DAO::Dict where PDF::DOM::Type::Page | PDF::DOM::Type::Pages;
     has PageNode @.Kids is entry(:required, :indirect);  #| (Required) An array of indirect references to the immediate children of this node. The children may be page objects or other page tree nodes.
     has Int $.Count is entry(:required);   #| (Required) The number of leaf nodes (page objects) that are descendants of this node within the page tree.
     has Hash $.Resources is entry(:inherit);
@@ -29,7 +29,7 @@ class PDF::DOM::Type::Pages
     has Numeric @.CropBox is entry(:inherit);
 
     #| add new last page
-    method add-page( $page = PDF::Object.coerce( { :Type( :name<Page> ) } ) ) {
+    method add-page( $page = PDF::DAO.coerce( { :Type( :name<Page> ) } ) ) {
         my $sub-pages = self.Kids[*-1]
             if self.Kids;
 
@@ -123,7 +123,7 @@ class PDF::DOM::Type::Pages
     }
 
     method cb-init {
-	self<Type> = PDF::Object.coerce( :name<Pages> );
+	self<Type> = PDF::DAO.coerce( :name<Pages> );
 	unless (self<Kids>:exists) || (self<Count>:exists) {
 	    self<Kids> = [];
 	    self<Count> = 0;

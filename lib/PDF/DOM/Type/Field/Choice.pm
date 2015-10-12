@@ -7,8 +7,8 @@ role PDF::DOM::Type::Field::Choice
 
     # [PDF 1.7 TABLE 8.76 Additional entry specific to check box and radio button fields]
 
-    use PDF::Object::Tie;
-    use PDF::Object::TextString;
+    use PDF::DAO::Tie;
+    use PDF::DAO::TextString;
 
     my subset FieldOption of Any where Array | PDF::DOM::Object::TextString;
 

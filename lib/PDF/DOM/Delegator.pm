@@ -1,26 +1,26 @@
 use v6;
 
-use PDF::Object;
-use PDF::Object::Name;
-use PDF::Object::Delegator;
+use PDF::DAO;
+use PDF::DAO::Name;
+use PDF::DAO::Delegator;
 
 class PDF::DOM::Delegator {...}
-PDF::Object.delegator = PDF::DOM::Delegator;
+PDF::DAO.delegator = PDF::DOM::Delegator;
 
 class PDF::DOM::Delegator
-    is PDF::Object::Delegator {
+    is PDF::DAO::Delegator {
 
-    use PDF::Object::Util :from-ast;
+    use PDF::DAO::Util :from-ast;
 
-    method class-paths {<PDF::DOM::Type PDF::Object::Type>}
+    method class-paths {<PDF::DOM::Type PDF::DAO::Type>}
 
     multi method find-delegate( Str $subclass! where { self.handler{$_}:exists } ) {
         self.handler{$subclass}
     }
 
     multi method find-delegate( Str $subclass! where 'XRef' | 'ObjStm') {
-	require ::('PDF::Object::Type')::($subclass);
-	self.install-delegate( :$subclass, ::('PDF::Object::Type')::($subclass) );
+	require ::('PDF::DAO::Type')::($subclass);
+	self.install-delegate( :$subclass, ::('PDF::DAO::Type')::($subclass) );
     }
 
     multi method find-delegate( Str $subclass!, :$fallback!) is default {
@@ -72,7 +72,7 @@ class PDF::DOM::Delegator
     subset ColorSpace-Array-CIE where {
 	.elems == 2 && do {
 	    my $t = from-ast .[0];
-	    if $t ~~  PDF::Object::Name {
+	    if $t ~~  PDF::DAO::Name {
 		my $d = from-ast .[1];
 		$d ~~ Hash && do given $t {
 		    when 'CalGray'|'CalRGB'|'Lab' { $d<WhitePoint>:exists}
@@ -88,9 +88,9 @@ class PDF::DOM::Delegator
 	my $a = $_;
 	$a.elems == 4 && do {
 	    my $t = from-ast $a[0];
-	    $t ~~  PDF::Object::Name && do given $t {
+	    $t ~~  PDF::DAO::Name && do given $t {
 		when 'Indexed'    { my $hival = from-ast($a[2]); $hival ~~ UInt }
-		when 'Separation' { from-ast($a[1]) ~~ PDF::Object::Name }
+		when 'Separation' { from-ast($a[1]) ~~ PDF::DAO::Name }
 		default {False}
 	    }
 	}

@@ -1,9 +1,9 @@
 use v6;
 use Test;
-use PDF::Object;
-use PDF::Object::Dict;
-use PDF::Object::Type;
-use PDF::Object::Tie;
+use PDF::DAO;
+use PDF::DAO::Dict;
+use PDF::DAO::Type;
+use PDF::DAO::Tie;
 use PDF::DOM;
 use PDF::DOM::Delegator;
 use lib '.';
@@ -24,19 +24,19 @@ extension classes
 plan 5;
 
 class MyDelegator is PDF::DOM::Delegator {
-    method class-paths {<t::DOM PDF::DOM::Type PDF::Object::Type>}
+    method class-paths {<t::DOM PDF::DOM::Type PDF::DAO::Type>}
 }
 
-PDF::Object.delegator = MyDelegator;
+PDF::DAO.delegator = MyDelegator;
 
 #| replacement Catalog class - built from scratch
 class t::DOM::Catalog
-    is PDF::Object::Dict
-    does PDF::Object::Type {
+    is PDF::DAO::Dict
+    does PDF::DAO::Type {
 
     # see [PDF 1.7 TABLE 3.25 Entries in the catalog dictionary]
-    use PDF::Object::Name;
-    has PDF::Object::Name $.Version is entry;        #| (Optional; PDF 1.4) The version of the PDF specification to which the document conforms (for example, /1.4) 
+    use PDF::DAO::Name;
+    has PDF::DAO::Name $.Version is entry;        #| (Optional; PDF 1.4) The version of the PDF specification to which the document conforms (for example, /1.4) 
     has Hash $.Pages is entry(:required, :indirect); #| (Required; must be an indirect reference) The page tree node
     has Hash $.Resources is entry;
 }

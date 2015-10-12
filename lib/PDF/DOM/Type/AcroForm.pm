@@ -1,18 +1,18 @@
 use v6;
 
 use PDF::DOM::Type; # just to help rakudo
-use PDF::Object::Tie;
-use PDF::Object::Tie::Hash;
+use PDF::DAO::Tie;
+use PDF::DAO::Tie::Hash;
 
 # AcroForm role - see PDF::DOM::Type::Catalog - /AcroForm entry
 
 role PDF::DOM::Type::AcroForm
-    does PDF::Object::Tie::Hash {
+    does PDF::DAO::Tie::Hash {
 
     # see [PDF 1.7 TABLE 8.67 Entries in the interactive form dictionary]
     use PDF::DOM::Type::Field;
-    use PDF::Object;
-    multi sub coerce(PDF::Object::Dict $dict is rw, PDF::DOM::Type::Field:U $field-type) {
+    use PDF::DAO;
+    multi sub coerce(PDF::DAO::Dict $dict is rw, PDF::DOM::Type::Field:U $field-type) {
 	PDF::DOM::Type::Field.coerce($dict, $field-type)
     }
     has PDF::DOM::Type::Field @.Fields is entry(:required, :&coerce);    #| (Required) An array of references to the document’s root fields (those with no ancestors in the field hierarchy).
@@ -31,8 +31,8 @@ role PDF::DOM::Type::AcroForm
     has Int $.Q is entry;                      #| (Optional) A document-wide default value for the Q attribute of variable text fields
 
 
-    use PDF::Object::Stream;
-    my subset StreamOrArray of Any where PDF::Object::Stream | Array;
+    use PDF::DAO::Stream;
+    my subset StreamOrArray of Any where PDF::DAO::Stream | Array;
     has StreamOrArray $.XFA is entry;          #| (Optional; PDF 1.5) A stream or array containing an XFA resource, whose format is described by the Data Package (XDP) Specification. (see the Bibliography).
                                                #| The value of this entry must be either a stream representing the entire contents of the XML Data Package or an array of text string and stream pairs representing the individual packets comprising the XML Data Package
 

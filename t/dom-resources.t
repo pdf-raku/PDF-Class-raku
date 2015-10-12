@@ -154,7 +154,7 @@ is $gs-obj.stroke-alpha, .5, 'transparency getter - alias';
 
 $gs-obj.BG = {};
 is-deeply $gs-obj.black-generation, {}, 'black-generation accessor';
-$gs-obj.black-generation = PDF::Object.coerce: :name<MyFunc>;
+$gs-obj.black-generation = PDF::DAO.coerce: :name<MyFunc>;
 is $gs-obj.BG2, 'MyFunc', 'BG2 accessor';
 ok !$gs-obj.BG.defined, 'BG accessor';
 is $gs-obj.black-generation, 'MyFunc', 'black-generation accessor';

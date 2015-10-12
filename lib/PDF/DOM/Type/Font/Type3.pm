@@ -6,19 +6,19 @@ class PDF::DOM::Type::Font::Type3
     is PDF::DOM::Type::Font
     does PDF::DOM::Resources {
 
-    use PDF::Object::Tie;
-    use PDF::Object::Dict;
-    use PDF::Object::Name;
-    use PDF::Object::Stream;
+    use PDF::DAO::Tie;
+    use PDF::DAO::Dict;
+    use PDF::DAO::Name;
+    use PDF::DAO::Stream;
 
 	# see [PDF 1.7 TABLE 5.9 Entries in a Type 3 font dictionary]
-    has PDF::Object::Name $.Name is entry;              #| (Required in PDF 1.0; optional otherwise) See Table 5.8 on page 413
+    has PDF::DAO::Name $.Name is entry;              #| (Required in PDF 1.0; optional otherwise) See Table 5.8 on page 413
     has Numeric @.FontBBox is entry(:required);         #| (Required) A rectangle (see Section 3.8.4, “Rectangles”) expressed in the glyph coordinate system, specifying the font bounding box.
     has Numeric @.FontMatrix is entry(:required);       #| (Required) An array of six numbers specifying the font matrix, mapping glyph space to text space
     has Hash $.CharProcs is entry(:required);           #| (Required) A dictionary in which each key is a character name and the value associated with that key is a content stream that constructs and paints the glyph for that character.
 
     # use PDF::DOM::Type::Encoding
-    my subset NameOrEncoding of Any where PDF::Object::Name | PDF::Object:Dict;
+    my subset NameOrEncoding of Any where PDF::DAO::Name | PDF::DAO:Dict;
     has NameOrEncoding $.Encoding is entry(:required);  #| (Required) An encoding dictionary whose Differences array specifies the complete character encoding for this font
 
     has Int $.FirstChar is entry(:required);            #| (Required) The first character code defined in the font’s Widths array
@@ -31,5 +31,5 @@ class PDF::DOM::Type::Font::Type3
 
     has Hash $.Resources is entry;                      #| (Optional but strongly recommended; PDF 1.2) A list of the named resources, such as fonts and images, required by the glyph descriptions in this font
 
-    has PDF::Object::Stream $.ToUnicode is entry;       #| (Optional; PDF 1.2) A stream containing a CMap file that maps character codes to Unicode values
+    has PDF::DAO::Stream $.ToUnicode is entry;       #| (Optional; PDF 1.2) A stream containing a CMap file that maps character codes to Unicode values
 }

@@ -21,7 +21,7 @@ multi sub pretty-print(Mu $val is copy --> Str) is default {
 
 multi sub MAIN(Bool :$version! where $_) {
     # nyi in rakudo https://rt.perl.org/Ticket/Display.html?id=125017
-    say "DOM::PDF {$DOM::PDF.^version}";
+    say "PDF::DOM {$PDF::DOM.^version}";
     say "this script was ported from the CAM::PDF PDF Manipulation library";
     say "see - https://metacpan.org/pod/CAM::PDF";
 }
@@ -100,7 +100,7 @@ pdfinfo.pl [options] file.pdf [file.pdf ...]
 Options:
 -v --verbose        print diagnostic messages
 -h --help           verbose help message
--V --version        print CAM::PDF version
+-V --version        print PDF::DOM version
 
 =head1 DESCRIPTION
 
@@ -109,7 +109,8 @@ file(s).
 
 =head1 SEE ALSO
 
-CAM::PDF
+CAM::PDF  (Perl 5)
+PDF::DOM (Perl 6)
 
 =head1 AUTHOR
 

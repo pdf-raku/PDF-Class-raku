@@ -1,15 +1,15 @@
 use v6;
 
-use PDF::Object::Dict;
+use PDF::DAO::Dict;
 use PDF::DOM::Type;
 
 # /Type /Outlines - the Outlines dictionary
 
 class PDF::DOM::Type::Outlines
-    is PDF::Object::Dict
+    is PDF::DAO::Dict
     does PDF::DOM::Type {
 
-    use PDF::Object::Tie;
+    use PDF::DAO::Tie;
 
     # see TABLE 8.3 Entries in the outline dictionary
     has Hash $.First is entry(:indirect); #| (Required if there are any open or closed outline entries; must be an indirect reference) An outline item dictionary representing the first top-level item in the outline.

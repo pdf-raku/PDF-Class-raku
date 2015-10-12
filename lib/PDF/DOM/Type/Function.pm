@@ -1,13 +1,13 @@
 use v6;
 
-use PDF::Object::Stream;
+use PDF::DAO::Stream;
 
 # /FunctionType 1..7 - the Function dictionary delegates
 
 class PDF::DOM::Type::Function
-    is PDF::Object::Stream {
+    is PDF::DAO::Stream {
 
-    use PDF::Object::Tie;
+    use PDF::DAO::Tie;
 
     # see TABLE 3.35 Entries common to all function dictionaries
 
@@ -26,7 +26,7 @@ class PDF::DOM::Type::Function
     #| see also PDF::DOM::Delegator
     method delegate-function(Hash :$dict!) {
 
-	use PDF::Object::Util :from-ast;
+	use PDF::DAO::Util :from-ast;
 	my Int $function-type-int = from-ast $dict<FunctionType>;
 
 	unless $function-type-int ~~ FunctionTypeInt {
