@@ -20,6 +20,7 @@ role PDF::DOM::Type::AcroForm
     has Bool $.NeedAppearances is entry;       #| (Optional) A flag specifying whether to construct appearance streams and appearance dictionaries for all widget annotations in the document
 
     my subset SigFlagsInt of UInt where 0..3;
+    my enum SigFlags is export(:SigFlags) « :SignaturesExist(1) :Append(2) »;
     has SigFlagsInt $.SigFlags is entry;       #| (Optional; PDF 1.3) A set of flags specifying various document-level characteristics related to signature fields
 
     has Hash @.CO is entry(:indirect);         #| (Required if any fields in the document have additional-actions dictionaries containing a C entry; PDF 1.3) An array of indirect references to field dictionaries with calculation actions, defining the calculation order in which their values will be recalculated when the value of any field changes
@@ -29,7 +30,6 @@ role PDF::DOM::Type::AcroForm
     has Str $.DA is entry;                     #| (Optional) A document-wide default value for the DA attribute of variable text fields
 
     has Int $.Q is entry;                      #| (Optional) A document-wide default value for the Q attribute of variable text fields
-
 
     use PDF::DAO::Stream;
     my subset StreamOrArray of Any where PDF::DAO::Stream | Array;

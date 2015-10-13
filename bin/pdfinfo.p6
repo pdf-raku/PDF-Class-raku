@@ -65,7 +65,7 @@ multi sub MAIN(Str $file) {
     say 'Page Size:    ' ~ (@page-size[0] ?? "@page-size[0] x @page-size[1] pts" !! 'variable');
 ##	print 'Optimized:    '.($doc->isLinearized()?'yes':'no')."\n";
 	say "PDF version:  $pdf-version";
-        use PDF::Object::Type::Encrypt :Permissions;
+        use PDF::Object::Type::Encrypt :PermissionsFlag;
 
 	print "Security\n";
 ##	if ($prefs[0] || $prefs[1])
@@ -76,10 +76,10 @@ multi sub MAIN(Str $file) {
 ##	{
 ##	    print "  Passwd:     none\n";
 ##	}
-	say '  Print:      ' ~ flag( $perms, Permissions::Print );
-	say '  Modify:     ' ~ flag( $perms, Permissions::Modify );
-	say '  Copy:       ' ~ flag( $perms, Permissions::Copy );
-	say '  Add:        ' ~ flag( $perms, Permissions::Add );
+	say '  Print:      ' ~ flag( $perms, PermissionsFlag::Print );
+	say '  Modify:     ' ~ flag( $perms, PermissionsFlag::Modify );
+	say '  Copy:       ' ~ flag( $perms, PermissionsFlag::Copy );
+	say '  Add:        ' ~ flag( $perms, PermissionsFlag::Add );
 ##	if (@ARGV > 0)
 ##	{
 ##	    print "---------------------------------\n";
