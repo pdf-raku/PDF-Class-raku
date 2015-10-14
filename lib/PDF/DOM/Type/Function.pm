@@ -14,8 +14,8 @@ class PDF::DOM::Type::Function
     subset FunctionTypeInt of Int where 0|2|3|4;
 
     has FunctionTypeInt $.FunctionType is entry(:required);
-    has Array $.Domain is entry(:required);  #| (Required) An array of 2 × m numbers, where m is the number of input values. For each i from 0 to m − 1
-    has Array $.Range is entry;              #| (Required for type 0 and type 4 functions, optional otherwise; see below) An array of 2 × n numbers, where n is the number of output values.
+    has Numeric @.Domain is entry(:required);  #| (Required) An array of 2 × m numbers, where m is the number of input values. For each i from 0 to m − 1
+    has Numeric @.Range is entry;              #| (Required for type 0 and type 4 functions, optional otherwise; see below) An array of 2 × n numbers, where n is the number of output values.
 
     # from PDF Spec 1.7 table 3.35
     constant FunctionTypes = <Sampled n/a Exponential Stitching PostScript>;
