@@ -6,7 +6,7 @@ use PDF::DOM::Delegator;
 plan 12;
 
 isa-ok PDF::DOM::Delegator.delegate( :dict{ :Type<Page> }), ::('PDF::DOM::Type::Page'), 'delegation sanity';
-isa-ok PDF::DOM::Delegator.delegate( :dict{ :Type<XObject> :Subtype<Image> }), ::('PDF::DOM::Type::XObject::Image'), 'delegation to subclass';
+isa-ok PDF::DOM::Delegator.delegate( :dict{ :Type<XObject>, :Subtype<Image> }), ::('PDF::DOM::Type::XObject::Image'), 'delegation to subclass';
 isa-ok PDF::DOM::Delegator.delegate( :dict{ :ShadingType(7) }),  ::('PDF::DOM::Type::Shading::Tensor'), 'delegation by ShadingType';
 isa-ok PDF::DOM::Delegator.delegate( :dict{ :ShadingType(42) }),  ::('PDF::DOM::Type::Shading'), 'delegation by ShadingType (unknown)';
 isa-ok PDF::DOM::Delegator.delegate( :dict{ :Type<Unknown> }, :fallback(Hash)), Hash, 'delegation fallback';
