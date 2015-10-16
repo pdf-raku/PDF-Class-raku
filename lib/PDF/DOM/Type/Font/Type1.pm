@@ -5,6 +5,7 @@ class PDF::DOM::Type::Font::Type1
     is PDF::DOM::Type::Font {
 
     use PDF::DAO::Tie;
+    use PDF::DAO::Dict;
     use PDF::DAO::Name;
     use PDF::DAO::Stream;
 
@@ -24,7 +25,7 @@ class PDF::DOM::Type::Font::Type1
 ## causes precomp issues
 ##    use PDF::DOM::Type::Encoding;
 ##    subset NameOrEncoding of Any where PDF::DAO::Name | PDF::DOM::Type::Encoding;
-    my subset NameOrEncoding of Any where PDF::DAO::Name | PDF::DAO:Dict;
+    my subset NameOrEncoding of Any where PDF::DAO::Name | PDF::DAO::Dict;
     has NameOrEncoding $.Encoding is entry;                #| (Optional) A specification of the font’s character encoding if different from its built-in encoding. The value of Encoding is either the name of a predefined encoding (MacRomanEncoding, MacExpertEncoding, or WinAnsiEncoding, as described in Appendix D) or an encoding dictionary that specifies differences from the font’s built-in encoding or from a specified predefined encoding
 
     has PDF::DAO::Stream $.ToUnicode is entry;          #| (Optional; PDF 1.2) A stream containing a CMap file that maps character codes to Unicode values

@@ -133,7 +133,7 @@ class PDF::DOM::Contents::Text::Block {
                 @!lines.push: $line;
             }
 
-            $line.atoms.push: @word;
+            $line.atoms.append: @word;
             $line-width += $word-width;
         }
 
