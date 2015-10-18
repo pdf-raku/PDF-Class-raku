@@ -20,14 +20,14 @@ role PDF::DOM::Type::Field
 	      );
 
     multi method field-delegate( PDF::DAO::Dict $dict where { .<FT>:exists && .<FT> ~~ FieldTypeName }) {
-	my $subclass = do given $dict<FT> {
+	my $field-role = do given $dict<FT> {
 	    when 'Btn' {'Button'}
             when 'Tx'  {'Text'}
             when 'Ch'  {'Choice'}
             when 'Sig' {'Signature'}
 	};
-	require ::('PDF::DOM::Type::Field')::($subclass);
-	::('PDF::DOM::Type::Field')::($subclass);
+	require ::('PDF::DOM::Type::Field')::($field-role);
+	::('PDF::DOM::Type::Field')::($field-role);
     }
 
     multi method field-delegate( PDF::DAO::Dict $dict)  {
@@ -41,15 +41,70 @@ role PDF::DOM::Type::Field
 	PDF::DOM::Type::Field;
     }
 
-    multi method coerce( PDF::DAO::Dict $dict is rw, PDF::DOM::Type::Field $field ) {
-	PDF::DAO.coerce( $dict, $field.field-delegate( $dict ) );
+    #| pure annotation or field/annotation union
+    sub is-annot($dict) returns Bool {
+	   ?( ($dict<Type>:exists)
+	      && $dict<Type> eq 'Annot' );
+    }
+
+    #| pure annotation only
+    sub is-annot-only($dict) returns Bool {
+	?( is-annot($dict)
+	   && !($dict<FT>:exists)
+	   && !($dict<Kids>:exists))
+    }
+
+    proto sub coerce( $, $ ) is export(:coerce) {*}
+    multi sub coerce( PDF::DAO::Dict $dict is rw, PDF::DOM::Type::Field $field ) is export(:coerce) {
+	# refuse to coerce an annotation as a field
+	PDF::DAO.coerce( $dict, $field.field-delegate( $dict ) )
+	    unless is-annot-only($dict)
     }
 
     has FieldTypeName $.FT is entry(:inherit);  #| Required for terminal fields; inheritable) The type of field that this dictionary describes
     has Hash $.Parent is entry(:indirect);      #| (Required if this field is the child of another in the field hierarchy; absent otherwise) The field that is the immediate parent of this one (the field, if any, whose Kids array includes this field). A field can have at most one parent; that is, it can be included in the Kids array of at most one other field.
 
-    has @.Kids is entry(:indirect);                  #| (Sometimes required, as described below) An array of indirect references to the immediate children of this field.
+    my subset AnnotOrField of Hash where { is-annot-only($_) || $_ ~~ PDF::DOM::Type::Field }
+    has AnnotOrField @.Kids is entry(:indirect, :&coerce); #| (Sometimes required, as described below) An array of indirect references to the immediate children of this field.
                                                 #| In a non-terminal field, the Kids array is required to refer to field dictionaries that are immediate descendants of this field. In a terminal field, the Kids array ordinarily must refer to one or more separate widget annotations that are associated with this field. However, if there is only one associated widget annotation, and its contents have been merged into the field dictionary, Kids must be omitted.
+
+    method is-terminal returns Bool {
+	! ($.Kids.defined
+	   && $.Kids.keys.first: {! is-annot-only($.Kids[$_]) })
+    }
+
+    #| return ourself, if terminal, any children otherwise
+    method fields {
+	my @fields;
+	if self.is-terminal {
+	    @fields.push: self
+	}
+	else {
+	    for self.Kids.keys {
+		my $kid = self.Kids[$_];
+		@fields.append: $kid.fields
+		    unless is-annot-only($kid)
+	    }
+	}
+	flat @fields;
+    }
+
+    #| return immediate annotations only. return ourself, if we're an annotation,
+    #| otherwise return any annots from out immediate kids
+    method annots {
+	my @annots;
+	if is-annot(self) {
+	    @annots.push: self
+	}
+	elsif  self.Kids.defined {
+	    for self.Kids.keys {
+		my $kid = self.Kids[$_];
+		@annots.append: $kid.fields
+		    if is-annot-only($kid)
+	    }
+	}
+	flat @annots;
+    }
 
     has PDF::DAO::TextString $.T is entry;                       #| Optional) The partial field name
 

@@ -10,12 +10,17 @@ role PDF::DOM::Type::AcroForm
     does PDF::DAO::Tie::Hash {
 
     # see [PDF 1.7 TABLE 8.67 Entries in the interactive form dictionary]
-    use PDF::DOM::Type::Field;
+    use PDF::DOM::Type::Field :coerce;
     use PDF::DAO;
-    multi sub coerce(PDF::DAO::Dict $dict is rw, PDF::DOM::Type::Field:U $field-type) {
-	PDF::DOM::Type::Field.coerce($dict, $field-type)
-    }
+
     has PDF::DOM::Type::Field @.Fields is entry(:required, :&coerce);    #| (Required) An array of references to the document’s root fields (those with no ancestors in the field hierarchy).
+    method fields {
+	my @fields;
+	for $.Fields.keys {
+	    @fields.append( $.Fields[$_].fields )
+	}
+	flat @fields;
+    }
 
     has Bool $.NeedAppearances is entry;       #| (Optional) A flag specifying whether to construct appearance streams and appearance dictionaries for all widget annotations in the document
 
