@@ -16,16 +16,8 @@ my @fields = $acroform.fields;
 isa-ok @fields, Array, '.Fields';
 is +@fields, 17, 'fields count';
 does-ok @fields[0], ::('PDF::DOM::Type::Field'), '.Fields';
-
-# check for reader stickyness
-isa-ok $doc.reader, ::('PDF::Reader'), '$doc.reader';
-isa-ok $doc.AcroForm.reader, ::('PDF::Reader'), '$doc.AcroForm.reader';
-isa-ok @fields[0].reader, ::('PDF::Reader'), '$doc.AcroForm.Fields[0].reader';
-isa-ok @fields[0].P.reader, ::('PDF::Reader'), '$doc.AcroForm.Fields[0].P.reader';
-
-# first field is an example of merged annotation/field as described in [PDF 1.7 - Table 8.69 Kids entry]
-does-ok @fields[0], ::('PDF::DOM::Type::Field'), 'field role';
 isa-ok @fields[0], ::('PDF::DOM::Type::Annot::Widget'), 'field type';
+
 is @fields[0].Type, 'Annot', 'Type';
 is @fields[0].Subtype, 'Widget', 'Subtype';
 is @fields[0].F, 4, '.F';
@@ -44,5 +36,14 @@ ok @fields[0].DR<Font>:exists, '.DR<Font>';
 is @fields[0].DA, '0 0 0 rg /F3 11 Tf', '.DA';
 isa-ok @fields[0].AP, Hash, '.AP';
 ok @fields[0].AP<N>:exists, '.AP<N>';
+ok $page.Annots[0] === @fields[0], 'first field via page-1 annots';
+
+# check meta-data
+isa-ok $doc.reader, ::('PDF::Reader'), '$doc.reader';
+isa-ok $doc.AcroForm.reader, ::('PDF::Reader'), '$doc.AcroForm.reader';
+isa-ok @fields[0].reader, ::('PDF::Reader'), '$doc.AcroForm.Fields[0].reader';
+is @fields[0].obj-num, 5, '.obj-num';
+is @fields[0].gen-num, 0, '.gen-num';
+isa-ok @fields[0].P.reader, ::('PDF::Reader'), '$doc.AcroForm.Fields[0].P.reader';
 
 done-testing;
