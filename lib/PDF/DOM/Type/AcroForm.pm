@@ -14,12 +14,34 @@ role PDF::DOM::Type::AcroForm
     use PDF::DAO;
 
     has PDF::DOM::Type::Field @.Fields is entry(:required, :&coerce);    #| (Required) An array of references to the document’s root fields (those with no ancestors in the field hierarchy).
-    method fields {
-	my @fields;
+    #| returns an inorder array of all desendant fields
+    method fields returns Seq {
+	my PDF::DOM::Type::Field @fields;
 	for $.Fields.keys {
 	    @fields.append( $.Fields[$_].fields )
 	}
 	flat @fields;
+    }
+    #| retrusn fields mapped to a hash. Default keys are $.T and $.TU field entries
+    method fields-hash( Array $fields-arr = [ self.fields ],
+			Bool :$T  = True,
+			Bool :$TU = True,
+			Bool :$TM = False
+			--> Seq) {
+	my @keys;
+	push @keys: 'T' if $T;
+	push @keys: 'TU' if $TU;
+	push @keys: 'TM' if $TM;
+	my %fields;
+
+	for $fields-arr.list -> $field {
+	    for @keys -> $key {
+		%fields{ $field{$key} } = $field
+		    if $field{$key}:exists;
+	    }	
+	}
+
+	flat %fields;
     }
 
     has Bool $.NeedAppearances is entry;       #| (Optional) A flag specifying whether to construct appearance streams and appearance dictionaries for all widget annotations in the document

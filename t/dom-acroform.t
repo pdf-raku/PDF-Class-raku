@@ -38,6 +38,11 @@ isa-ok @fields[0].AP, Hash, '.AP';
 ok @fields[0].AP<N>:exists, '.AP<N>';
 ok $page.Annots[0] === @fields[0], 'first field via page-1 annots';
 
+my %fields = $acroform.fields-hash;
+is +%fields, 25, 'fields hash key count';
+ok %fields{'Given Name Text Box'} == @fields[0], 'field hash lookup by .T';
+ok %fields{'First name'} == @fields[0], 'field hash lookup by .TU';
+
 # check meta-data
 isa-ok $doc.reader, ::('PDF::Reader'), '$doc.reader';
 isa-ok $doc.AcroForm.reader, ::('PDF::Reader'), '$doc.AcroForm.reader';
