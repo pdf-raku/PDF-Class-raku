@@ -26,9 +26,8 @@ multi sub MAIN(Bool :$version! where $_) {
     say "see - https://metacpan.org/pod/CAM::PDF";
 }
 
-use PDF::Object::Int;
-sub flag(PDF::Object::Int $flags, UInt $flag-num) {
-    $flags.flag-is-set( $flag-num ) ?? 'yes' !! 'no';
+sub yes-no(Bool $cond) {
+    $cond ?? 'yes' !! 'no';
 }
 
 multi sub MAIN(Str $file) {
@@ -46,10 +45,6 @@ multi sub MAIN(Str $file) {
     my $box = $doc.Pages.MediaBox;
     my $encrypt = $doc.Encrypt;
 
-    my $perms = $encrypt.P
-        if $encrypt;
-    $perms //= PDF::Object.coerce( :int(0xFFFF) );
-
     my UInt @page-size = $box
 	?? ($box[2] - $box[0],  $box[3] - $box[1])
 	!! (0, 0);
@@ -65,7 +60,7 @@ multi sub MAIN(Str $file) {
     say 'Page Size:    ' ~ (@page-size[0] ?? "@page-size[0] x @page-size[1] pts" !! 'variable');
 ##	print 'Optimized:    '.($doc->isLinearized()?'yes':'no')."\n";
 	say "PDF version:  $pdf-version";
-        use PDF::Object::Type::Encrypt :PermissionsFlag;
+        use PDF::DAO::Type::Encrypt :PermissionsFlag;
 
 	print "Security\n";
 ##	if ($prefs[0] || $prefs[1])
@@ -76,10 +71,10 @@ multi sub MAIN(Str $file) {
 ##	{
 ##	    print "  Passwd:     none\n";
 ##	}
-	say '  Print:      ' ~ flag( $perms, PermissionsFlag::Print );
-	say '  Modify:     ' ~ flag( $perms, PermissionsFlag::Modify );
-	say '  Copy:       ' ~ flag( $perms, PermissionsFlag::Copy );
-	say '  Add:        ' ~ flag( $perms, PermissionsFlag::Add );
+	say '  Print:      ' ~ yes-no( $doc.permitted: PermissionsFlag::Print );
+	say '  Modify:     ' ~ yes-no( $doc.permitted: PermissionsFlag::Modify );
+	say '  Copy:       ' ~ yes-no( $doc.permitted: PermissionsFlag::Copy );
+	say '  Add:        ' ~ yes-no( $doc.permitted: PermissionsFlag::Add );
 ##	if (@ARGV > 0)
 ##	{
 ##	    print "---------------------------------\n";
