@@ -10,9 +10,21 @@ role PDF::DOM::Type::Field::Choice
     use PDF::DAO::Tie;
     use PDF::DAO::TextString;
 
-    my subset FieldOption of Any where Array | PDF::DOM::Object::TextString;
+    my subset ArrayOfTextStrings of Array where { !.first( !*.isa(PDF::DAO::TextString) ) }
+    my subset FieldOption of Any where ArrayOfTextStrings | PDF::DAO::TextString;
+    multi sub coerce(Str $s is rw, FieldOption) {
+	PDF::DAO.coerce($s, PDF::DAO::TextString)
+    }
+    multi sub coerce(Array $a is rw, FieldOption) {
+	for $a.keys {
+	    PDF::DAO.coerce( $a[$_],  PDF::DAO::TextString)
+	}
+    }
 
-    has FieldOption @.Opt is entry;    #| (Optional) An array of options to be presented to the user. Each element of the array is either a text string representing one of the available options or an array consisting of two text strings: the option’s export value and the text to be displayed as the name of the option
+    has FieldOption $.V is entry(:&coerce, :inherit);
+    has FieldOption $.DV is entry(:&coerce, :inherit);
+
+    has FieldOption @.Opt is entry(:&coerce);    #| (Optional) An array of options to be presented to the user. Each element of the array is either a text string representing one of the available options or an array consisting of two text strings: the option’s export value and the text to be displayed as the name of the option
 
    has UInt $.TI is entry;  #| Optional) For scrollable list boxes, the top index (the index in the Opt array of the first option visible in the list). Default value: 0.
 

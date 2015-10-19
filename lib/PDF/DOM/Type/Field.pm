@@ -115,9 +115,10 @@ role PDF::DOM::Type::Field
     my subset FieldFlags of UInt where 0..7;
     has FieldFlags $.Ff is entry(:inherit);     #| Optional; inheritable) A set of flags specifying various characteristics of the field
 
-    has Any $.V is entry(:inherit);             #| (Optional; inheritable) The field’s value, whose format varies depending on the field type
+## type specific - see individual field definitions
+##    has Any $.V is entry(:inherit);             #| (Optional; inheritable) The field’s value, whose format varies depending on the field type
 
-    has Any $.DV is entry(:inherit);            #| (Optional; inheritable) The default value to which the field reverts when a reset-form action is executed. The format of this value is the same as that of V.
+##    has Any $.DV is entry(:inherit);            #| (Optional; inheritable) The default value to which the field reverts when a reset-form action is executed. The format of this value is the same as that of V.
 
     has Hash $.AA is entry;                     #| (Optional; PDF 1.2) An additional-actions dictionary defining the field’s behavior in response to various trigger events. This entry has exactly the same meaning as the AA entry in an annotation dictionary
 

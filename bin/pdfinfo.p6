@@ -104,7 +104,7 @@ file(s).
 
 =head1 SEE ALSO
 
-CAM::PDF  (Perl 5)
+CAM::PDF (Perl 5)
 PDF::DOM (Perl 6)
 
 =head1 AUTHOR
