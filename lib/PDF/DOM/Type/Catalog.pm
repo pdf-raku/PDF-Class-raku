@@ -13,6 +13,7 @@ my class Catalog
 
     # see [PDF 1.7 TABLE 3.25 Entries in the catalog dictionary]
     use PDF::DAO::Tie;
+    use PDF::DAO::Tie::Hash;
     use PDF::DAO::Array;
     use PDF::DAO::Bool;
     use PDF::DAO::Dict;
@@ -61,7 +62,16 @@ my class Catalog
 
     has PDF::DAO::Dict $.StructTreeRoot is entry;        #| (Optional; PDF 1.3) The document’s structure tree root dictionary
 
-    has PDF::DAO::Dict $.MarkInfo is entry;              #| (Optional; PDF 1.4) A mark information dictionary containing information about the document’s usage of Tagged PDF conventions
+    role MarkInfoDict
+	does PDF::DAO::Tie::Hash {
+	#| [See PDF 1.7 TABLE 10.8 Entries in the mark information dictionary]
+	has Bool $.Marked is entry;          #| (Optional) A flag indicating whether the document conforms to Tagged PDF conventions. Default value: false.
+					     #| Note: If Suspects is true, the document may not completely conform to Tagged PDF conventions.
+	has Bool $.UserProperties is entry;  #| (Optional; PDF 1.6) A flag indicating the presence of structure elements that contain user properties attributes. Default value: false.
+	has Bool $.Suspects is entry;        #| Optional; PDF 1.6) A flag indicating the presence of tag suspects (see “Page Content Order” on page 889). Default value: false.
+    }
+
+    has MarkInfoDict $.MarkInfo is entry;                   #| (Optional; PDF 1.4) A mark information dictionary containing information about the document’s usage of Tagged PDF conventions
 
     has Str $.Lang is entry;                                #| (Optional; PDF 1.4) A language identifier specifying the natural language for all text in the document except where overridden by language specifications for structure elements or marked content
 

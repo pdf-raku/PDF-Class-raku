@@ -44,6 +44,9 @@ multi sub MAIN(Str $file) {
     my Hash $pdf-info = $doc.Info;
     my $box = $doc.Pages.MediaBox;
     my $encrypt = $doc.Encrypt;
+    my $catalog = $doc.Root;
+    my $tagged  = $catalog.?MarkInfo.?Marked   // False;
+    my $partial = $catalog.?MarkInfo.?Suspects // False;
 
     my UInt @page-size = $box
 	?? ($box[2] - $box[0],  $box[3] - $box[1])
@@ -57,6 +60,7 @@ multi sub MAIN(Str $file) {
 	    printf "%-13s %s\n", $key ~ q{:}, pretty-print( $pdf-info{$key} );
 	}
     }
+    say 'Tagged:       ' ~ yes-no($tagged) ~ ($partial ?? ' (partial)' !! '');
     say 'Page Size:    ' ~ (@page-size[0] ?? "@page-size[0] x @page-size[1] pts" !! 'variable');
 ##	print 'Optimized:    '.($doc->isLinearized()?'yes':'no')."\n";
 	say "PDF version:  $pdf-version";
