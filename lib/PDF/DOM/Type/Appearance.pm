@@ -4,7 +4,7 @@ use PDF::DOM::Type; # just to help rakudo
 use PDF::DAO::Tie;
 use PDF::DAO::Tie::Hash;
 
-# AcroForm role - see PDF::DOM::Type::Catalog - /AcroForm entry
+# Appearance role - see PDF::DOM::Type::Annot - /AP entry
 
 role PDF::DOM::Type::Appearance
     does PDF::DAO::Tie::Hash {
