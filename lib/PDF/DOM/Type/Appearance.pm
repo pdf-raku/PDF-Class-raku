@@ -22,7 +22,7 @@ role PDF::DOM::Type::Appearance
     }
     #| /Type entry is optional, but should be /Pattern when present
     my subset AppearanceEntry of PDF::DAO where PDF::DAO::Stream | AppearanceOnOff;
-    multi sub coerce(Hash $dict, AppearanceEntry) {
+    multi sub coerce(Hash $dict is rw, AppearanceEntry) {
 	PDF::DAO.coerce($dict,  AppearanceOnOff)
     }
 

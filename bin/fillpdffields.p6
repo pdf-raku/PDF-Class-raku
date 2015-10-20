@@ -3,13 +3,12 @@ use v6;
 use PDF::DOM;
 use PDF::DAO::Type::Encrypt :PermissionsFlag;
 
-#| set specified fields from name-value pairs
-multi sub MAIN(
+sub fill-in-form(
     Str $infile,
-    Str $outfile,
+    *@field-list,
     Bool :$trigger-clear,
     Str  :$background,
-    *@field-list) {
+    ) {
     
     die "last field lacks a value: @field-list[*-1]"
 	unless +@field-list %% 2;
@@ -37,9 +36,39 @@ multi sub MAIN(
 	}
     }
 
+    $doc;
+}
+
+#| save new PDF, seting specified fields from name-value pairs
+multi sub MAIN(
+    Str $infile,
+    Str $outfile,
+    Bool :$trigger-clear,
+    Str  :$background,
+    *@field-list) {
+
+    my $doc = fill-in-form($infile, :$background, :$trigger-clear, |@field-list);
+
     die "This PDF forbids modification\n"
 	unless $doc.permitted( PermissionsFlag::Modify );
+
     $doc.save-as($outfile);
+}
+
+#| update PDF, seting specified fields from name-value pairs
+multi sub MAIN(
+    Str $infile,
+    Bool :$update!,
+    Bool :$trigger-clear,
+    Str  :$background,
+    *@field-list) {
+
+    my $doc = fill-in-form($infile, :$background, :$trigger-clear, |@field-list);
+
+    die "This PDF forbids modification\n"
+	unless $doc.permitted( PermissionsFlag::Modify );
+
+    $doc.update;
 }
 
 #| list all fields and current values
