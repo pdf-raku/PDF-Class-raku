@@ -34,8 +34,10 @@ is @fields[0].MaxLen, 40, '.MaxLen';
 isa-ok @fields[0].DR, Hash, '.DR';
 ok @fields[0].DR<Font>:exists, '.DR<Font>';
 is @fields[0].DA, '0 0 0 rg /F3 11 Tf', '.DA';
-isa-ok @fields[0].AP, Hash, '.AP';
-ok @fields[0].AP<N>:exists, '.AP<N>';
+my $appearance = @fields[0].AP;
+isa-ok $appearance, Hash, '.AP';
+does-ok $appearance, ::('PDF::DOM::Type::Appearance'), '.AP';
+isa-ok $appearance.N, ::('PDF::DOM::Type::XObject::Form'), '.AP.N';
 ok $page.Annots[0] === @fields[0], 'first field via page-1 annots';
 
 my %fields = $acroform.fields-hash;

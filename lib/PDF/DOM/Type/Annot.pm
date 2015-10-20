@@ -22,7 +22,8 @@ class PDF::DOM::Type::Annot
     my enum AnnotsFlag is export(:AnnotsFlag) « :Invisable(1) :Hidden(2) :Print(3) :NoZoom(4) :NoRotate(5) :NoView(6)
 						:ReadOnly(7) :Locked(8) :ToggleNoView(9) :LockedContents(10) »;
     has AnnotFlagsInt $.F is entry;         #| (Optional; PDF 1.1) A set of flags specifying various characteristics of the annotation
-    has Hash $.AP is entry;                 #| (Optional; PDF 1.2) An appearance dictionary specifying how the annotation is presented visually on the page
+    use PDF::DOM::Type::Appearance;
+    has PDF::DOM::Type::Appearance $.AP is entry;                 #| (Optional; PDF 1.2) An appearance dictionary specifying how the annotation is presented visually on the page
     has PDF::DAO::Name $.AS is entry;       #| (Required if the appearance dictionary AP contains one or more subdictionaries; PDF 1.2) The annotation’s appearance state, which selects the applicable appearance stream from an appearance subdictionary
     has Numeric @.Border is entry;          #| (Optional) An array specifying the characteristics of the annotation’s border. The border is specified as a rounded rectangle.
     has Numeric @.C is entry;               #| (Optional; PDF 1.1) An array of numbers in the range 0.0 to 1.0, representing a color used for (*) background, when closed, (*) title bar of pop-up window, (*) link border

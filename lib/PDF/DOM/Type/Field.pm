@@ -132,12 +132,12 @@ role PDF::DOM::Type::Field
                                                 #| 1: 1Centered
                                                 #| 2: Right-justified
 
-    has PDF::DAO::TextString $.DS is entry;                      #| Optional; PDF 1.5) A default style string
+    has PDF::DAO::TextString $.DS is entry;     #| Optional; PDF 1.5) A default style string
 
     use PDF::DAO::Stream;
     my subset TextOrStream of Any where PDF::DAO::TextString | PDF::DAO::Stream;
-    multi sub coerce(Str $value is rw, PDF::DAO::TextString:U $type) {
-	$value = PDF::DAO.coerce( $value, $type );
+    multi sub coerce(Str $value is rw, TextOrStream) {
+	$value = PDF::DAO.coerce( $value, PDF::DAO::TextString );
     }
     has TextOrStream $.RV is entry( :&coerce );             #| (Optional; PDF 1.5) A rich text string
     

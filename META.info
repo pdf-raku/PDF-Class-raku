@@ -16,6 +16,8 @@
         "PDF::DOM::Type::Annot::Text" : "lib/PDF/DOM/Type/Annot/Text.pm",
         "PDF::DOM::Type::Annot::Widget" : "lib/PDF/DOM/Type/Annot/Widget.pm",
 
+        "PDF::DOM::Type::Appearance" : "lib/PDF/DOM/Type/Appearance.pm",
+
         "PDF::DOM::Type::Catalog" : "lib/PDF/DOM/Type/Catalog.pm",
         "PDF::DOM::Type::CMap" : "lib/PDF/DOM/Type/CMap.pm",
 
