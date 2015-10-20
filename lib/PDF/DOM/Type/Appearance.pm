@@ -15,15 +15,16 @@ role PDF::DOM::Type::Appearance
     use PDF::DAO::Tie;
     use PDF::DAO::Stream;
 
-    my role AppearanceOnOff
+    my role AppearanceStatus
 	does PDF::DAO::Tie::Hash {
-	has PDF::DAO::Stream $.On;
-	has PDF::DAO::Stream $.Off;
+	has PDF::DAO::Stream $.Off is entry;
+	has PDF::DAO::Stream $.On is entry;
+	has PDF::DAO::Stream $.Yes is entry;
     }
     #| /Type entry is optional, but should be /Pattern when present
-    my subset AppearanceEntry of PDF::DAO where PDF::DAO::Stream | AppearanceOnOff;
+    my subset AppearanceEntry of PDF::DAO where PDF::DAO::Stream | AppearanceStatus;
     multi sub coerce(Hash $dict is rw, AppearanceEntry) {
-	PDF::DAO.coerce($dict,  AppearanceOnOff)
+	PDF::DAO.coerce($dict,  AppearanceStatus)
     }
 
     has AppearanceEntry $.N is entry(:&coerce, :required); 

@@ -40,6 +40,17 @@ does-ok $appearance, ::('PDF::DOM::Type::Appearance'), '.AP';
 isa-ok $appearance.N, ::('PDF::DOM::Type::XObject::Form'), '.AP.N';
 ok $page.Annots[0] === @fields[0], 'first field via page-1 annots';
 
+my $country = @fields[5];
+does-ok $country, ::('PDF::DOM::Type::Field::Choice'), 'choice field';
+is +$country.Opt, 28, 'choice options';
+is $country.Opt[0], 'Austria', 'choice first option';
+
+my $languages = @fields[8];
+does-ok $languages, ::('PDF::DOM::Type::Field::Button'), 'Button field';
+$appearance = $languages.AP;
+does-ok $appearance, ::('PDF::DOM::Type::Appearance'), '.AP';
+isa-ok $appearance.N.Yes, ::('PDF::DOM::Type::XObject::Form'), '.AP.N.Yes';
+
 my %fields = $acroform.fields-hash;
 is +%fields, 25, 'fields hash key count';
 ok %fields{'Given Name Text Box'} == @fields[0], 'field hash lookup by .T';
