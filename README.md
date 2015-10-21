@@ -14,7 +14,7 @@ $page.text: -> $txt {
     $txt.set-font: $font;
     $txt.say: 'Hello, world!';
 }
-$pdf.Info = { :DateCreated( DateTime.now ) };
+$pdf.Info = { :CreationDate( DateTime.now ) };
 $pdf.save-as: "helloworld.pdf";
 ```
 
