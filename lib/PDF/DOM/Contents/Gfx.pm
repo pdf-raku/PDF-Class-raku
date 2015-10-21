@@ -12,8 +12,14 @@ class PDF::DOM::Contents::Gfx
 
     method block( &do-stuff! ) {
         $.op(Save);
-        &do-stuff();
+        &do-stuff(self);
         $.op(Restore);
+    }
+
+    method text( &do-stuff! ) {
+        $.op(BeginText);
+        &do-stuff(self);
+        $.op(EndText);
     }
 
     method image($spec where Str | PDF::DOM::Type::XObject::Image ) {
@@ -140,9 +146,11 @@ class PDF::DOM::Contents::Gfx
     method print(Str $text,
                  Bool :$dry-run = False,
                  Bool :$nl = False,
-                 *%etc,  #| :$align, :$kern, :$line-height, :$width, :$height
+		 :$font is copy,
+                 |c,  #| :$align, :$kern, :$line-height, :$width, :$height
         ) {
-        my $font = $.parent.resource-entry('Font', $.FontKey)
+	# detect and use the currenttext-state font
+        $font //= $.parent.resource-entry('Font', $.FontKey)
             if $.FontKey;
         $font //= $!parent.core-font('Courier');
 	my Numeric $font-size = $.FontSize || 16;
@@ -151,7 +159,7 @@ class PDF::DOM::Contents::Gfx
 	my Numeric $char-spacing = $.CharSpacing;
         my $text-block = PDF::DOM::Contents::Text::Block.new( :$text, :$font, :$font-size,
 							      :$word-spacing, :$horiz-scaling, :$char-spacing,
-							      |%etc );
+							      |c );
 
         unless $dry-run {
 

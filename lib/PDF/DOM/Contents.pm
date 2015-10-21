@@ -8,7 +8,11 @@ role PDF::DOM::Contents {
     use PDF::DOM::Op :OpNames;
 
     has PDF::DOM::Contents::Gfx $.pre-gfx = PDF::DOM::Contents::Gfx.new( :parent(self) ); #| prepended graphics
-    has PDF::DOM::Contents::Gfx $.gfx     = PDF::DOM::Contents::Gfx.new( :parent(self) ); #| appended graphics
+    has PDF::DOM::Contents::Gfx $.gfx handles <text> = PDF::DOM::Contents::Gfx.new( :parent(self) ); #| appended graphics
+
+    method graphics(&code) {
+	self.gfx.block( &code );
+    }
 
     method contents-parse(Str $contents = $.contents ) {
 	PDF::DOM::Contents::Gfx.parse($contents);

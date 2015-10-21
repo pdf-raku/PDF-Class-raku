@@ -39,7 +39,7 @@ role PDF::DOM::Op {
     my constant ShadingOps = set <CS cs SC SCN sc scn G g RG rg K k>;
     has %.gstate = %(:CTM[ 1, 0, 0, 1, 0, 0 ]);
 
-    has Array:_ $!Tm;      #| text matrix
+    has Array $!Tm = [ 1, 0, 0, 1, 0, 0, ];      #| text matrix
 
     # *** TEXT STATE ***
     has Numeric $!Tc = 0;   #| character spacing
