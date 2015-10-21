@@ -69,7 +69,7 @@ $page.text: -> $txt {
 
 $pdf<Info><Author> = 't/helloworld.t';
 $pdf<Info><Creator> = 'PDF::Tools';
-$pdf<Info><DateCreated> = DateTime.now;
+$pdf<Info><CreationDate> = DateTime.now;
 skip '$pdf.Info<Author> - not completing';
 ##is $pdf.Info<Author>, 't/helloworld.t', '$root.Info accessor';
 ok $pdf.save-as('t/helloworld.pdf'), '.save-as';

@@ -22,7 +22,7 @@ role PDF::DOM::Type::AcroForm
 	}
 	flat @fields;
     }
-    #| retrusn fields mapped to a hash. Default keys are $.T and $.TU field entries
+    #| return fields mapped to a hash. Default keys are $.T and $.TU field entries
     method fields-hash( Array $fields-arr = [ self.fields ],
 			Bool :$T  = True,
 			Bool :$TU = True,

@@ -11,13 +11,23 @@ class PDF::DOM::Type::Annot
 
     use PDF::DAO::Tie;
     use PDF::DAO::Name;
+    use PDF::DAO::DateString;
+    use PDF::DAO::TextString;
 
     # See [PDF Spec 1.7 table 8.15 - Entries common to all annotation dictionaries ]
     has Numeric @.Rect is entry(:required); #| (Required) The annotation rectangle, defining the location of the annotation on the page in default user space units.
-    has Str $.Contents is entry;            #| (Optional) Text to be displayed for the annotation or, if this type of annotation does not display text, an alternate description of the annotation’s contents in human-readable form
+    has PDF::DAO::TextString $.Contents is entry;            #| (Optional) Text to be displayed for the annotation or, if this type of annotation does not display text, an alternate description of the annotation’s contents in human-readable form
     has Hash $.P is entry;                  #| (Optional; PDF 1.3; not used in FDF files) An indirect reference to the page object with which this annotation is associated.
-    has Str $.NM is entry;                  #| (Optional; PDF 1.4) The annotation name, a text string uniquely identifying it among all the annotations on its page.
-    has Str $.M is entry;                   #| (Optional; PDF 1.1) The date and time when the annotation was most recently modified.
+    has PDF::DAO::TextString $.NM is entry;                  #| (Optional; PDF 1.4) The annotation name, a text string uniquely identifying it among all the annotations on its page.
+    subset DateOrTextString of Str where PDF::DAO::DateString | PDF::DAO::TextString;
+    multi sub coerce(Str $s is rw, DateOrTextString) {
+	my $target-type = $s ~~ /^ 'D:'? $<year>=\d**4/
+	    ?? PDF::DAO::DateString
+	    !! PDF::DAO::TextString;
+	PDF::DAO.coerce($s, $target-type);
+    }
+    has Str $.M is entry(:&coerce);                   #| (Optional; PDF 1.1) The date and time when the annotation was most recently modified.
+                                                      #| The preferred format is a date string, but viewer applications should be prepared to accept and display a string in any format.
     subset AnnotFlagsInt of UInt where 0 ..^ 2 +< 9;
     my enum AnnotsFlag is export(:AnnotsFlag) « :Invisable(1) :Hidden(2) :Print(3) :NoZoom(4) :NoRotate(5) :NoView(6)
 						:ReadOnly(7) :Locked(8) :ToggleNoView(9) :LockedContents(10) »;

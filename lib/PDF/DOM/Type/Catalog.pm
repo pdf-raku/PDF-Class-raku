@@ -19,6 +19,7 @@ my class Catalog
     use PDF::DAO::Dict;
     use PDF::DAO::Name;
     use PDF::DAO::Stream;
+    use PDF::DAO::TextString;
     use PDF::DOM::Type::Pages;
 
     has PDF::DAO::Name $.Version is entry;               #| (Optional; PDF 1.4) The version of the PDF specification to which the document conforms (for example, 1.4)
@@ -71,9 +72,9 @@ my class Catalog
 	has Bool $.Suspects is entry;        #| Optional; PDF 1.6) A flag indicating the presence of tag suspects (see “Page Content Order” on page 889). Default value: false.
     }
 
-    has MarkInfoDict $.MarkInfo is entry;                   #| (Optional; PDF 1.4) A mark information dictionary containing information about the document’s usage of Tagged PDF conventions
+    has MarkInfoDict $.MarkInfo is entry;                #| (Optional; PDF 1.4) A mark information dictionary containing information about the document’s usage of Tagged PDF conventions
 
-    has Str $.Lang is entry;                                #| (Optional; PDF 1.4) A language identifier specifying the natural language for all text in the document except where overridden by language specifications for structure elements or marked content
+    has PDF::DAO::TextString $.Lang is entry;            #| (Optional; PDF 1.4) A language identifier specifying the natural language for all text in the document except where overridden by language specifications for structure elements or marked content
 
     has PDF::DAO::Dict $.SpiderInfo is entry;            #| (Optional; PDF 1.3) A Web Capture information dictionary containing state information used by the Acrobat Web Capture (AcroSpider) plug-in extension
 
