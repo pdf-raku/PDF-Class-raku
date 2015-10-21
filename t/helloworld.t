@@ -67,9 +67,10 @@ $page.text: -> $txt {
     $txt.say('Hello, world!');
 }
 
-$pdf<Info><Author> = 't/helloworld.t';
-$pdf<Info><Creator> = 'PDF::Tools';
-$pdf<Info><CreationDate> = DateTime.now;
+my $Info = $pdf.Info = {}
+$Info.Author = 't/helloworld.t';
+$Info.Creator = 'PDF::Tools';
+$Info.CreationDate = DateTime.now;
 skip '$pdf.Info<Author> - not completing';
 ##is $pdf.Info<Author>, 't/helloworld.t', '$root.Info accessor';
 ok $pdf.save-as('t/helloworld.pdf'), '.save-as';
@@ -79,6 +80,7 @@ lives-ok {$pdf = PDF::DOM.open: 't/helloworld-compressed.pdf'}, 'pdf reload live
 isa-ok $pdf.reader.trailer, PDF::DOM, 'trailer type';
 isa-ok $pdf.page(1), ::('PDF::DOM::Type::Page'), 'first pages';
 is $pdf.page(1).Contents.Filter, 'FlateDecode', 'page stream is compressed';
+is $pdf.Info.Author, 't/helloworld.t', '$pdf.Info.Author relload';
 
 my $contents-ast;
 lives-ok {$contents-ast =  $pdf.page(1).contents-parse}, 'page contents-parse - lives';

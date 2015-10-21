@@ -14,11 +14,14 @@ $page.text: -> $txt {
     $txt.set-font: $font;
     $txt.say: 'Hello, world!';
 }
-$pdf.Info = { :CreationDate( DateTime.now ) };
+
+my $Info = $pdf.Info = {};
+$Info.CreationDate = DateTime.now;
+
 $pdf.save-as: "helloworld.pdf";
 ```
 
-The PDF::DOM::Type namespace contains comprehensive class librarys that map
+The PDF::DOM::Type namespace contains a core set of class librarys that map
 internal data structures of PDF files including rules for coercement, type-checking and
 serialization.
 
