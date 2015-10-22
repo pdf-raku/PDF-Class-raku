@@ -103,21 +103,29 @@ class PDF::DOM::Contents::Gfx
 	$.ConcatMatrix( @$transform-matrix );
     }
 
+    my subset Vector of List where {.elems == 2 && .[0] ~~ Numeric && .[1] ~~ Numeric}
     #| set the current text position on the page/form
-    multi method text-move(Numeric $x!, Numeric $y!, Bool :$abs! where $abs) {
-        my @tm = @$.TextMatrix;
-        @tm[4] = $x;
-        @tm[5] = $y;
-        $.op(SetTextMatrix, @tm);
-    }
-    multi method text-move(Numeric $x!, Numeric $y!) is default {
-        $.op(TextMove, $x, $y)
+    method text-position is rw returns Vector {
+	my $gfx = self;
+	my Numeric @tm = @$.TextMatrix;
+	Proxy.new(
+	    FETCH => method {
+		@tm[4,5]
+	    },
+	    STORE => method (Vector $v) {
+		@tm[4, 5] = @$v;
+		$gfx.op(SetTextMatrix, @tm);
+		@$v;
+	    },
+	    );
     }
 
     #| thin wrapper to $.op(SetFont, ...)
-    method set-font( $font-entry! is copy, Numeric $size = 16) {
-        $font-entry = $font-entry.key if $font-entry.can('key');
-        $.op(SetFont, $font-entry, $size);
+    method set-font( $font-entry!, Numeric $size = 16) {
+        my Str $font-key = $font-entry.can('key')
+	    ?? $font-entry.key
+	    !! $font-entry;
+        $.op(SetFont, $font-key, $size);
     }
 
     use PDF::DOM::Type::ExtGState;

@@ -13,7 +13,7 @@ my $x = 35;
 
 $page.text: -> $txt {
     for <left center right> -> $align {
-	$txt.text-move($x, 750, :abs);
+	$txt.text-position = [$x, 750];
 	my $header = [~] '*** ', $align, ' ***', "\n";
 	$txt.set-font($header-font, 18);
 	$txt.say( $header, :$width, :$align);
@@ -29,7 +29,7 @@ $page.text: -> $txt {
 	$x += 275;
     }
 
-    $txt.text-move(240,600, :abs);
+    $txt.text-position = [240, 600];
     $txt.set-font($page.core-font('ZapfDingbats'), 24);
     $txt.SetWordSpacing(16);
     my $nbsp = "\c[NO-BREAK SPACE]";
@@ -62,7 +62,7 @@ $page.text: -> $txt {
 	$gfx.do($img, 232, 380, :width(150) );
     }
 
-    $txt.text-move(100,300, :abs);
+    $txt.text-position = [100, 300];
     $txt.set-font( $header-font, 24);
     $txt.say('Hello, world!');
 }
@@ -70,7 +70,7 @@ $page.text: -> $txt {
 my $Info = $pdf.Info = {}
 $Info.Author = 't/helloworld.t';
 $Info.Creator = 'PDF::Tools';
-$Info.CreationDate = DateTime.now;
+$Info.CreationDate = DateTime.new( :year(2015), :month(12), :day(25) );
 skip '$pdf.Info<Author> - not completing';
 ##is $pdf.Info<Author>, 't/helloworld.t', '$root.Info accessor';
 ok $pdf.save-as('t/helloworld.pdf'), '.save-as';
