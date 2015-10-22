@@ -43,7 +43,7 @@ my $page = $pdf.Pages.add-page;
 $page.media-box(350, 250);
 $page<Annots> = [ $text-annot, $open-text-annot ];
 $page.gfx.BeginText;
-$page.gfx.text-move(50, 50);
+$page.gfx.TextMove(50, 50);
 $page.gfx.say('Page with an open annotation');
 $page.gfx.EndText;
 

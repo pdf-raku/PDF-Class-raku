@@ -46,7 +46,7 @@ is-json-equiv $xform.Resources, { :ProcSet( [ <PDF> ] ) }, '$.Resources accessor
 is-json-equiv $xform.BBox, [ 0, 0, 200, 200 ], '$.BBox accessor';
 is $xform.encoded, "0 0 m\n0 200 l\n200 200 l\n200 0 l\nf", '$.encoded accessor';
 $xform.gfx.BeginText;
-$xform.gfx.text-move(50,50);
+$xform.gfx.TextMove(50, 50);
 $xform.gfx.ops.push: ('rg' => [ :real(.5), :real(.95), :real(.5), ]);
 my $font = $xform.core-font( :family<Helvetica>, :weight<bold> );
 $xform.gfx.set-font($font);

@@ -15,7 +15,7 @@ my $bold-font = $pdf.core-font( :family<Helvetica>, :weight<bold> );
 my $reg-font = $pdf.core-font( :family<Helvetica> );
 
 $gfx.BeginText;
-$gfx.text-move(50,100);
+$gfx.TextMove(50,100);
 $gfx.set-font($bold-font, $font-size);
 $gfx.say('Hello, World!', :$width, :kern);
 $gfx.EndText;
@@ -53,7 +53,7 @@ for <text top center bottom> -> $valign {
     my $y = 700;
 
     for <left center right justify> -> $align {
-        $gfx.text-move($x, $y, :abs);
+        $gfx.text-position = ($x, $y);
         my $text-block = $gfx.say( "*** $valign $align*** " ~ $sample, :$width, :$height, :$valign, :$align);
         $y -= 170;
     }
@@ -99,7 +99,7 @@ for (
             if %settings{$_} == %default-settings{$_}
     }    
 
-    $gfx.text-move($x, $y, :abs);
+    $gfx.text-position = ($x, $y);
     my $text-block = $gfx.say( ("*** {%settings} *** ", $sample, $sample2).join(' '), :$width, :$height);
 
     if $x < 400 {
