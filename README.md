@@ -10,7 +10,7 @@ my $pdf = PDF::DOM.new;
 my $page = $pdf.add-page;
 my $font = $page.core-font( :family<Helvetica>, :weight<bold> );
 $page.text: -> $txt {
-    $txt.text-move(100,150, :abs);
+    $txt.text-position = [100, 150];
     $txt.set-font: $font;
     $txt.say: 'Hello, world!';
 }
