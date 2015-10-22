@@ -9,19 +9,19 @@ use PDF::DOM;
 my $pdf = PDF::DOM.new;
 my $page = $pdf.add-page;
 my $font = $page.core-font( :family<Helvetica>, :weight<bold> );
-$page.text: -> $txt {
-    $txt.text-position = [100, 150];
-    $txt.set-font: $font;
-    $txt.say: 'Hello, world!';
+$page.text: -> $_ {
+    .text-position = [100, 150];
+    .set-font: $font;
+    .say: 'Hello, world!';
 }
 
-my $Info = $pdf.Info = {};
-$Info.CreationDate = DateTime.now;
+my $info = $pdf.Info = {};
+$info.CreationDate = DateTime.now;
 
 $pdf.save-as: "helloworld.pdf";
 ```
 
-The PDF::DOM::Type namespace contains a core set of class librarys that map
+The PDF::DOM::Type namespace contains class librarys that map
 internal data structures of PDF files including rules for coercement, type-checking and
 serialization.
 
