@@ -19,7 +19,7 @@ class PDF::DOM
 
     method Pages           returns PDF::DOM::Type::Pages { self.Root.Pages }
 
-    method add-page        returns PDF::DOM::Type::Page { self.Pages.add-page }
+    method add-page(|c)    returns PDF::DOM::Type::Page { self.Pages.add-page(|c) }
     method core-font(|c)   returns PDF::DOM::Type::Font { self.Pages.core-font(|c) }
     method delete-page(|c) returns PDF::DOM::Type::Page { self.Pages.delete-page(|c) }
     method media-box(|c)   returns Array                { self.Pages.media-box(|c) }

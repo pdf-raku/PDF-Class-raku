@@ -29,18 +29,30 @@ class PDF::DOM::Type::Pages
     has Numeric @.CropBox is entry(:inherit);
 
     #| add new last page
-    method add-page( $page = PDF::DAO.coerce( { :Type( :name<Page> ) } ) ) {
+    method add-page( PDF::DOM::Type::Page $page? is copy ) {
         my $sub-pages = self.Kids[*-1]
             if self.Kids;
+
+	if $page {
+	    unless $page<Resources>:exists {
+		# import resources, if inherited and outside our heirarchy
+		my $resources = $page.Resources;
+		$page<Resources> = $resources.clone
+		    if $resources && $resources !=== self.Resources;
+	    }
+	}
+	else {
+	    $page = PDF::DAO.coerce( { :Type( :name<Page> ) } );
+	}
 
         if $sub-pages && $sub-pages.can('add-page') {
             $sub-pages.add-page( $page )
         }
         else {
             self.Kids.push: $page;
+	    $page<Parent> = self.import($page);
         }
 
-        $page<Parent> //= self;
         self<Count>++;
 
         $page
@@ -135,7 +147,7 @@ class PDF::DOM::Type::Pages
         my Array $kids = self.Kids;
         for $kids.keys {
             my $kid = $kids[$_];
-            $kid.<Parent> //= self;
+            $kid.<Parent> = self.import($kid);
             $kid.cb-finish;
             $count += $kid.can('Count') ?? $kid.Count !! 1;
         }
