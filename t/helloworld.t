@@ -5,38 +5,40 @@ use PDF::DOM;
 use PDF::DOM::Op :OpNames;
 my $pdf = PDF::DOM.new;
 my $page = $pdf.add-page;
+$page.MediaBox = [0, 0, 595, 842];
 my $header-font = $page.core-font( :family<Helvetica>, :weight<bold> );
 my $font = $page.core-font( :family<Helvetica> );
 my $width = 150;
 my $font-size = 15;
 my $x = 35;
 
-$page.text: -> $txt {
-    for <left center right> -> $align {
-	$txt.text-position = [$x, 750];
-	my $header = [~] '*** ', $align, ' ***', "\n";
-	$txt.set-font($header-font, 18);
-	$txt.say( $header, :$width, :$align);
+$page.graphics: -> $gfx {
 
-	my $body = q:to"--ENOUGH!!--".subst(/\n/, ' ', :g);
-	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-	ut labore et dolore magna aliqua.
-	--ENOUGH!!--
+    $page.text: -> $txt {
+	for <left center right> -> $align {
+	    $txt.text-position = [$x, 750];
+	    my $header = [~] '*** ', $align, ' ***', "\n";
+	    $txt.set-font($header-font, 18);
+	    $txt.say( $header, :$width, :$align);
 
-	$txt.set-font($font, $font-size);
-	my $text-block = $txt.say( $body, :$font, :$font-size, :$width, :$align, :kern);
-	isa-ok $text-block, ::('PDF::DOM::Contents::Text::Block');
-	$x += 275;
-    }
+	    my $body = q:to"--ENOUGH!!--".subst(/\n/, ' ', :g);
+	    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+	    ut labore et dolore magna aliqua.
+	    --ENOUGH!!--
 
-    $txt.text-position = [240, 600];
-    $txt.set-font($page.core-font('ZapfDingbats'), 24);
-    $txt.SetWordSpacing(16);
-    my $nbsp = "\c[NO-BREAK SPACE]";
-    $txt.print("♠ ♣$nbsp");
-    $page.graphics: -> $_ {
-	.SetFillRGB( 1, .3, .3);
-	.say("♦ ♥");
+	    $txt.set-font($font, $font-size);
+	    my $text-block = $txt.say( $body, :$font, :$font-size, :$width, :$align, :kern);
+	    isa-ok $text-block, ::('PDF::DOM::Contents::Text::Block');
+	    $x += 275;
+        }
+
+        $txt.text-position = [240, 600];
+        $txt.set-font($page.core-font('ZapfDingbats'), 24);
+        $txt.SetWordSpacing(16);
+        my $nbsp = "\c[NO-BREAK SPACE]";
+        $txt.print("♠ ♣$nbsp");
+        $txt.SetFillRGB( 1, .3, .3);
+	$txt.say("♦ ♥");
     }
 
     $page.graphics: -> $gfx {
@@ -62,11 +64,13 @@ $page.text: -> $txt {
 	$gfx.do($img, 232, 380, :width(150) );
     }
 
-    $txt.text-position = [100, 300];
-    $txt.set-font( $header-font, 24);
-    $txt.say('Hello, world!');
 }
 
+$page.text: -> $_ {
+    .text-position = [100, 300];
+    .set-font( $header-font, 24);
+    .say('Hello, world!');
+}
 my $info = $pdf.Info = {}
 $info.Author = 't/helloworld.t';
 $info.Creator = 'PDF::Tools';
@@ -86,7 +90,7 @@ my $contents-ast;
 lives-ok {$contents-ast =  $pdf.page(1).contents-parse}, 'page contents-parse - lives';
 isa-ok $contents-ast, Array, '.contents type';
 ok +$contents-ast > 24, '.contents elems';
-is-deeply $contents-ast[0], (:BT[]), '.contents first elem';
+is-deeply $contents-ast[0], (:q[]), '.contents first elem';
 is-deeply $contents-ast[*-1], (:ET[]), '.contents last elem';
 
 done-testing;

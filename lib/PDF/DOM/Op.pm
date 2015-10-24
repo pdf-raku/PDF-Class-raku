@@ -34,8 +34,10 @@ role PDF::DOM::Op {
         :CurveTo2<y> :MoveSetShowText<"> :MoveShowText<'>
     »;
 
+    # See [PDF 1.7 TABLE 4.1 Operator categories]
     my constant TextOps = set <T* Tc Td TD Tf Tj TJ TL Tm Tr Ts Tw Tz>;
-    my constant GraphicOps = set <cm w J j M d ri i gs>;
+    my constant GeneralGraphicOps = set <w J j M d ri i gs>;
+    my constant SpecialGraphicOps = set <q Q cm>;
     my constant ShadingOps = set <CS cs SC SCN sc scn G g RG rg K k>;
     has %.gstate = %(:CTM[ 1, 0, 0, 1, 0, 0 ]);
 
@@ -264,10 +266,13 @@ role PDF::DOM::Op {
 
 	if !@!gsave {
 	    warn "graphics operation '$op-name' outside of a q ... Q graphics block\n"
-		if $op-name ∈ GraphicOps;
+		if $op-name ∈ GeneralGraphicOps | ShadingOps
+		|| $op-name eq 'cm';
+	}
 
-	    warn "shading operation '$op-name' outside of a q ... Q graphics block\n"
-		if $op-name ∈ ShadingOps;
+	if $op-name ∈ SpecialGraphicOps {
+	    warn "special graphics operation '$op-name' used in a BT ... ET text block"
+	        if @!tags && @!tags.first({ $_ eq 'BT' });
 	}
 
 	@!ops.push($opn);

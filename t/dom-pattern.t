@@ -41,9 +41,10 @@ is $pattern-obj.Type, 'Pattern', '$.Type accessor';
 ok !$pattern-obj.Subtype.defined, '$.Subtype accessor';
 is-json-equiv $pattern-obj.BBox, [ 0, 0, 100, 100 ], '$.BBox accessor';
 my $zfont = $pattern-obj.core-font('ZapfDingbats');
+# example from [PDF 1.7 Example 4.24]
 $pattern-obj.gfx.ops: [
-    'BT',                              # Begin text object
     'q',
+    'BT',                              # Begin text object
     :Tf[$zfont.key, 1],                # Set text font and size
     :Tm[64, 0, 0, 64, 7.1771, 2.4414], # Set text matrix
     :Tc[0],                            # Set character spacing
@@ -63,16 +64,16 @@ $pattern-obj.gfx.ops: [
     :TD[0.6913, 0.007],                # Move text position
     :rg[0.0, 0.0, 0.0],                # Set nonstroking color to black
     :Tj($zfont.encode("♣")),           # Show club glyph
+    'ET',                              # End text object
     'Q',
-    'ET'                               # End text object
     ];
 
 $pattern-obj.cb-finish;
 
 my $contents = $pattern-obj.decoded;
 my @lines = $contents.lines;
-is-deeply [ @lines[0..3] ], ['', 'BT', 'q', '/F1 1 Tf'], 'first four lines of content';
-is-deeply [ @lines[*-4..*] ], ['0 0 0 rg', '(\250) Tj', 'Q', 'ET'], 'last 5 lines of content';
+is-deeply [ @lines[0..3] ], ['', 'q', 'BT', '/F1 1 Tf'], 'first four lines of content';
+is-deeply [ @lines[*-4..*] ], ['0 0 0 rg', '(\250) Tj', 'ET', 'Q'], 'last 5 lines of content';
 
 my $pdf = PDF::DOM.new;
 my $page = $pdf.Pages.add-page;

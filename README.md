@@ -8,6 +8,7 @@ use PDF::DOM;
 
 my $pdf = PDF::DOM.new;
 my $page = $pdf.add-page;
+$page.MediaBox =  [0, 0, 595, 842];
 my $font = $page.core-font( :family<Helvetica>, :weight<bold> );
 $page.text: -> $_ {
     .text-position = [100, 150];
