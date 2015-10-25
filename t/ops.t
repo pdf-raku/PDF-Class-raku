@@ -6,6 +6,14 @@ use PDF::DOM::Op :OpNames;
 class T does PDF::DOM::Op {};
 my $g = T.new;
 
+$g.op(Save);
+
+is-json-equiv $g.GraphicsMatrix, [1, 0, 0, 1, 0, 0], '$g.GraphicsMatrix - initial';
+$g.ConcatMatrix( 10, 1, 15, 2, 3, 4);
+is-json-equiv $g.GraphicsMatrix, [10, 1, 15, 2, 3, 4], '$g.GraphicMatrix - updated';
+$g.ConcatMatrix( 10, 1, 15, 2, 3, 4);
+is-json-equiv $g.GraphicsMatrix, [115, 12, 180, 19, 93, 15], '$g.GraphicMatrix - updated again';
+
 is-json-equiv $g.BeginText, (:BT[]), 'BeginText';
 
 is-json-equiv $g.op('Tf', 'F1', 16), (:Tf[ :name<F1>, :real(16) ]), 'Tf';
@@ -37,13 +45,6 @@ $g.SetTextMatrix( 10, 1, 15, 2, 3, 4);
 is-json-equiv $g.TextMatrix, [10, 1, 15, 2, 3, 4], '$g.TextMatrix - updated';
 $g.SetTextMatrix( 10, 1, 15, 2, 3, 4);
 is-json-equiv $g.TextMatrix, [10, 1, 15, 2, 3, 4], '$g.TextMatrix - updated again';
-
-$g.op(Save);
-is-json-equiv $g.GraphicsMatrix, [1, 0, 0, 1, 0, 0], '$g.GraphicsMatrix - initial';
-$g.ConcatMatrix( 10, 1, 15, 2, 3, 4);
-is-json-equiv $g.GraphicsMatrix, [10, 1, 15, 2, 3, 4], '$g.GraphicMatrix - updated';
-$g.ConcatMatrix( 10, 1, 15, 2, 3, 4);
-is-json-equiv $g.GraphicsMatrix, [115, 12, 180, 19, 93, 15], '$g.GraphicMatrix - updated again';
 
 is-json-equiv $g.op('scn', 0.30, 'int' => 1, 0.21, 'P2'), (:scn[ :real(.30), :int(1), :real(.21), :name<P2> ]), 'scn';
 is-json-equiv $g.op('TJ', $[ 'hello', 42, 'world']), (:TJ[ :array[ :literal<hello>, :int(42), :literal<world> ] ]), 'TJ';
