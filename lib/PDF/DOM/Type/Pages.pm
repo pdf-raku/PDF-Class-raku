@@ -50,7 +50,7 @@ class PDF::DOM::Type::Pages
         }
         else {
             self.Kids.push: $page;
-	    $page<Parent> = self.import($page);
+	    $page<Parent> = self.import;
         }
 
         self<Count>++;
@@ -147,7 +147,7 @@ class PDF::DOM::Type::Pages
         my Array $kids = self.Kids;
         for $kids.keys {
             my $kid = $kids[$_];
-            $kid.<Parent> = self.import($kid);
+            $kid.<Parent> = self.import;
             $kid.cb-finish;
             $count += $kid.can('Count') ?? $kid.Count !! 1;
         }
