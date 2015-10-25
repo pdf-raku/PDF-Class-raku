@@ -97,6 +97,8 @@ class PDF::DOM::Type::Page
 
     method cb-finish {
 
+	self.MediaBox //= [0, 0, 612, 792];
+
         if $!pre-gfx.ops || $!gfx.ops {
 
             if $!pre-gfx.ops || $!gfx.ops {
