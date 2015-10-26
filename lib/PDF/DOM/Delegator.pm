@@ -20,7 +20,7 @@ class PDF::DOM::Delegator
 
     multi method find-delegate( Str $subclass! where 'XRef' | 'ObjStm') {
 	require ::('PDF::DAO::Type')::($subclass);
-	self.install-delegate( :$subclass, ::('PDF::DAO::Type')::($subclass) );
+	self.install-delegate( $subclass, ::('PDF::DAO::Type')::($subclass) );
     }
 
     multi method find-delegate( Str $subclass!, :$fallback!) is default {
