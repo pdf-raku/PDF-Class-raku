@@ -2,11 +2,20 @@
     "name"        : "PDF::DOM",
     "version"     : "0.1",
     "description" : "PDF Document Object Model",
-    "depends"     : [ "PDF::DAO", "PDF::Grammar", "Font::AFM" ],
-    "source-url"  : "git://github.com/p6-css/p6-PDF-Tools.git",
+    "depends"     : [ "PDF", "PDF::Grammar", "Font::AFM" ],
+    "source-url"  : "git://github.com/p6-pdf/p6-PDF-Tools.git",
     "provides"    : {
 
         "PDF::DOM" : "lib/PDF/DOM.pm",
+
+        "PDF::DOM::Contents" : "lib/PDF/DOM/Contents.pm",
+        "PDF::DOM::Contents::Gfx" : "lib/PDF/DOM/Contents/Gfx.pm",
+        "PDF::DOM::Contents::Text::Atom" : "lib/PDF/DOM/Contents/Text/Atom.pm",
+        "PDF::DOM::Contents::Text::Block" : "lib/PDF/DOM/Contents/Text/Block.pm",
+        "PDF::DOM::Contents::Text::Line" : "lib/PDF/DOM/Contents/Text/Line.pm",
+
+        "PDF::DOM::Op" : "lib/PDF/DOM/Op.pm",
+
         "PDF::DOM::Type" : "lib/PDF/DOM/Type.pm",
 
         "PDF::DOM::Type::AcroForm" : "lib/PDF/DOM/Type/AcroForm.pm",
@@ -20,7 +29,6 @@
 
         "PDF::DOM::Type::Catalog" : "lib/PDF/DOM/Type/Catalog.pm",
         "PDF::DOM::Type::CMap" : "lib/PDF/DOM/Type/CMap.pm",
-
         "PDF::DOM::Type::CIDSystemInfo" : "lib/PDF/DOM/Type/CIDSystemInfo.pm",
 
         "PDF::DOM::Type::ColorSpace" : "lib/PDF/DOM/Type/ColorSpace.pm",
@@ -54,11 +62,14 @@
         "PDF::DOM::Type::Function::PostScript" : "lib/PDF/DOM/Type/Function/PostScript.pm",
 
         "PDF::DOM::Type::FontDescriptor" : "lib/PDF/DOM/Type/FontDescriptor.pm",
+
         "PDF::DOM::Type::Metadata::XML" : "lib/PDF/DOM/Type/Metadata/XML.pm",
+
         "PDF::DOM::Type::OBJR" : "lib/PDF/DOM/Type/OBJR.pm",
         "PDF::DOM::Type::Outlines" : "lib/PDF/DOM/Type/Outlines.pm",
         "PDF::DOM::Type::OutputIntent" : "lib/PDF/DOM/Type/OutputIntent.pm",
         "PDF::DOM::Type::OutputIntent::GTS_PDFX" : "lib/PDF/DOM/Type/OutputIntent/GTS_PDFX.pm",
+
         "PDF::DOM::Type::Page" : "lib/PDF/DOM/Type/Page.pm",
         "PDF::DOM::Type::Pages" : "lib/PDF/DOM/Type/Pages.pm",
 
@@ -82,15 +93,7 @@
         "PDF::DOM::Type::XObject::Image" : "lib/PDF/DOM/Type/XObject/Image.pm",
         "PDF::DOM::Type::XObject::PS" : "lib/PDF/DOM/Type/XObject/PS.pm",
 
-        "PDF::DOM::Contents" : "lib/PDF/DOM/Contents.pm",
-        "PDF::DOM::Contents::Gfx" : "lib/PDF/DOM/Contents/Gfx.pm",
-        "PDF::DOM::Contents::Text::Atom" : "lib/PDF/DOM/Contents/Text/Atom.pm",
-        "PDF::DOM::Contents::Text::Block" : "lib/PDF/DOM/Contents/Text/Block.pm",
-        "PDF::DOM::Contents::Text::Line" : "lib/PDF/DOM/Contents/Text/Line.pm",
-
-        "PDF::DOM::Op" : "lib/PDF/DOM/Op.pm",
-
-        "PDF::DOM::RootObject" : "lib/PDF/DOM/RootObject.pm",
+        "PDF::DOM::Resources" : "lib/PDF/DOM/Resources.pm",
 
         "PDF::DOM::Util::Font" : "lib/PDF/DOM/Util/Font.pm",        
         "PDF::DOM::Util::TransformMatrix" : "lib/PDF/DOM/Util/TransformMatrix.pm"        
