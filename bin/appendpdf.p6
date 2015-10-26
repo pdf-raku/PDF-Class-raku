@@ -1,9 +1,9 @@
-#!/usr/bin/perl -w
+B#!/usr/bin/perl -w
 use v6;
 use PDF::DOM;
 use PDF::DAO::Type::Encrypt :PermissionsFlag;
 
-sub MAIN(*@files, Str :$save-as, Bool :$forms)  {
+sub MAIN(*@files, Str :$save-as)  {
 
     my $pdf = PDF::DOM.open: @files.shift;
 
@@ -12,8 +12,6 @@ sub MAIN(*@files, Str :$save-as, Bool :$forms)  {
 
     for @files -> $in-file {
 	my $in-pdf = PDF::DOM.open: $in-file;
-	$in-pdf.Root<Acroform>:delete
-	    if $forms;
 
 	die "PDF forbids copy: $in-file"
 	    unless $in-pdf.permitted( PermissionsFlag::Copy );
@@ -47,8 +45,7 @@ appendpdf.p6 - Append one PDF to another
  appendpdf.p6 [options] --save-as=output.pdf file1.pdf file2.pdf
 
  Options:
-   --prepend        prepend the document instead of appending it
-   --forms          wipe all forms and annotations from the PDF
+   --save-as=file     save as a new PDF
 
 =head1 DESCRIPTION
 
