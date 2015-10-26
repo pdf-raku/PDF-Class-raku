@@ -47,6 +47,7 @@ multi sub MAIN(Str $file) {
     my $catalog = $doc.Root;
     my $tagged  = $catalog.?MarkInfo.?Marked   // False;
     my $partial = $catalog.?MarkInfo.?Suspects // False;
+    my UInt $revisions = + $doc.reader.xrefs;
 
     my UInt @page-size = $box
 	?? ($box[2] - $box[0],  $box[3] - $box[1])
@@ -66,6 +67,7 @@ multi sub MAIN(Str $file) {
     say 'Page Size:    ' ~ (@page-size[0] ?? "@page-size[0] x @page-size[1] pts" !! 'variable');
 ##	print 'Optimized:    '.($doc->isLinearized()?'yes':'no')."\n";
 	say "PDF version:  $pdf-version";
+	say "Revisions:    $revisions";
         use PDF::DAO::Type::Encrypt :PermissionsFlag;
 
 	print "Security\n";
