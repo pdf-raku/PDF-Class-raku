@@ -57,7 +57,9 @@ multi sub MAIN(Str $file) {
     say "Pages:        $pages";
     if $pdf-info {
 	for $pdf-info.keys -> $key {
-	    printf "%-13s %s\n", $key ~ q{:}, pretty-print( $pdf-info{$key} );
+	    my Str $info = pretty-print( $pdf-info{$key} );
+	    printf "%-13s %s\n", $key ~ q{:}, $info
+	        unless $info eq '';
 	}
     }
     say 'Tagged:       ' ~ yes-no($tagged) ~ ($partial ?? ' (partial)' !! '');
