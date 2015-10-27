@@ -26,8 +26,8 @@ class PDF::DOM::Type::XObject::Form
     has Hash $.Metadata is entry;           #| (Optional; PDF 1.4) A metadata stream containing metadata for the form XObject
     has Hash $.PieceInfo is entry;          #| (Optional; PDF 1.3) A page-piece dictionary associated with the form XObject
     has Str $.LastModified is entry;        #| (Required if PieceInfo is present; optional otherwise; PDF 1.3) The date and time (see Section 3.8.3, “Dates”) when the form XObject’s contents were most recently modified
-    has Int $.StructParent is entry;        #| (Required if the form XObject is a structural content item; PDF 1.3) The integer key of the form XObject’s entry in the structural parent tree
-    has Int $.StructParents is entry;       #| (Required if the form XObject contains marked-content sequences that are structural content items; PDF 1.3) The integer key of the form XObject’s entry in the structural parent tree
+    has UInt $.StructParent is entry;       #| (Required if the form XObject is a structural content item; PDF 1.3) The integer key of the form XObject’s entry in the structural parent tree
+    has UInt $.StructParents is entry;      #| (Required if the form XObject contains marked-content sequences that are structural content items; PDF 1.3) The integer key of the form XObject’s entry in the structural parent tree
     has Hash $.OPI is entry;                #| (Optional; PDF 1.2) An OPI version dictionary for the form XObject
     has Hash $.OC is entry;                 #| (Optional; PDF 1.5) An optional content group or optional content membership dictionary
 

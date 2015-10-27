@@ -78,7 +78,7 @@ my class Catalog
 
     has PDF::DAO::Dict $.SpiderInfo is entry;            #| (Optional; PDF 1.3) A Web Capture information dictionary containing state information used by the Acrobat Web Capture (AcroSpider) plug-in extension
 
-    has PDF::DAO::Array $.OutputIntents is entry;        #| (Optional; PDF 1.4) An array of output intent dictionaries describing the color characteristics of output devices on which the document might be rendered
+    has PDF::DAO::Dict @.OutputIntents is entry;                   #| (Optional; PDF 1.4) An array of output intent dictionaries describing the color characteristics of output devices on which the document might be rendered
 
     has PDF::DAO::Dict $.PieceInfo is entry;             #| (Optional; PDF 1.4) A page-piece dictionary associated with the document
 
@@ -88,7 +88,7 @@ my class Catalog
 
     has PDF::DAO::Dict $.Legal is entry;                 #| (Optional; PDF 1.5) A dictionary containing attestations regarding the content of a PDF document, as it relates to the legality of digital signatures
 
-    has PDF::DAO::Array $.Requirements is entry;         #| (Optional; PDF 1.7) An array of requirement dictionaries representing requirements for the document.
+    has PDF::DAO::Dict @.Requirements is entry;         #| (Optional; PDF 1.7) An array of requirement dictionaries representing requirements for the document.
 
     has PDF::DAO::Dict $.Collection is entry;            #| (Optional; PDF 1.7) A collection dictionary that a PDF consumer uses to enhance the presentation of file attachments stored in the PDF document.
 

@@ -127,7 +127,7 @@ role PDF::DOM::Op {
     multi sub op(Str $op! where 'd',
         Array $args!, Numeric $real!) {
         my @array = $args.map({
-            when Int     { :int(.Int) }
+            when UInt    { :int(.Int) }
             when Pair    { $_ }
             default {die "invalid entry in $op array: {.perl}"}
         });
@@ -150,7 +150,7 @@ role PDF::DOM::Op {
     #| lineJoin               j
     #| render                 Tr
     multi sub op(Str $op! where 'j' | 'J' | 'Tr',
-        Int $int!) {
+        UInt $int!) {
         $op => [ :$int ]
     }
     #| x y                    m l

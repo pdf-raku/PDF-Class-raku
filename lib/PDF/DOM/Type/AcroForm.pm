@@ -56,7 +56,7 @@ role PDF::DOM::Type::AcroForm
 
     has Str $.DA is entry;                     #| (Optional) A document-wide default value for the DA attribute of variable text fields
 
-    has Int $.Q is entry;                      #| (Optional) A document-wide default value for the Q attribute of variable text fields
+    has UInt $.Q is entry;                     #| (Optional) A document-wide default value for the Q attribute of variable text fields
 
     use PDF::DAO::Stream;
     my subset StreamOrArray of Any where PDF::DAO::Stream | Array;

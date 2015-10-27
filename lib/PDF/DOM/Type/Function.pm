@@ -11,7 +11,7 @@ class PDF::DOM::Type::Function
 
     # see TABLE 3.35 Entries common to all function dictionaries
 
-    subset FunctionTypeInt of Int where 0|2|3|4;
+    subset FunctionTypeInt of UInt where 0|2|3|4;
 
     has FunctionTypeInt $.FunctionType is entry(:required);
     has Numeric @.Domain is entry(:required);  #| (Required) An array of 2 × m numbers, where m is the number of input values. For each i from 0 to m − 1
@@ -27,17 +27,17 @@ class PDF::DOM::Type::Function
     method delegate-function(Hash :$dict!) {
 
 	use PDF::DAO::Util :from-ast;
-	my Int $function-type-int = from-ast $dict<FunctionType>;
+	my UInt $function-type = from-ast $dict<FunctionType>;
 
-	unless $function-type-int ~~ FunctionTypeInt {
+	unless $function-type ~~ FunctionTypeInt {
 	    note "unknown /FunctionType $dict<FunctionType> - supported range is 0,2,3,4";
 	    return self.WHAT;
 	}
 
-	my $function-type = FunctionTypes[$function-type-int];
+	my $function = FunctionTypes[$function-type];
 
-	require ::(self.WHAT.^name)::($function-type);
-	return  ::(self.WHAT.^name)::($function-type);
+	require ::(self.WHAT.^name)::($function);
+	return  ::(self.WHAT.^name)::($function);
     }
 
     method cb-init {
@@ -46,23 +46,23 @@ class PDF::DOM::Type::Function
 
             if $class-name ~~ /^ 'PDF::DOM::Type::' (\w+) ['::' (\w+)]? $/ {
 		my Str $type = ~$0;
-		my Str $function-type = ~$1
+		my Str $function = ~$1
 		    if $1;
 
 		die "invalid function class: $class-name"
 		    unless $type eq $.type
-		    && $function-type
-		    && (FunctionNames{ $function-type }:exists);
+		    && $function
+		    && (FunctionNames{ $function }:exists);
 
-		my FunctionTypeInt $function-type-int = FunctionNames{ $function-type };
+		my FunctionTypeInt $function-type = FunctionNames{ $function };
 
 		if self<FunctionType>:!exists {
-		    self<FunctionType> = $function-type-int;
+		    self<FunctionType> = $function-type;
 		}
 		else {
 		    # /Subtype already set. check it agrees with the class name
-		    die "conflict between class-name $class-name /FunctionType. Expected $function-type-int, got  self<FunctionType>"
-			unless self<FunctionType> == $function-type-int;
+		    die "conflict between class-name $class-name /FunctionType. Expected $function-type, got self<FunctionType>"
+			unless self<FunctionType> == $function-type;
 		}
 
                 last;

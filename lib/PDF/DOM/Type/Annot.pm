@@ -37,7 +37,7 @@ class PDF::DOM::Type::Annot
     has PDF::DAO::Name $.AS is entry;       #| (Required if the appearance dictionary AP contains one or more subdictionaries; PDF 1.2) The annotation’s appearance state, which selects the applicable appearance stream from an appearance subdictionary
     has Numeric @.Border is entry;          #| (Optional) An array specifying the characteristics of the annotation’s border. The border is specified as a rounded rectangle.
     has Numeric @.C is entry;               #| (Optional; PDF 1.1) An array of numbers in the range 0.0 to 1.0, representing a color used for (*) background, when closed, (*) title bar of pop-up window, (*) link border
-    has Int $.StructParent is entry;        #| (Required if the annotation is a structural content item; PDF 1.3) The integer key of the annotation’s entry in the structural parent tree
+    has UInt $.StructParent is entry;       #| (Required if the annotation is a structural content item; PDF 1.3) The integer key of the annotation’s entry in the structural parent tree
     has Hash $.OC is entry;                 #| (Optional; PDF 1.5) An optional content group or optional content membership dictionary (see Section 4.10, “Optional Content”) specifying the optional content properties for the annotation.
 
     # See [PDF 1.7 Section 8.6.2, “Field Dictionaries” (Variable Text)]

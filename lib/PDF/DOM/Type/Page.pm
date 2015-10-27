@@ -44,13 +44,13 @@ class PDF::DOM::Type::Page
     use PDF::DOM::Type::Annot;
     has PDF::DOM::Type::Annot @.Annots is entry; #| (Optional) An array of annotation dictionaries representing annotations associated with the page
     has Hash $.AA is entry;                      #| (Optional; PDF 1.2) An additional-actions dictionary defining actions to be performed when the page is opened or closed
-    has PDF::DAO::Stream $.Metadata is entry; #| (Optional; PDF 1.4) A metadata stream containing metadata for the page
+    has PDF::DAO::Stream $.Metadata is entry;    #| (Optional; PDF 1.4) A metadata stream containing metadata for the page
     has Hash $.PieceInfo is entry;               #| (Optional; PDF 1.3) A page-piece dictionary associated with the page
-    has Int $.StructParents is entry;            #| (Required if the page contains structural content items; PDF 1.3) The integer key of the page’s entry in the structural parent tree
+    has UInt $.StructParents is entry;           #| (Required if the page contains structural content items; PDF 1.3) The integer key of the page’s entry in the structural parent tree
     has Str $.ID is entry;                       #| (Optional; PDF 1.3; indirect reference preferred) The digital identifier of the page’s parent Web Capture content set
     has Numeric $.PZ is entry;                   #| (Optional; PDF 1.3) The page’s preferred zoom (magnification) factor
     has Hash $.SeparationInfo is entry;          #| (Optional; PDF 1.3) A separation dictionary containing information needed to generate color separations for the page
-    has PDF::DAO::Name $.Tabs is entry;       #| (Optional; PDF 1.5) A name specifying the tab order to be used for annotations on the page
+    has PDF::DAO::Name $.Tabs is entry;          #| (Optional; PDF 1.5) A name specifying the tab order to be used for annotations on the page
     has PDF::DAO::Name $.TemplateInstantiated is entry; #| (Required if this page was created from a named page object; PDF 1.5) The name of the originating page object
     has Hash $.PressSteps is entry;              #| (Optional; PDF 1.5) A navigation node dictionary representing the first node on the pag
     has Numeric $.UserUnit is entry;             #| (Optional; PDF 1.6) A positive number giving the size of default user space units, in multiples of 1 ⁄ 72 inch

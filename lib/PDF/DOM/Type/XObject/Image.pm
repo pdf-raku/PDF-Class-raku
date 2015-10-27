@@ -18,22 +18,22 @@ class PDF::DOM::Type::XObject::Image
     has Numeric $.Height is entry(:required);     #| (Required) The height of the image, in samples.
     subset NameOrArray of Any where PDF::DAO::Name | PDF::DAO::Array;
     has NameOrArray $.ColorSpace is entry;        #| (Required for images, except those that use the JPXDecode filter; not allowed for image masks) The color space in which image samples are specified; it can be any type of color space except Pattern.
-    has Int $.BitsPerComponent is entry;          #| (Required except for image masks and images that use the JPXDecode filter)The number of bits used to represent each color component.
-    has PDF::DAO::Name $.Intent is entry;      #| (Optional; PDF 1.1) The name of a color rendering intent to be used in rendering the image
+    has UInt $.BitsPerComponent is entry;         #| (Required except for image masks and images that use the JPXDecode filter)The number of bits used to represent each color component.
+    has PDF::DAO::Name $.Intent is entry;         #| (Optional; PDF 1.1) The name of a color rendering intent to be used in rendering the image
     has Bool $.ImageMask is entry;                #| (Optional) A flag indicating whether the image is to be treated as an image mask. If this flag is true, the value of BitsPerComponent must be 1 and Mask and ColorSpace should not be specified;
     subset StreamOrArray of PDF::DAO where PDF::DAO::Stream | PDF::DAO::Array;
     has StreamOrArray $.Mask is entry;            #| (Optional) A flag indicating whether the image is to be treated as an image mask (see Section 4.8.5, “Masked Images”). If this flag is true, the value of BitsPerComponent must be 1 and Mask and ColorSpace should not be specified;
-    has Numeric @.Decode is entry;                 #| (Optional) An array of numbers describing how to map image samples into the range of values appropriate for the image’s color space
+    has Numeric @.Decode is entry;                #| (Optional) An array of numbers describing how to map image samples into the range of values appropriate for the image’s color space
     has Bool $.Interpolate is entry;              #| (Optional) A flag indicating whether image interpolation is to be performed
     has Hash @.Alternatives is entry;             #| An array of alternate image dictionaries for this image
-    has PDF::DAO::Stream $.SMask is entry;     #| (Optional; PDF 1.4) A subsidiary image XObject defining a soft-mask image
+    has PDF::DAO::Stream $.SMask is entry;        #| (Optional; PDF 1.4) A subsidiary image XObject defining a soft-mask image
     subset SMaskInInt of Int where 0|1|2;
     has SMaskInInt $.SMaskInData is entry;        #| (Optional for images that use the JPXDecode filter, meaningless otherwise; A code specifying how soft-mask information encoded with image samples should be used:
                                                   #| 0: If present, encoded soft-mask image information should be ignored.
                                                   #| 1: The image’s data stream includes encoded soft-mask values. An application can create a soft-mask image from the information to be used as a source of mask shape or mask opacity in the transparency imaging model.
                                                   #| 2: The image’s data stream includes color channels that have been preblended with a background; the image data also includes an opacity channel. An application can create a soft-mask image with a Matte entry from the opacity channel information to be used as a source of mask shape or mask opacity in the transparency model.
                                                   #| If this entry has a nonzero value, SMask should not be specified
-    has Int $.StructParent is entry;              #| (Required if the image is a structural content item; PDF 1.3) The integer key of the image’s entry in the structural parent tree
+    has UInt $.StructParent is entry;             #| (Required if the image is a structural content item; PDF 1.3) The integer key of the image’s entry in the structural parent tree
     has Str $.ID is entry;                        #| (Optional; PDF 1.3; indirect reference preferred) The digital identifier of the image’s parent Web Capture content set
     has Hash $.OPI is entry;                      #| Optional; PDF 1.2) An OPI version dictionary for the image. If ImageMask is true, this entry is ignored.
     has PDF::DAO::Stream $.Metadata is entry;  #| (Optional; PDF 1.4) A metadata stream containing metadata for the image

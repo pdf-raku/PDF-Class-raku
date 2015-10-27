@@ -14,13 +14,13 @@ class PDF::DOM::Type::Font::Type1
                                                            #| Note: This entry is obsolescent and its use is no longer recommended.
     has PDF::DAO::Name $.BaseFont is entry(:required);  #| (Required) The PostScript name of the font. For Type 1 fonts, this is usually the value of the FontName entry in the font program
 
-    has Int $.FirstChar is entry;                          #| (Required except for the standard 14 fonts) The first character code defined in the font’s Widths array
+    has UInt $.FirstChar is entry;                      #| (Required except for the standard 14 fonts) The first character code defined in the font’s Widths array
 
-    has Int $.LastChar is entry;                           #| (Required except for the standard 14 fonts) The last character code defined in the font’s Widths array
+    has UInt $.LastChar is entry;                       #| (Required except for the standard 14 fonts) The last character code defined in the font’s Widths array
 
-    has Array $.Widths is entry;                           #| (Required except for the standard 14 fonts; indirect reference preferred) An array of (LastChar − FirstChar + 1) widths, each element being the glyph width for the character code that equals FirstChar plus the array index.
+    has Numeric @.Widths is entry;                      #| (Required except for the standard 14 fonts; indirect reference preferred) An array of (LastChar − FirstChar + 1) widths, each element being the glyph width for the character code that equals FirstChar plus the array index.
 
-    has Hash $.FontDescriptor is entry(:indirect);         #| (Required except for the standard 14 fonts; must be an indirect reference) A font descriptor describing the font’s metrics other than its glyph widths
+    has Hash $.FontDescriptor is entry(:indirect);      #| (Required except for the standard 14 fonts; must be an indirect reference) A font descriptor describing the font’s metrics other than its glyph widths
 
 ## causes precomp issues
 ##    use PDF::DOM::Type::Encoding;

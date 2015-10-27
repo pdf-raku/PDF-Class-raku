@@ -30,7 +30,7 @@ class PDF::DOM::Type::Shading
     method delegate-shading(Hash :$dict!) {
 
 	use PDF::DAO::Util :from-ast;
-	my Int $type-int = from-ast $dict<ShadingType>;
+	my UInt $type-int = from-ast $dict<ShadingType>;
 
 	unless $type-int ~~ ShadingTypeInt {
 	    note "unknown /ShadingType $dict<ShadingType> - supported range is 1..7";
