@@ -10,7 +10,7 @@ class PDF::DOM::Type::Annot::Link
 
     # See [PDF 1.7 TABLE 8.24 Additional entries specific to a link annotation]
     has Hash $.A is entry;             #| (Optional; PDF 1.1) An action to be performed when the link annotation is activated (see Section 8.5, “Actions”).
-    has $.Dest is entry(:required);    #| (Optional; not permitted if an A entry is present) A destination to be displayed when the annotation is activated
+    has $.Dest is entry;               #| (Optional; not permitted if an A entry is present) A destination to be displayed when the annotation is activated
     subset HName of PDF::DAO::Name where 'N'|'I'|'O'|'P';
     has HName $.H is entry;            #| (Optional; PDF 1.2) The annotation’s highlighting mode, the visual effect to be used when the mouse button is pressed or held down inside its active area:
                                        #| N(None)    - No highlighting.

@@ -33,6 +33,8 @@ class PDF::DOM::Type::XObject::Image
                                                   #| 1: The image’s data stream includes encoded soft-mask values. An application can create a soft-mask image from the information to be used as a source of mask shape or mask opacity in the transparency imaging model.
                                                   #| 2: The image’s data stream includes color channels that have been preblended with a background; the image data also includes an opacity channel. An application can create a soft-mask image with a Matte entry from the opacity channel information to be used as a source of mask shape or mask opacity in the transparency model.
                                                   #| If this entry has a nonzero value, SMask should not be specified
+    has PDF::DAO::Name $.Name is entry;           #| (Required in PDF 1.0; optional otherwise) The name by which this image XObject is referenced in the XObject subdictionary of the current resource dictionary.
+                                                  #| Note: This entry is obsolescent and its use is no longer recommended. (See implementation note 53 in Appendix H.)
     has UInt $.StructParent is entry;             #| (Required if the image is a structural content item; PDF 1.3) The integer key of the image’s entry in the structural parent tree
     has Str $.ID is entry;                        #| (Optional; PDF 1.3; indirect reference preferred) The digital identifier of the image’s parent Web Capture content set
     has Hash $.OPI is entry;                      #| Optional; PDF 1.2) An OPI version dictionary for the image. If ImageMask is true, this entry is ignored.
