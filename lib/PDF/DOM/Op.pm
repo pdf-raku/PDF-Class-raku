@@ -6,6 +6,7 @@ use PDF::DAO::Util :from-ast;
 role PDF::DOM::Op {
 
     has @!ops;
+    has Bool $!strict = True;
 
     #| some convenient mnemomic names
     BEGIN my Str enum OpNames is export(:OpNames) «
@@ -266,15 +267,19 @@ role PDF::DOM::Op {
 	warn "text operation '$op-name' outside of a BT ... ET text block\n"
 	    if $op-name ∈ TextOps && !$!in-text-block;
 
-	if !@!gsave {
-	    warn "graphics operation '$op-name' outside of a q ... Q graphics block\n"
-		if $op-name ∈ GeneralGraphicOps | ShadingOps
-		|| $op-name eq 'cm';
-	}
-
 	if $op-name ∈ SpecialGraphicOps {
 	    warn "special graphics operation '$op-name' used in a BT ... ET text block"
 	        if @!tags && @!tags.first({ $_ eq 'BT' });
+	}
+
+	# not illegal just bad pratice. makes it harder to later edit/reuse this content stream
+	# and may upset downstream utilities
+	if $!strict {
+	    if !@!gsave {
+		warn "graphics operation '$op-name' outside of a q ... Q graphics block\n"
+		    if $op-name ∈ GeneralGraphicOps | ShadingOps
+		    || $op-name eq 'cm';
+	    }
 	}
 
 	@!ops.push($opn);

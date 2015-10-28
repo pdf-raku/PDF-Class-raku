@@ -7,7 +7,7 @@ use PDF::DOM::Type::Annot;
 my UInt $*max-depth;
 my Bool $*contents;
 my Bool $*trace;
-my Bool $*strict;
+my Bool $*strict = False;
 my %seen;
 
 sub MAIN(Str $infile, UInt :$*max-depth = 100, Bool :$*trace, Bool :$*strict, Bool :$*contents) {
@@ -94,16 +94,14 @@ multi sub validate($obj) is default {}
 
 sub check-contents( $obj, Str :$ref!) {
 
-    use PDF::DOM::Op :OpNames;
-
-    my Str $contents = $obj.contents;
-    my Array $ast = $obj.contents-parse($contents);
+    my Array $ast = $obj.contents-parse;
 
     # cross check with the resources directory
     my $resources = $obj.Resources
 	// die "no /Resources dict found";
 
-    my $ops = PDF::DOM::Op.new;
+    use PDF::DOM::Op;
+    my $ops = PDF::DOM::Op.new(:$*strict);
 
     for $ast.list {
 	$ops.op($_);
@@ -149,7 +147,7 @@ pdf-validate.p6 - Validate PDF DOM structure
    --max-depth  max DOM navigation depth (default 100)
    --trace      trace DOM navigation
    --contents   check the contents of pages, forms and patterns
-   --strict     report on unknown dictionary entrys
+   --strict     perform additional checking
 
 =head1 DESCRIPTION
 
