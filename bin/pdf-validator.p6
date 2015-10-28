@@ -1,6 +1,7 @@
 use v6;
 
 use PDF::DOM;
+use PDF::DOM::Type::Annot;
 my UInt $*max-depth;
 my Bool $*trace;
 my Bool $*strict;
@@ -16,7 +17,12 @@ multi sub validate(Hash $obj, :$depth is copy = 0, :$ent = '') {
 	if ++$depth > $*max-depth;
     my Hash $entries = $obj.entries;
     my @unknown-entries;
+
     for $obj.keys.sort {
+
+        # Avoid following /P back to page then back here via page /Annots
+        next if $_ eq 'P' && $obj.isa(PDF::DOM::Type::Annot);
+
 	my $kid;
 
 	do {
@@ -79,7 +85,7 @@ sub MAIN(Str $infile, UInt :$*max-depth = 100, Bool :$*trace, Bool :$*strict) {
 
 =head1 NAME
 
-pdf-validate.p6 - Append one PDF to another
+pdf-validate.p6 - Validate PDF DOM structure
 
 =head1 SYNOPSIS
 
