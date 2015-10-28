@@ -67,7 +67,8 @@ class PDF::DOM::Type::Page
     }
 
     method contents returns Str {
-	$.content-streams.map({ .decoded }).join
+	my $streams = $.content-streams;
+	$streams.keys.map({ $streams[$_].decoded }).join: '';
     }
 
     #| produce an XObject form for this page
