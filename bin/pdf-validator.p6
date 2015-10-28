@@ -1,22 +1,36 @@
 use v6;
 
 use PDF::DOM;
+use PDF::DOM::Contents;
 use PDF::DOM::Type::Annot;
+
 my UInt $*max-depth;
+my Bool $*contents;
 my Bool $*trace;
 my Bool $*strict;
 my %seen;
 
-multi sub validate(Hash $obj, :$depth is copy = 0, :$ent = '') {
+sub MAIN(Str $infile, UInt :$*max-depth = 100, Bool :$*trace, Bool :$*strict, Bool :$*contents) {
+
+    my $doc = PDF::DOM.open: $infile;
+    validate( $doc, :ent<xref> );
+
+}
+
+multi sub validate(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     return if %seen{$obj.id}++;
-    my $ref = "{$obj.obj-num} {$obj.gen-num//0} R "
-        if $obj.obj-num;
-    $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t" ~ ($ref // ' ' ) ~ $obj.id
+    my $ref = $obj.obj-num
+	?? "{$obj.obj-num} {$obj.gen-num//0} R "
+        !! ' ';
+    $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t" ~ $ref ~ $obj.id
 	if $*trace;
     die "maximum depth of $*max-depth exceeded"
 	if ++$depth > $*max-depth;
     my Hash $entries = $obj.entries;
     my @unknown-entries;
+
+    check-contents($obj, :$ref)
+	if $*contents && $obj.does(PDF::DOM::Contents);
 
     for $obj.keys.sort {
 
@@ -32,7 +46,7 @@ multi sub validate(Hash $obj, :$depth is copy = 0, :$ent = '') {
 
 	    CATCH {
 		default {
-		    $*ERR.say: "error in {$ref//' '}$ent entry: $_"; 
+		    $*ERR.say: "error in $ref$ent entry: $_"; 
 		}
 	    }
 	}
@@ -42,15 +56,17 @@ multi sub validate(Hash $obj, :$depth is copy = 0, :$ent = '') {
 	@unknown-entries.push( '/' ~ $_ )
 	    if $*strict && +$entries && !($entries{$_}:exists);
     }
-    $*ERR.say: "unknown entries in {$ref//' '}{$obj.WHAT.gist} struct: @unknown-entries[]"
+
+    $*ERR.say: "unknown entries in $ref{$obj.WHAT.gist} struct: @unknown-entries[]"
 	if @unknown-entries && $obj.WHAT.gist ~~ /'PDF::' .*? '::Type'/; 
 }
 
-multi sub validate(Array $obj, :$depth is copy = 0, :$ent = '') {
+multi sub validate(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     return if %seen{$obj.id}++;
-    my $ref = "{$obj.obj-num} {$obj.gen-num//0} R "
-        if $obj.obj-num;
-    $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t" ~ ($ref // '' ) ~ $obj.id
+    my $ref = $obj.obj-num
+	?? "{$obj.obj-num} {$obj.gen-num//0} R "
+        !! ' ';
+    $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t" ~ $ref ~ $obj.id
 	if $*trace;
     die "maximum depth of $*max-depth exceeded"
 	if ++$depth > $*max-depth;
@@ -66,21 +82,59 @@ multi sub validate(Array $obj, :$depth is copy = 0, :$ent = '') {
 
 	    CATCH {
 		default {
-		    $*ERR.say: "error in {$ref//' '}$ent: $_"; 
+		    $*ERR.say: "error in $ref$ent: $_"; 
 		}
 	    }
 	}
 	validate($kid, :ent("\[$_\]"), :$depth)  if $kid ~~ Array | Hash;
     }
 }
+
 multi sub validate($obj) is default {}
 
-sub MAIN(Str $infile, UInt :$*max-depth = 100, Bool :$*trace, Bool :$*strict) {
+sub check-contents( $obj, Str :$ref!) {
 
-    my $doc = PDF::DOM.open: $infile;
-    validate( $doc, :ent<xref> );
+    use PDF::DOM::Op :OpNames;
 
+    my Str $contents = $obj.contents;
+    my Array $ast = $obj.contents-parse($contents);
+
+    # cross check with the resources directory
+    my $resources = $obj.Resources
+	// die "no /Resources dict found";
+
+    my $ops = PDF::DOM::Op.new;
+
+    for $ast.list {
+	$ops.op($_);
+	my $entry;
+
+	my Str $type = do given .key {
+	    when 'cs' | 'CS'  { 'ColorSpace' }
+	    when 'DP' | 'BDC' { 'Properties'}
+	    when 'Do'         { 'XObject' }
+	    when 'Tf'         { 'Font' }
+	    when 'gs'         { 'ExtGState' }
+	    when 'scn'        { 'Pattern' }
+	    when 'sh'         { 'Shading' }
+	    default {''}
+        };
+
+	if $type && .value[0].key eq 'name' {
+	    my Str $name = .value[0].value;
+	    warn "no resources /$type /$name entry for '{.key}' operator"
+	        unless $resources{$type}:exists && ($resources{$type}{$name}:exists);
+	}
+	
+    }
+
+    CATCH {
+	default {
+	    $*ERR.say: "unable to parse {$ref}contents: $_"; 
+	}
+    }
 }
+
 =begin pod
 
 =head1 NAME
@@ -94,6 +148,7 @@ pdf-validate.p6 - Validate PDF DOM structure
  Options:
    --max-depth  max DOM navigation depth (default 100)
    --trace      trace DOM navigation
+   --contents   check the contents of pages, forms and patterns
    --strict     report on unknown dictionary entrys
 
 =head1 DESCRIPTION

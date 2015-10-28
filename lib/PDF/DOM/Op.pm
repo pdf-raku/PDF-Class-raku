@@ -68,6 +68,8 @@ role PDF::DOM::Op {
 
     method GraphicsMatrix is rw { %!gstate<CTM>  }
 
+    proto sub op(|c) returns Pair {*}
+
     #| BI dict ID stream EI
     multi sub op(Str $op! where 'BI',
                  Hash $dict = {}) {
@@ -78,7 +80,7 @@ role PDF::DOM::Op {
         $op => [ :$encoded ];
     }
     multi sub op(Str $op! where 'EI') {
-        $op
+        $op => [],
     }
 
     multi sub op(Str $op! where 'BX' | 'EX',
@@ -331,7 +333,7 @@ role PDF::DOM::Op {
 	@!tags.pop;
         $!in-text-block = False;
     }
-    multi method g-track('BMC') {
+    multi method g-track('BMC', Str $name!) {
 	@!tags.push: 'BMC';
     }
     multi method g-track('EMC') {
