@@ -94,7 +94,7 @@ is-json-equiv $g.ops[*-3], {:BI[:dict{:BPC(:int(8)),
 				      :H(:int(17)),
 				      :W(:int(17)) }]}, 'Image BI';
 is-json-equiv $g.ops[*-2], {:ID[:encoded("J1/gKA>.]AN\&J?]-<HW]aRVcg*bb.\\eKAdVV\%/PcZ\n\%…Omitted data…\n\%R.s(4KE3\&d\&7hb*7[\%Ct2HCqC~>")]}, 'Image ID';
-is-json-equiv $g.ops[*-1], 'EI', 'Image EI';
+is-json-equiv $g.ops[*-1], (:EI[]), 'Image EI';
 
 BEGIN our $compile-time = PDF::DOM::Op.parse("BT/F1 16 Tf\n(Hi)Tj ET");
 is-json-equiv $compile-time[*-1], (:ET[]), 'compile time ops parse';

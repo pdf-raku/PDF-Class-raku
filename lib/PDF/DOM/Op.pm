@@ -5,13 +5,13 @@ use PDF::DAO::Util :from-ast;
 
 role PDF::DOM::Op {
 
-    has @!ops;
+    has Pair @!ops;
     has Bool $!strict = True;
 
     #| some convenient mnemomic names
     BEGIN my Str enum OpNames is export(:OpNames) «
         :BeginImage<BI> :ImageData<ID> :EndImage<EI>
-        :BeginMarkedContent<BMC> :EndMarkedContent<EMC>
+        :BeginMarkedContent<BMC> :BeginMarkedContent2<BDC> :EndMarkedContent<EMC>
         :BeginText<BT> :EndText<ET>
         :BeginIgnore<BX> :EndIgnore<EX>
         :CloseEOFillStroke<b*> :CloseFillStroke<b> :EOFillStroke<B*>
@@ -81,7 +81,7 @@ role PDF::DOM::Op {
         $op => [ :$encoded ];
     }
     multi sub op(Str $op! where 'EI') {
-        $op => [],
+        return $op => []
     }
 
     multi sub op(Str $op! where 'BX' | 'EX',
@@ -237,15 +237,14 @@ role PDF::DOM::Op {
         # validate the operation and get fallback coercements for any missing pairs
         my @vals = $raw.value.map({ from-ast($_) });
         my $opn = op($op, |@vals);
-        unless $opn ~~ Str {
-            my $coerced_vals = $opn.value;
-            # looks ok, pass it thru
-            my @ast-values = $input_vals.pairs.map({ .value ~~ Pair
-                                                        ?? .value
-                                                        !! $coerced_vals[.key] });
-            $opn = $op => [ @ast-values ];
-        }
-        $opn;
+	my $coerced_vals = $opn.value;
+
+	my @ast-values = $input_vals.pairs.map({
+	    .value ~~ Pair
+		?? .value
+		!! $coerced_vals[.key]
+	});
+	$op => [ @ast-values ];
     }
 
     multi sub op(*@args) is default {
@@ -341,9 +340,12 @@ role PDF::DOM::Op {
     multi method g-track('BMC', Str $name!) {
 	@!tags.push: 'BMC';
     }
+    multi method g-track('BDC', *@args) {
+	@!tags.push: 'BDC';
+    }
     multi method g-track('EMC') {
-	die "closing EMC without opening BMC in PDF content\n"
-	    unless @!tags && @!tags[*-1] eq 'BMC';
+	die "closing EMC without opening BMC or BDC in PDF content\n"
+	    unless @!tags && @!tags[*-1] eq 'BMC' | 'BDC';
 	@!tags.pop;
     }
     multi method g-track('Tc', Numeric $Tc!) {
@@ -385,15 +387,32 @@ role PDF::DOM::Op {
     }
     multi method g-track(*@args) is default {}
 
-    method content {
+    method finish {
 	die "Unclosed @!tags[] at end of content stream\n"
 	    if @!tags;
 	die "q(Save) unmatched by closing Q(Restore) at end of content stream\n"
 	    if @!gsave;
+    }
+
+    #| serialize content. indent blocks for readability
+    method content {
         use PDF::Writer;
+	my constant Openers = 'q' | 'BT' | 'BMC' | 'BDC' | 'BX';
+	my constant Closers = 'Q' | 'ET' | 'EMC' | 'EX';
+
+	$.finish;
         my $writer = PDF::Writer.new;
-        my @content = @!ops;
-        $writer.write( :@content );
+	my UInt $nesting = 0;
+
+        @!ops.map({
+	    my ($op, $args) = .kv;
+
+	    $nesting-- if $nesting && $op eq Closers;
+	    my Str $pad = '  ' x $nesting;
+	    $nesting++ if $op eq Openers;
+
+	    $pad ~ $writer.write( :content($_) )
+	}).join: "\n";
     }
 
     # e.g. $.Restore :== $.op('Q', [])

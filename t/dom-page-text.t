@@ -22,13 +22,13 @@ $gfx.EndText;
 
 is-deeply [$gfx.content.lines], [
     "BT",
-    "50 100 Td", 
-    "/F1 18 Tf",
-    "19.8 TL",
-    "[ (Hello,) ] TJ",
-    "T*",
-    "[ (W) 60 (orld!) ] TJ",
-    "T*",
+    "  50 100 Td", 
+    "  /F1 18 Tf",
+    "  19.8 TL",
+    "  [ (Hello,) ] TJ",
+    "  T*",
+    "  [ (W) 60 (orld!) ] TJ",
+    "  T*",
     "ET"];
 
 $width = 100;

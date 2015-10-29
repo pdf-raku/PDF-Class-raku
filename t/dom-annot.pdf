@@ -16,15 +16,15 @@ endobj
 << /Type /Annot /Subtype /Text /Contents (...xpdf doesn't display annotations. This annotation is closed, btw) /Open false /Rect [ 120 120 200 200 ] >>
 endobj
 6 0 obj
-<< /Length 74 >>
+<< /Length 84 >>
 stream
 
 BT
-50 50 Td
-/F1 16 Tf
-17.6 TL
-[ (Page with an open annotation) ] TJ
-T*
+  50 50 Td
+  /F1 16 Tf
+  17.6 TL
+  [ (Page with an open annotation) ] TJ
+  T*
 ET
 endstream
 endobj
@@ -40,9 +40,9 @@ xref
 0000000298 00000 n 
 0000000451 00000 n 
 0000000618 00000 n 
-0000000742 00000 n 
+0000000752 00000 n 
 trailer
 << /Root 1 0 R /Size 8 >>
 startxref
-837
+847
 %%EOF

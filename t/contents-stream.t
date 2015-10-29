@@ -25,6 +25,12 @@ is-json-equiv $gfx.ops, [
 
 my $content = $gfx.content;
 
-is-json-equiv [$content.lines], ['q', 'BT', '(Hello, world!) Tj', '[ (bye) <627965> ] TJ', 'ET', 'Q'], 'rendered content';
+is-json-equiv [$content.lines], [
+	      'q',
+	      '  BT',
+	      '    (Hello, world!) Tj',
+	      '    [ (bye) <627965> ] TJ',
+	      '  ET',
+	      'Q'], 'rendered content';
 
 

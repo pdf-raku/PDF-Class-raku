@@ -29,8 +29,8 @@ role PDF::DOM::Contents {
 	    my $content = self.decoded;
 	    if $content.defined && $content.chars {
 		# dont trust existing content. wrap it in q ... Q
-		$!pre-gfx.ops.push(OpNames::Save);
-		$!gfx.ops.unshift: OpNames::Restore;
+		$!pre-gfx.ops.push: OpNames::Save => [];
+		$!gfx.ops.unshift: OpNames::Restore => [];
 	    }
 	    my $prepend = $!pre-gfx.ops
 		?? $!pre-gfx.content ~ "\n"

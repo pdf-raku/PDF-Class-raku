@@ -107,8 +107,8 @@ class PDF::DOM::Type::Page
                 my @content-streams = @$.content-streams;
                 if +@content-streams {
 		    # dont trust existing content. wrap it in q ... Q
-                    $!pre-gfx.ops.push: OpNames::Save;
-                    $!gfx.ops.unshift: OpNames::Restore;
+                    $!pre-gfx.ops.push: OpNames::Save => [];
+                    $!gfx.ops.unshift: OpNames::Restore => [];
                 }
 
                 @content-streams.unshift: PDF::DAO::Stream.new( :decoded( $!pre-gfx.content ~ "\n") )

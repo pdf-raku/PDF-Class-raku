@@ -123,8 +123,9 @@ sub check-contents( $obj, Str :$ref!) {
 	    warn "no resources /$type /$name entry for '{.key}' operator"
 	        unless $resources{$type}:exists && ($resources{$type}{$name}:exists);
 	}
-	
     }
+
+    $ops.finish;
 
     CATCH {
 	default {

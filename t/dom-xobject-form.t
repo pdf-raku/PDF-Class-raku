@@ -58,8 +58,8 @@ $xform.cb-finish;
 my $contents = $xform.decoded;
 is-deeply [$contents.lines], [
     'q', '0 0 m', '0 200 l', '200 200 l', '200 0 l', 'f', 'Q',
-    'BT', '50 50 Td', '0.5 0.95 0.5 rg',
-    '/F1 16 Tf', '17.6 TL', '[ (Hello, again!) ] TJ', 'T*', 'ET'
+    'BT', '  50 50 Td', '  0.5 0.95 0.5 rg',
+    '  /F1 16 Tf', '  17.6 TL', '  [ (Hello, again!) ] TJ', '  T*', 'ET'
     ], 'finished contents';
 
 my $pdf = PDF::DOM.new;
