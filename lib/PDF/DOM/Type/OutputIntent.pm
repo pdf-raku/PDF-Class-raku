@@ -8,6 +8,6 @@ use PDF::DOM::Type;
 
 class PDF::DOM::Type::OutputIntent
     is PDF::DAO::Dict
-    does PDF::DOM::Type {
+    does PDF::DOM::Type['Type', 'S'] {
 
 }

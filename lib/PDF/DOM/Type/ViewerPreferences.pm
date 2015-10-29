@@ -56,7 +56,7 @@ role PDF::DOM::Type::ViewerPreferences
     has Bool $.PickTrayByPDFSize is entry;     #| (Optional; PDF 1.7) A flag specifying whether the PDF page size is used to select the input paper tray. This setting influences only the preset values used to populate the print dialog presented by a PDF viewer application. If PickTrayByPDFSize is true, the check box in the print dialog associated with input paper tray is checked.
                                                #| Note: This setting has no effect on Mac OS systems, which do not provide the ability to pick the input tray by size.
 
-    has Array $.PrintPageRange is entry;       #| (Optional; PDF 1.7) The page numbers used to initialize the print dialog box when the file is printed. The first page of the PDF file is denoted by 1. Each pair consists of the first and last pages in the sub-range. An odd number of integers causes this entry to be ignored. Negative numbers cause the entire array to be ignored.
+    has UInt @.PrintPageRange is entry;       #| (Optional; PDF 1.7) The page numbers used to initialize the print dialog box when the file is printed. The first page of the PDF file is denoted by 1. Each pair consists of the first and last pages in the sub-range. An odd number of integers causes this entry to be ignored. Negative numbers cause the entire array to be ignored.
 
 
     has UInt $.NumCopies is entry;             #| (Optional; PDF 1.7) The number of copies to be printed when the print dialog is opened for this file. Supported values are the integers 2 through 5. Values outside this range are ignored.

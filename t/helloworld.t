@@ -1,11 +1,15 @@
 use v6;
 use Test;
 
+use PDF::Grammar::Test :is-json-equiv;
 use PDF::DOM;
 use PDF::DOM::Op :OpNames;
 my $pdf = PDF::DOM.new;
 my $page = $pdf.add-page;
 $page.MediaBox = [0, 0, 595, 842];
+
+dies-ok { $page.MediaBox = [0, 595] }, 'MediaBox bad setter - dies';
+is-json-equiv $page.MediaBox, [0, 0, 595, 842], 'MediaBox bad setter - ignored';
 my $header-font = $page.core-font( :family<Helvetica>, :weight<bold> );
 my $font = $page.core-font( :family<Helvetica> );
 my $width = 150;
@@ -84,7 +88,7 @@ lives-ok {$pdf = PDF::DOM.open: 't/helloworld-compressed.pdf'}, 'pdf reload live
 isa-ok $pdf.reader.trailer, PDF::DOM, 'trailer type';
 isa-ok $pdf.page(1), ::('PDF::DOM::Type::Page'), 'first pages';
 is $pdf.page(1).Contents.Filter, 'FlateDecode', 'page stream is compressed';
-is $pdf.Info.Author, 't/helloworld.t', '$pdf.Info.Author relload';
+is $pdf.Info.Author, 't/helloworld.t', '$pdf.Info.Author reload';
 
 my $contents-ast;
 lives-ok {$contents-ast =  $pdf.page(1).contents-parse}, 'page contents-parse - lives';

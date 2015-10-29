@@ -32,12 +32,12 @@ class PDF::DOM::Type::ExtGState
     has Int $.LC is entry(:alias<line-cap>);                        #| (Optional; PDF 1.3) The line cap style
     has Int $.LJ is entry(:alias<line-join-style>);                 #| (Optional; PDF 1.3) The line join style
     has Numeric $.ML is entry(:alias<miter-limit>);                 #| (Optional; PDF 1.3) The miter limit
-    has Array $.D is entry;(:alias<dash-pattern>);                  #| (Optional; PDF 1.3) The line dash pattern, expressed as an array of the form [ dashArray dashPhase ], where dashArray is itself an array and dashPhase is an integer
+    has UInt @.D is entry;(:alias<dash-pattern>);                   #| (Optional; PDF 1.3) The line dash pattern, expressed as an array of the form [ dashArray dashPhase ], where dashArray is itself an array and dashPhase is an integer
     has PDF::DAO::Name $.RI is entry(:alias<rendering-intent>);  #| (Optional; PDF 1.3) The name of the rendering intent
     has Bool $.OP is entry(:alias<overprint-paint>);                #| (Optional) A flag specifying whether to apply overprint
     has Bool $.op is entry(:alias<overprint-stroke>);               #| (Optional; PDF 1.3) A flag specifying whether to apply overprint for painting operations other than stroking
     has Int $.OPM is entry(:alias<overprint-mode>);                 #| (Optional; PDF 1.3) The overprint mode
-    has Array $.Font is entry(:alias<fonts>);                       #| (Optional; PDF 1.3) An array of the form [ font size ], where font is an indirect reference to a font dictionary and size is a number expressed in text space units.
+    has Array @.Font is entry(:alias<fonts>,:len(2));               #| (Optional; PDF 1.3) An array of the form [ font size ], where font is an indirect reference to a font dictionary and size is a number expressed in text space units.
 
     has $.BG is entry;                     #| (Optional) The black-generation function, which maps the interval [ 0.0 1.0 ] to the interval [ 0.0 1.0 ]
     has $.BG2 is entry;                    #| (Optional; PDF 1.3) Same as BG except that the value may also be the name Default, denoting the black-generation function that was in effect at the start of the page
