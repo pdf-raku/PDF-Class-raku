@@ -31,7 +31,7 @@ class PDF::DOM::Type::FontDescriptor
 	#|     7: Italic - Glyphs have dominant vertical strokes that are slanted.
 	#|     17: AllCap - Font contains no lowercase letters; typically used for display purposes, such as for titles or headlines.
 	#|     18: SmallCap - Font contains both uppercase and lowercase letters. The uppercase letters are similar to those in the regular version of the same typeface family. The glyphs for the lowercase letters have the same shapes as the corresponding uppercase letters, but they are sized and their proportions adjusted so that they have the same size and stroke weight as lowercase glyphs in the same typeface family.
-	#|     19: ForceBold - See [PDF 1.7 Section 5.7.1 Font Descriptor Flags]    has FontFlags $.Flags is entry;                       #| (Required) A collection of flags defining various characteristics of the font
+	#|     19: ForceBold - See [PDF 1.7 Section 5.7.1 Font Descriptor Flags]
     has FontFlags $.Flags is entry;                       #| (Required) A collection of flags defining various characteristics of the font
     has Numeric @.FontBBox is entry;                      #| (Required, except for Type 3 fonts) A rectangle, expressed in the glyph coordinate system, specifying the font bounding box.
     has Numeric $.ItalicAngle is entry;                   #| (Required) The angle, expressed in degrees counterclockwise from the vertical, of the dominant vertical strokes of the font. (
