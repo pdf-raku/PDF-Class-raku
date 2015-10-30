@@ -27,7 +27,7 @@ multi sub validate(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     die "maximum depth of $*max-depth exceeded"
 	if ++$depth > $*max-depth;
     my Hash $entries = $obj.entries;
-    my @unknown-entries;
+    my Str @unknown-entries;
 
     check-contents($obj, :$ref)
 	if $*contents && $obj.does(PDF::DOM::Contents);
@@ -53,11 +53,11 @@ multi sub validate(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 
 	validate($kid, :ent("/$_"), :$depth) if $kid ~~ Array | Hash;
 
-	@unknown-entries.push( '/' ~ $_ )
+	@unknown-entries.push: '/' ~ $_
 	    if $*strict && +$entries && !($entries{$_}:exists);
     }
 
-    $*ERR.say: "unknown entries in $ref{$obj.WHAT.gist} struct: @unknown-entries[]"
+    $*ERR.say: "unknown entries in $ref{$obj.WHAT} struct: @unknown-entries[]"
 	if @unknown-entries && $obj.WHAT.gist ~~ /'PDF::' .*? '::Type'/; 
 }
 
@@ -106,10 +106,11 @@ sub check-contents( $obj, Str :$ref!) {
     for $ast.list {
 	$ops.op($_);
 	my $entry;
+	my UInt $name-idx = 0;
 
 	my Str $type = do given .key {
 	    when 'cs' | 'CS'  { 'ColorSpace' }
-	    when 'DP' | 'BDC' { 'Properties'}
+	    when 'BDC' | 'DP' { $name-idx = 1; 'Properties'}
 	    when 'Do'         { 'XObject' }
 	    when 'Tf'         { 'Font' }
 	    when 'gs'         { 'ExtGState' }
@@ -118,8 +119,8 @@ sub check-contents( $obj, Str :$ref!) {
 	    default {''}
         };
 
-	if $type && .value[0].key eq 'name' {
-	    my Str $name = .value[0].value;
+	if $type && .value[$name-idx].key eq 'name' {
+	    my Str $name = .value[$name-idx].value;
 	    warn "no resources /$type /$name entry for '{.key}' operator"
 	        unless $resources{$type}:exists && ($resources{$type}{$name}:exists);
 	}
