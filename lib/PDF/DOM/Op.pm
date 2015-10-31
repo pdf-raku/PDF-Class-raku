@@ -408,10 +408,10 @@ role PDF::DOM::Op {
 	    my ($op, $args) = .kv;
 
 	    $nesting-- if $nesting && $op eq Closers;
-	    my Str $pad = '  ' x $nesting;
+	    $writer.indent = '  ' x $nesting;
 	    $nesting++ if $op eq Openers;
 
-	    $pad ~ $writer.write( :content($_) )
+	    $writer.indent ~ $writer.write( :content($_) )
 	}).join: "\n";
     }
 
