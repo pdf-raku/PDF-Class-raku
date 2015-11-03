@@ -64,12 +64,12 @@ $page<MediaBox>:delete;
 is-json-equiv $page.media-box, [0, 0, 612, 792], 'media-box - default';
 is-json-equiv $page.bleed-box, $page.media-box, '$.bleed-box - default';
 
-$page.media-box(150,200);
+$page.MediaBox = [0,0,150,200];
 is-json-equiv $page.media-box, [0, 0, 150, 200], 'media-box - 2 arg setter';
 
-$page.media-box(-10,-10,260,310);
-$page.crop-box(0,0,250,300);
-$page.bleed-box(-3,-3,253,303);
+$page.MediaBox = [-10,-10,260,310];
+$page.CropBox = [0,0,250,300];
+$page.BleedBox = [-3,-3,253,303];
 is-json-equiv $page.media-box, [-10, -10, 260, 310], 'media-box - 4 arg setter';
 is-json-equiv $page.MediaBox, [-10, -10, 260, 310], '.MediaBox accessor';
 is-json-equiv $page<MediaBox>, [-10, -10, 260, 310], '<MediaBox> accessor';
@@ -77,11 +77,12 @@ is-json-equiv $page.crop-box, [0, 0, 250, 300], '$.crop-box - updated';
 is-json-equiv $page.bleed-box, [-3, -3, 253, 303], '$.bleed-box - updated';
 is-json-equiv $page.trim-box, $page.crop-box, '$trim-box - get';
 is-json-equiv $page.art-box, $page.crop-box, '$.art-box - get';
-$page.art-box(10,10,240,290);
+$page.ArtBox = [10,10,240,290];
 is-json-equiv $page.art-box, [10,10,240,290], '$.art-box - updated';
-$page.media-box('a3');
+use PDF::DOM::PageBoxes :PageSizes;
+$page.MediaBox = PageSizes::A3;
 is-json-equiv $page.media-box, [0,0,842,1190], 'media-box page-name setter';
-$page.media-box('a3', :landscape);
+$page.media-box = $page.to-landscape( PageSizes::A3 );
 is-json-equiv $page.media-box, [0,0,1190,842], 'media-box page-name setter :landscape';
 
 $page.gfx.ops(['BT', :Tj[ :literal('Hello, world!') ], 'ET']);

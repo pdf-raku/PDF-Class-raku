@@ -5,7 +5,7 @@ use PDF::DAO::Stream;
 use PDF::DOM::Type;
 use PDF::DOM::Contents;
 use PDF::DOM::Resources;
-use PDF::DOM::PageSizes;
+use PDF::DOM::PageBoxes;
 
 # /Type /Page - describes a single PDF page
 
@@ -14,7 +14,7 @@ class PDF::DOM::Type::Page
     does PDF::DOM::Type
     does PDF::DOM::Contents
     does PDF::DOM::Resources
-    does PDF::DOM::PageSizes {
+    does PDF::DOM::PageBoxes {
 
     use PDF::DAO::Tie;
 

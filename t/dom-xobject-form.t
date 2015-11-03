@@ -63,7 +63,7 @@ is-deeply [$contents.lines], [
     ], 'finished contents';
 
 my $pdf = PDF::DOM.new;
-$pdf.media-box(220,220);
+$pdf.media-box = [0, 0, 220, 220];
 my $page = $pdf.add-page;
 $page.gfx.block: {
     $page.gfx.do($xform, 10, 15, :width(100), :height(190));

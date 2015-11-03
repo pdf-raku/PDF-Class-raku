@@ -77,7 +77,7 @@ is-deeply [ @lines[*-4..*] ], ['    0 0 0 rg', '    (\250) Tj', '  ET', 'Q'], 'l
 
 my $pdf = PDF::DOM.new;
 my $page = $pdf.Pages.add-page;
-$page.media-box(230,210);
+$page<MediaBox> = [0, 0, 230, 210];
 $page.gfx.ops: [
     :q[],                                   # Graphics save
     :G[0.0],                                # Set stroking color to black

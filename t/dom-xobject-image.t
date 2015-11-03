@@ -64,7 +64,7 @@ is-json-equiv $inline[1], (:ID[ :encoded($snoopy.encoded) ]), 'second .content(:
 is-json-equiv $inline[2], (:EI[ ]), 'third .content(:inline) op: :EI[]';
 
 my $pdf = PDF::DOM.new;
-$pdf.media-box(220,220);
+$pdf.media-box = [0, 0, 220,220];
 my $page = $pdf.add-page;
 $page.gfx.do($snoopy, 10, 15, :width(100), :height(190));
 $page.gfx.do($snoopy, 120, 15, :width(90));

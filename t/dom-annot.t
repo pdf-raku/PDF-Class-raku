@@ -40,7 +40,7 @@ is-deeply $open-text-annot.Open, False, '.Open';
 
 my $pdf = PDF::DOM.new;
 my $page = $pdf.Pages.add-page;
-$page.media-box(350, 250);
+$page<MediaBox> = [0, 0, 350, 250];
 $page<Annots> = [ $text-annot, $open-text-annot ];
 $page.gfx.BeginText;
 $page.gfx.TextMove(50, 50);
