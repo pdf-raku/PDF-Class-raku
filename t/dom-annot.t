@@ -8,6 +8,9 @@ use PDF::Grammar::PDF::Actions;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Storage::IndObj;
 
+# ensure consistant document ID generation
+srand(123456);
+
 my $input = q:to"--END--";
 22 0 obj
 << /Type /Annot

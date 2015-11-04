@@ -4,6 +4,9 @@ use PDF::DOM;
 use PDF::DOM::Type::Page;
 use PDF::DOM::Op :OpNames;
 
+# ensure consistant document ID generation
+srand(123456);
+
 my $page = PDF::DOM::Type::Page.new;
 my $gfx = $page.gfx;
 my $width = 50;

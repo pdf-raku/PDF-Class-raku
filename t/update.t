@@ -1,6 +1,10 @@
 use v6;
 use Test;
 use PDF::DOM;
+
+# ensure consistant document ID generation
+srand(123456);
+
 't/helloworld.pdf'.IO.copy('t/update-incremental.pdf');
 my $pdf = PDF::DOM.open('t/update-incremental.pdf');
 my $new-page = $pdf.Pages.add-page;

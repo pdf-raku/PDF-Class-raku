@@ -18,6 +18,16 @@
             },
             "Size" : {
               "int" : 14
+            },
+            "ID" : {
+              "array" : [
+                {
+                  "hex-string" : "C\u0086\u00dc{\u00c3H\u009eA\u008bDCN:\u0016\u0088C"
+                },
+                {
+                  "hex-string" : "\u0007\u00c7\u00c2L\u00a8\u00a7>v+|7\u00e91\u00dd^\u0084"
+                }
+              ]
             }
           }
         },

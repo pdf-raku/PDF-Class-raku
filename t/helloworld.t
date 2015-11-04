@@ -4,6 +4,10 @@ use Test;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::DOM;
 use PDF::DOM::Op :OpNames;
+
+# ensure consistant document ID generation
+srand(123456);
+
 my $pdf = PDF::DOM.new;
 my $page = $pdf.add-page;
 $page.MediaBox = [0, 0, 595, 842];
