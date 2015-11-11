@@ -12,15 +12,20 @@ use PDF::Grammar::Test :is-json-equiv;
 my $actions = PDF::Grammar::PDF::Actions.new;
 
 my $input = q:to"--END-OBJ--";
-215 0 obj
-<< /Lang (EN-US) /LastModified (D:20081012130709)
-   /MarkInfo << /LetterspaceFlags 0 /Marked true >> /Metadata 10 0 R
-   /Outlines 18 0 R /PageLabels 210 0 R /PageLayout /OneColumn /Pages 212 0 R
-   /PieceInfo << /MarkedPDF << /LastModified (D:20081012130709) >> >>
-   /StructTreeRoot 25 0 R
-   /AcroForm << /Fields [] >>
-   /ViewerPreferences << /HideToolbar true /Direction /R2L >>
-   /Type /Catalog
+215 0 obj <<
+  /Type /Catalog
+  /Lang (EN-US)
+  /LastModified (D:20081012130709)
+  /MarkInfo << /LetterspaceFlags 0 /Marked true >>
+  /Metadata 10 0 R
+  /Outlines 18 0 R
+  /PageLabels 210 0 R
+  /PageLayout /OneColumn
+  /Pages 212 0 R
+  /PieceInfo << /MarkedPDF << /LastModified (D:20081012130709) >> >>
+  /StructTreeRoot 25 0 R
+  /AcroForm << /Fields [] >>
+  /ViewerPreferences << /HideToolbar true /Direction /R2L >>
 >>
 endobj
 --END-OBJ--

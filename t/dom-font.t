@@ -12,13 +12,12 @@ use PDF::Grammar::PDF::Actions;
 my $actions = PDF::Grammar::PDF::Actions.new;
 
 my $input = q:to"--END-OBJ--";
-7 0 obj
-<<
-/Type /Font
-/Subtype /Type1
-/Name /F1
-/BaseFont /Helvetica
-/Encoding /MacRomanEncoding
+7 0 obj <<
+  /Type /Font
+  /Subtype /Type1
+  /Name /F1
+  /BaseFont /Helvetica
+  /Encoding /MacRomanEncoding
 >>
 endobj
 --END-OBJ--

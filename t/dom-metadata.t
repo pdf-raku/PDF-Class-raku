@@ -13,7 +13,7 @@ my $actions = PDF::Grammar::PDF::Actions.new;
 
 my $input = q:to"--END-OBJ--";
 10 0 obj
-<< /Length 4344 /Subtype /XML /Type /Metadata >>
+<< /Type /Metadata /Subtype /XML /Length 4344 >>
 stream
 <?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
 <x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 4.2.1-c041 52.342996, 2008/05/07-20:48:00        ">

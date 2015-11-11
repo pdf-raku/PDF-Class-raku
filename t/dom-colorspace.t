@@ -12,10 +12,8 @@ use PDF::Grammar::Test :is-json-equiv;
 my $actions = PDF::Grammar::PDF::Actions.new;
 
 my $input = q:to"--END-OBJ--";
-16 0 obj% Alternate color space for DeviceN space
-[ /CalRGB
-<< /WhitePoint [ 1.0 1.0 1.0 ] >>
-]
+16 0 obj  % Alternate color space for DeviceN space
+[ /CalRGB << /WhitePoint [ 1.0 1.0 1.0 ] >> ]
 endobj
 --END-OBJ--
 

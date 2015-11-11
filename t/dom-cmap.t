@@ -7,14 +7,15 @@ use PDF::Grammar::PDF::Actions;
 use PDF::Storage::IndObj;
 
 my $input = q:to"--END--";
-22 0 obj
-<< /Type /CMap
-/CMapName /90ms-RKSJ-H
-/CIDSystemInfo << /Registry (Adobe)
-                  /Ordering (Japan1)
-                  /Supplement 2
->>
-/WMode 0
+22 0 obj <<
+  /Type /CMap
+  /CMapName /90ms-RKSJ-H
+  /CIDSystemInfo <<
+    /Registry (Adobe)
+    /Ordering (Japan1)
+    /Supplement 2
+  >>
+  /WMode 0
 >>
 stream
 %!PS-Adobe-3.0 Resource-CMap

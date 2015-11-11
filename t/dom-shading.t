@@ -12,12 +12,12 @@ use PDF::Grammar::Test :is-json-equiv;
 my $actions = PDF::Grammar::PDF::Actions.new;
 
 my $input = q:to"--END-OBJ--";
-5 0 obj% Shading dictionary
-<< /ShadingType 3
-/ColorSpace /DeviceCMYK
-/Coords [ 0.0 0.0 0.096 0.0 0.0 1.0 00]% Concentric circles
-/Function 10 0 R
-/Extend [ true true ]
+5 0 obj << % Shading dictionary
+  /ShadingType 3
+  /ColorSpace /DeviceCMYK
+  /Coords [ 0.0 0.0 0.096 0.0 0.0 1.0 00]  % Concentric circles
+  /Function 10 0 R
+  /Extend [ true true ]
 >>
 endobj
 --END-OBJ--

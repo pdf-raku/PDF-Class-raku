@@ -16,18 +16,17 @@ srand(123456);
 my $actions = PDF::Grammar::PDF::Actions.new;
 
 my $input = q:to"--END-OBJ--";
-14 0 obj
-<<
-/Intent/RelativeColorimetric
-/Type/XObject
-/ColorSpace/DeviceGray
-/Subtype/Image
-/Name/X
-/Width 2988
-/BitsPerComponent 8
-/Length 13
-/Height 2286
-/Filter/DCTDecode
+14 0 obj <<
+  /Intent/RelativeColorimetric
+  /Type/XObject
+  /ColorSpace/DeviceGray
+  /Subtype/Image
+  /Name/X
+  /Width 2988
+  /BitsPerComponent 8
+  /Length 13
+  /Height 2286
+  /Filter/DCTDecode
 >>
 stream
 (binary data)

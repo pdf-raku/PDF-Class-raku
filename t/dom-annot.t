@@ -12,12 +12,12 @@ use PDF::Storage::IndObj;
 srand(123456);
 
 my $input = q:to"--END--";
-22 0 obj
-<< /Type /Annot
-/Subtype /Text
-/Rect [ 100 100 300 200 ]
-/Contents (This is an open annotation. You'll need acro-reader...)
-/Open true
+22 0 obj <<
+  /Type /Annot
+  /Subtype /Text
+  /Rect [ 100 100 300 200 ]
+  /Contents (This is an open annotation. You'll need acro-reader...)
+  /Open true
 >>
 endobj
 --END--
@@ -53,12 +53,12 @@ $page.gfx.EndText;
 $pdf.save-as('t/dom-annot.pdf');
 
 $input = q:to"--END--";
-93 0 obj
-<< /Type /Annot
-/Subtype /Link
-/Rect [ 71 717 190 734 ]
-/Border [ 16 16 1 ]
-/Dest [ 3 0 R /FitR -4 399 199 533 ]
+93 0 obj <<
+  /Type /Annot
+  /Subtype /Link
+  /Rect [ 71 717 190 734 ]
+  /Border [ 16 16 1 ]
+  /Dest [ 3 0 R /FitR -4 399 199 533 ]
 >>
 endobj
 --END--

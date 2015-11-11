@@ -46,7 +46,14 @@ use PDF::DOM::Type::Pages;
 class t::DOM::Pages is  PDF::DOM::Type::Pages {
 }
 
-my $Catalog = t::DOM::Catalog.new( :dict{ :Type( :name<Catalog> ), :Version( :name<PDF>) , :Pages{ :Type{ :name<Pages> }, :Kids[], :Count(0) } } );
+my $Catalog = t::DOM::Catalog.new( :dict{ :Type( :name<Catalog> ),
+                                          :Version( :name<PDF>) ,
+                                          :Pages{ :Type{ :name<Pages> },
+                                                  :Kids[],
+                                                  :Count(0),
+                                                },
+                                        },
+                                   );
 
 isa-ok $Catalog, t::DOM::Catalog;
 is $Catalog.Type, 'Catalog', '$Catalog.Type';

@@ -17,17 +17,17 @@ my $actions = PDF::Grammar::PDF::Actions.new;
 # example taken from PDF 1.7 Specification
 
 my $input = q:to"--END-OBJ--";
-15 0 obj% Pattern definition
-<< /Type /Pattern
-/PatternType 1% Tiling pattern
-/PaintType 1% Colored
-/TilingType 2
-/BBox [ 0 0 100 100 ]
-/XStep 100
-/YStep 100
-/Resources <<>>
-/Matrix [ 0.4 0.0 0.0 0.4 0.0 0.0 ]
-/Length 183
+15 0 obj << % Pattern definition
+  /Type /Pattern
+  /PatternType 1  % Tiling pattern
+  /PaintType 1    % Colored
+  /TilingType 2
+  /BBox [ 0 0 100 100 ]
+  /XStep 100
+  /YStep 100
+  /Resources << >>
+  /Matrix [ 0.4 0.0 0.0 0.4 0.0 0.0 ]
+  /Length 183
 >>
 endobj
 --END-OBJ--

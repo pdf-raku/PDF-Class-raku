@@ -13,11 +13,13 @@ use PDF::DAO::Stream;
 my $actions = PDF::Grammar::PDF::Actions.new;
 
 my $input = q:to"--END-OBJ--";
-4 0 obj
-<<
+4 0 obj <<
   /Type /Page
   /Parent 3 0 R
-  /Resources << /Font << /F1 7 0 R >>/ProcSet 6 0 R >>
+  /Resources <<
+    /Font << /F1 7 0 R >>
+    /ProcSet 6 0 R
+  >>
   /MediaBox [0 0 595 842]
 >>
 endobj

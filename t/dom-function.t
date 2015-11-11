@@ -12,11 +12,11 @@ use PDF::Grammar::Test :is-json-equiv;
 my $actions = PDF::Grammar::PDF::Actions.new;
 
 my $input = q:to"--END-OBJ--";
-10 0 obj
-<< /FunctionType 4
-/Domain [ -1.0 1.0 -1.0 1.0 ]
-/Range [ -1.0 1.0 ]
-/Length 71
+10 0 obj <<
+  /FunctionType 4
+  /Domain [ -1.0 1.0 -1.0 1.0 ]
+  /Range [ -1.0 1.0 ]
+  /Length 71
 >>
 stream
 { 360 mul sin
