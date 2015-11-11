@@ -82,7 +82,7 @@ class PDF::DOM::Type::Page
         $xobject.gfx.ops(self.gfx.ops);
 
 	my Array $content-streams = $.content-streams;
-        $xobject.edit-stream( :append( [~] $content-streams.map({.decoded})));
+        $xobject.edit-stream: :append( [~] $content-streams.map: *.decoded );
         if +$content-streams {
             # inherit compression from the first stream segment
             for $content-streams[0] {
@@ -121,7 +121,7 @@ class PDF::DOM::Type::Page
 		$!gfx.ops = ();
                 self<Contents> = @content-streams == 1 
 		    ?? @content-streams[0]
-		    !! @content-streams.item;
+		    !! @content-streams;
             }
         }
     }

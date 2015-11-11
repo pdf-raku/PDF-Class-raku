@@ -310,7 +310,7 @@ role PDF::DOM::Op {
 
     multi method g-track('q') {
         my %gclone = %!gstate.pairs.map( -> $p { $p.key => $p.value.clone });
-        @!gsave.push: %gclone.item;
+        @!gsave.push: %gclone;
     }
     multi method g-track('Q') {
         die "bad nesting; Restore(Q) operator not matched by preceeding Save(q) operator in PDF content\n"
