@@ -30,15 +30,15 @@ sub yes-no(Bool $cond) {
     $cond ?? 'yes' !! 'no';
 }
 
-multi sub MAIN(Str $file) {
+multi sub MAIN(Str $file, Str :$password = '') {
 
     my $input = $file eq '-'
 	?? PDF::Storage::Input::Str.new( :value($*IN.slurp-rest( :enc<latin-1> )) )
 	!! PDF::Storage::Input::IOH.new( :value($file.IO.open( :enc<latin-1> )) );
 
-    my $doc = PDF::DOM.open( $input );
+    my $doc = PDF::DOM.open( $input, :$password );
 
-    my UInt $size = $input.chars;
+    my UInt $size = $input.codes;
     my UInt $pages = $doc.page-count;
     my Version $pdf-version = $doc.pdf-version;
     my Hash $pdf-info = $doc.Info;

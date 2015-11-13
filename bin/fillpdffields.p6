@@ -7,8 +7,9 @@ use PDF::DAO::Type::Encrypt :PermissionsFlag;
 multi sub MAIN(
     Str $infile,
     Bool :$list!,
+    Str  :$password = '',
     ) {
-    my $doc = PDF::DOM.open($infile);
+    my $doc = PDF::DOM.open($infile, :$password);
     my @fields = $doc.Root.AcroForm.fields
 	if $doc.Root.?AcroForm;
 
@@ -42,6 +43,7 @@ multi sub MAIN(
     Bool :$update,
     Bool :$trigger-clear,
     Str  :$background,
+    Str  :$password = '',
     *@field-list) {
 
     die "please provide field-value pairs or --list to display fields"
@@ -56,7 +58,7 @@ multi sub MAIN(
 ##   $opts{background} = [split m/\s+/xms, $opts{background}];
 ##}
 
-    my $doc = PDF::DOM.open($infile);
+    my $doc = PDF::DOM.open($infile, :$password);
     my %fields = $doc.Root.AcroForm.fields-hash
 	if $doc.Root.?AcroForm;
 

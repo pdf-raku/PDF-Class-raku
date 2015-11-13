@@ -10,9 +10,9 @@ my Bool $*trace;
 my Bool $*strict = False;
 my %seen;
 
-sub MAIN(Str $infile, UInt :$*max-depth = 100, Bool :$*trace, Bool :$*strict, Bool :$*contents) {
+sub MAIN(Str $infile, UInt :$*max-depth = 100, Bool :$*trace, Bool :$*strict, Bool :$*contents. Str :$password = '') {
 
-    my $doc = PDF::DOM.open: $infile;
+    my $doc = PDF::DOM.open( $infile, :$password );
     validate( $doc, :ent<xref> );
 
 }

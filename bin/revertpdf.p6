@@ -1,13 +1,13 @@
 use v6;
 use PDF::DOM;
 
-sub MAIN(Str $infile, Str $outfile = $infile, Bool :$count) {
+sub MAIN(Str $infile, Str $outfile = $infile, Bool :$count, Str :$password = '') {
 
     my $input = $infile eq q{-}
         ?? $*IN
 	!! $infile;
 
-    my $doc = PDF::DOM.open: $input;
+    my $doc = PDF::DOM.open( $input, :$password);
 
     my UInt $revs = + $doc.reader.xrefs;
 
