@@ -41,5 +41,5 @@ is $function-obj.FunctionType, 4, '$.FunctionType accessor';
 is $function-obj.type, 'Function', '$.type accessor';
 is $function-obj.subtype, 'PostScript', '$.subtype accessor';
 is-json-equiv $function-obj.Domain, [ -1.0, 1.0, -1.0, 1.0 ], '$.Domain accessor';
-is-json-equiv $function-obj.Length, 71, '$.Length accessor';
+is-json-equiv $function-obj.Length, 56, '$.Length accessor (corrected)';
 is-json-equiv $function-obj.parse, {:expr([:int(360), :op<mul>, :op<sin>, :int(2), :op<div>, :op<exch>, :int(360), :op<mul>, :op<sin>, :int(2), :op<div>, :op<add>])}, '$.parse accessor';
