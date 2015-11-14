@@ -10,14 +10,14 @@ my Bool $*trace;
 my Bool $*strict = False;
 my %seen;
 
-sub MAIN(Str $infile, UInt :$*max-depth = 100, Bool :$*trace, Bool :$*strict, Bool :$*contents. Str :$password = '') {
+sub MAIN(Str $infile, UInt :$*max-depth = 100, Bool :$*trace, Bool :$*strict, Bool :$*contents, Str :$password = '') {
 
     my $doc = PDF::DOM.open( $infile, :$password );
-    validate( $doc, :ent<xref> );
+    check( $doc, :ent<xref> );
 
 }
 
-multi sub validate(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
+multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     return if %seen{$obj.id}++;
     my $ref = $obj.obj-num
 	?? "{$obj.obj-num} {$obj.gen-num//0} R "
@@ -51,7 +51,7 @@ multi sub validate(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 	    }
 	}
 
-	validate($kid, :ent("/$_"), :$depth) if $kid ~~ Array | Hash;
+	check($kid, :ent("/$_"), :$depth) if $kid ~~ Array | Hash;
 
 	@unknown-entries.push: '/' ~ $_
 	    if $*strict && +$entries && !($entries{$_}:exists);
@@ -61,7 +61,7 @@ multi sub validate(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 	if @unknown-entries && $obj.WHAT.gist ~~ /'PDF::' .*? '::Type'/; 
 }
 
-multi sub validate(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
+multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     return if %seen{$obj.id}++;
     my $ref = $obj.obj-num
 	?? "{$obj.obj-num} {$obj.gen-num//0} R "
@@ -86,11 +86,11 @@ multi sub validate(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 		}
 	    }
 	}
-	validate($kid, :ent("\[$_\]"), :$depth)  if $kid ~~ Array | Hash;
+	check($kid, :ent("\[$_\]"), :$depth)  if $kid ~~ Array | Hash;
     }
 }
 
-multi sub validate($obj) is default {}
+multi sub check($obj) is default {}
 
 sub check-contents( $obj, Str :$ref!) {
 
@@ -139,22 +139,24 @@ sub check-contents( $obj, Str :$ref!) {
 
 =head1 NAME
 
-pdf-validate.p6 - Validate PDF DOM structure
+pdf-checker.p6 - Check PDF DOM structure and values
 
 =head1 SYNOPSIS
 
- pdf-validator.p6 [options] file.pdf
+ pdf-checker.p6 [options] file.pdf
 
  Options:
    --max-depth  max DOM navigation depth (default 100)
    --trace      trace DOM navigation
    --contents   check the contents of pages, forms and patterns
-   --strict     perform additional checking
+   --strict     enble some additonakl warnings:
+                -- unknown entries in dictionarys
+                -- graphics operators outside of a q ... Q graphics block
 
 =head1 DESCRIPTION
 
-Performs validation on a PDF. Traverses all objects in the PDF that are accessable from the root,
-reporting any errors or warnings that were encountered. 
+Checks a PDF against the DOM. Traverses all objects in the PDF that are accessable from the
+root, reporting any errors or warnings that were encountered. 
 
 =head1 SEE ALSO
 
