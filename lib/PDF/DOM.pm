@@ -44,12 +44,18 @@ class PDF::DOM
 	nextsame;
     }
 
-    method save-as(|c) {
+    method save-as($spec, Bool :$force, |c) {
 	self<Root>:exists
 	    ?? self<Root>.?cb-finish
-	    !! warn "no top-level Root entry";
+	    !! die "no top-level Root entry";
 
-	nextsame;
+	if !$force and self.reader and my $sig-flags = self.Root.?AcroForm.?SigFlags {
+	    use PDF::DOM::Type::AcroForm :SigFlags;
+	    die "This PDF contains digital signatures that may invalidated by a full save. Please append via the .update method, or use :force"
+		if $sig-flags.flag-is-set: SigFlags::Append;
+	}
+
+	nextwith( $spec, |c);
     }
 
     method cb-init {

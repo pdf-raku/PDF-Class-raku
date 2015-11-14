@@ -44,6 +44,7 @@ multi sub MAIN(
     Bool :$trigger-clear,
     Str  :$background,
     Str  :$password = '',
+    Bool :$force = False,
     *@field-list) {
 
     die "please provide field-value pairs or --list to display fields"
@@ -79,7 +80,7 @@ multi sub MAIN(
 	unless $doc.permitted( PermissionsFlag::Modify );
 
     if $save-as.defined {
-        $doc.save-as: $save-as;
+        $doc.save-as( $save-as, :$force );
     }
     else {
         $doc.update;
@@ -94,16 +95,21 @@ fillpdffields.p6 - Replace PDF form fields with specified values
 
 =head1 SYNOPSIS
 
- fillpdffields.p6 [options] infile.pdf outfile.pdf field value [field value ...]
+ fillpdffields.p6 [--save-as outfile.pdf --force] infile.pdf field value [field value ...]
 
  Options:
    --save-as=file.pdf  save to a new file
+   --force             force save-as when digital signatures may be invalidated
    --triggerclear      remove all of the form triggers after replacing values
 
 =head1 DESCRIPTION
 
 Fill in the forms in the PDF with the specified values, identified by
 their field names.  See C<fillpdffields.pl --list> lists form fields.
+
+In some cases digital signatures may be invalidated when the document is saved
+in full with the --save-as option. The --force option can be used to continue
+with th save, in such circumstances.
 
 =head1 SEE ALSO
 
