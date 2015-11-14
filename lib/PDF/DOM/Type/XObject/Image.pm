@@ -98,7 +98,7 @@ class PDF::DOM::Type::XObject::Image
 
         my $obj = self.new( :$dict );
         $fh.seek(0,0);
-        $obj.encoded( $fh.slurp-rest );
+        $obj.encoded = $fh.slurp-rest;
         $fh.close;
 
         return $obj;
