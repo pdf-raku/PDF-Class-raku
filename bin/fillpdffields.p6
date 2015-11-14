@@ -95,12 +95,15 @@ fillpdffields.p6 - Replace PDF form fields with specified values
 
 =head1 SYNOPSIS
 
- fillpdffields.p6 [--save-as outfile.pdf --force] infile.pdf field value [field value ...]
+ fillpdffields.p6 --list --password=text infile.pdf
+ fillpdffields.p6 [--save-as outfile.pdf --force] --password=text --trigger-clear infile.pdf field value [field value ...]
 
  Options:
+   --list              list fields and current values
    --save-as=file.pdf  save to a new file
    --force             force save-as when digital signatures may be invalidated
-   --triggerclear      remove all of the form triggers after replacing values
+   --trigger-clear     remove all of the form triggers after replacing values
+   --password          provide user/owner password for an encrypted PDF
 
 =head1 DESCRIPTION
 
@@ -108,8 +111,8 @@ Fill in the forms in the PDF with the specified values, identified by
 their field names.  See C<fillpdffields.pl --list> lists form fields.
 
 In some cases digital signatures may be invalidated when the document is saved
-in full with the --save-as option. The --force option can be used to continue
-with th save, in such circumstances.
+in full with the --save-as option. The --force option can be used to proceed,
+in such circumstances.
 
 =head1 SEE ALSO
 
