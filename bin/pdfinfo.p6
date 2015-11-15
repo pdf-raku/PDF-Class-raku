@@ -70,23 +70,26 @@ multi sub MAIN(Str $file, Str :$password = '') {
 	say "Revisions:    $revisions";
         use PDF::DAO::Type::Encrypt :PermissionsFlag;
 
-	print 'Security:     ';
+	print 'Encryption:   ';
 	if my $enc = $doc.Encrypt and $enc.O {
-	    say sprintf "Encrypted (version {$enc.V}.{$enc.R}, {$enc.Length} bits)";
-	}
-        else {
-	    say "Not encrypted";
-	}
+            my $V = $enc.V // 0;
+            my $Length = $enc.Length // 40;
+	    print "yes (";
 
-	do {
 	    # show user, not owner, permissions
 	    temp $doc.reader.crypt.is-owner = False
 	        if $doc.reader.?crypt;
-	    say '  Print:      ' ~ yes-no( $doc.permitted: PermissionsFlag::Print );
-	    say '  Modify:     ' ~ yes-no( $doc.permitted: PermissionsFlag::Modify );
-	    say '  Copy:       ' ~ yes-no( $doc.permitted: PermissionsFlag::Copy );
-	    say '  Add:        ' ~ yes-no( $doc.permitted: PermissionsFlag::Add );
-        }
+
+            for :print(PermissionsFlag::Print), :copy(PermissionsFlag::Copy),
+                :change(PermissionsFlag::Modify), :addNotes(PermissionsFlag::Add) {
+	        print "{.key}:{yes-no( $doc.permitted: .value)} ";
+            }
+            say "algorithm:RC4 {$V}.{$enc.R}, $Length bits)";
+	}
+        else {
+	    say "no";
+	}
+
 ##	if (@ARGV > 0)
 ##	{
 ##	    print "---------------------------------\n";
