@@ -55,7 +55,7 @@ class PDF::DOM::Type::XObject::Image
         my Int ($bpc, $height, $width, $cs);
         my Bool $is-dct;
 
-        $fh.seek(0,0);
+        $fh.seek(0, SeekFromBeginning);
         $buf = $fh.read(2);
         my @soi = $buf.unpack("CC");
         die "image doesn't have a JPEG header"
@@ -97,7 +97,7 @@ class PDF::DOM::Type::XObject::Image
             if $is-dct;
 
         my $obj = self.new( :$dict );
-        $fh.seek(0,0);
+        $fh.seek(0, SeekFromBeginning);
         $obj.encoded = $fh.slurp-rest;
         $fh.close;
 
