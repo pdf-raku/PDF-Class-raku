@@ -10,13 +10,20 @@ my Bool $*trace;
 my Bool $*strict = False;
 my %seen;
 
-sub MAIN(Str $infile, UInt :$*max-depth = 100, Bool :$*trace, Bool :$*strict, Bool :$*contents, Str :$password = '') {
+#| check a PDF against PDF::DOM class definitions
+sub MAIN(Str $infile,               #| input PDF
+         Str Str :$password = '',   #| password for the input PDF, if encrypted
+         Bool :$*trace,             #| show progress
+         Bool :$*contents,          #| validate/check contents of pages, etc         
+         Bool :$*strict,            #| perform additional checks
+         UInt :$*max-depth = 100,   #| maximum recursion depth
+         ) {
 
     my $doc = PDF::DOM.open( $infile, :$password );
     check( $doc, :ent<xref> );
-
 }
 
+|# Recursively check a dictionary (array) object
 multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     return if %seen{$obj.id}++;
     my $ref = $obj.obj-num
@@ -61,6 +68,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 	if @unknown-entries && $obj.WHAT.gist ~~ /'PDF::' .*? '::Type'/; 
 }
 
+#| Recursively check an array object
 multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     return if %seen{$obj.id}++;
     my $ref = $obj.obj-num
@@ -92,6 +100,7 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 
 multi sub check($obj) is default {}
 
+#| check contents of a Page, XObject Form or Pattern
 sub check-contents( $obj, Str :$ref!) {
 
     my Array $ast = $obj.contents-parse;
@@ -151,7 +160,7 @@ pdf-checker.p6 - Check PDF DOM structure and values
    --contents   check the contents of pages, forms and patterns
    --strict     enble some additonakl warnings:
                 -- unknown entries in dictionarys
-                -- graphics operators outside of a q ... Q graphics block
+                -- additional graphics checks (when --contents is enabled)
 
 =head1 DESCRIPTION
 
