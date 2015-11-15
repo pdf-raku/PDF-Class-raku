@@ -65,24 +65,28 @@ multi sub MAIN(Str $file, Str :$password = '') {
     }
     say 'Tagged:       ' ~ yes-no($tagged) ~ ($partial ?? ' (partial)' !! '');
     say 'Page Size:    ' ~ (@page-size[0] ?? "@page-size[0] x @page-size[1] pts" !! 'variable');
-##	print 'Optimized:    '.($doc->isLinearized()?'yes':'no')."\n";
+##	say 'Optimized:    '.($doc->isLinearized()?'yes':'no');
 	say "PDF version:  $pdf-version";
 	say "Revisions:    $revisions";
         use PDF::DAO::Type::Encrypt :PermissionsFlag;
 
-	print "Security\n";
-##	if ($prefs[0] || $prefs[1])
-##	{
-##	    print "  Passwd:     '$prefs[0]', '$prefs[1]'\n";
-##	}
-##	else
-##	{
-##	    print "  Passwd:     none\n";
-##	}
-	say '  Print:      ' ~ yes-no( $doc.permitted: PermissionsFlag::Print );
-	say '  Modify:     ' ~ yes-no( $doc.permitted: PermissionsFlag::Modify );
-	say '  Copy:       ' ~ yes-no( $doc.permitted: PermissionsFlag::Copy );
-	say '  Add:        ' ~ yes-no( $doc.permitted: PermissionsFlag::Add );
+	print 'Security:     ';
+	if my $enc = $doc.Encrypt and $enc.O {
+	    say sprintf "Encrypted (version {$enc.V}.{$enc.R}, {$enc.Length} bits)";
+	}
+        else {
+	    say "Not encrypted";
+	}
+
+	do {
+	    # show user, not owner, permissions
+	    temp $doc.reader.crypt.is-owner = False
+	        if $doc.reader.?crypt;
+	    say '  Print:      ' ~ yes-no( $doc.permitted: PermissionsFlag::Print );
+	    say '  Modify:     ' ~ yes-no( $doc.permitted: PermissionsFlag::Modify );
+	    say '  Copy:       ' ~ yes-no( $doc.permitted: PermissionsFlag::Copy );
+	    say '  Add:        ' ~ yes-no( $doc.permitted: PermissionsFlag::Add );
+        }
 ##	if (@ARGV > 0)
 ##	{
 ##	    print "---------------------------------\n";
