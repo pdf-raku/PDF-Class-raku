@@ -1,4 +1,4 @@
-use v6;
+Buse v6;
 use PDF::DOM;
 
 #| reading from stdin
@@ -48,7 +48,7 @@ sub MAIN(Str $infile,            #| input PDF
 
 =head1 NAME
 
-pdf-burst.p6 - Burst a PDF into indivdiaul pages
+pdf-burst.p6 - Burst a PDF into individual pages
 
 =head1 SYNOPSIS
 
@@ -64,8 +64,8 @@ This program bursts a multiple page into single page PDF files.
 
 By default, the output pdf will be named infile001.pdf infile002.pdf ...
 
-The save-as argument, if present, will be used as a template to generate
-the individual output files.
+The save-as argument, if present, will be used as a 'sprintf' template
+for generation of the individual output files.
 
 =head1 SEE ALSO
 
