@@ -5,9 +5,9 @@ use PDF::DAO::Type::Encrypt :PermissionsFlag;
 
 #| list all fields and current values
 multi sub MAIN(
-    Str $infile,
+    Str $infile,            #| input PDF
+    Str  :$password = '',   #| password for the input PDF, if encrypted
     Bool :$list!,
-    Str  :$password = '',
     ) {
     my $doc = PDF::DOM.open($infile, :$password);
     my @fields = $doc.Root.AcroForm.fields
@@ -91,12 +91,12 @@ multi sub MAIN(
 
 =head1 NAME
 
-fillpdffields.p6 - Replace PDF form fields with specified values
+pdf-fill-fields.p6 - Replace PDF form fields with specified values
 
 =head1 SYNOPSIS
 
- fillpdffields.p6 --list --password=text infile.pdf
- fillpdffields.p6 [--save-as outfile.pdf --force] --password=text --trigger-clear infile.pdf field value [field value ...]
+ pdf-fill-fields.p6 --list --password=text infile.pdf
+ pdf-fill-fields.p6 [--save-as outfile.pdf --force] --password=text --trigger-clear infile.pdf field value [field value ...]
 
  Options:
    --list              list fields and current values
@@ -108,7 +108,7 @@ fillpdffields.p6 - Replace PDF form fields with specified values
 =head1 DESCRIPTION
 
 Fill in the forms in the PDF with the specified values, identified by
-their field names.  See C<fillpdffields.pl --list> lists form fields.
+their field names.  See C<pdf-fill-fields.pl --list> lists form fields.
 
 In some cases digital signatures may be invalidated when the document is saved
 in full with the --save-as option. The --force option can be used to proceed,

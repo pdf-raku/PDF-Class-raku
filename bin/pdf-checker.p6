@@ -12,7 +12,7 @@ my %seen;
 
 #| check a PDF against PDF::DOM class definitions
 sub MAIN(Str $infile,               #| input PDF
-         Str Str :$password = '',   #| password for the input PDF, if encrypted
+         Str  :$password = '',      #| password for the input PDF, if encrypted
          Bool :$*trace,             #| show progress
          Bool :$*contents,          #| validate/check contents of pages, etc         
          Bool :$*strict,            #| perform additional checks
@@ -155,6 +155,7 @@ pdf-checker.p6 - Check PDF DOM structure and values
  pdf-checker.p6 [options] file.pdf
 
  Options:
+   --password   password for an encrypted PDF
    --max-depth  max DOM navigation depth (default 100)
    --trace      trace DOM navigation
    --contents   check the contents of pages, forms and patterns

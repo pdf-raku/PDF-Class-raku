@@ -1,7 +1,11 @@
 use v6;
 use PDF::DOM;
 
-sub MAIN(Str $infile, Str $outfile = $infile, Bool :$count, Str :$password = '') {
+sub MAIN(Str $infile,              #| input PDF
+	 Str :$password = '',      #| password for the input PDF, if encrypted
+	 Str :$save-as = $infile,  #| output PDF
+	 Bool :$count,             #| show the number of revision
+    ) {
 
     my $input = $infile eq q{-}
         ?? $*IN
@@ -29,7 +33,7 @@ sub MAIN(Str $infile, Str $outfile = $infile, Bool :$count, Str :$password = '')
             // die "Cannot find the end-of-file marker\n";
         my Str $xref = $tail.substr(0, $eof-index + EOF-MARKER.chars);
 
-	my $fh = $outfile eq q{-}
+	my $fh = $save-as eq q{-}
 	   ?? $*OUT
 	   !! $outfile.IO.open( :w, :enc<latin-1> );
 
@@ -44,11 +48,11 @@ sub MAIN(Str $infile, Str $outfile = $infile, Bool :$count, Str :$password = '')
 
 =head1 NAME
 
-revertpdf.pl - Remove the last edits to a PDF document
+pdf-revert.p6 - Remove the last edits to a PDF document
 
 =head1 SYNOPSIS
 
- revertpdf.pl [options] infile.pdf [outfile.pdf]
+ pdf-revert.p6 [options] --save-as=outfile.pdf infile.pdf
 
  Options:
    -c --count          just print the number of revisions and exits
@@ -69,7 +73,8 @@ has endured and applies no changes.
 
 =head1 SEE ALSO
 
-CAM::PDF
+CAM::PDF (Perl 5)
+PDF::DOM (Perl 6)
 
 =head1 AUTHOR
 

@@ -17,7 +17,7 @@ multi sub pretty-print(Mu $val is copy --> Str) is default {
     ~$val
 }
 
-# a port of pdfinfo.pl from the Perl 5 CAM::PDF module to PDF::DOM and Perl 6
+# A port of pdfinfo.pl from the Perl 5 CAM::PDF module to PDF::DOM and Perl 6
 
 multi sub MAIN(Bool :$version! where $_) {
     # nyi in rakudo https://rt.perl.org/Ticket/Display.html?id=125017
@@ -30,11 +30,13 @@ sub yes-no(Bool $cond) {
     $cond ?? 'yes' !! 'no';
 }
 
-multi sub MAIN(Str $file, Str :$password = '') {
+multi sub MAIN(Str $infile,           #| input PDF
+	       Str :$password = '',   #| password for the input PDF, if encrypted
+    ) {
 
-    my $input = $file eq '-'
+    my $input = $infile eq '-'
 	?? PDF::Storage::Input::Str.new( :value($*IN.slurp-rest( :enc<latin-1> )) )
-	!! PDF::Storage::Input::IOH.new( :value($file.IO.open( :enc<latin-1> )) );
+	!! PDF::Storage::Input::IOH.new( :value($infile.IO.open( :enc<latin-1> )) );
 
     my $doc = PDF::DOM.open( $input, :$password );
 
@@ -53,7 +55,7 @@ multi sub MAIN(Str $file, Str :$password = '') {
 	?? ($box[2] - $box[0],  $box[3] - $box[1])
 	!! (0, 0);
 
-    say "File:         $file";
+    say "File:         $infile";
     say "File Size:    $size bytes";
     say "Pages:        $pages";
     if $pdf-info {
@@ -101,16 +103,14 @@ multi sub MAIN(Str $file, Str :$password = '') {
 
 =head1 NAME
 
-pdfinfo.pl - Print information about PDF file(s)
+pdf-info.p6 - Print information about PDF file(s)
 
 =head1 SYNOPSIS
 
-pdfinfo.pl [options] file.pdf [file.pdf ...]
+pdf-info.p6 [options] file.pdf
 
 Options:
--v --verbose        print diagnostic messages
--h --help           verbose help message
--V --version        print PDF::DOM version
+   --password   password for an encrypted PDF
 
 =head1 DESCRIPTION
 

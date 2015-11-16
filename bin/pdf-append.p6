@@ -55,9 +55,8 @@ provided to eliminate those elements from the resulting PDF.
 
 =head1 SEE ALSO
 
-CAM::PDF
-
-F<deletepdfpage.pl>
+PDF::DOM (Perl 6)
+CAM::PDF (Perl 5)
 
 =head1 AUTHOR
 
