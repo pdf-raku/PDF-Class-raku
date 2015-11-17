@@ -11,8 +11,8 @@ role PDF::DOM::Resources {
         has Str $.key is rw;
     }
 
-    method core-font( *@arg, *%opt ) {
-        my $core-font = PDF::DOM::Util::Font::core-font( |@arg, |%opt );
+    method core-font( |c ) {
+        my $core-font = PDF::DOM::Util::Font::core-font( |c );
         self!find-resource(sub ($_){.isa(PDF::DOM::Type::Font) && .font-obj === $core-font}, :type<Font>)
             // do {
                 my %params = $core-font.to-dom('Font');
@@ -50,9 +50,7 @@ role PDF::DOM::Resources {
 
     method !find-resource( &match, Str :$type! ) {
 
-        my $resources = self.Resources;
-
-	$resources // {};
+        my $resources = self.Resources //= {};
 
         my $entry;
 
@@ -98,18 +96,10 @@ role PDF::DOM::Resources {
                              Str :$base-name = $.base-name($object),
                              :$type = $object.?type) {
 
-	die "unable to register this resource"
+	die "unable to register this resource - uknown type"
 	    unless $type.defined;
 
-        my Str $id = $object.id;
-        my $resources = self.Resources;
-
-        $resources //= do {
-            self<Resources> = {};
-            self.Resources
-        };
-
-        $resources{$type} //= {};
+        my $resources = self.Resources //= {}
 
         my Str $key = (1..*).map({$base-name ~ $_}).first({ $resources{$type}{$_}:!exists });
 
