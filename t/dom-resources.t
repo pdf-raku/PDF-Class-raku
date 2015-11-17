@@ -63,7 +63,8 @@ is $enc-obj.Type, 'Encoding', '$enc.Type';
 is $enc-obj.BaseEncoding, 'MacRomanEncoding', '$enc.BaseEncoding';
 
 my $objr-ast = :ind-obj[6, 0, :dict{ :Type( :name<OBJR> ), :Pg( :ind-ref[6, 1] ), :Obj( :ind-ref[6, 2]) } ];
-my $objr-ind-obj = PDF::Storage::IndObj.new( |%($objr-ast) );
+my $reader = class { has $.auto-deref = False }.new;
+my $objr-ind-obj = PDF::Storage::IndObj.new( |%($objr-ast), :$reader );
 my $objr-obj = $objr-ind-obj.object;
 isa-ok $objr-obj, ::('PDF::DOM::Type::OBJR');
 is $objr-obj.Type, 'OBJR', '$objr.Type';
@@ -129,7 +130,7 @@ $grammar.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed: $input";
 $ast = $/.ast;
 
-$ind-obj = PDF::Storage::IndObj.new( :$input, |%( $ast.kv ) );
+$ind-obj = PDF::Storage::IndObj.new( :$input, |%( $ast.kv ), :$reader );
 my $gs-obj = $ind-obj.object;
 isa-ok $gs-obj, ::('PDF::DOM::Type::ExtGState');
 is $gs-obj.Type, 'ExtGState', 'ExtGState Type';
@@ -172,7 +173,8 @@ use PDF::DOM::Type::Shading::Axial;
 my $Shading = PDF::DOM::Type::Shading::Axial.new( :dict{ :ColorSpace(:name<DeviceRGB>),
 							 :Function(:ind-ref[15, 0]),
 							 :Coords[ 0.0, 0.0, 0.096, 0.0, 0.0, 1.0, 0],
-							 } );
+							 },
+				                   :$reader );
 my $sh1 = $new-page.resource( $Shading );
 is $sh1.key, 'Sh1', 'Shading resource entry';
 

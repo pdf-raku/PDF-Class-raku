@@ -27,7 +27,9 @@ PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed: $input";
 my $ast = $/.ast;
 
-my $ind-obj = PDF::Storage::IndObj.new( :$input, |%( $ast.kv ) );
+my $reader = class { has $.auto-deref = False }.new;
+
+my $ind-obj = PDF::Storage::IndObj.new( :$input, |%( $ast.kv ), :$reader );
 my $text-annot = $ind-obj.object;
 isa-ok $text-annot, ::('PDF::DOM::Type::Annot::Text');
 is-json-equiv $text-annot.Rect, [ 100, 100, 300, 200 ], '.Rect';
@@ -67,7 +69,7 @@ PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed: $input";
 $ast = $/.ast;
 
-$ind-obj = PDF::Storage::IndObj.new( :$input, |%( $ast.kv ) );
+$ind-obj = PDF::Storage::IndObj.new( :$input, |%( $ast.kv ), :$reader );
 my $link-annot = $ind-obj.object;
 isa-ok $link-annot, ::('PDF::DOM::Type::Annot::Link');
 is-json-equiv $link-annot.Border, [ 16, 16, 1 ], '.Border';

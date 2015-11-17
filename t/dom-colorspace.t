@@ -88,10 +88,11 @@ $input = q:to"--END-OBJ--";
 endobj
 --END-OBJ--
 
+my $reader = class { has $.auto-deref = False }.new;
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
 $ast = $/.ast;
-$ind-obj = PDF::Storage::IndObj.new( |%$ast);
+$ind-obj = PDF::Storage::IndObj.new( |%$ast, :$reader);
 is $ind-obj.obj-num, 5, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 $color-space-obj = $ind-obj.object;
