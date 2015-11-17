@@ -1,4 +1,4 @@
-Buse v6;
+use v6;
 use PDF::DOM;
 
 #| reading from stdin
@@ -6,7 +6,7 @@ multi sub output-filename('-') {"pdf-page%03d.pdf"}
 #| user supplied format spec
 multi sub output-filename(Str $filename where /'%'/) {$filename}
 #| generated sprintf format from input/output filename template
-multi sub outfile-filename(Str $infile) is default {
+multi sub output-filename(Str $infile) is default {
       my Str $ext = $infile.IO.extension;
       $ext eq ''
       ?? $infile ~ '%03d.pdf'
