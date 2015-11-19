@@ -29,8 +29,8 @@ class PDF::DOM::Type::Annot
     has Str $.M is entry(:&coerce);                   #| (Optional; PDF 1.1) The date and time when the annotation was most recently modified.
                                                       #| The preferred format is a date string, but viewer applications should be prepared to accept and display a string in any format.
     subset AnnotFlagsInt of UInt where 0 ..^ 2 +< 9;
-    my enum AnnotsFlag is export(:AnnotsFlag) « :Invisable(1) :Hidden(2) :Print(3) :NoZoom(4) :NoRotate(5) :NoView(6)
-						:ReadOnly(7) :Locked(8) :ToggleNoView(9) :LockedContents(10) »;
+##    my UInt enum AnnotsFlag is export(:AnnotsFlag) « :Invisable(1) :Hidden(2) :Print(3) :NoZoom(4) :NoRotate(5) :NoView(6)
+##						     :ReadOnly(7) :Locked(8) :ToggleNoView(9) :LockedContents(10) »;
     has AnnotFlagsInt $.F is entry;         #| (Optional; PDF 1.1) A set of flags specifying various characteristics of the annotation
     use PDF::DOM::Type::Appearance;
     has PDF::DOM::Type::Appearance $.AP is entry;                 #| (Optional; PDF 1.2) An appearance dictionary specifying how the annotation is presented visually on the page
