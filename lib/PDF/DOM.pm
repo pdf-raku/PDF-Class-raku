@@ -25,7 +25,8 @@ class PDF::DOM
     method media-box(|c)   returns Array                { self.Pages.media-box(|c) }
     method page(|c)        returns PDF::DOM::Type::Page { self.Pages.page(|c) }
     method page-count      returns UInt                 { self.Pages.Count }
-    method pdf-version     returns Version:_ {
+    method type { 'PDF' }
+    method version         returns Version:_ {
 	my $version = self.Root.Version;
 	# reader extracts version from the PDF Header, e.g.: '%PDF-1.4'
 	$version //= self.reader.version
@@ -37,9 +38,9 @@ class PDF::DOM
     }
 
     method update(|c) {
-	self<Root>:exists
-	    ?? self<Root>.?cb-finish
-	    !! warn "no top-level Root entry";
+	self.cb-init
+	    unless self<Root>:exists;
+	self<Root>.cb-finish;
 
 	nextsame;
     }

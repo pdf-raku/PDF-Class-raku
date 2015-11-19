@@ -101,4 +101,6 @@ ok +$contents-ast > 24, '.contents elems';
 is-deeply $contents-ast[0], (:q[]), '.contents first elem';
 is-deeply $contents-ast[*-1], (:ET[]), '.contents last elem';
 
+lives-ok { PDF::DOM.new.save-as: "t/pdf/no-pages.pdf" }, 'create empty PDF';
+
 done-testing;

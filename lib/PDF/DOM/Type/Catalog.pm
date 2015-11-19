@@ -15,7 +15,6 @@ my class Catalog
     use PDF::DAO::Tie;
     use PDF::DAO::Tie::Hash;
     use PDF::DAO::Array;
-    use PDF::DAO::Bool;
     use PDF::DAO::Dict;
     use PDF::DAO::Name;
     use PDF::DAO::Stream;
@@ -92,7 +91,7 @@ my class Catalog
 
     has PDF::DAO::Dict $.Collection is entry;            #| (Optional; PDF 1.7) A collection dictionary that a PDF consumer uses to enhance the presentation of file attachments stored in the PDF document.
 
-    has PDF::DAO::Bool $.NeedsRendering is entry;        #| (Optional; PDF 1.7) A flag used to expedite the display of PDF documents containing XFA forms. It specifies whether the document must be regenerated when the document is first opened.
+    has Bool $.NeedsRendering is entry;        #| (Optional; PDF 1.7) A flag used to expedite the display of PDF documents containing XFA forms. It specifies whether the document must be regenerated when the document is first opened.
 
     has Hash $.Resources is entry;
 
