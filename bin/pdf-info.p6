@@ -42,7 +42,7 @@ multi sub MAIN(Str $infile,           #| input PDF
 
     my UInt $size = $input.codes;
     my UInt $pages = $doc.page-count;
-    my Version $pdf-version = $doc.pdf-version;
+    my Version $pdf-version = $doc.version;
     my Hash $pdf-info = $doc.Info;
     my $box = $doc.Pages.MediaBox;
     my $encrypt = $doc.Encrypt;
