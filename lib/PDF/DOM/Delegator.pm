@@ -38,7 +38,7 @@ class PDF::DOM::Delegator
 	}
 		
         unless $resolved {
-           note "No DOM handler class {self.class-paths}::{$subclass}";
+           note "No DOM handler class [{self.class-paths}]::{$subclass}";
         }
 
         self.install-delegate( $subclass, $handler-class );
@@ -64,8 +64,31 @@ class PDF::DOM::Delegator
 	::('PDF::DOM::Type::CIDSystemInfo');
     }
 
-    multi method delegate(Hash :$dict!, *%opts) is default {
-	nextwith( :$dict, |%opts);
+    #| Reverse lookup for classes when /Subtype is required but /Type is optional
+    multi method delegate(Hash :$dict where {($dict<Subtype>:exists) && ($dict<Type>:!exists)}, :$fallback) {
+	my $subtype = from-ast $dict<Subtype>;
+
+	my $type = do given $subtype {
+	    when 'Circle' | 'Link' | 'Square' | 'Text' | 'Widget' {
+		# todo other Annot sub-types, NYI
+		'Annot'
+	    }
+	    default { Nil }
+	};
+
+	if $type {
+	    my $class = "PDF::DOM::Type::{$type}::{$subtype}";
+	    require ::($class);
+	    ::($class);
+	}
+	else {
+	    note "unhandled subtype: PDF::DOM::Type::*::{$subtype}";
+	    $fallback;
+	}
+    }
+
+    multi method delegate(Hash :$dict!, |c) is default {
+	nextwith( :$dict, |c);
     }
 
     #| PDF Spec 1.7 Section 4.5.4 CIE-Based Color Spaces

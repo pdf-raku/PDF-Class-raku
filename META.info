@@ -22,7 +22,9 @@
         "PDF::DOM::Type::AcroForm" : "lib/PDF/DOM/Type/AcroForm.pm",
 
         "PDF::DOM::Type::Annot" : "lib/PDF/DOM/Type/Annot.pm",
+        "PDF::DOM::Type::Annot::Circle" : "lib/PDF/DOM/Type/Annot/Circle.pm",
         "PDF::DOM::Type::Annot::Link" : "lib/PDF/DOM/Type/Annot/Link.pm",
+        "PDF::DOM::Type::Annot::Square" : "lib/PDF/DOM/Type/Annot/Square.pm",
         "PDF::DOM::Type::Annot::Text" : "lib/PDF/DOM/Type/Annot/Text.pm",
         "PDF::DOM::Type::Annot::Widget" : "lib/PDF/DOM/Type/Annot/Widget.pm",
 

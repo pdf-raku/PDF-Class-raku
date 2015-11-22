@@ -56,7 +56,7 @@ $pdf.save-as('t/dom-annot.pdf');
 
 $input = q:to"--END--";
 93 0 obj <<
-  /Type /Annot
+  %%  /Type /Annot   % Type is optional
   /Subtype /Link
   /Rect [ 71 717 190 734 ]
   /Border [ 16 16 1 ]
@@ -72,6 +72,7 @@ $ast = $/.ast;
 $ind-obj = PDF::Storage::IndObj.new( :$input, |%( $ast.kv ), :$reader );
 my $link-annot = $ind-obj.object;
 isa-ok $link-annot, ::('PDF::DOM::Type::Annot::Link');
+is $link-annot.Type, 'Annot', 'Annot with /Type defaulted';
 is-json-equiv $link-annot.Border, [ 16, 16, 1 ], '.Border';
 is-json-equiv $link-annot.Dest, [ :ind-ref[3, 0], 'FitR', -4, 399, 199, 533], '.Dest';
 
