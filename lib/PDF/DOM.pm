@@ -37,6 +37,13 @@ class PDF::DOM
 	    !! Nil
     }
 
+    method open(|c) {
+	my $doc = callsame;
+	die "PDF file has wrong type: " ~ $doc.reader.type
+	    unless $doc.reader.type eq 'PDF';
+	$doc;
+    }
+
     method update(|c) {
 	self.cb-init
 	    unless self<Root>:exists;
