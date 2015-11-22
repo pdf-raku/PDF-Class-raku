@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl6
 use v6;
 use PDF::DOM;
 use PDF::DAO::Type::Encrypt :PermissionsFlag;
