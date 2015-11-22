@@ -67,7 +67,8 @@ class PDF::DOM::Type::ExtGState
 
     # The graphics tranparency , with 0 being fully opaque and 1 being fully transparent.
     # This is a convenience method setting proper values for strokeaplha and fillalpha.
-    sub transparency-accessor($obj) {
+    method transparency is rw {
+	my $obj = self;
 	Proxy.new( 
 	    FETCH => method {
 		my $fill-alpha = $obj.fill-alpha;
@@ -78,10 +79,6 @@ class PDF::DOM::Type::ExtGState
 	    STORE => method (Alpha $val is copy) {
 		$obj.fill-alpha = $obj.stroke-alpha = $val;
 	    });
-    }
-
-    method transparency is rw {
-	transparency-accessor(self)
     }
 
 }

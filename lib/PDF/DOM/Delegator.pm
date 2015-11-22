@@ -73,6 +73,7 @@ class PDF::DOM::Delegator
 		# todo other Annot sub-types, NYI
 		'Annot'
 	    }
+	    when 'PS' | 'Image' | 'Form'  { 'XObject' }
 	    default { Nil }
 	};
 
