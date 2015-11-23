@@ -17,7 +17,8 @@ class PDF::DOM::Type::XObject::Form
     has FormTypeInt $.FormType is entry;    #| (Optional) A code identifying the type of form XObject that this dictionary describes. The only valid value is 1.
     has Numeric @.BBox is entry(:required,:len(4)); #| (Required) An array of four numbers in the form coordinate system (see above), giving the coordinates of the left, bottom, right, and top edges, respectively, of the form XObject’s bounding box.
     has Numeric @.Matrix is entry(:len(6));          #| (Optional) An array of six numbers specifying the form matrix, which maps form space into user space
-    has Hash $.Resources is entry;          #| (Optional but strongly recommended; PDF 1.2) A dictionary specifying any resources (such as fonts and images) required by the form XObject
+    use PDF::DOM::Type::Resources;
+    has PDF::DOM::Type::Resources $.Resources is entry;          #| (Optional but strongly recommended; PDF 1.2) A dictionary specifying any resources (such as fonts and images) required by the form XObject
     has Hash $.Group is entry;              #| (Optional; PDF 1.4) A group attributes dictionary indicating that the contents of the form XObject are to be treated as a group and specifying the attributes of that group
     has Hash $.Ref is entry;                #| (Optional; PDF 1.4) A reference dictionary identifying a page to be imported from another PDF file, and for which the form XObject serves as a proxy
 ## issue#8 build woes

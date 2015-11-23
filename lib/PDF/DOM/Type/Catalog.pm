@@ -93,7 +93,8 @@ my class Catalog
 
     has Bool $.NeedsRendering is entry;        #| (Optional; PDF 1.7) A flag used to expedite the display of PDF documents containing XFA forms. It specifies whether the document must be regenerated when the document is first opened.
 
-    has Hash $.Resources is entry;
+    use PDF::DOM::Type::Resources;
+    has PDF::DOM::Type::Resources $.Resources is entry;
 
     method cb-init {
         # vivify pages

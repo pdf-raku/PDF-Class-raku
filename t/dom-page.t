@@ -51,10 +51,10 @@ isa-ok $font, ::('PDF::DOM::Type::Font::Type1');
 is $font.font-obj.FontName, 'Helvetica', '.FontName';
 my $font-again = $page.core-font( 'Helvetica' );
 is-deeply $font-again, $font, 'core font caching';
-is-deeply [$page.Resources<Font>.keys.sort], [<F1 F2>], 'font resource entries';
+is-deeply [$page.Resources.Font.keys.sort], [<F1 F2>], 'font resource entries';
 my $font2 = $page.core-font( :family<Helvetica>, :weight<bold> );
 is $font2.font-obj.FontName, 'Helvetica-Bold', '.FontName';
-is-deeply [$page.Resources<Font>.keys.sort], [<F1 F2 F3>], 'font resource entries';
+is-deeply [$page.Resources.Font.keys.sort], [<F1 F2 F3>], 'font resource entries';
 
 is-json-equiv $page.MediaBox, [0, 0, 595, 842], '$.MediaBox accessor';
 is-json-equiv $page.media-box, [0, 0, 595, 842], '$.media-box accessor';

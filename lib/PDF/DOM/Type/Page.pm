@@ -25,7 +25,8 @@ class PDF::DOM::Type::Page
     # see [PDF 1.7 TABLE 3.27 Entries in a page object]
     has Hash $.Parent is entry(:indirect);       #| (Required; must be an indirect reference) The page tree node that is the immediate parent of this page object.
     has Str $.LastModified is entry;             #| (Required if PieceInfo is present; optional otherwise; PDF 1.3) The date and time when the page’s contents were most recently modified
-    has Hash $.Resources is entry(:inherit);     #| (Required; inheritable) A dictionary containing any resources required by the page
+    use PDF::DOM::Type::Resources;
+    has PDF::DOM::Type::Resources $.Resources is entry(:inherit);     #| (Required; inheritable) A dictionary containing any resources required by the page
     has Numeric @.MediaBox is entry(:inherit,:len(4));   #| (Required; inheritable) A rectangle, expressed in default user space units, defining the boundaries of the physical medium on which the page is intended to be displayed or printed
     has Numeric @.CropBox is entry(:inherit,:len(4));    #| Optional; inheritable) A rectangle, expressed in default user space units, defining the visible region of default user space. When the page is displayed or printed, its contents are to be clipped (cropped) to this rectangle and then imposed on the output medium in some implementation-defined manner
     has Numeric @.BleedBox is entry(:len(4));    #| (Optional; PDF 1.3) A rectangle, expressed in default user space units, defining the region to which the contents of the page should be clipped when output in a production environment

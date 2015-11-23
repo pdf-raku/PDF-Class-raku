@@ -65,7 +65,7 @@ class PDF::DOM::Type::ExtGState
     has Bool $.AIS is entry(:alias<alpha-source>);           #| (Optional; PDF 1.4) The alpha source flag (“alpha is shape”), specifying whether the current soft mask and alpha constant are to be interpreted as shape values (true) or opacity values (false).
     has Bool $.TK is entry(:alias<text-knockout>);           #| (Optional; PDF 1.4) The text knockout flag, which determines the behavior of overlapping glyphs within a text object in the transparent imaging model
 
-    # The graphics tranparency , with 0 being fully opaque and 1 being fully transparent.
+    # The graphics transparency , with 0 being fully opaque and 1 being fully transparent.
     # This is a convenience method setting proper values for strokeaplha and fillalpha.
     method transparency is rw {
 	my $obj = self;

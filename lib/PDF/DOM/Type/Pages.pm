@@ -22,7 +22,8 @@ class PDF::DOM::Type::Pages
     my subset PageNode of PDF::DAO::Dict where PDF::DOM::Type::Page | PDF::DOM::Type::Pages;
     has PageNode @.Kids is entry(:required, :indirect);  #| (Required) An array of indirect references to the immediate children of this node. The children may be page objects or other page tree nodes.
     has Int $.Count is entry(:required);   #| (Required) The number of leaf nodes (page objects) that are descendants of this node within the page tree.
-    has Hash $.Resources is entry(:inherit);
+    use PDF::DOM::Type::Resources;
+    has PDF::DOM::Type::Resources $.Resources is entry(:inherit);
 
     #| inheritable page properties
     has Numeric @.MediaBox is entry(:inherit);

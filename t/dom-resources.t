@@ -7,7 +7,7 @@ use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 
-plan 56;
+plan 63;
 require ::('PDF::DOM::Type::Catalog');
 my $dict = { :Outlines(:ind-ref[2, 0]), :Type( :name<Catalog> ), :Pages{ :Type( :name<Pages> ) } };
 my $catalog-obj = ::('PDF::DOM::Type::Catalog').new( :$dict );
@@ -183,14 +183,21 @@ my $pat-obj = PDF::DOM::Type::Pattern::Shading.new( :dict{ :PaintType(1), :Tilin
 my $pt1 = $new-page.resource( $pat-obj );
 is $pt1.key, 'Pt1', 'Shading resource entry';
 
+my $resources = $new-page.Resources;
+does-ok $resources, ::('PDF::DOM::Type::Resources'), 'Resources type';
+
+for qw<ExtGState ColorSpace Pattern Shading XObject Font> {
+    lives-ok { $resources."$_"() }, "Resource.$_ accessor";
+}
+
 is-json-equiv $new-page.Resources, {
-    :ExtGState({:GS1($gs-obj)}),
-    :ColorSpace{:CS1($colorspace)},
+    :ExtGState{ :GS1($gs-obj) },
+    :ColorSpace{ :CS1($colorspace) },
     :Pattern{ :Pt1($pat-obj) },
-    :Shading({:Sh1($Shading)}),
-    :XObject({:Fm1($form1),
+    :Shading{ :Sh1($Shading) },
+    :XObject{ :Fm1($form1),
 	      :Fm2($form2),
-	      :Im1($image)}),
-    :Font({:F1($font)}),
+	      :Im1($image)},
+    :Font{ :F1($font) },
 }, 'Resources';
 

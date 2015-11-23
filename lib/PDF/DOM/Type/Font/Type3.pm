@@ -29,7 +29,8 @@ class PDF::DOM::Type::Font::Type3
 
     has Hash $.FontDescriptor is entry(:indirect);      #| (Required in Tagged PDF documents; must be an indirect reference) A font descriptor describing the font’s default metrics other than its glyph widths
 
-    has Hash $.Resources is entry;                      #| (Optional but strongly recommended; PDF 1.2) A list of the named resources, such as fonts and images, required by the glyph descriptions in this font
+    use PDF::DOM::Type::Resources;
+    has PDF::DOM::Type::Resources $.Resources is entry;  #| (Optional but strongly recommended; PDF 1.2) A list of the named resources, such as fonts and images, required by the glyph descriptions in this font
 
     has PDF::DAO::Stream $.ToUnicode is entry;       #| (Optional; PDF 1.2) A stream containing a CMap file that maps character codes to Unicode values
 }
