@@ -4,7 +4,7 @@ role PDF::DOM::PageBoxes {
 
 	#| source: http://www.gnu.org/software/gv/
     my subset Box of Array;# where {.elems == 4}
-    BEGIN my Array enum PageSizes is export(:PageSizes) «
+    my Array enum PageSizes is export(:PageSizes) «
 	    :Letter[0,0,612,792]
 	    :Tabloid[0,0,792,1224]
 	    :Ledger[0,0,1224,792]

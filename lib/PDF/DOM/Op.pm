@@ -9,7 +9,7 @@ role PDF::DOM::Op {
     has Bool $!strict = True;
 
     #| some convenient mnemomic names
-    BEGIN my Str enum OpNames is export(:OpNames) «
+    my Str enum OpNames is export(:OpNames) «
         :BeginImage<BI> :ImageData<ID> :EndImage<EI>
         :BeginMarkedContent<BMC> :BeginMarkedContent2<BDC> :EndMarkedContent<EMC>
         :BeginText<BT> :EndText<ET>
