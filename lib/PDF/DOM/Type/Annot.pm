@@ -26,7 +26,7 @@ class PDF::DOM::Type::Annot
 	    !! PDF::DAO::TextString;
 	PDF::DAO.coerce($s, $target-type);
     }
-    has Str $.M is entry(:&coerce);                   #| (Optional; PDF 1.1) The date and time when the annotation was most recently modified.
+    has DateOrTextString $.M is entry(:&coerce);                   #| (Optional; PDF 1.1) The date and time when the annotation was most recently modified.
                                                       #| The preferred format is a date string, but viewer applications should be prepared to accept and display a string in any format.
     subset AnnotFlagsInt of UInt where 0 ..^ 2 +< 9;
 ##    my UInt enum AnnotsFlag is export(:AnnotsFlag) « :Invisable(1) :Hidden(2) :Print(3) :NoZoom(4) :NoRotate(5) :NoView(6)

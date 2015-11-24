@@ -21,13 +21,13 @@ class PDF::DOM::Type::Pages
     has Hash $.Parent is entry(:indirect); #| (Required except in root node; must be an indirect reference) The page tree node that is the immediate parent of this one.
     my subset PageNode of PDF::DAO::Dict where PDF::DOM::Type::Page | PDF::DOM::Type::Pages;
     has PageNode @.Kids is entry(:required, :indirect);  #| (Required) An array of indirect references to the immediate children of this node. The children may be page objects or other page tree nodes.
-    has Int $.Count is entry(:required);   #| (Required) The number of leaf nodes (page objects) that are descendants of this node within the page tree.
+    has UInt $.Count is entry(:required);   #| (Required) The number of leaf nodes (page objects) that are descendants of this node within the page tree.
     use PDF::DOM::Type::Resources;
     has PDF::DOM::Type::Resources $.Resources is entry(:inherit);
 
     #| inheritable page properties
-    has Numeric @.MediaBox is entry(:inherit);
-    has Numeric @.CropBox is entry(:inherit);
+    has Numeric @.MediaBox is entry(:inherit,:len(4));
+    has Numeric @.CropBox is entry(:inherit,:len(4));
 
     #| add new last page
     method add-page( PDF::DOM::Type::Page $page? is copy ) {

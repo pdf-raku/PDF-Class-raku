@@ -29,8 +29,8 @@ class PDF::DOM::Type::ExtGState
 
     # see [PDF .1.7 TABLE 4.8 Entries in a graphics state parameter dictionary]
     has Numeric $.LW is entry(:alias<line-width>);                  #| (Optional; PDF 1.3) The line width
-    has Int $.LC is entry(:alias<line-cap>);                        #| (Optional; PDF 1.3) The line cap style
-    has Int $.LJ is entry(:alias<line-join-style>);                 #| (Optional; PDF 1.3) The line join style
+    has UInt $.LC is entry(:alias<line-cap>);                       #| (Optional; PDF 1.3) The line cap style
+    has UInt $.LJ is entry(:alias<line-join-style>);                #| (Optional; PDF 1.3) The line join style
     has Numeric $.ML is entry(:alias<miter-limit>);                 #| (Optional; PDF 1.3) The miter limit
     has UInt @.D is entry;(:alias<dash-pattern>);                   #| (Optional; PDF 1.3) The line dash pattern, expressed as an array of the form [ dashArray dashPhase ], where dashArray is itself an array and dashPhase is an integer
     has PDF::DAO::Name $.RI is entry(:alias<rendering-intent>);  #| (Optional; PDF 1.3) The name of the rendering intent

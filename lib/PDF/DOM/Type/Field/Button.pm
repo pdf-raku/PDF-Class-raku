@@ -9,16 +9,10 @@ role PDF::DOM::Type::Field::Button
     use PDF::DAO::Tie;
     use PDF::DAO::TextString;
 
-    my subset ArrayOfTextStrings of Array where { !.first( !*.isa(PDF::DAO::TextString) ) }
-    sub coerce(Array $fields, ArrayOfTextStrings) {
-        PDF::DOM::Type::Field.coerce($fields[$_], PDF::DAO::TextString)
-	    for $fields.keys
-    }
 
-    use PDF::DAO::Name;
     has PDF::DAO::Name $.V is entry(:inherit);
     has PDF::DAO::Name $.DV is entry(:inherit);
 
-    has ArrayOfTextStrings $.Opt is entry;    #| (Optional; inheritable; PDF 1.4) An array containing one entry for each widget annotation in the Kids array of the radio button or check box field. Each entry is a text string representing the on state of the corresponding widget annotation.
+    has PDF::DAO::TextString @.Opt is entry;    #| (Optional; inheritable; PDF 1.4) An array containing one entry for each widget annotation in the Kids array of the radio button or check box field. Each entry is a text string representing the on state of the corresponding widget annotation.
 
 }

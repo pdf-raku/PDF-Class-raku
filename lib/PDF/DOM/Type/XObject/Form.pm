@@ -12,6 +12,7 @@ class PDF::DOM::Type::XObject::Form
     does PDF::DOM::Resources {
 
     use PDF::DAO::Tie;
+    use PDF::DAO::DateString;
     #|See [PDF Spec 1.7 Section 4.9.1 TABLE 4.45 Additional entries specific to a type 1 form dictionary]
     subset FormTypeInt of Int where 1;
     has FormTypeInt $.FormType is entry;    #| (Optional) A code identifying the type of form XObject that this dictionary describes. The only valid value is 1.
@@ -26,7 +27,7 @@ class PDF::DOM::Type::XObject::Form
 ##    has PDF::DAO::Stream $.Metadata is entry;
     has Hash $.Metadata is entry;           #| (Optional; PDF 1.4) A metadata stream containing metadata for the form XObject
     has Hash $.PieceInfo is entry;          #| (Optional; PDF 1.3) A page-piece dictionary associated with the form XObject
-    has Str $.LastModified is entry;        #| (Required if PieceInfo is present; optional otherwise; PDF 1.3) The date and time (see Section 3.8.3, “Dates”) when the form XObject’s contents were most recently modified
+    has PDF::DAO::DateString $.LastModified is entry;        #| (Required if PieceInfo is present; optional otherwise; PDF 1.3) The date and time (see Section 3.8.3, “Dates”) when the form XObject’s contents were most recently modified
     has UInt $.StructParent is entry;       #| (Required if the form XObject is a structural content item; PDF 1.3) The integer key of the form XObject’s entry in the structural parent tree
     has UInt $.StructParents is entry;      #| (Required if the form XObject contains marked-content sequences that are structural content items; PDF 1.3) The integer key of the form XObject’s entry in the structural parent tree
     has Hash $.OPI is entry;                #| (Optional; PDF 1.2) An OPI version dictionary for the form XObject
