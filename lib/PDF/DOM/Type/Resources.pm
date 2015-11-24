@@ -13,6 +13,8 @@ my role Resources
     use PDF::DAO::Name;
     use PDF::DAO::Stream;
 
+    # See [pDF 1.7 TABLE 3.30 Entries in a resource dictionary]
+
     has %.ExtGState  is entry;  #| (Optional) A dictionary that maps resource names to graphics state parameter dictionaries
 
     has %.ColorSpace is entry;  #| (Optional) A dictionary that maps each resource name to either the name of a device-dependent color space or an array describing a color space
@@ -24,7 +26,7 @@ my role Resources
     has PDF::DAO::Stream %.XObject    is entry;  #| (Optional) A dictionary that maps resource names to external objects
 
     has Hash %.Font       is entry;  #| (Optional) A dictionary that maps resource names to font dictionaries
-    has Array %.ProcSet    is entry;  #| (Optional) An array of predefined procedure set names
+    has PDF::DAO::Name @.ProcSet    is entry;  #| (Optional) An array of predefined procedure set names
     has Hash %.Properties is entry;  #|  (Optional; PDF 1.2) A dictionary that maps resource names to property list dictionaries for marked content
 
     method !base-name( PDF::DAO $object ) is default {
