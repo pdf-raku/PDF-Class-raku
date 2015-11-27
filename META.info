@@ -72,6 +72,7 @@
 
         "PDF::DOM::Type::OBJR" : "lib/PDF/DOM/Type/OBJR.pm",
         "PDF::DOM::Type::Outlines" : "lib/PDF/DOM/Type/Outlines.pm",
+        "PDF::DOM::Type::OutlineItem" : "lib/PDF/DOM/Type/OutlineItem.pm",
         "PDF::DOM::Type::OutputIntent" : "lib/PDF/DOM/Type/OutputIntent.pm",
         "PDF::DOM::Type::OutputIntent::GTS_PDFX" : "lib/PDF/DOM/Type/OutputIntent/GTS_PDFX.pm",
 
