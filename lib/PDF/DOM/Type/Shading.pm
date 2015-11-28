@@ -14,6 +14,9 @@ class PDF::DOM::Type::Shading
     has ShadingTypeInt $.ShadingType is entry;
 
     # see [PDF 1.7 TABLE 4.28 Entries common to all shading dictionaries]
+    ## precomp woes
+    ## use PDF::DOM::Type::ColorSpace;
+    ##my subset NameOrColorSpace of PDF::DAO where PDF::DAO::Name or PDF::DOM::Type::ColorSpace;
     subset NameOrArray of Any where PDF::DAO::Array | PDF::DAO::Name;
     has NameOrArray $.ColorSpace is entry(:required); #| (Required) The color space in which color values are expressed.
     has @.Background is entry;                        #| (Optional) An array of color components appropriate to the color space, specifying a single background color value.

@@ -17,7 +17,9 @@ my role Resources
 
     has %.ExtGState  is entry;  #| (Optional) A dictionary that maps resource names to graphics state parameter dictionaries
 
-    has %.ColorSpace is entry;  #| (Optional) A dictionary that maps each resource name to either the name of a device-dependent color space or an array describing a color space
+    use PDF::DOM::Type::ColorSpace;
+    my subset NameOrColorSpace of PDF::DAO where PDF::DAO::Name | PDF::DOM::Type::ColorSpace;
+    has NameOrColorSpace %.ColorSpace is entry;  #| (Optional) A dictionary that maps each resource name to either the name of a device-dependent color space or an array describing a color space
 
     has %.Pattern    is entry;  #| (Optional) A dictionary that maps resource names to pattern objects
 
