@@ -44,28 +44,38 @@ class PDF::DOM::Delegator
         self.install-delegate( $subclass, $handler-class );
     }
 
-    multi method delegate(Hash :$dict! where {$dict<FunctionType>:exists}) {
+    multi method delegate(Hash :$dict! where {.<FunctionType>:exists}) {
 	require ::('PDF::DOM::Type::Function');
 	::('PDF::DOM::Type::Function').delegate-function( :$dict );
     }
 
-    multi method delegate(Hash :$dict! where {$dict<PatternType>:exists}) {
+    multi method delegate(Hash :$dict! where {.<PatternType>:exists}) {
 	require ::('PDF::DOM::Type::Pattern');
 	::('PDF::DOM::Type::Pattern').delegate-pattern( :$dict );
     }
 
-    multi method delegate(Hash :$dict! where {$dict<ShadingType>:exists}) {
+    multi method delegate(Hash :$dict! where {.<ShadingType>:exists}) {
 	require ::('PDF::DOM::Type::Shading');
 	::('PDF::DOM::Type::Shading').delegate-shading( :$dict );
     }
 
-    multi method delegate(Hash :$dict! where {($dict<Registry>:exists) && ($dict<Ordering>:exists)}) {
+    multi method delegate(Hash :$dict! where {(.<Registry>:exists) && (.<Ordering>:exists)}) {
 	require ::('PDF::DOM::Type::CIDSystemInfo');
 	::('PDF::DOM::Type::CIDSystemInfo');
     }
 
+    multi method delegate( Hash :$dict! where {.<Type>:exists}, :$fallback) {
+        my $subclass = from-ast($dict<Type>);
+        unless $subclass eq 'Border' {
+	    my $subtype = from-ast($dict<Subtype> // $dict<S>);
+	    $subclass ~= '::' ~ $subtype if $subtype.defined;
+	}
+        my $delegate = $.find-delegate( $subclass, :$fallback );
+        $delegate;
+    }
+
     #| Reverse lookup for classes when /Subtype is required but /Type is optional
-    multi method delegate(Hash :$dict where {($dict<Subtype>:exists) && ($dict<Type>:!exists)}, :$fallback) {
+    multi method delegate(Hash :$dict where {.<Subtype>:exists }, :$fallback) {
 	my $subtype = from-ast $dict<Subtype>;
 
 	my $type = do given $subtype {
@@ -86,10 +96,6 @@ class PDF::DOM::Delegator
 	    note "unhandled subtype: PDF::DOM::Type::*::{$subtype}";
 	    $fallback;
 	}
-    }
-
-    multi method delegate(Hash :$dict!, |c) is default {
-	nextwith( :$dict, |c);
     }
 
     #| PDF Spec 1.7 Section 4.5.4 CIE-Based Color Spaces
@@ -126,6 +132,10 @@ class PDF::DOM::Delegator
 	my $colorspace = from-ast $array[0];
 	require ::('PDF::DOM::Type::ColorSpace')::($colorspace);
 	::('PDF::DOM::Type::ColorSpace')::($colorspace);
+    }
+
+    multi method delegate(:$fallback!) is default {
+	$fallback;
     }
 
 }

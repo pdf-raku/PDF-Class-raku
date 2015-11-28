@@ -19,7 +19,8 @@ class PDF::DOM::Type::Annot::Widget
     has Hash $.MK is entry;            #| (Optional) An appearance characteristics dictionary to be used in constructing a dynamic appearance stream specifying the annotation’s visual presentation on the page.
     has Hash $.A is entry;             #| (Optional; PDF 1.1) An action to be performed when the link annotation is activated (see Section 8.5, “Actions”).
     has Hash $.AA is entry;            #| (Optional; PDF 1.2) An additional-actions dictionary defining the annotation’s behavior in response to various trigger events (see Section 8.5.2, “Trigger Events”).
-    has Hash $.BS is entry;            #| (Optional; PDF 1.2) A border style dictionary specifying the width and dash pattern to be used in drawing the annotation’s border.
+    use PDF::DOM::Type::Border;
+    has PDF::DOM::Type::Border $.BS is entry;            #| (Optional; PDF 1.2) A border style dictionary specifying the width and dash pattern to be used in drawing the annotation’s border.
                                        #| Note: The annotation dictionary’s AP entry, if present, takes precedence over the Land BS entries
 
 }
