@@ -8,7 +8,7 @@ use PDF::DOM;
 
 my $pdf = PDF::DOM.new;
 my $page = $pdf.add-page;
-$page.MediaBox =  [0, 0, 595, 842];
+$page.MediaBox = [0, 0, 595, 842];
 my $font = $page.core-font( :family<Helvetica>, :weight<bold> );
 $page.text: -> $_ {
     .text-position = [100, 150];
@@ -22,11 +22,19 @@ $info.CreationDate = DateTime.now;
 $pdf.save-as: "helloworld.pdf";
 ```
 
-The PDF::DOM::Type namespace contains class librarys that map
-internal data structures of PDF files including rules for coercement, type-checking and
-serialization.
+### Viewer Preferences
+```
+    use PDF::DOM;
+    use PDF::DOM::Type::Catalog;
+    my $pdf = PDF::DOM.new;
+    my $doc = $pdf.Root;
+    my $prefs = $doc.ViewerPreferences //= {};
+
+    $prefs.Duplex = 'DuplexFlipShortEdge';
+    $prefs.PageMode = 'UseOutlines';
+    # ...etc, see PDF::DOM::Type::ViewerPreferences
+```
 
 ## Development Status
 
-This module is under construction and not yet functionally complete. For progress
-blogs see https://questhub.io/realm/perl/quest/54e66776070ccfd33800012a.
+This module is under construction and not yet functionally complete.

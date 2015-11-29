@@ -24,7 +24,7 @@ role PDF::DOM::Type::ViewerPreferences
 
     use PDF::DAO::Name;
     my subset PageModes of PDF::DAO::Name where 'UseNone' | 'UseOutlines' | 'UseThumbs' | 'UseOC';
-    has PageModes $.NonFullScreenPageMode is entry; #| (Optional) The document’s page mode, specifying how to display the document on exiting full-screen mode:
+    has PageModes $.NonFullScreenPageMode is entry(:alias<PageMode>); #| (Optional) The document’s page mode, specifying how to display the document on exiting full-screen mode:
                                                 #|  - UseNoneNeither      : document outline nor thumbnail images visible
                                                 #|  - UseOutlinesDocument : outline visible
                                                 #|  - UseThumbsThumbnail  : images visible
