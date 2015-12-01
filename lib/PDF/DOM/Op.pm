@@ -5,19 +5,103 @@ use PDF::DAO::Util :from-ast;
 
 role PDF::DOM::Op {
 
+=begin pod
+
+This role implements methods and mnemonics for the full operator table, as defined in specification [PDF 1.7 Appendix A]:
+
+=begin table
+* Operator * | *Mnemonic* | *Arguments* | *Description*
+b | CloseFillStroke | | Close, fill, and stroke path using nonzero winding number rule
+B | FillStroke | | Fill and stroke path using nonzero winding number rule
+b* | CloseEOFillStroke | | Close, fill, and stroke path using even-odd rule
+B* | EOFillStroke | | Fill and stroke path using even-odd rule
+BDC | BeginMarkedContentDict | | (PDF 1.2) Begin marked-content sequence with property list
+BI | BeginImage | | Begin inline image object
+BMC | BeginMarkedContent | | (PDF 1.2) Begin marked-content sequence
+BT | BeginText | | Begin text object
+BX | BeginIgnore | | (PDF 1.1) Begin compatibility section
+c | CurveTo | | Append curved segment to path (three control points)
+cm | ConcatMatrix | | Concatenate matrix to current transformation matrix
+CS | SetStrokeColorSpace | | (PDF 1.1) Set color space for stroking operations
+cs | SetFillColorSpace | | (PDF 1.1) Set color space for nonstroking operations
+d | SetDash | | Set line dash pattern
+d0 | SetCharWidth | | Set glyph width in Type 3 font
+d1 | SetCharWidthBBox | | Set glyph width and bounding box in Type 3 font
+Do | XObject | | Invoke named XObject
+DP | MarkPoint | | (PDF 1.2) Define marked-content point with property list
+EI | EndImage | | End inline image object
+EMC | EndMarkedContent | | (PDF 1.2) End marked-content sequence
+ET | EndText | | End text object
+EX | EndIgnore | | (PDF 1.1) End compatibility section
+f | Fill | | Fill path using nonzero winding number rule
+F | (n/a) | | Fill path using nonzero winding number rule (obsolete)
+f* | EOFill| | Fill path using even-odd rule
+G | SetStrokeGray | | Set gray level for stroking operations
+g | SetFillGray | | Set gray level for nonstroking operations
+gs | SetGraphicsState | | (PDF 1.2) Set parameters from graphics state parameter dictionary
+h | ClosePath | | Close subpath
+i | SetFlat | | Set flatness tolerance
+ID | ImageData | | Begin inline image data
+j | SetLineJoin | | Set line join style
+J | SetLineCap | | Set line cap style
+K | SetStrokeCMYK | | Set CMYK color for stroking operations
+k | SetFillCMYK | | Set CMYK color for nonstroking operations
+l | LineTo | | Append straight line segment to path
+m | MoveTo | | Begin new subpath
+M | SetMiterLimit | | Set miter limit
+MP | MarkPoint2 | | (PDF 1.2) Define marked-content point
+n | EndPath | | End path without filling or stroking
+q | Save | | Save graphics state
+Q | Restore | | Restore graphics state
+re | Rectangle | | Append rectangle to path
+RG | SetStrokeRGB | | Set RGB color for stroking operations
+rg | SetFillRGB | | Set RGB color for nonstroking operations
+ri | SetRenderingIntent | | Set color rendering intent
+s | CloseStroke | | Close and stroke path
+S | Stroke | | Stroke path
+SC | SetStrokeColor | | (PDF 1.1) Set color for stroking operations
+sc | SetFillColor | | (PDF 1.1) Set color for nonstroking operations
+SCN | SetStrokeColorN| | (PDF 1.2) Set color for stroking operations (ICCBased and special color spaces)
+scn | SetFillColorN | | (PDF 1.2) Set color for nonstroking operations (ICCBased and special color spaces)
+sh | ShFill | | (PDF 1.3) Paint area defined by shading pattern
+T* | TextNextLine | | Move to start of next text line
+Tc | SetCharSpacing| | Set character spacing
+Td | TextMove | | Move text position
+TD | TextMoveSet | | Move text position and set leading
+Tf | SetFont | | Set text font and size
+Tj | ShowText | | Show text
+TJ | ShowSpaceText | | Show text, allowing individual glyph positioning
+TL | SetTextLeading | | Set text leading
+Tm | SetTextMatrix | | Set text matrix and text line matrix
+Tr | SetTextRender | | Set text rendering mode
+Ts | SetTextRise | | Set text rise
+Tw | SetWordSpacing | | Set word spacing
+Tz | SetHorizScaling | | Set horizontal text scaling
+v | CurveTo1 | | Append curved segment to path (initial point replicated)
+w | SetLineWidth | | Set line width
+W | Clip | | Set clipping path using nonzero winding number rule
+W* | EOClip | | Set clipping path using even-odd rule
+y | CurveTo2 | | Append curved segment to path (final point replicated)
+' | MoveShowText | | Move to next line and show text
+" | MoveSetShowText | | Set word and character spacing, move to next line, and show text
+
+=end table
+
+=end pod
+
     has Pair @!ops;
     has Bool $!strict = True;
 
     #| some convenient mnemomic names
     my Str enum OpNames is export(:OpNames) «
         :BeginImage<BI> :ImageData<ID> :EndImage<EI>
-        :BeginMarkedContent<BMC> :BeginMarkedContent2<BDC> :EndMarkedContent<EMC>
+        :BeginMarkedContent<BMC> :BeginMarkedContentDict<BDC> :EndMarkedContent<EMC>
         :BeginText<BT> :EndText<ET>
         :BeginIgnore<BX> :EndIgnore<EX>
         :CloseEOFillStroke<b*> :CloseFillStroke<b> :EOFillStroke<B*>
         :FillStroke<B> :CurveTo<c> :ConcatMatrix<cm>
         :SetFillColorSpace<cs> :SetStrokeColorSpace<CS> :SetDash<d>
-        :SetCharWidth<d0> :SetCacheDevice<d1> :XObject<Do>
+        :SetCharWidth<d0> :SetCharWidthBBox<d1> :XObject<Do>
         :MarkPoint<DP> :EOFill<f*> :Fill<f> :SetStrokeGray<G>
         :SetFillGray<g> :SetGraphicsState<gs> :ClosePath<h> :SetFlat<i>
         :SetLineJoin<j> :SetLineCap<J> :SetFillCMYK<k>

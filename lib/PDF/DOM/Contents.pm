@@ -1,6 +1,6 @@
 use v6;
 
-#| this role is applied to PDF::DOM::Type::Pages and PDF::DOM::Type::XObject::Form
+#| this role is applied to PDF::DOM::Type::Page, PDF::DOM::Type::Pattern and PDF::DOM::Type::XObject::Form
 role PDF::DOM::Contents {
 
     use PDF::DOM::Contents::Gfx;
