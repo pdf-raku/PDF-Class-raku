@@ -55,7 +55,7 @@ dies-ok {$g.content}, 'content with unclosed "BT" - dies';
 
 is-json-equiv $g.op(EndText), (:ET[]), 'EndText';
 
-ok !$g.TextMatrix.defined, '$g.TextMatrix - outside of text block';
+is-json-equiv $g.TextMatrix, [1, 0, 0, 1, 0, 0, ], '$g.TextMatrix - outside of text block';
 is-json-equiv $g.GraphicsMatrix, [115, 12, 180, 19, 93, 15], '$g.GraphicMatrix - outside of text block';
 
 dies-ok {$g.content}, 'content with unclosed "q" (gsave) - dies';

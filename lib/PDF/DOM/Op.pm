@@ -126,7 +126,7 @@ y | CurveTo2 | | Append curved segment to path (final point replicated)
     my constant ShadingOps = set <CS cs SC SCN sc scn G g RG rg K k>;
     has %.gstate = %(:CTM[ 1, 0, 0, 1, 0, 0 ]);
 
-    has Array $!Tm = [ 1, 0, 0, 1, 0, 0, ];      #| text matrix
+    has Numeric @!Tm = [ 1, 0, 0, 1, 0, 0, ];      #| text matrix
 
     # *** TEXT STATE ***
     has Numeric $!Tc = 0;   #| character spacing
@@ -141,8 +141,7 @@ y | CurveTo2 | | Append curved segment to path (final point replicated)
     has @!tags;
     has Bool $.in-text-block = False;
 
-    method TextMatrix  is rw { $!Tm  }
-
+    method TextMatrix   is rw { @!Tm }
     method CharSpacing  is rw { $!Tc  }
     method WordSpacing  is rw { $!Tw  }
     method HorizScaling is rw { $!Th  }
@@ -410,14 +409,13 @@ y | CurveTo2 | | Append curved segment to path (final point replicated)
     multi method g-track('BT') {
         die "illegal nesting of BT text-blocks in PDF content\n"
             if @!tags && @!tags[*-1] eq 'BT';
-        $!Tm = [ 1, 0, 0, 1, 0, 0 ];
 	@!tags.push: 'BT';
         $!in-text-block = True;
     }
     multi method g-track('ET') {
 	die "closing ET without opening BT in PDF content\n"
 	    unless @!tags && @!tags[*-1] eq 'BT';
-        $!Tm = Nil;
+        @!Tm = [ 1, 0, 0, 1, 0, 0, ];
 	@!tags.pop;
         $!in-text-block = False;
     }
@@ -455,8 +453,7 @@ y | CurveTo2 | | Append curved segment to path (final point replicated)
     multi method g-track('Ts', Numeric $Ts!) {
 	$.TextRise = $Ts
     }
-    multi method g-track('Tm', *@Tm) {
-	$!Tm = [ @Tm ];
+    multi method g-track('Tm', *@!Tm) {
     }
     multi method g-track('Td', Numeric $tx!, Numeric $ty) {
         $.TextMatrix[4] += $tx;
