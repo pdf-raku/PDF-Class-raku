@@ -41,13 +41,14 @@ my $x = 110;
 $gfx.BeginText;
 $gfx.set-font( $reg-font, 10);
 
-my $sample = q:to"--ENOUGH!!--".subst(/\n/, ' ', :g);
+my $sample = q:to"--ENOUGH!!--";
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
 ut labore et dolore magna aliqua.
 --ENOUGH!!--
 
-my $sample2 = q:to"--I-SAID, ENOUGH!!--".subst(/\n/, ' ', :g);
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+my $sample2 = q:to"--I-SAID, ENOUGH!!--";
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 ut labore et dolore magna aliqua.
 --I-SAID, ENOUGH!!--
 

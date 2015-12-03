@@ -9,6 +9,7 @@ class PDF::DOM::Contents::Text::Block {
     has Numeric $.font-height;
     has Numeric $.font-base-height;
     has Numeric $.font-size;
+    has Str     $.font-key;
     has Numeric $.horiz-scaling = 100;
     has Numeric $.char-spacing = 0;
     has Numeric $.word-spacing = 0;
@@ -25,9 +26,10 @@ class PDF::DOM::Contents::Text::Block {
 
     multi submethod BUILD(Str :$text!,
                           :$font!,
+                          :$!font-key = $font.key,
 			  :$!font-size = 16,
                           :$kern       = False,
-                          *%etc) {
+			  |c) {
 
 	$!font-height = $font.height( $!font-size );
 	$!font-base-height = $font.height( $!font-size, :from-baseline );
@@ -35,10 +37,10 @@ class PDF::DOM::Contents::Text::Block {
 
         my @chunks = flat $text.comb(/ [ <![ - ]> [ \w | <:Punctuation> ] ]+ '-'?
                                 || .
-                                /).map( -> $word {
-                                    $kern
-                                        ?? $font.kern($word, $!font-size).list
-                                        !! $font.filter($word)
+                                /).map( {
+				    when /\n/  {' '}
+                                    when $kern { $font.kern($_, $!font-size).list }
+                                    default    { $font.filter($_) }
                                  });
 
         constant NO-BREAK-WS = rx/ <[ \c[NO-BREAK SPACE] \c[NARROW NO-BREAK SPACE] \c[WORD JOINER] ]> /;
@@ -79,7 +81,7 @@ class PDF::DOM::Contents::Text::Block {
             @atoms.push: $atom;
         }
 
-        self.BUILD( :@atoms, |%etc );
+        self.BUILD( :@atoms, |c );
     }
 
     multi submethod BUILD(:@atoms!,

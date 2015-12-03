@@ -35,13 +35,13 @@ class PDF::DOM::Contents::Gfx
               Numeric $y!,
               Numeric :$width is copy,
               Numeric :$height is copy,
-              Align :$align   = 'left',
-              Valign :$valign = 'bottom',
-              Bool :$inline = False,
+              Align   :$align  = 'left',
+              Valign  :$valign = 'bottom',
+              Bool    :$inline = False,
         )  {
 
         my Numeric $dx = { :left(0),   :center(-.5), :right(-1) }{$align};
-        my Numeric $dy = { :bottom(0), :center(-.5), :top(-1)  }{$valign};
+        my Numeric $dy = { :bottom(0), :center(-.5), :top(-1)   }{$valign};
 
         given $obj {
             when .Subtype eq 'Image' {
@@ -151,13 +151,12 @@ class PDF::DOM::Contents::Gfx
     }
 
     #! output text leave the text position at the end of the current line
-    method print(Str $text,
-                 Bool :$dry-run = False,
-                 Bool :$nl = False,
-		 :$font is copy,
-                 |c,  #| :$align, :$kern, :$line-height, :$width, :$height
+    multi method print(Str $text,
+		       Bool :$stage = False,
+		       :$font is copy,
+		       |c,  #| :$align, :$kern, :$line-height, :$width, :$height
         ) {
-	# detect and use the currenttext-state font
+	# detect and use the current text-state font
         $font //= $.parent.resource-entry('Font', $.FontKey)
             if $.FontKey;
         $font //= $!parent.core-font('Courier');
@@ -165,30 +164,41 @@ class PDF::DOM::Contents::Gfx
 	my Numeric $word-spacing = $.WordSpacing;
 	my Numeric $horiz-scaling = $.HorizScaling;
 	my Numeric $char-spacing = $.CharSpacing;
+
         my $text-block = PDF::DOM::Contents::Text::Block.new( :$text, :$font, :$font-size,
 							      :$word-spacing, :$horiz-scaling, :$char-spacing,
 							      |c );
 
-        unless $dry-run {
+	$.print( $text-block, |c)
+	    unless $stage;
 
-	    my Bool $in-text = $.in-text-block;
-	    $.op(BeginText) unless $in-text;
+	$text-block;
+    }
 
-            $.op(SetFont, $font.key, $font-size)
-                unless $.FontKey
-                && $font.key eq $.FontKey
-                && $font-size == $.FontSize;
-            $.ops( $text-block.content(:$nl) );
+    multi method print(PDF::DOM::Contents::Text::Block $text-block,
+		       Bool :$nl = False,
+	) {
 
-	    $.op(EndText) unless $in-text;
-        }
+	my $font-size = $text-block.font-size;
+	my $font-key = $text-block.font-key;
 
-        return $text-block;
+	my Bool $in-text = $.in-text-block;
+	$.op(BeginText) unless $in-text;
+
+	$.op(SetFont, $font-key, $font-size)
+	    unless $.FontKey
+	    && $font-key eq $.FontKey
+	    && $font-size == $.FontSize;
+	$.ops( $text-block.content(:$nl) );
+
+	$.op(EndText) unless $in-text;
+
+        $text-block;
     }
 
     #! output text move the  text position down one line
-    method say($text, *%opt) {
-        $.print($text, :nl, |%opt);
+    method say($text, |c) {
+        $.print($text, :nl, |c);
     }
 
 }

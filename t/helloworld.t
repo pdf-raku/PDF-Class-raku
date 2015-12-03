@@ -29,13 +29,13 @@ $page.graphics: -> $gfx {
 	    $txt.set-font($header-font, 18);
 	    $txt.say( $header, :$width, :$align);
 
-	    my $body = q:to"--ENOUGH!!--".subst(/\n/, ' ', :g);
+	    my $para = q:to"--ENOUGH!!--";
 	    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
 	    ut labore et dolore magna aliqua.
 	    --ENOUGH!!--
 
 	    $txt.set-font($font, $font-size);
-	    my $text-block = $txt.say( $body, :$font, :$font-size, :$width, :$align, :kern);
+	    my $text-block = $txt.say( $para, :$width, :$align, :kern);
 	    isa-ok $text-block, ::('PDF::DOM::Contents::Text::Block');
 	    $x += 275;
         }
