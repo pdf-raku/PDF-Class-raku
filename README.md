@@ -42,7 +42,71 @@ $pdf.save-as: "helloworld.pdf";
 
 The PDF::DOM::Contents::Gfx role is performed by PDF::DOM::Type::Page (as shown here), and also PDF::DOM::Type::Pattern and PDF::DOM::Type::XObject::Form.
 
-#### Low level graphics
+#### Text
+
+`.say` and `.print` are simple convenience methods for displaying simple blocks of text with optional line-wrapping, alignment and kerning.
+
+```
+my $doc = $pdf.Root;
+my $page = $doc.add-page;
+my $font = $page.core-font( :family<Helvetica> );
+
+$page.txt -> $txt {
+    my $para = q:to"--END--";
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+    ut labore et dolore magna aliqua.
+    --END--
+            
+    $txt.set-font($font, $font-size);
+    $txt.say( $body, :width(200), :height(150) :align<right>, :kern);
+}
+```
+
+#### Forms and images (`.image` and  `.do` methods):
+
+The `.image` method can be used to load an image and register it as a page resource.
+The `.do` method can them be used to render it.
+
+```
+	my $img = $gfx.image("t/images/snoopy-happy-dance.jpg");
+	ok $img.Width, '$img.Width';
+	$gfx.do($img, 232, 380, :width(150) );
+```
+
+Note: at this stage, only the `JPEG` image format is supported.
+
+### Graphical effects and transformations
+
+The following displays the image again semi-transparently with translation, rotation, scaling
+
+```
+    $page.graphics: -> $gfx {
+	$gfx.transform( :translate[285, 250]);
+	$gfx.transform( :rotate(-10), :scale(1.5) );
+	$gfx.set-graphics( :transparency(.5) );
+	$gfx.do($img, 232, 380, :width(150) );
+    }
+```
+
+For a full description of `.set-graphics` options, please see PDF::DOM::Type::ExtGState.
+
+To display card suits symbols, using the ZapfDingbats core-font. Diamond and hearts colored red:
+
+```
+    $page.text: -> $txt {
+        $txt.text-position = [240, 600];
+        $txt.set-font($page.core-font('ZapfDingbats'), 24);
+        $txt.SetWordSpacing(16);
+        my $nbsp = "\c[NO-BREAK SPACE]";
+        $txt.print("♠ ♣$nbsp");
+        $txt.SetFillRGB( 1, .3, .3);  # redish
+	$txt.say("♦ ♥");
+    }
+```
+
+#### Low level graphics, colors and drawing
+
+PDF::DOM::Contents::Gfx inherits from PDF::DOM::Op, which implements low level contents operations:
 
 ```
 use PDF::DOM;
@@ -85,7 +149,6 @@ sub draw-curve2($gfx) {
 ```
 
 2. from a string of content instructions:
-
 ```
 sub draw-curve3($gfx) {
     $gfx.ops: q:to"--END--"
@@ -100,8 +163,21 @@ sub draw-curve3($gfx) {
 }
 ```
 
-For a full list of operators, please see PDF::DOM::Op.
+For a full list of operators, please see PDF::DOM::Op documentaton.
+
 
 ## Development Status
 
 This module is under construction and not yet functionally complete.
+
+# Bugs and Restrictions
+At this stage:
+- Only core fonts are supported. There are a total of 14
+font variations available. Please see the Font::AFM module for details.
+- Only JPEG images are supported. This is basically a port of PDF::API2::XObject::Image::JPEG
+from the Perl 5 PDF::API2 module. Other image types should port fairly readily.
+- The classess in the PDF::DOM::Type::* namespace represent a common subset of
+the objects that can appear in a PDF. It is envisioned that the range of classes
+with expand over time to cover most or all types described in the PDF specification.
+- Many of the classes are skeletal at the moment and do little more that declare
+fields for validation purposes; for example, the classes in the PDF::DOM::Type::Font::* namespace.
