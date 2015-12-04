@@ -90,6 +90,8 @@ The following displays the image again semi-transparently with translation, rota
 
 For a full description of `.set-graphics` options, please see PDF::DOM::Type::ExtGState.
 
+### Text effects
+
 To display card suits symbols, using the ZapfDingbats core-font. Diamond and hearts colored red:
 
 ```
@@ -104,9 +106,22 @@ To display card suits symbols, using the ZapfDingbats core-font. Diamond and hea
     }
 ```
 
+Display outline, slanted text, using the ShowText (`Td`) operator:
+
+```
+    $page.text: -> $txt {
+         use PDF::DOM::Op :TextMode;
+        .set-font( $header-font, 12);
+        .SetTextRender: TextMode::OutlineText;
+        .SetLineWidth: .5;
+        .text-transform( :translate[50, 550], :slant(12) );
+        .ShowText('Outline Slanted Text @(50,550)');
+     }
+```
+
 #### Low level graphics, colors and drawing
 
-PDF::DOM::Contents::Gfx inherits from PDF::DOM::Op, which implements low level contents operations:
+PDF::DOM::Contents::Gfx inherits from PDF::DOM::Op, which implements the full range of PDF content operations:
 
 ```
 use PDF::DOM;

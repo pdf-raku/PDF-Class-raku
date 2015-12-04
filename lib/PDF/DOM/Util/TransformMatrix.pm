@@ -82,14 +82,16 @@ module PDF::DOM::Util::TransformMatrix {
     #| order of transforms is: 1. Translate  2. Rotate 3. Scale/Skew
 
     our sub transform-matrix(
+	Numeric :$slant,
 	:$translate,
-	:$rotate?,
-	:$scale?,
-	:$skew?,
-	:$matrix?,
+	:$rotate,
+	:$scale,
+	:$skew,
+	:$matrix,
 	--> TransformMatrix
 	) {
 	my TransformMatrix $t = identity();
+	apply($t, skew( 0, $slant) )                   if $slant;
 	apply($t, translate( |@( vect($translate) ) )) if $translate.defined;
 	apply($t, rotate( $rotate ))                   if $rotate.defined;
 	apply($t, scale( |@( vect($scale) ) ))         if $scale.defined;

@@ -141,9 +141,9 @@ y | CurveTo2 | x1 y1 x3 y3 | Append curved segment to path (final point replicat
     has Numeric $!Tw = 0;   #| word spacing
     has Numeric $!Th = 100; #| horizontal scaling
     has Numeric $!Tl = 0;   #| leading
+    has Numeric $!Trise = 0;
     has Str $!Tf;           #| font entry name, e.g. 'F1'
     has Numeric $!Tfs;      #| font size
-    has Numeric $!Trise = 0;
 
     has @!gsave;
     has @!tags;

@@ -74,15 +74,18 @@ $page.graphics: -> $gfx {
 
 }
 
-$page.text: -> $_ {
-    $page.graphics: -> $_ {
+$page.graphics: -> $_ {
+    $page.text: -> $_ {
          use PDF::DOM::Op :TextMode;
-        .set-font( $header-font, 16);
+        .set-font( $header-font, 12);
         .SetTextRender: TextMode::OutlineText;
-        .SetLineWidth: 1;
-        .text-transform( :translate[50, 500], :skew[0, 12] );
-        .say('Outline Slanted Text @(50,500)');
+        .SetLineWidth: .5;
+        .text-transform( :translate[50, 550], :slant(12) );
+        .ShowText('Outline Slanted Text @(50,550)');
     }
+}
+
+$page.text: -> $_ {
     .text-position = [100, 300];
     .set-font( $header-font, 24);
     .say('Hello, world!');
