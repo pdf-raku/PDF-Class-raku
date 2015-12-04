@@ -1,6 +1,6 @@
 # perl6-PDF-DOM
 
-PDF::DOM is a Perl 6 module for the creation and manipulation of PDF files.
+PDF::DOM is a set of intermediate Perl 6 classes for structured manupilation of PDF documents.
 
 ```
 use v6;

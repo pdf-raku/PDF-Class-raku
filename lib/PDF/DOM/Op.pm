@@ -124,6 +124,14 @@ y | CurveTo2 | x1 y1 x3 y3 | Append curved segment to path (final point replicat
     my constant GeneralGraphicOps = set <w J j M d ri i gs>;
     my constant SpecialGraphicOps = set <q Q cm>;
     my constant ShadingOps = set <CS cs SC SCN sc scn G g RG rg K k>;
+
+    #| [PDF 1.7 TABLE 5.3 Text rendering modes]
+    my Int enum TextMode is export(:TextMode) «
+	:FillText(0) :OutlineText(1) :FillOutlineText(2)
+        :InvisableText(3) :FillClipText(4) :OutlineClipText(5)
+        :FillOutlineClipText(6) :ClipText(7)
+    »;
+
     has %.gstate = %(:CTM[ 1, 0, 0, 1, 0, 0 ]);
 
     has Numeric @!Tm = [ 1, 0, 0, 1, 0, 0, ];      #| text matrix

@@ -75,10 +75,19 @@ $page.graphics: -> $gfx {
 }
 
 $page.text: -> $_ {
+    $page.graphics: -> $_ {
+         use PDF::DOM::Op :TextMode;
+        .set-font( $header-font, 16);
+        .SetTextRender: TextMode::OutlineText;
+        .SetLineWidth: 1;
+        .text-transform( :translate[50, 500], :skew[0, 12] );
+        .say('Outline Slanted Text @(50,500)');
+    }
     .text-position = [100, 300];
     .set-font( $header-font, 24);
     .say('Hello, world!');
 }
+
 my $info = $pdf.Info = {}
 $info.Author = 't/helloworld.t';
 $info.Creator = 'PDF::Tools';
