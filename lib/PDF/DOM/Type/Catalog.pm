@@ -17,6 +17,7 @@ my class Catalog
     use PDF::DAO::Array;
     use PDF::DAO::Dict;
     use PDF::DAO::Name;
+    use PDF::DAO::Null;
     use PDF::DAO::Stream;
     use PDF::DAO::TextString;
     use PDF::DOM::Type::Pages;
@@ -47,16 +48,15 @@ my class Catalog
 
     has PDF::DAO::Array $.Threads is entry(:indirect);        #| (Optional; PDF 1.1; must be an indirect reference) An array of thread dictionaries representing the document’s article threads
 
-    subset ArrayOrDict of PDF::DAO where PDF::DAO::Array|PDF::DAO::Dict;
-    has ArrayOrDict $.OpenAction is entry;                  #| (Optional; PDF 1.1) A value specifying a destination to be displayed or an action to be performed when the document is opened.
+    use PDF::DOM::Type::Action;
+    has PDF::DOM::Type::Action::Destination $.OpenAction is entry;               #| (Optional; PDF 1.1) A value specifying a destination to be displayed or an action to be performed when the document is opened.
 
     has PDF::DAO::Dict $.AA is entry;                    #| (Optional; PDF 1.4) An additional-actions dictionary defining the actions to be taken in response to various trigger events affecting the document as a whole
 
     has PDF::DAO::Dict $.URI is entry;                   #| (Optional; PDF 1.1) A URI dictionary containing document-level information for URI
 
     use PDF::DOM::Type::AcroForm;
-    has PDF::DOM::Type::AcroForm $.AcroForm is entry;
-                                                            #| (Optional; PDF 1.2) The document’s interactive form (AcroForm) dictionary
+    has PDF::DOM::Type::AcroForm $.AcroForm is entry;    #| (Optional; PDF 1.2) The document’s interactive form (AcroForm) dictionary
 
     has PDF::DAO::Stream $.Metadata is entry(:indirect); #| (Optional; PDF 1.4; must be an indirect reference) A metadata streamcontaining metadata for the document
 

@@ -21,6 +21,7 @@
         "PDF::DOM::Type" : "lib/PDF/DOM/Type.pm",
 
         "PDF::DOM::Type::AcroForm" : "lib/PDF/DOM/Type/AcroForm.pm",
+        "PDF::DOM::Type::Action" : "lib/PDF/DOM/Type/Action.pm",
 
         "PDF::DOM::Type::Annot" : "lib/PDF/DOM/Type/Annot.pm",
         "PDF::DOM::Type::Annot::Circle" : "lib/PDF/DOM/Type/Annot/Circle.pm",

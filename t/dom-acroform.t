@@ -12,6 +12,9 @@ isa-ok $doc, ::('PDF::DOM::Type::Catalog'), 'document root';
 my $acroform = $doc.AcroForm;
 does-ok $doc.AcroForm, ::('PDF::DOM::Type::AcroForm');
 
+lives-ok {$doc.OpenAction}, '$doc.OpenAction';
+does-ok $doc.AcroForm, ::('PDF::DOM::Type::AcroForm');
+
 my @fields = $acroform.fields;
 isa-ok @fields, Array, '.Fields';
 is +@fields, 17, 'fields count';

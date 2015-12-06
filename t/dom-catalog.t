@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 31;
+plan 36;
 
 use PDF::DOM::Type;
 use PDF::Storage::IndObj;
@@ -65,6 +65,12 @@ my $viewer-preferences = $catalog.ViewerPreferences;
 does-ok $viewer-preferences, ::('PDF::DOM::Type::ViewerPreferences'), '$.ViewerPreferences role';
 is-json-equiv $viewer-preferences.HideToolbar, True, '$.ViewerPreferences.HideToolbar';
 is-json-equiv $viewer-preferences.Direction, 'R2L', '$.ViewerPreferences.Direction';
+
+dies-ok { $catalog.OpenAction = [{}, 'FitH', 'blah' ] }, '$catalog.OpenAction assignment - invalid';
+lives-ok { $catalog.OpenAction = [{}, 'FitH', 42 ] }, '$catalog.OpenAction assignment - numeric';
+is-json-equiv $catalog.OpenAction, [{}, 'FitH', 42 ], '$catalog.OpenAction assignment - numeric';
+lives-ok { $catalog.OpenAction = [{}, 'FitH', PDF::DAO.coerce( :null(Any) ) ] }, '$catalog.OpenAction assignment - null';
+is-json-equiv $catalog.OpenAction, [{}, 'FitH', Mu ], '$catalog.OpenAction assignment - null';
 
 lives-ok {$catalog.core-font('Helvetica')}, 'can add resource (core-font) to catalog';
 is-json-equiv $catalog.Resources, {:Font{
