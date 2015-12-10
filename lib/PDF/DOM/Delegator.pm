@@ -30,7 +30,7 @@ class PDF::DOM::Delegator
 
 	for self.class-paths -> $class-path {
 	    try {
-		require ::($class-path)::($subclass);
+		try { require ::($class-path)::($subclass) };
 		$handler-class = ::($class-path)::($subclass);
 		$resolved = True;
 	    }
