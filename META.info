@@ -21,7 +21,10 @@
         "PDF::DOM::Type" : "lib/PDF/DOM/Type.pm",
 
         "PDF::DOM::Type::AcroForm" : "lib/PDF/DOM/Type/AcroForm.pm",
+
         "PDF::DOM::Type::Action" : "lib/PDF/DOM/Type/Action.pm",
+        "PDF::DOM::Type::Action::GoTo" : "lib/PDF/DOM/Type/Action/GoTo.pm",
+	// todo: complete action types - see [PDF 1.7 TABLE 8.48 Action types]
 
         "PDF::DOM::Type::Annot" : "lib/PDF/DOM/Type/Annot.pm",
         "PDF::DOM::Type::Annot::Circle" : "lib/PDF/DOM/Type/Annot/Circle.pm",
@@ -29,6 +32,7 @@
         "PDF::DOM::Type::Annot::Square" : "lib/PDF/DOM/Type/Annot/Square.pm",
         "PDF::DOM::Type::Annot::Text" : "lib/PDF/DOM/Type/Annot/Text.pm",
         "PDF::DOM::Type::Annot::Widget" : "lib/PDF/DOM/Type/Annot/Widget.pm",
+        // todo: complete annotation types - see [PDF 1.7 TABLE 8.20 Annotation types]
 
         "PDF::DOM::Type::Appearance" : "lib/PDF/DOM/Type/Appearance.pm",
 

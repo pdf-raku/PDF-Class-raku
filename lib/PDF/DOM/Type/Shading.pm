@@ -40,10 +40,8 @@ class PDF::DOM::Type::Shading
 	    return self.WHAT;
 	}
 
-	my $type = ShadingTypes[$type-int - 1];
-
-	require ::(self.WHAT.^name)::($type);
-	return  ::(self.WHAT.^name)::($type);
+	my $subtype = ShadingTypes[$type-int - 1];
+	PDF::DAO.delegator.find-delegate( 'Shading::' ~ $subtype, :fallback(PDF::DOM::Type::Shading) );
     }
 
     method cb-init {

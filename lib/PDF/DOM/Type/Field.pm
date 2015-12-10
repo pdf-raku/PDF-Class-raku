@@ -26,8 +26,7 @@ role PDF::DOM::Type::Field
             when 'Ch'  {'Choice'}
             when 'Sig' {'Signature'}
 	};
-	require ::('PDF::DOM::Type::Field')::($field-role);
-	::('PDF::DOM::Type::Field')::($field-role);
+	PDF::DAO.delegator.find-delegate( 'Field::' ~ $field-role, :fallback(PDF::DOM::Type::Field) );
     }
 
     multi method field-delegate( PDF::DAO::Dict $dict)  {
@@ -55,7 +54,7 @@ role PDF::DOM::Type::Field
     }
 
     proto sub coerce( $, $ ) is export(:coerce) {*}
-    multi sub coerce( PDF::DAO::Dict $dict is rw, PDF::DOM::Type::Field $field ) is export(:coerce) {
+    multi sub coerce( PDF::DAO::Dict $dict is rw, PDF::DOM::Type::Field $field ) {
 	# refuse to coerce an annotation as a field
 	PDF::DAO.coerce( $dict, $field.field-delegate( $dict ) )
 	    unless is-annot-only($dict)

@@ -48,8 +48,8 @@ my class Catalog
 
     has PDF::DAO::Array $.Threads is entry(:indirect);        #| (Optional; PDF 1.1; must be an indirect reference) An array of thread dictionaries representing the document’s article threads
 
-    use PDF::DOM::Type::Action;
-    has PDF::DOM::Type::Action::Destination $.OpenAction is entry;               #| (Optional; PDF 1.1) A value specifying a destination to be displayed or an action to be performed when the document is opened.
+    use PDF::DOM::Type::Action :coerce;
+    has PDF::DOM::Type::Action::Destination $.OpenAction is entry(:&coerce);               #| (Optional; PDF 1.1) A value specifying a destination to be displayed or an action to be performed when the document is opened.
 
     has PDF::DAO::Dict $.AA is entry;                    #| (Optional; PDF 1.4) An additional-actions dictionary defining the actions to be taken in response to various trigger events affecting the document as a whole
 

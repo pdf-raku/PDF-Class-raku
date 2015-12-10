@@ -30,16 +30,15 @@ class PDF::DOM::Delegator
 
 	for self.class-paths -> $class-path {
 	    try {
-		try { require ::($class-path)::($subclass) };
+		require ::($class-path)::($subclass);
 		$handler-class = ::($class-path)::($subclass);
 		$resolved = True;
 	    }
 	    last if $resolved;
 	}
 		
-        unless $resolved {
-           note "No DOM handler class [{self.class-paths}]::{$subclass}";
-        }
+	note "No DOM handler class [{self.class-paths}]::{$subclass}"
+	    unless $resolved;
 
         self.install-delegate( $subclass, $handler-class );
     }

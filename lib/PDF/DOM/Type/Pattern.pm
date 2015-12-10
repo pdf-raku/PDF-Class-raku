@@ -8,6 +8,7 @@ role PDF::DOM::Type::Pattern
     does PDF::DOM::Contents
     does PDF::DOM::Resources {
 
+    use PDF::DAO;
     use PDF::DAO::Tie;
     use PDF::DAO::Name;
     #| /Type entry is optional, but should be /Pattern when present
@@ -34,9 +35,7 @@ role PDF::DOM::Type::Pattern
 	}
 
 	my $subtype = PatternNames{~$type-int};
-
-	require ::(self.WHAT.^name)::($subtype);
-	return  ::(self.WHAT.^name)::($subtype);
+	PDF::DAO.delegator.find-delegate( 'Pattern::' ~ $subtype, :fallback(PDF::DOM::Type::Pattern) );
     }
 
     method cb-init {

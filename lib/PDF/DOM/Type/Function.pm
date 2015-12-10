@@ -34,10 +34,8 @@ class PDF::DOM::Type::Function
 	    return self.WHAT;
 	}
 
-	my $function = FunctionTypes[$function-type];
-
-	require ::(self.WHAT.^name)::($function);
-	return  ::(self.WHAT.^name)::($function);
+	my $subtype = FunctionTypes[$function-type];
+	PDF::DAO.delegator.find-delegate( 'Function::' ~ $subtype, :fallback(PDF::DOM::Type::Function) );
     }
 
     method cb-init {
