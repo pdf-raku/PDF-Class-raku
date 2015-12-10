@@ -22,7 +22,7 @@ multi sub is-destination(|c)                      is default { False }
 my subset DestinationArray of Array where is-destination(|@$_);
 subset PDF::DOM::Type::Action::Destination of PDF::DAO where DestinationArray | PDF::DOM::Type::Action; #| e.g. for Catalog /OpenAction entry
 
-# /Type /OutputIntent
+# /Type /Action
 
 role PDF::DOM::Type::Action
     does PDF::DAO::Tie::Hash {
@@ -57,14 +57,31 @@ role PDF::DOM::Type::Action
 
     has ActionSubtype $.S is entry(:required);
 
+    proto sub coerce($,$) is export(:coerce) {*}
+
+    multi sub coerce(Hash $dict is rw where { .<S> ~~ ActionSubtype }, PDF::DOM::Type::Action) {
+	my $subclass = PDF::DAO.delegator.find-delegate( 'Action::' ~ $dict<S>, :fallback(PDF::DOM::Type::Action) );
+	PDF::DAO.coerce($dict, $subclass);
+    }
+
+    multi sub coerce(Hash $dict is rw, PDF::DOM::Type::Action) is default {
+	warn "unknown action subtype: $dict<S>"
+	    if $dict<S>:exists;
+	PDF::DAO.coerce($dict, PDF::DOM::Type::Action);
+    }
+
+    multi sub coerce(Hash $dict is rw, PDF::DOM::Type::Action::Destination) {
+	coerce( $dict, PDF::DOM::Type::Action );
+    }
+
     my subset NextActionArray of Array where { !.first( !*.isa(PDF::DOM::Type::Action) ) }
     my subset NextAction of Any where PDF::DOM::Type::Action | NextActionArray;
 
     multi sub coerce(Hash $actions, NextAction) {
-      PDF::DAO::Coerce( $_, PDF::DOM::Type::Action )
+      PDF::DAO.coerce( $_, PDF::DOM::Type::Action )
     }
     multi sub coerce(Array $actions, NextAction) {
-      PDF::DAO::Coerce( $actions[$_], PDF::DOM::Type::Action )
+      PDF::DAO.coerce( $actions[$_], PDF::DOM::Type::Action )
 	  for $actions.keys;
     }
 
