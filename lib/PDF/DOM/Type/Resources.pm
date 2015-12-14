@@ -2,16 +2,16 @@ use v6;
 
 use PDF::DAO::Tie::Hash;
 
-my role ResourceEntry {
-    has Str $.key is rw;
-}
-
-my role Resources
+role PDF::DOM::Type::Resources
     does PDF::DAO::Tie::Hash {
 
     use PDF::DAO::Tie;
     use PDF::DAO::Name;
     use PDF::DAO::Stream;
+
+    my role ResourceEntry {
+	has Str $.key is rw;
+    }
 
     # See [pDF 1.7 TABLE 3.30 Entries in a resource dictionary]
 
@@ -125,4 +125,3 @@ my role Resources
 
 }
 
-role PDF::DOM::Type::Resources does Resources {}

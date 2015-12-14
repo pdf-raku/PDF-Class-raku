@@ -2,7 +2,7 @@ use v6;
 
 use PDF::DOM::Type::Annot;
 
-my class Square
+class PDF::DOM::Type::Annot::Square
     is PDF::DOM::Type::Annot {
 
     use PDF::DAO::Tie;
@@ -26,4 +26,3 @@ my class Square
     #| The four numbers correspond to the differences in default user space between the left, top, right, and bottom coordinates of Rect and those of the square or circle, respectively. Each value must be greater than or equal to 0. The sum of the top and bottom differences must be less than the height of Rect, and the sum of the left and right differences must be less than the width of Rect.
 
 }
-class PDF::DOM::Type::Annot::Square is Square {}

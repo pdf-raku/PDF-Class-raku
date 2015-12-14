@@ -6,7 +6,7 @@ use PDF::DOM::Resources;
 
 # /Type /Catalog - usually the document root in a PDF
 # See [PDF 1.7 Section 3.6.1 Document Catalog]
-my class Catalog
+class PDF::DOM::Type::Catalog
     is PDF::DAO::Dict
     does PDF::DOM::Type
     does PDF::DOM::Resources {
@@ -112,5 +112,3 @@ my class Catalog
         self<Pages>.cb-finish;
     }
 }
-
-class PDF::DOM::Type::Catalog is Catalog {};
