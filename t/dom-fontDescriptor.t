@@ -19,8 +19,8 @@ endobj
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
-my $ast = $/.ast;
-my $ind-obj = PDF::Storage::IndObj.new( |%$ast);
+my %ast = $/.ast;
+my $ind-obj = PDF::Storage::IndObj.new( |%ast);
 is $ind-obj.obj-num, 236, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $font-descriptor-obj = $ind-obj.object;
@@ -30,4 +30,4 @@ is $font-descriptor-obj.FontFamily, 'Wingdings', '$.FontFamily accessor';
 is $font-descriptor-obj.Ascent, 898, '$.Ascent accessor';
 is $font-descriptor-obj.CapHeight, 0, '$.CapHeight accessor';
 is-json-equiv $font-descriptor-obj.FontBBox, [ 0, -211, 1359, 899, ], '$.CapHeight accessor';
-is-json-equiv $ind-obj.ast, $ast, 'ast regeneration';
+is-json-equiv $ind-obj.ast, %ast, 'ast regeneration';

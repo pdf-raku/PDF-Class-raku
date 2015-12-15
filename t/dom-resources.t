@@ -18,9 +18,10 @@ my $input = q:to"--END--";
    /BaseFont /CourierNewPSMT
    /Encoding /WinAnsiEncoding
    /FirstChar 111
-    /FontDescriptor 15 0 R
+   /FontDescriptor 15 0 R
    /LastChar 111
-   /Widths [ 600 ] >>
+   /Widths [ 600 ]
+>>
 endobj
 --END--
 
@@ -28,11 +29,11 @@ my $actions = PDF::Grammar::PDF::Actions.new;
 my $grammar = PDF::Grammar::PDF;
 $grammar.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed: $input";
-my $ast = $/.ast;
+my %ast = $/.ast;
 
 # misc types follow
 
-my $ind-obj = PDF::Storage::IndObj.new( :$input, |%( $ast.kv ) );
+my $ind-obj = PDF::Storage::IndObj.new( :$input, |%ast );
 my $tt-font-obj = $ind-obj.object;
 isa-ok $tt-font-obj, ::('PDF::DOM::Type::Font::TrueType');
 is $tt-font-obj.Type, 'Font', 'tt font $.Type';
@@ -73,21 +74,22 @@ is-deeply $objr-obj<Obj>, (:ind-ref[6, 2]), '$objr<Obj>';
 
 $input = q:to"--END--";
 99 0 obj
-<< /Type /OutputIntent  % Output intent dictionary
-/S /GTS_PDFX
-/OutputCondition (CGATS TR 001 (SWOP))
-/OutputConditionIdentifier (CGATS TR 001)
-/RegistryName (http://www.color.org)
-/DestOutputProfile 100 0 R
+<<
+  /Type /OutputIntent  % Output intent dictionary
+  /S /GTS_PDFX
+  /OutputCondition (CGATS TR 001 (SWOP))
+  /OutputConditionIdentifier (CGATS TR 001)
+  /RegistryName (http://www.color.org)
+  /DestOutputProfile 100 0 R
 >>
 endobj
 --END--
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed: $input";
-$ast = $/.ast;
+%ast = $/.ast;
 
-$ind-obj = PDF::Storage::IndObj.new( :$input, |%( $ast.kv ) );
+$ind-obj = PDF::Storage::IndObj.new( :$input, |%ast );
 my $oi-font-obj = $ind-obj.object;
 isa-ok $oi-font-obj, ::('PDF::DOM::Type::OutputIntent');
 is $oi-font-obj.S, 'GTS_PDFX', 'OutputIntent S';
@@ -119,18 +121,19 @@ is-json-equiv $new-page<Resources><Font>, { :F1($font) }, 'Resource Font content
 
 $input = q:to"--END--";
 35 0 obj    % Graphics state parameter dictionary
-<< /Type /ExtGState
-/OP false
-/TR 36 0 R
+<<
+  /Type /ExtGState
+  /OP false
+  /TR 36 0 R
 >>
 endobj
 --END--
 
 $grammar.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed: $input";
-$ast = $/.ast;
+%ast = $/.ast;
 
-$ind-obj = PDF::Storage::IndObj.new( :$input, |%( $ast.kv ), :$reader );
+$ind-obj = PDF::Storage::IndObj.new( :$input, |%ast, :$reader );
 my $gs-obj = $ind-obj.object;
 isa-ok $gs-obj, ::('PDF::DOM::Type::ExtGState');
 is $gs-obj.Type, 'ExtGState', 'ExtGState Type';

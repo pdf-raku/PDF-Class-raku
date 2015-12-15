@@ -34,8 +34,8 @@ my $reader = class { has $.auto-deref = False }.new;
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
-my $ast = $/.ast;
-my $ind-obj = PDF::Storage::IndObj.new( |%$ast, :$reader);
+my %ast = $/.ast;
+my $ind-obj = PDF::Storage::IndObj.new( |%ast, :$reader);
 is $ind-obj.obj-num, 215, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $catalog = $ind-obj.object;
@@ -55,7 +55,7 @@ is-json-equiv $catalog.PageLayout, 'OneColumn', '$catalog.PageLayout';
 is-json-equiv $catalog.Pages, (:ind-ref[212, 0]), '$catalog.Pages';
 is-json-equiv $catalog.PieceInfo, { :MarkedPDF{ :LastModified<D:20081012130709> } }, '$catalog.PieceInfo';
 is-json-equiv $catalog.StructTreeRoot, (:ind-ref[25, 0]), '$catalog.StructTreeRoot';
-is-json-equiv $ind-obj.ast, $ast, 'ast regeneration';
+is-json-equiv $ind-obj.ast, %ast, 'ast regeneration';
 
 my $acroform = $catalog.AcroForm;
 does-ok $acroform, ::('PDF::DOM::Type::AcroForm'), '$.AcroForm role';
