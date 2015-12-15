@@ -4,8 +4,8 @@ use PDF::DAO::Dict;
 use PDF::DAO::Stream;
 use PDF::DOM::Type;
 use PDF::DOM::Contents;
-use PDF::DOM::Resources;
-use PDF::DOM::PageBoxes;
+use PDF::DOM::Paged;
+use PDF::DOM::Resourced;
 
 # /Type /Page - describes a single PDF page
 
@@ -13,8 +13,8 @@ class PDF::DOM::Type::Page
     is PDF::DAO::Dict
     does PDF::DOM::Type
     does PDF::DOM::Contents
-    does PDF::DOM::Resources
-    does PDF::DOM::PageBoxes {
+    does PDF::DOM::Paged
+    does PDF::DOM::Resourced {
 
     use PDF::DAO::Tie;
 
@@ -101,29 +101,26 @@ class PDF::DOM::Type::Page
 
 	self.MediaBox //= [0, 0, 612, 792];
 
-        if $!pre-gfx.ops || $!gfx.ops {
+	if $!pre-gfx.ops || $!gfx.ops {
+	    # handle new content.
+	    my @content-streams = @$.content-streams;
+	    if +@content-streams {
+		# dont trust existing content. wrap it in q ... Q
+		$!pre-gfx.ops.push: OpNames::Save => [];
+		$!gfx.ops.unshift: OpNames::Restore => [];
+	    }
 
-            if $!pre-gfx.ops || $!gfx.ops {
-                # handle new content.
-                my @content-streams = @$.content-streams;
-                if +@content-streams {
-		    # dont trust existing content. wrap it in q ... Q
-                    $!pre-gfx.ops.push: OpNames::Save => [];
-                    $!gfx.ops.unshift: OpNames::Restore => [];
-                }
+	    @content-streams.unshift: PDF::DAO::Stream.new( :decoded( $!pre-gfx.content ~ "\n") )
+		if $!pre-gfx.ops;
 
-                @content-streams.unshift: PDF::DAO::Stream.new( :decoded( $!pre-gfx.content ~ "\n") )
-                    if $!pre-gfx.ops;
+	    @content-streams.push: PDF::DAO::Stream.new( :decoded("\n" ~ $!gfx.content ) )
+		if $!gfx.ops;
 
-                @content-streams.push: PDF::DAO::Stream.new( :decoded("\n" ~ $!gfx.content ) )
-                    if $!gfx.ops;
-
-		$!pre-gfx.ops = ();
-		$!gfx.ops = ();
-                self<Contents> = @content-streams == 1 
-		    ?? @content-streams[0]
-		    !! @content-streams;
-            }
+	    $!pre-gfx.ops = ();
+	    $!gfx.ops = ();
+	    self<Contents> = @content-streams == 1 
+		?? @content-streams[0]
+		!! @content-streams;
         }
     }
 

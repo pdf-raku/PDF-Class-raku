@@ -15,8 +15,8 @@
         "PDF::DOM::Contents::Text::Line" : "lib/PDF/DOM/Contents/Text/Line.pm",
 
         "PDF::DOM::Op" : "lib/PDF/DOM/Op.pm",
-        "PDF::DOM::PageBoxes" : "lib/PDF/DOM/PageBoxes.pm",
-        "PDF::DOM::Resources" : "lib/PDF/DOM/Resources.pm",
+        "PDF::DOM::Paged" : "lib/PDF/DOM/Paged.pm",
+        "PDF::DOM::Resourced" : "lib/PDF/DOM/Resourced.pm",
 
         "PDF::DOM::Type" : "lib/PDF/DOM/Type.pm",
 
