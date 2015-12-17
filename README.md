@@ -12,7 +12,7 @@ use PDF::DOM;
 my $pdf = PDF::DOM.new;
 my $page = $pdf.add-page;
 $page.MediaBox = [0, 0, 595, 842];
-my $font = $page.core-font( :family<Helvetica>, :weight<bold> );
+my $font = $page.core-font( :family<Helvetica>, :weight<bold>, :style<italic> );
 $page.text: -> $_ {
     .text-position = [100, 150];
     .set-font: $font;
@@ -117,7 +117,7 @@ $page.graphics: -> $_ {
 
     # Display outline, slanted text, using the ShowText (`Td`) operator:
 
-    my $header-font = $page.core-font( :family<Helvetica>, :weight<bold>, :style<italic> );
+    my $header-font = $page.core-font( :family<Helvetica>, :weight<bold> );
 
     $page.text: -> $_ {
 	 use PDF::DOM::Op :TextMode;
@@ -231,3 +231,4 @@ the objects that can appear in a PDF. It is envisioned that the range of classes
 with expand over time to cover most or all types described in the PDF specification.
 - Many of the classes are skeletal at the moment and do little more that declare
 fields for validation purposes; for example, the classes in the PDF::DOM::Type::Font::* namespace.
+- No structured exceptions yet.

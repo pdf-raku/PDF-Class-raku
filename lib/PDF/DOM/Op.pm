@@ -120,10 +120,59 @@ y | CurveTo2 | x1 y1 x3 y3 | Append curved segment to path (final point replicat
     »;
 
     # See [PDF 1.7 TABLE 4.1 Operator categories]
-    my constant TextOps = set <T* Tc Td TD Tf Tj TJ TL Tm Tr Ts Tw Tz>;
     my constant GeneralGraphicOps = set <w J j M d ri i gs>;
     my constant SpecialGraphicOps = set <q Q cm>;
-    my constant ShadingOps = set <CS cs SC SCN sc scn G g RG rg K k>;
+    my constant PathOps = set <m l c v y h re>;
+    my constant PaintingOps = set <S s f F f* B B* b b* n>;
+    my constant ClippingOps = set <W W*>;
+    my constant TextObjectOps = set <BT ET>;
+    my constant TextStateOps = set <Tc Tw Tz TL Tf Tr Ts>;
+    my constant TextOps = set <T* Td TD Tj TJ Tm>;
+    my constant ColorOps = set <CS cs SC SCN sc scn G g RG rg K k>;
+    my constant MarkedContentOps = set <MP DP BMC BDC EMC>;
+
+    # States and transitions in [PDF 1.4 FIGURE 4.1 Graphics objects]
+    my enum GraphicsContext <Path Text Clipping Page Shading External Image>;
+
+    has GraphicsContext $!context = Page;
+
+    method !track-context(Str $op, $last-op) {
+        my $transition = do given $op {
+
+            when 'BT'       { [Page, Text] }
+            when 'ET'       { [Text, Page] }
+
+            when 'BI'       { [Page, Image] }
+            when 'EI'       { [Image, Page] }
+
+            when 'BX'       { [Page, External] }
+            when 'EX'       { [External, Page] }
+
+            when 'W' | 'W*' { [Path, Clipping] }
+            when 'm' | 're' { [Page, Path] }
+            when 'Do'       { [Page, Page ] }
+            when $op ∈ PaintingOps { [Clipping | Path, Page] }
+        }
+
+       my Bool $ok-here;
+
+       if $transition {
+           $ok-here = ?($transition[0] == $!context);
+           $!context = $transition[1];
+       }
+       else {
+           $ok-here = do given $!context {
+               when Path     { $op ∈ PathOps }
+               when Text     { ?($op ∈ TextOps | TextStateOps | GeneralGraphicOps | ColorOps | MarkedContentOps) }
+               when Page     { ?($op ∈ TextStateOps | SpecialGraphicOps | GeneralGraphicOps | ColorOps | MarkedContentOps) }
+               when Image    { $op eq 'ID' }
+               default       { False }
+           }
+       }
+
+       warn "unexpected '$op' operation " ~ ($last-op ?? "(following '$last-op)" !! '(first operation)')
+	   unless $ok-here;
+    }
 
     #| [PDF 1.7 TABLE 5.3 Text rendering modes]
     my Int enum TextMode is export(:TextMode) «
@@ -362,18 +411,22 @@ y | CurveTo2 | x1 y1 x3 y3 | Append curved segment to path (final point replicat
 	        if @!tags && @!tags.first({ $_ eq 'BT' });
 	}
 
-	# not illegal just bad pratice. makes it harder to later edit/reuse this content stream
+	# not illegal just bad practice. makes it harder to later edit/reuse this content stream
 	# and may upset downstream utilities
 	if $!strict {
 	    if !@!gsave {
 		warn "graphics operation '$op-name' outside of a q ... Q graphics block\n"
-		    if $op-name ∈ GeneralGraphicOps | ShadingOps
+		    if $op-name ∈ GeneralGraphicOps | ColorOps
 		    || $op-name eq 'cm';
 	    }
 	}
 
+        my Str $last-op = @!ops[*-1].key
+	    if @!ops;
+
 	@!ops.push($opn);
-        $.g-track($op-name, |@args );
+        self!track-context($op-name, $last-op);
+        self.track-graphics($op-name, |@args );
 
 	@!ops[*-1];
     }
@@ -399,58 +452,58 @@ y | CurveTo2 | x1 y1 x3 y3 | Append curved segment to path (final point replicat
 	$/.ast
     }
 
-    multi method g-track('q') {
+    multi method track-graphics('q') {
         my %gclone = %!gstate.pairs.map( -> $p { $p.key => $p.value.clone });
         @!gsave.push: %gclone;
     }
-    multi method g-track('Q') {
+    multi method track-graphics('Q') {
         die "bad nesting; Restore(Q) operator not matched by preceeding Save(q) operator in PDF content\n"
             unless @!gsave;
         %!gstate = @!gsave.pop.pairs;
 	Restore;
     }
-    multi method g-track('cm', *@transform) {
+    multi method track-graphics('cm', *@transform) {
         use PDF::DOM::Util::TransformMatrix;
         my Array $CTM = PDF::DOM::Util::TransformMatrix::multiply($.GraphicsMatrix, @transform);
         %!gstate<CTM> = $CTM;
     }
-    multi method g-track('BT') {
+    multi method track-graphics('BT') {
         die "illegal nesting of BT text-blocks in PDF content\n"
             if @!tags && @!tags[*-1] eq 'BT';
 	@!tags.push: 'BT';
         $!in-text-block = True;
     }
-    multi method g-track('ET') {
+    multi method track-graphics('ET') {
 	die "closing ET without opening BT in PDF content\n"
 	    unless @!tags && @!tags[*-1] eq 'BT';
         @!Tm = [ 1, 0, 0, 1, 0, 0, ];
 	@!tags.pop;
         $!in-text-block = False;
     }
-    multi method g-track('BMC', Str $name!) {
+    multi method track-graphics('BMC', Str $name!) {
 	@!tags.push: 'BMC';
     }
-    multi method g-track('BDC', *@args) {
+    multi method track-graphics('BDC', *@args) {
 	@!tags.push: 'BDC';
     }
-    multi method g-track('EMC') {
+    multi method track-graphics('EMC') {
 	die "closing EMC without opening BMC or BDC in PDF content\n"
 	    unless @!tags && @!tags[*-1] eq 'BMC' | 'BDC';
 	@!tags.pop;
     }
-    multi method g-track('Tc', Numeric $Tc!) {
+    multi method track-graphics('Tc', Numeric $Tc!) {
 	$.CharSpacing = $Tc
     }
-    multi method g-track('Tw', Numeric $Tw!) {
+    multi method track-graphics('Tw', Numeric $Tw!) {
         $.WordSpacing = $Tw;
     }
-    multi method g-track('Tz', Numeric $Th!) {
+    multi method track-graphics('Tz', Numeric $Th!) {
         $.HorizScaling = $Th;
     }
-    multi method g-track('TL', Numeric $TL!) {
+    multi method track-graphics('TL', Numeric $TL!) {
 	$.TextLeading = $TL
     }
-    multi method g-track('Tf', Str $Tf!, Numeric $Tfs!) {
+    multi method track-graphics('Tf', Str $Tf!, Numeric $Tfs!) {
         if self.can('parent') {
             die "unknown font key: /$Tf"
                 unless self.parent.resource-entry('Font', $Tf);
@@ -458,29 +511,31 @@ y | CurveTo2 | x1 y1 x3 y3 | Append curved segment to path (final point replicat
         $.FontKey = $Tf;     #| e.g. 'F2'
         $.FontSize = $Tfs;   #| e.g. 16
     }
-    multi method g-track('Ts', Numeric $Ts!) {
+    multi method track-graphics('Ts', Numeric $Ts!) {
 	$.TextRise = $Ts
     }
-    multi method g-track('Tm', *@!Tm) {
+    multi method track-graphics('Tm', *@!Tm) {
     }
-    multi method g-track('Td', Numeric $tx!, Numeric $ty) {
+    multi method track-graphics('Td', Numeric $tx!, Numeric $ty) {
         $.TextMatrix[4] += $tx;
         $.TextMatrix[5] += $ty;
     }
-    multi method g-track('TD', Numeric $tx!, Numeric $ty) {
+    multi method track-graphics('TD', Numeric $tx!, Numeric $ty) {
         $.TextLeading = - $ty;
-        $.g-track(TextMove, $tx, $ty);
+        $.track-graphics(TextMove, $tx, $ty);
     }
-    multi method g-track('T*') {
-        $.g-track(TextMove, 0, $.TextLeading);
+    multi method track-graphics('T*') {
+        $.track-graphics(TextMove, 0, $.TextLeading);
     }
-    multi method g-track(*@args) is default {}
+    multi method track-graphics(*@args) is default {}
 
     method finish {
 	die "Unclosed @!tags[] at end of content stream\n"
 	    if @!tags;
 	die "q(Save) unmatched by closing Q(Restore) at end of content stream\n"
 	    if @!gsave;
+        warn "unexpected end of content stream"
+	    unless $!context == Page;
     }
 
     #| serialize content. indent blocks for readability
