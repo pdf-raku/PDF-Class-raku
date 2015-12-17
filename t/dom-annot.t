@@ -25,11 +25,11 @@ endobj
 my $actions = PDF::Grammar::PDF::Actions.new;
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed: $input";
-my $ast = $/.ast;
+my %ast = $/.ast;
 
 my $reader = class { has $.auto-deref = False }.new;
 
-my $ind-obj = PDF::Storage::IndObj.new( :$input, |%( $ast.kv ), :$reader );
+my $ind-obj = PDF::Storage::IndObj.new( :$input, |%ast, :$reader );
 my $text-annot = $ind-obj.object;
 isa-ok $text-annot, ::('PDF::DOM::Type::Annot::Text');
 is-json-equiv $text-annot.Rect, [ 100, 100, 300, 200 ], '.Rect';
@@ -67,9 +67,9 @@ endobj
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed: $input";
-$ast = $/.ast;
+%ast = $/.ast;
 
-$ind-obj = PDF::Storage::IndObj.new( :$input, |%( $ast.kv ), :$reader );
+$ind-obj = PDF::Storage::IndObj.new( :$input, |%ast, :$reader );
 my $link-annot = $ind-obj.object;
 isa-ok $link-annot, ::('PDF::DOM::Type::Annot::Link');
 is $link-annot.Type, 'Annot', 'Annot with /Type defaulted';

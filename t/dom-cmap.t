@@ -28,9 +28,9 @@ endobj
 my $actions = PDF::Grammar::PDF::Actions.new;
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed: $input";
-my $ast = $/.ast;
+my %ast = $/.ast;
 
-my $ind-obj = PDF::Storage::IndObj.new( :$input, |%( $ast.kv ) );
+my $ind-obj = PDF::Storage::IndObj.new( :$input, |%ast );
 my $cmap-obj = $ind-obj.object;
 isa-ok $cmap-obj, ::('PDF::DOM::Type::CMap');
 is $cmap-obj.Type, 'CMap', 'CMap Type';

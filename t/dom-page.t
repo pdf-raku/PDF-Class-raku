@@ -27,9 +27,9 @@ endobj
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
-my $ast = $/.ast;
+my %ast = $/.ast;
 my $reader = class { has $.auto-deref = False }.new;
-my $ind-obj = PDF::Storage::IndObj.new( |%$ast, :$reader);
+my $ind-obj = PDF::Storage::IndObj.new( |%ast, :$reader);
 is $ind-obj.obj-num, 4, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $page = $ind-obj.object;
@@ -39,7 +39,7 @@ my $dummy-stream = PDF::DAO::Stream.new( :decoded('%dummy stream') );
 is $page<Parent>, (:ind-ref[3, 0]), '$page<Parent>';
 is $page.Resources, { :Font{ :F1( :ind-ref[7, 0] )}, :ProcSet( :ind-ref[6, 0]) }, '$.Resources accessor';
 
-is-json-equiv $ind-obj.ast, $ast, 'ast regeneration';
+is-json-equiv $ind-obj.ast, %ast, 'ast regeneration';
 
 $page.Contents = $dummy-stream;
 is-deeply $page.Contents, ($dummy-stream), '$.Contents accessor';
@@ -82,7 +82,7 @@ is-json-equiv $page.trim-box, $page.crop-box, '$trim-box - get';
 is-json-equiv $page.art-box, $page.crop-box, '$.art-box - get';
 $page.ArtBox = [10,10,240,290];
 is-json-equiv $page.art-box, [10,10,240,290], '$.art-box - updated';
-use PDF::DOM::PageBoxes :PageSizes;
+use PDF::DOM::Paged :PageSizes;
 $page.MediaBox = PageSizes::A3;
 is-json-equiv $page.media-box, [0,0,842,1190], 'media-box page-name setter';
 $page.media-box = $page.to-landscape( PageSizes::A3 );

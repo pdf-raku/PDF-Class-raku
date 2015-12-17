@@ -131,9 +131,9 @@ module PDF::DOM::Util::Font {
         multi method encode(Str $s) {
             $s.comb\
                 .map({ $!glyphs{$_} })\
-                .grep({ .defined })\
+                .grep( *.defined )\
                 .map({ $!encoding{$_} })\
-                .grep({ .defined })\
+                .grep( *.defined )\
 		.Slip;
         }
 

@@ -19,8 +19,8 @@ endobj
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
-my $ast = $/.ast;
-my $ind-obj = PDF::Storage::IndObj.new( |%$ast);
+my %ast = $/.ast;
+my $ind-obj = PDF::Storage::IndObj.new( |%ast);
 is $ind-obj.obj-num, 16, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $color-space-obj = $ind-obj.object;
@@ -30,7 +30,7 @@ is $color-space-obj.subtype, 'CalRGB', '$.subtype accessor';
 is-json-equiv $color-space-obj[1], { :WhitePoint[ 1.0, 1.0, 1.0 ] }, 'array access';
 is-json-equiv $color-space-obj[1]<WhitePoint>, [ 1.0, 1.0, 1.0 ], 'WhitePoint dereference';
 is-json-equiv $color-space-obj.WhitePoint, $color-space-obj[1]<WhitePoint>, '$WhitePoint accessor';
-is-json-equiv $ind-obj.ast, $ast, 'ast regeneration';
+is-json-equiv $ind-obj.ast, %ast, 'ast regeneration';
 
 require ::('PDF::DOM::Type')::('ColorSpace::CalGray');
 my $cal-gray = ::('PDF::DOM::Type')::('ColorSpace::CalGray').new;
@@ -46,8 +46,8 @@ endobj
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
-$ast = $/.ast;
-$ind-obj = PDF::Storage::IndObj.new( |%$ast);
+%ast = $/.ast;
+$ind-obj = PDF::Storage::IndObj.new( |%ast);
 is $ind-obj.obj-num, 10, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 $color-space-obj = $ind-obj.object;
@@ -67,8 +67,8 @@ endobj
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
-$ast = $/.ast;
-$ind-obj = PDF::Storage::IndObj.new( |%$ast);
+%ast = $/.ast;
+$ind-obj = PDF::Storage::IndObj.new( |%ast);
 is $ind-obj.obj-num, 11, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 $color-space-obj = $ind-obj.object;
@@ -91,8 +91,8 @@ endobj
 my $reader = class { has $.auto-deref = False }.new;
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
-$ast = $/.ast;
-$ind-obj = PDF::Storage::IndObj.new( |%$ast, :$reader);
+%ast = $/.ast;
+$ind-obj = PDF::Storage::IndObj.new( |%ast, :$reader);
 is $ind-obj.obj-num, 5, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 $color-space-obj = $ind-obj.object;

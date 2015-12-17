@@ -2,14 +2,14 @@ use v6;
 
 use PDF::DOM::Type::XObject;
 use PDF::DOM::Contents;
-use PDF::DOM::Resources;
+use PDF::DOM::Resourced;
 
 #| XObject Forms - /Type /Xobject /Subtype Form
 #| See [PDF Spec 1.7 4.9 Form XObjects]
 class PDF::DOM::Type::XObject::Form
     is PDF::DOM::Type::XObject
     does PDF::DOM::Contents
-    does PDF::DOM::Resources {
+    does PDF::DOM::Resourced {
 
     use PDF::DAO::Tie;
     use PDF::DAO::DateString;

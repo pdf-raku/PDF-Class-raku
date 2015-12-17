@@ -2,14 +2,14 @@ use v6;
 
 use PDF::DAO::Dict;
 use PDF::DOM::Type;
-use PDF::DOM::Resources;
+use PDF::DOM::Resourced;
 
 # /Type /Catalog - usually the document root in a PDF
 # See [PDF 1.7 Section 3.6.1 Document Catalog]
 class PDF::DOM::Type::Catalog
     is PDF::DAO::Dict
     does PDF::DOM::Type
-    does PDF::DOM::Resources {
+    does PDF::DOM::Resourced {
 
     # see [PDF 1.7 TABLE 3.25 Entries in the catalog dictionary]
     use PDF::DAO::Tie;

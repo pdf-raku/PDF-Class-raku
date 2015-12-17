@@ -12,7 +12,7 @@ use PDF::DOM;
 my $pdf = PDF::DOM.new;
 my $page = $pdf.add-page;
 $page.MediaBox = [0, 0, 595, 842];
-my $font = $page.core-font( :family<Helvetica>, :weight<bold> );
+my $font = $page.core-font( :family<Helvetica>, :weight<bold>, :style<italic> );
 $page.text: -> $_ {
     .text-position = [100, 150];
     .set-font: $font;
@@ -107,7 +107,7 @@ $page.graphics: -> $_ {
 
     $page.text: -> $txt {
 	$txt.text-position = [240, 600];
-	$txt.set-font($page.core-font('ZapfDingbats'), 24);
+	$txt.set-font( $page.core-font('ZapfDingbats'), 24);
 	$txt.SetWordSpacing(16);
 	my $nbsp = "\c[NO-BREAK SPACE]";
 	$txt.print("♠ ♣$nbsp");
@@ -128,7 +128,10 @@ $page.graphics: -> $_ {
 	.ShowText('Outline Slanted Text @(50,550)');
     }
 }
+
 ```
+
+Note: at this stage, only the PDF core fonts are supported: Courier, Times, Helvetica, ZapfDingbats and Symbol.
 
 #### Low level graphics, colors and drawing
 
@@ -139,9 +142,11 @@ use PDF::DOM;
 my $doc = PDF::DOM.new;
 my $page = $doc.add-page;
 
-# ------------------------
 # Draw a simple Bézier curve:
-sub draw-curve($gfx) {
+
+# ------------------------
+# Alternative 1: Using operator functions (see PDF::DOM::Op)
+sub draw-curve1($gfx) {
     $gfx.Save;
     $gfx.MoveTo(175, 720);
     $gfx.LineTo(175, 700);
@@ -152,27 +157,10 @@ sub draw-curve($gfx) {
     $gfx.Restore;
 }
 
-draw-curve($page.gfx);
+draw-curve1($page.gfx);
 
 # ------------------------
-# Altrnative 1: draw from data
-sub draw-curve1($gfx) {
-
-    $gfx.ops: [
-         'q',               # save,
-         :m[175, 720],      # move-to
-         :l[175, 700],      # line-to 
-         :v[300, 800,
-            400, 720],      # curve-to
-         :h[],              # close
-         'S',               # stroke
-         'Q',               # restore
-     ];
-}
-draw-curve1($doc.add-page.gfx);
-
-# ------------------------
-# Alternative 2: draw from  content instructions:
+# Alternative 2: draw from parsed content instructions:
 
 sub draw-curve2($gfx) {
     $gfx.ops: q:to"--END--"
@@ -186,14 +174,51 @@ sub draw-curve2($gfx) {
         --END--
 }
 draw-curve2($doc.add-page.gfx);
+
+# ------------------------
+# Altrnative 3: draw from raw data
+sub draw-curve3($gfx) {
+
+    $gfx.ops: [
+         'q',               # save,
+         :m[175, 720],      # move-to
+         :l[175, 700],      # line-to 
+         :v[300, 800,
+            400, 720],      # curve-to
+         :h[],              # close
+         'S',               # stroke
+         'Q',               # restore
+     ];
+}
+draw-curve3($doc.add-page.gfx);
+
 ```
 
-For a full list of operators, please see PDF::DOM::Op documentaton.
+For a full list of operators, please see PDF::DOM::Op.
 
+### AcroForm Fields
+
+```
+use PDF::DOM;
+my $doc = PDF::DOM.open: "t/pdf/samples/OoPdfFormExample.pdf";
+if my $acroform = $doc.Root.AcroForm {
+    my @fields = $acroform.fields;
+    # display field names and values
+    for @fields -> $field {
+        say "{$field.T // '??'}: {$field.V // ''}";
+    }
+}
+
+```
+
+See also:
+- PDF::DOM::Type::AcroForm
+- PDF::DOM::Type::Field
+- PDF::FDF (under construction), which handles import/export from FDF files.
 
 ## Development Status
 
-This module is under construction and not yet functionally complete.
+The PDF::DOM module is under construction and not yet functionally complete.
 
 # Bugs and Restrictions
 At this stage:
@@ -206,3 +231,4 @@ the objects that can appear in a PDF. It is envisioned that the range of classes
 with expand over time to cover most or all types described in the PDF specification.
 - Many of the classes are skeletal at the moment and do little more that declare
 fields for validation purposes; for example, the classes in the PDF::DOM::Type::Font::* namespace.
+- No structured exceptions yet.

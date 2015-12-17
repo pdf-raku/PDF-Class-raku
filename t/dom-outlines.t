@@ -19,15 +19,15 @@ endobj
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
-my $ast = $/.ast;
+my %ast = $/.ast;
 my $reader = class { has $.auto-deref = False }.new;
-my $ind-obj = PDF::Storage::IndObj.new( |%$ast, :$reader);
+my $ind-obj = PDF::Storage::IndObj.new( |%ast, :$reader);
 is $ind-obj.obj-num, 18, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $outlines-obj = $ind-obj.object;
 isa-ok $outlines-obj, ::('PDF::DOM::Type')::('Outlines');
 is $outlines-obj.Type, 'Outlines', '$.Type accessor';
 is $outlines-obj.Count, 3, '$.Count accessor';
-is-deeply $outlines-obj<First>, (:ind-ref[19, 0]), '$obj<First>';
-is-deeply $outlines-obj<Last>, (:ind-ref[20, 0]), '$obj<Last>';
-is-json-equiv $ind-obj.ast, $ast, 'ast regeneration';
+is-deeply $outlines-obj.First, (:ind-ref[19, 0]), '$obj.First';
+is-deeply $outlines-obj.Last, (:ind-ref[20, 0]), '$obj.Last';
+is-json-equiv $ind-obj.ast, %ast, 'ast regeneration';

@@ -1,6 +1,6 @@
 use v6;
 
-role PDF::DOM::PageBoxes {
+role PDF::DOM::Paged {
 
 	#| source: http://www.gnu.org/software/gv/
     my subset Box of Array;# where {.elems == 4}

@@ -31,8 +31,8 @@ endobj
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
-my $ast = $/.ast;
-my $ind-obj = PDF::Storage::IndObj.new( :$input, |%$ast);
+my %ast = $/.ast;
+my $ind-obj = PDF::Storage::IndObj.new( :$input, |%ast);
 is $ind-obj.obj-num, 10, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $function-obj = $ind-obj.object;

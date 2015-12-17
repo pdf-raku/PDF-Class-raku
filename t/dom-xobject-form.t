@@ -17,13 +17,14 @@ my $actions = PDF::Grammar::PDF::Actions.new;
 
 my $input = q:to"--END-OBJ--";
 6 0 obj% Form XObject
-<< /Type /XObject
-/Subtype /Form
-/FormType 1
-/BBox [ 0 0 200 200 ]
-/Matrix [ 1 0 0 1 0 0 ]
-/Resources << /ProcSet [ /PDF ] >>
-/Length 58
+<<
+  /Type /XObject
+  /Subtype /Form
+  /FormType 1
+  /BBox [ 0 0 200 200 ]
+  /Matrix [ 1 0 0 1 0 0 ]
+  /Resources << /ProcSet [ /PDF ] >>
+  /Length 58
 >>
 stream
 0 0 m
@@ -37,8 +38,8 @@ endobj
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
-my $ast = $/.ast;
-my $ind-obj = PDF::Storage::IndObj.new( |%$ast, :$input);
+my %ast = $/.ast;
+my $ind-obj = PDF::Storage::IndObj.new( |%ast, :$input);
 is $ind-obj.obj-num, 6, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $xform = $ind-obj.object;

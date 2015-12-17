@@ -24,9 +24,9 @@ endobj
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
-my $ast = $/.ast;
+my %ast = $/.ast;
 my $reader = class { has $.auto-deref = False }.new;
-my $ind-obj = PDF::Storage::IndObj.new( |%$ast, :$reader);
+my $ind-obj = PDF::Storage::IndObj.new( |%ast, :$reader);
 is $ind-obj.obj-num, 3, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $pages-obj = $ind-obj.object;
@@ -36,7 +36,7 @@ is $pages-obj.Count, 2, '$.Count accessor';
 is-json-equiv $pages-obj.Kids, [ :ind-ref[4, 0], :ind-ref[5, 0] ], '$.Kids accessor';
 is-json-equiv $pages-obj[0], (:ind-ref[4, 0]), '$pages[0] accessor';
 is-json-equiv $pages-obj[1], (:ind-ref[5, 0]), '$pages[1] accessor';
-is-json-equiv $ind-obj.ast, $ast, 'ast regeneration';
+is-json-equiv $ind-obj.ast, %ast, 'ast regeneration';
 my $new-page = $pages-obj.add-page();
 is $pages-obj.Count, 3, '$.Count accessor';
 is $pages-obj.Kids[2].Type, 'Page', 'new Kid Type';
