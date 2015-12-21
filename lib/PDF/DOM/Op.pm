@@ -473,7 +473,7 @@ y | CurveTo2 | x1 y1 x3 y3 | Append curved segment to path (final point replicat
     }
     multi method track-graphics('cm', *@transform) {
         use PDF::DOM::Util::TransformMatrix;
-        @!CTM = PDF::DOM::Util::TransformMatrix::multiply($.GraphicsMatrix, @transform);
+        @!CTM = PDF::DOM::Util::TransformMatrix::multiply(@!CTM, @transform);
     }
     multi method track-graphics('BT') {
         die "illegal nesting of BT text-blocks in PDF content\n"

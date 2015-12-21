@@ -118,7 +118,7 @@ class PDF::DOM::Type::Page
 
 	    $!pre-gfx.ops = ();
 	    $!gfx.ops = ();
-	    self<Contents> = @content-streams == 1 
+	    self.Contents = @content-streams == 1 
 		?? @content-streams[0]
 		!! @content-streams;
         }

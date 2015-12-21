@@ -115,11 +115,12 @@ class PDF::DOM::Delegator
     #| PDF Spec 1.7 Section 4.5.5 Special Color Spaces
     subset ColorSpace-Array-Special where {
 	my $a = $_;
-	$a.elems == 4 && do {
+	3 <= $a.elems <= 5 && do {
 	    my $t = from-ast $a[0];
 	    $t ~~  PDF::DAO::Name && do given $t {
 		when 'Indexed'    { my $hival = from-ast($a[2]); $hival ~~ UInt }
 		when 'Separation' { from-ast($a[1]) ~~ PDF::DAO::Name }
+		when 'DeviceN'    { from-ast($a[1]) ~~ Array }
 		default {False}
 	    }
 	}
@@ -127,7 +128,7 @@ class PDF::DOM::Delegator
 
     subset ColorSpace-Array of Array where ColorSpace-Array-CIE | ColorSpace-Array-Special;
 
-    multi method delegate(ColorSpace-Array :$array!, *%opts) {
+    multi method delegate(ColorSpace-Array :$array!) {
 	my $colorspace = from-ast $array[0];
 	require ::('PDF::DOM::Type::ColorSpace')::($colorspace);
 	::('PDF::DOM::Type::ColorSpace')::($colorspace);
