@@ -3,8 +3,7 @@
 1 0 obj <<
   /Type /Catalog
   /Pages 2 0 R
->>
-endobj
+>> endobj
 2 0 obj <<
   /Type /Pages
   /Count 2
@@ -16,14 +15,12 @@ endobj
       /Fm1 7 0 R
     >>
   >>
->>
-endobj
+>> endobj
 3 0 obj <<
   /Type /Page
   /Contents 4 0 R
   /Parent 2 0 R
->>
-endobj
+>> endobj
 4 0 obj <<
   /Length 147
 >> stream
@@ -42,14 +39,12 @@ q
     /Fm1 Do
   Q
 Q
-endstream
-endobj
+endstream endobj
 5 0 obj <<
   /Type /Page
   /Contents 6 0 R
   /Parent 2 0 R
->>
-endobj
+>> endobj
 6 0 obj <<
   /Length 341
 >> stream
@@ -90,8 +85,7 @@ q
   0.2 0 0 0.2 130 50 cm
   /Fm1 Do
 Q
-endstream
-endobj
+endstream endobj
 7 0 obj <<
   /Type /XObject
   /Subtype /Form
@@ -121,15 +115,13 @@ BT
   [ (Hello, again!) ] TJ
   T*
 ET
-endstream
-endobj
+endstream endobj
 8 0 obj <<
   /Type /Font
   /Subtype /Type1
   /BaseFont /Helvetica-Bold
   /Encoding /WinAnsiEncoding
->>
-endobj
+>> endobj
 xref
 0 9
 0000000000 65535 f 

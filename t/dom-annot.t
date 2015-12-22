@@ -18,8 +18,7 @@ my $input = q:to"--END--";
   /Rect [ 100 100 300 200 ]
   /Contents (This is an open annotation. You'll need acro-reader...)
   /Open true
->>
-endobj
+>> endobj
 --END--
 
 my $actions = PDF::Grammar::PDF::Actions.new;
@@ -61,8 +60,7 @@ $input = q:to"--END--";
   /Rect [ 71 717 190 734 ]
   /Border [ 16 16 1 ]
   /Dest [ 3 0 R /FitR -4 399 199 533 ]
->>
-endobj
+>> endobj
 --END--
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)

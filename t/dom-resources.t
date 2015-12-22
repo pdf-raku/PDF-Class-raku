@@ -13,16 +13,16 @@ my $dict = { :Outlines(:ind-ref[2, 0]), :Type( :name<Catalog> ), :Pages{ :Type( 
 my $catalog-obj = ::('PDF::DOM::Type::Catalog').new( :$dict );
 
 my $input = q:to"--END--";
-16 0 obj
-<< /Type /Font /Subtype /TrueType
+16 0 obj <<
+   /Type /Font
+   /Subtype /TrueType
    /BaseFont /CourierNewPSMT
    /Encoding /WinAnsiEncoding
    /FirstChar 111
    /FontDescriptor 15 0 R
    /LastChar 111
    /Widths [ 600 ]
->>
-endobj
+>> endobj
 --END--
 
 my $actions = PDF::Grammar::PDF::Actions.new;
@@ -81,8 +81,7 @@ $input = q:to"--END--";
   /OutputConditionIdentifier (CGATS TR 001)
   /RegistryName (http://www.color.org)
   /DestOutputProfile 100 0 R
->>
-endobj
+>> endobj
 --END--
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
@@ -120,13 +119,11 @@ is-json-equiv $new-page<Resources><XObject>, { :Fm1($form1), :Fm2($form2), :Im1(
 is-json-equiv $new-page<Resources><Font>, { :F1($font) }, 'Resource Font content';
 
 $input = q:to"--END--";
-35 0 obj    % Graphics state parameter dictionary
-<<
+35 0 obj <<   % Graphics state parameter dictionary
   /Type /ExtGState
   /OP false
   /TR 36 0 R
->>
-endobj
+>> endobj
 --END--
 
 $grammar.parse($input, :$actions, :rule<ind-obj>)

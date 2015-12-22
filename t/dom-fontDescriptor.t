@@ -12,9 +12,20 @@ use PDF::Grammar::PDF::Actions;
 my $actions = PDF::Grammar::PDF::Actions.new;
 
 my $input = q:to"--END-OBJ--";
-236 0 obj
-<< /Type /FontDescriptor /Ascent 898 /CapHeight 0 /Descent -210 /Flags 4 /FontBBox [ 0 -211 1359 899 ] /FontFamily (Wingdings) /FontFile2 227 0 R /FontName /MPAEJB+Wingdings-Regular /FontStretch /Normal /FontWeight 400 /ItalicAngle 0 /StemV 0 >>
-endobj
+236 0 obj <<
+    /Type /FontDescriptor
+    /Ascent 898
+    /CapHeight 0
+    /Descent -210
+    /Flags 4
+    /FontBBox [ 0 -211 1359 899 ]
+    /FontFamily (Wingdings)
+    /FontFile2 227 0 R
+    /FontName /MPAEJB+Wingdings-Regular
+    /FontStretch /Normal
+    /FontWeight 400
+    /ItalicAngle 0 /StemV 0
+    >> endobj
 --END-OBJ--
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)

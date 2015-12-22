@@ -12,9 +12,11 @@ use PDF::Grammar::Test :is-json-equiv;
 my $actions = PDF::Grammar::PDF::Actions.new;
 
 my $input = q:to"--END-OBJ--";
-18 0 obj
-<< /Type /Outlines /Count 3 /First 19 0 R /Last 20 0 R >>
-endobj
+18 0 obj <<
+  /Type /Outlines
+  /Count 3
+  /First 19 0 R
+  /Last 20 0 R >> endobj
 --END-OBJ--
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)

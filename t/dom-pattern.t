@@ -28,8 +28,7 @@ my $input = q:to"--END-OBJ--";
   /Resources << >>
   /Matrix [ 0.4 0.0 0.0 0.4 0.0 0.0 ]
   /Length 183
->>
-endobj
+>> endobj
 --END-OBJ--
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)

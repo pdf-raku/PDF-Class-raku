@@ -18,8 +18,7 @@ my $input = q:to"--END-OBJ--";
   /Name /F1
   /BaseFont /Helvetica
   /Encoding /MacRomanEncoding
->>
-endobj
+>> endobj
 --END-OBJ--
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)

@@ -38,11 +38,7 @@ isa-ok $cal-gray, ::('PDF::DOM::Type')::('ColorSpace::CalGray'), 'new CS class';
 is $cal-gray.subtype, 'CalGray', 'new CS subtype';
 isa-ok $cal-gray[1], Hash, 'new CS Dict';
 
-$input = q:to"--END-OBJ--";
-10 0 obj
-  [/ICCBased << /N 3 /Alternate /DeviceRGB >>]
-endobj
---END-OBJ--
+$input = "10 0 obj [/ICCBased << /N 3 /Alternate /DeviceRGB >>] endobj";
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
@@ -57,13 +53,7 @@ is $color-space-obj.subtype, 'ICCBased', '$.subtype accessor';
 is $color-space-obj.N, 3, 'N accessor';
 is $color-space-obj.Alternate, 'DeviceRGB', 'DeviceRGB accessor';
 
-$input = q:to"--END-OBJ--";
-11 0 obj
-  [ /Indexed /DeviceRGB 255
-    < 000000 FF0000 00FF00 0000FF B57342 >
-  ]
-endobj
---END-OBJ--
+$input = "11 0 obj [ /Indexed /DeviceRGB 255 < 000000 FF0000 00FF00 0000FF B57342 > ] endobj";
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
@@ -115,8 +105,7 @@ $input = q:to"--END-OBJ--";
        /PANTONE#20131 [ /Separation /PANTONE#20131 /DeviceCMYK 4 0 R ]
     >>
   >>
-]
-endobj
+] endobj
 --END-OBJ--
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)

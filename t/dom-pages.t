@@ -13,13 +13,11 @@ use PDF::Reader;
 my $actions = PDF::Grammar::PDF::Actions.new;
 
 my $input = q:to"--END-OBJ--";
-3 0 obj
-<<
+3 0 obj <<
   /Type /Pages
   /Count 2
   /Kids [4 0 R  5 0 R]
->>
-endobj
+>> endobj
 --END-OBJ--
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)

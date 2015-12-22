@@ -21,8 +21,7 @@ my $input = q:to"--END-OBJ--";
     /ProcSet 6 0 R
   >>
   /MediaBox [0 0 595 842]
->>
-endobj
+>> endobj
 --END-OBJ--
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
