@@ -88,7 +88,7 @@ $page.gfx.ops: [
     :re[25, 175, 175, -150],                # Construct rectangular path
     :f[],                                   # Fill path
     :cs[<Pattern>],                           # Set pattern color space
-    :scn[$page.resource($pattern-obj).key], # Set pattern as nonstroking color
+    :scn[$page.use-resource($pattern-obj).key], # Set pattern as nonstroking color
 
     :m[99.92, 49.92],                                # Start new path
     :c[99.92, 77.52, 77.52, 99.92, 49.92, 99.92],    # Construct lower-left circle

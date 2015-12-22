@@ -216,6 +216,29 @@ See also:
 - PDF::DOM::Type::Field
 - PDF::FDF (under construction), which handles import/export from FDF files.
 
+### Resources
+To list all images and forms for each page
+```
+use PDF::DOM;
+my $doc = PDF::DOM.open: "t/helloworld.pdf";
+for 1 ... $doc.page-count -> $page-no {
+    say "page: $page-no";
+    my $page = $doc.page: $page-no;
+    my %object = $page.resources('XObject');
+    for %object.keys -> $key {
+        my $xobject = %object{$key};
+        my $type = $xobject.Type;
+        my $size = $xobject.encoded.codes;
+        say "\t$key: $type $size bytes"
+    }
+}
+
+```
+
+Resource types are: ExtGState (graphics state), ColorSpace, Pattern, Shading, XObject (forms and images) and Properties.
+
+Resources of type Pattern and XObject/Image may have further associated resources.
+
 ## Development Status
 
 The PDF::DOM module is under construction and not yet functionally complete.
