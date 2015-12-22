@@ -13,16 +13,16 @@ my $dict = { :Outlines(:ind-ref[2, 0]), :Type( :name<Catalog> ), :Pages{ :Type( 
 my $catalog-obj = ::('PDF::DOM::Type::Catalog').new( :$dict );
 
 my $input = q:to"--END--";
-16 0 obj
-<< /Type /Font /Subtype /TrueType
+16 0 obj <<
+   /Type /Font
+   /Subtype /TrueType
    /BaseFont /CourierNewPSMT
    /Encoding /WinAnsiEncoding
    /FirstChar 111
    /FontDescriptor 15 0 R
    /LastChar 111
    /Widths [ 600 ]
->>
-endobj
+>> endobj
 --END--
 
 my $actions = PDF::Grammar::PDF::Actions.new;
@@ -81,8 +81,7 @@ $input = q:to"--END--";
   /OutputConditionIdentifier (CGATS TR 001)
   /RegistryName (http://www.color.org)
   /DestOutputProfile 100 0 R
->>
-endobj
+>> endobj
 --END--
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
@@ -101,32 +100,30 @@ use PDF::DOM::Type::XObject::Form;
 use PDF::DOM::Type::XObject::Image;
 my $new-page = PDF::DOM::Type::Page.new;
 my $form1 = PDF::DOM::Type::XObject::Form.new( :dict{ :BBox[0, 0, 100, 120] } );
-my $fm1 = $new-page.resource( $form1 );
+my $fm1 = $new-page.use-resource( $form1 );
 is-deeply $fm1.key, 'Fm1', 'xobject form name';
 
 my $form2 = PDF::DOM::Type::XObject::Form.new( :dict{ :BBox[-3, -3, 103, 123] } );
 my $image = PDF::DOM::Type::XObject::Image.new( :dict{ :ColorSpace( :name<DeviceRGB> ), :Width(120), :Height(150) } );
 my $font = PDF::DOM::Type::Font.new;
-my $fm2 = $new-page.resource( $form2 );
+my $fm2 = $new-page.use-resource( $form2 );
 is-deeply $fm2.key, 'Fm2', 'xobject form name';
 
-my $im1 = $new-page.resource( $image );
+my $im1 = $new-page.use-resource( $image );
 is-deeply $im1.key, 'Im1', 'xobject form name';
 
-my $f1 = $new-page.resource( $font );
+my $f1 = $new-page.use-resource( $font );
 is-deeply $f1.key, 'F1', 'font name';
 
 is-json-equiv $new-page<Resources><XObject>, { :Fm1($form1), :Fm2($form2), :Im1($image) }, 'Resource XObject content';
 is-json-equiv $new-page<Resources><Font>, { :F1($font) }, 'Resource Font content';
 
 $input = q:to"--END--";
-35 0 obj    % Graphics state parameter dictionary
-<<
+35 0 obj <<   % Graphics state parameter dictionary
   /Type /ExtGState
   /OP false
   /TR 36 0 R
->>
-endobj
+>> endobj
 --END--
 
 $grammar.parse($input, :$actions, :rule<ind-obj>)
@@ -163,13 +160,13 @@ is $gs-obj.BG2, 'MyFunc', 'BG2 accessor';
 ok !$gs-obj.BG.defined, 'BG accessor';
 is $gs-obj.black-generation, 'MyFunc', 'black-generation accessor';
 
-my $gs1 = $new-page.resource( $gs-obj );
+my $gs1 = $new-page.use-resource( $gs-obj );
 is-deeply $gs1.key, 'GS1', 'ExtGState resource entry';
 
 use PDF::DOM::Type::ColorSpace::Lab;
 my $colorspace = PDF::DOM::Type::ColorSpace::Lab.new;
 isa-ok $colorspace, PDF::DOM::Type::ColorSpace::Lab;
-my $cs1 = $new-page.resource( $colorspace );
+my $cs1 = $new-page.use-resource( $colorspace );
 is $cs1.key, 'CS1', 'ColorSpace resource entry';
 
 use PDF::DOM::Type::Shading::Axial;
@@ -178,12 +175,12 @@ my $Shading = PDF::DOM::Type::Shading::Axial.new( :dict{ :ColorSpace(:name<Devic
 							 :Coords[ 0.0, 0.0, 0.096, 0.0, 0.0, 1.0, 0],
 							 },
 				                   :$reader );
-my $sh1 = $new-page.resource( $Shading );
+my $sh1 = $new-page.use-resource( $Shading );
 is $sh1.key, 'Sh1', 'Shading resource entry';
 
 use PDF::DOM::Type::Pattern::Shading;
 my $pat-obj = PDF::DOM::Type::Pattern::Shading.new( :dict{ :PaintType(1), :TilingType(2), :$Shading } );
-my $pt1 = $new-page.resource( $pat-obj );
+my $pt1 = $new-page.use-resource( $pat-obj );
 is $pt1.key, 'Pt1', 'Shading resource entry';
 
 my $resources = $new-page.Resources;

@@ -18,8 +18,7 @@ my $input = q:to"--END-OBJ--";
   /Coords [ 0.0 0.0 0.096 0.0 0.0 1.0 00]  % Concentric circles
   /Function 10 0 R
   /Extend [ true true ]
->>
-endobj
+>> endobj
 --END-OBJ--
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)

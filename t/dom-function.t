@@ -17,16 +17,14 @@ my $input = q:to"--END-OBJ--";
   /Domain [ -1.0 1.0 -1.0 1.0 ]
   /Range [ -1.0 1.0 ]
   /Length 71
->>
-stream
+>> stream
 { 360 mul sin
   2 div
   exch 360 mul sin
   2 div
   add
 }
-endstream
-endobj
+endstream endobj
 --END-OBJ--
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)

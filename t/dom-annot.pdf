@@ -3,8 +3,7 @@
 1 0 obj <<
   /Type /Catalog
   /Pages 2 0 R
->>
-endobj
+>> endobj
 2 0 obj <<
   /Type /Pages
   /Count 1
@@ -15,36 +14,31 @@ endobj
     >>
     /Procset [ /PDF /Text ]
   >>
->>
-endobj
+>> endobj
 3 0 obj <<
   /Type /Page
   /Annots [ 4 0 R 5 0 R ]
   /Contents 6 0 R
   /MediaBox [ 0 0 350 250 ]
   /Parent 2 0 R
->>
-endobj
+>> endobj
 4 0 obj <<
   /Type /Annot
   /Subtype /Text
   /Contents (This is an open annotation. You'll need acro-reader...)
   /Open true
   /Rect [ 100 100 300 200 ]
->>
-endobj
+>> endobj
 5 0 obj <<
   /Type /Annot
   /Subtype /Text
   /Contents (...xpdf doesn't display annotations. This annotation is closed, btw)
   /Open false
   /Rect [ 120 120 200 200 ]
->>
-endobj
+>> endobj
 6 0 obj <<
   /Length 84
->>
-stream
+>> stream
 
 BT
   50 50 Td
@@ -53,15 +47,13 @@ BT
   [ (Page with an open annotation) ] TJ
   T*
 ET
-endstream
-endobj
+endstream endobj
 7 0 obj <<
   /Type /Font
   /Subtype /Type1
   /BaseFont /Courier
   /Encoding /WinAnsiEncoding
->>
-endobj
+>> endobj
 xref
 0 8
 0000000000 65535 f 

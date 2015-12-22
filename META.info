@@ -43,6 +43,7 @@
         "PDF::DOM::Type::ColorSpace" : "lib/PDF/DOM/Type/ColorSpace.pm",
         "PDF::DOM::Type::ColorSpace::CalGray" : "lib/PDF/DOM/Type/ColorSpace/CalGray.pm",
         "PDF::DOM::Type::ColorSpace::CalRGB" : "lib/PDF/DOM/Type/ColorSpace/CalRGB.pm",
+        "PDF::DOM::Type::ColorSpace::DeviceN" : "lib/PDF/DOM/Type/ColorSpace/DeviceN.pm",
         "PDF::DOM::Type::ColorSpace::ICCBased" : "lib/PDF/DOM/Type/ColorSpace/ICCBased.pm",
         "PDF::DOM::Type::ColorSpace::Indexed" : "lib/PDF/DOM/Type/ColorSpace/Indexed.pm",
         "PDF::DOM::Type::ColorSpace::Lab" : "lib/PDF/DOM/Type/ColorSpace/Lab.pm",

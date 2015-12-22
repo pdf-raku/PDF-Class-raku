@@ -16,13 +16,11 @@ my $input = q:to"--END--";
     /Supplement 2
   >>
   /WMode 0
->>
-stream
+>> stream
 %!PS-Adobe-3.0 Resource-CMap
 %%DocumentNeededResources : ProcSet ( CIDInit )
 ...
-endstream
-endobj
+endstream endobj
 --END--
 
 my $actions = PDF::Grammar::PDF::Actions.new;

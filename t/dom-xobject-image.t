@@ -27,11 +27,9 @@ my $input = q:to"--END-OBJ--";
   /Length 13
   /Height 2286
   /Filter/DCTDecode
->>
-stream
+>> stream
 (binary data)
-endstream
-endobj
+endstream endobj
 --END-OBJ--
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)

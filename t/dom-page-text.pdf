@@ -3,8 +3,7 @@
 1 0 obj <<
   /Type /Catalog
   /Pages 2 0 R
->>
-endobj
+>> endobj
 2 0 obj <<
   /Type /Pages
   /Count 2
@@ -16,19 +15,16 @@ endobj
     >>
     /Procset [ /PDF /Text ]
   >>
->>
-endobj
+>> endobj
 3 0 obj <<
   /Type /Page
   /Contents 4 0 R
   /MediaBox [ 0 0 612 792 ]
   /Parent 2 0 R
->>
-endobj
+>> endobj
 4 0 obj <<
   /Length 5529
->>
-stream
+>> stream
 
 BT
   50 100 Td
@@ -310,19 +306,16 @@ BT
   [ (dolore) -609 (magna) -609 (aliqua.) ] TJ
   T*
 ET
-endstream
-endobj
+endstream endobj
 5 0 obj <<
   /Type /Page
   /Contents 6 0 R
   /MediaBox [ 0 0 612 792 ]
   /Parent 2 0 R
->>
-endobj
+>> endobj
 6 0 obj <<
   /Length 6260
->>
-stream
+>> stream
 
 BT
   /F2 10 Tf
@@ -677,22 +670,19 @@ BT
   [ (exercitation) -1078 (ullamco) ] TJ
   T*
 ET
-endstream
-endobj
+endstream endobj
 7 0 obj <<
   /Type /Font
   /Subtype /Type1
   /BaseFont /Helvetica-Bold
   /Encoding /WinAnsiEncoding
->>
-endobj
+>> endobj
 8 0 obj <<
   /Type /Font
   /Subtype /Type1
   /BaseFont /Helvetica
   /Encoding /WinAnsiEncoding
->>
-endobj
+>> endobj
 xref
 0 9
 0000000000 65535 f 

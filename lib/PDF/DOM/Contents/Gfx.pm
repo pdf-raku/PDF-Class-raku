@@ -92,7 +92,7 @@ class PDF::DOM::Contents::Gfx
 		$.ops( $obj.content(:inline) );
 	    }
 	    else {
-		$.op(XObject, $.parent.resource($obj).key );
+		$.op(XObject, $.parent.use-resource($obj).key );
 	    }
         };
     }
@@ -151,7 +151,7 @@ class PDF::DOM::Contents::Gfx
 	    }
 	}
 
-	my $gs-entry = self.parent.resource($gs, :eqv);
+	my $gs-entry = self.parent.use-resource($gs, :eqv);
 	self.SetGraphicsState($gs-entry.key);
     }
 

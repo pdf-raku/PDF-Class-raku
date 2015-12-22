@@ -3,8 +3,7 @@
 1 0 obj <<
   /Type /Catalog
   /Pages 2 0 R
->>
-endobj
+>> endobj
 2 0 obj <<
   /Type /Pages
   /Count 1
@@ -15,19 +14,16 @@ endobj
     >>
     /Procset [ /PDF /Text ]
   >>
->>
-endobj
+>> endobj
 3 0 obj <<
   /Type /Page
   /Contents 4 0 R
   /MediaBox [ 0 0 230 210 ]
   /Parent 2 0 R
->>
-endobj
+>> endobj
 4 0 obj <<
   /Length 675
->>
-stream
+>> stream
 
 q
   0 G
@@ -59,8 +55,7 @@ q
   112.5 158.253 l
   b
 Q
-endstream
-endobj
+endstream endobj
 5 0 obj <<
   /Type /Pattern
   /BBox [ 0 0 100 100 ]
@@ -76,8 +71,7 @@ endobj
   /XStep 100
   /YStep 100
   /Length 247
->>
-stream
+>> stream
 
 q
   BT
@@ -98,14 +92,12 @@ q
     (\250) Tj
   ET
 Q
-endstream
-endobj
+endstream endobj
 6 0 obj <<
   /Type /Font
   /Subtype /Type1
   /BaseFont /ZapfDingbats
->>
-endobj
+>> endobj
 xref
 0 7
 0000000000 65535 f 

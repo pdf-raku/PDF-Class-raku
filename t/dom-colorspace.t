@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 34;
+plan 41;
 
 use PDF::DOM::Type;
 use PDF::Storage::IndObj;
@@ -38,11 +38,7 @@ isa-ok $cal-gray, ::('PDF::DOM::Type')::('ColorSpace::CalGray'), 'new CS class';
 is $cal-gray.subtype, 'CalGray', 'new CS subtype';
 isa-ok $cal-gray[1], Hash, 'new CS Dict';
 
-$input = q:to"--END-OBJ--";
-10 0 obj
-  [/ICCBased << /N 3 /Alternate /DeviceRGB >>]
-endobj
---END-OBJ--
+$input = "10 0 obj [/ICCBased << /N 3 /Alternate /DeviceRGB >>] endobj";
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
@@ -57,13 +53,7 @@ is $color-space-obj.subtype, 'ICCBased', '$.subtype accessor';
 is $color-space-obj.N, 3, 'N accessor';
 is $color-space-obj.Alternate, 'DeviceRGB', 'DeviceRGB accessor';
 
-$input = q:to"--END-OBJ--";
-11 0 obj
-  [ /Indexed /DeviceRGB 255
-    < 000000 FF0000 00FF00 0000FF B57342 >
-  ]
-endobj
---END-OBJ--
+$input = "11 0 obj [ /Indexed /DeviceRGB 255 < 000000 FF0000 00FF00 0000FF B57342 > ] endobj";
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
@@ -102,5 +92,36 @@ is $color-space-obj.subtype, 'Separation', '$.subtype accessor';
 is $color-space-obj.Name, 'LogoGreen', 'Name accessor';
 is $color-space-obj.AlternateSpace, 'DeviceCMYK', 'AlternateSpace accessor';
 is-json-equiv $color-space-obj.TintTransform, (:ind-ref[12, 0]), 'TintTransform accessor';
+
+$input = q:to"--END-OBJ--";
+30 0 obj    % Color space
+[ /DeviceN
+  [ /Orange /Green /None ]
+  /DeviceCMYK
+  1 0 R
+  << /Colorants
+    << /Orange        [ /Separation /Orange /DeviceCMYK 2 0 R ]
+       /Green         [ /Separation /Green /DeviceCMYK 3 0 R ]
+       /PANTONE#20131 [ /Separation /PANTONE#20131 /DeviceCMYK 4 0 R ]
+    >>
+  >>
+] endobj
+--END-OBJ--
+
+PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
+    // die "parse failed";
+%ast = $/.ast;
+$ind-obj = PDF::Storage::IndObj.new( |%ast, :$reader);
+$color-space-obj = $ind-obj.object;
+isa-ok $color-space-obj, ::('PDF::DOM::Type')::('ColorSpace::DeviceN');
+is-json-equiv $color-space-obj.TintTransform, (:ind-ref[1, 0]), 'TintTransform accessor';
+is-json-equiv $color-space-obj.Names, [ <Orange Green None> ], 'Names Accessor';
+my $attributes = $color-space-obj.Attributes;
+ok $attributes, 'Attributes accessor';
+my $colorants = $attributes.Colorants;
+ok $colorants, 'Attributes.Colorants sub-accessor';
+my $orange-seperation = $colorants<Orange>;
+is-json-equiv $orange-seperation, [ 'Separation', 'Orange', 'DeviceCMYK',  :ind-ref[2, 0] ], 'seperation (Orange)';
+does-ok $orange-seperation, ::('PDF::DOM::Type')::('ColorSpace::Separation'), 'seperation (Orange)';
 
 

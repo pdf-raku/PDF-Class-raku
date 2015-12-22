@@ -131,6 +131,41 @@ y | CurveTo2 | x1 y1 x3 y3 | Append curved segment to path (final point replicat
     my constant ColorOps = set <CS cs SC SCN sc scn G g RG rg K k>;
     my constant MarkedContentOps = set <MP DP BMC BDC EMC>;
 
+    #| [PDF 1.7 TABLE 5.3 Text rendering modes]
+    my Int enum TextMode is export(:TextMode) «
+	:FillText(0) :OutlineText(1) :FillOutlineText(2)
+        :InvisableText(3) :FillClipText(4) :OutlineClipText(5)
+        :FillOutlineClipText(6) :ClipText(7)
+    »;
+
+    # *** TEXT STATE ***
+    has Numeric $!Tc = 0;   #| character spacing
+    has Numeric $!Tw = 0;   #| word spacing
+    has Numeric $!Th = 100; #| horizontal scaling
+    has Numeric $!Tl = 0;   #| leading
+    has Numeric $!Trise = 0;
+    has Str $!Tf;           #| font entry name, e.g. 'F1'
+    has Numeric $!Tfs;      #| font size
+    has Numeric @!Tm  = [ 1, 0, 0, 1, 0, 0, ];      #| text matrix
+    has Numeric @!CTM = [ 1, 0, 0, 1, 0, 0, ];      #| graphics matrix;
+
+    method !bind-state {
+    }
+
+    has @!gsave;
+    has @!tags;
+    has Bool $.in-text-block = False;
+
+    method TextMatrix   is rw { @!Tm }
+    method CharSpacing  is rw { $!Tc  }
+    method WordSpacing  is rw { $!Tw  }
+    method HorizScaling is rw { $!Th  }
+    method TextLeading  is rw { $!Tl  }
+    method FontKey      is rw { $!Tf  }
+    method FontSize     is rw { $!Tfs }
+    method TextRise     is rw { $!Trise }
+    method GraphicsMatrix is rw { @!CTM  }
+
     # States and transitions in [PDF 1.4 FIGURE 4.1 Graphics objects]
     my enum GraphicsContext <Path Text Clipping Page Shading External Image>;
 
@@ -173,41 +208,6 @@ y | CurveTo2 | x1 y1 x3 y3 | Append curved segment to path (final point replicat
        warn "unexpected '$op' operation " ~ ($last-op ?? "(following '$last-op)" !! '(first operation)')
 	   unless $ok-here;
     }
-
-    #| [PDF 1.7 TABLE 5.3 Text rendering modes]
-    my Int enum TextMode is export(:TextMode) «
-	:FillText(0) :OutlineText(1) :FillOutlineText(2)
-        :InvisableText(3) :FillClipText(4) :OutlineClipText(5)
-        :FillOutlineClipText(6) :ClipText(7)
-    »;
-
-    has %.gstate = %(:CTM[ 1, 0, 0, 1, 0, 0 ]);
-
-    has Numeric @!Tm = [ 1, 0, 0, 1, 0, 0, ];      #| text matrix
-
-    # *** TEXT STATE ***
-    has Numeric $!Tc = 0;   #| character spacing
-    has Numeric $!Tw = 0;   #| word spacing
-    has Numeric $!Th = 100; #| horizontal scaling
-    has Numeric $!Tl = 0;   #| leading
-    has Numeric $!Trise = 0;
-    has Str $!Tf;           #| font entry name, e.g. 'F1'
-    has Numeric $!Tfs;      #| font size
-
-    has @!gsave;
-    has @!tags;
-    has Bool $.in-text-block = False;
-
-    method TextMatrix   is rw { @!Tm }
-    method CharSpacing  is rw { $!Tc  }
-    method WordSpacing  is rw { $!Tw  }
-    method HorizScaling is rw { $!Th  }
-    method TextLeading  is rw { $!Tl  }
-    method FontKey      is rw { $!Tf  }
-    method FontSize     is rw { $!Tfs }
-    method TextRise     is rw { $!Trise }
-
-    method GraphicsMatrix is rw { %!gstate<CTM>  }
 
     proto sub op(|c) returns Pair {*}
 
@@ -453,19 +453,27 @@ y | CurveTo2 | x1 y1 x3 y3 | Append curved segment to path (final point replicat
     }
 
     multi method track-graphics('q') {
-        my %gclone = %!gstate.pairs.map( -> $p { $p.key => $p.value.clone });
-        @!gsave.push: %gclone;
+        my @Tm = @!Tm;
+        my @CTM = @!CTM;
+        my %gstate = :$!Tc, :$!Tw, :$!Th, :$!Tl, :$!Trise, :@Tm, :@CTM;
+        @!gsave.push: %gstate;
     }
     multi method track-graphics('Q') {
         die "bad nesting; Restore(Q) operator not matched by preceeding Save(q) operator in PDF content\n"
             unless @!gsave;
-        %!gstate = @!gsave.pop.pairs;
+        my %gstate = @!gsave.pop;
+        $!Tc    = %gstate<Tc>;
+        $!Tw    = %gstate<Tw>;
+        $!Th    = %gstate<Th>;
+        $!Tl    = %gstate<Tl>;
+        $!Trise = %gstate<Trise>;
+        @!Tm    = @(%gstate<Tm>);
+        @!CTM   = @(%gstate<CTM>);
 	Restore;
     }
     multi method track-graphics('cm', *@transform) {
         use PDF::DOM::Util::TransformMatrix;
-        my Array $CTM = PDF::DOM::Util::TransformMatrix::multiply($.GraphicsMatrix, @transform);
-        %!gstate<CTM> = $CTM;
+        @!CTM = PDF::DOM::Util::TransformMatrix::multiply(@!CTM, @transform);
     }
     multi method track-graphics('BT') {
         die "illegal nesting of BT text-blocks in PDF content\n"

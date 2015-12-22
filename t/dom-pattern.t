@@ -28,8 +28,7 @@ my $input = q:to"--END-OBJ--";
   /Resources << >>
   /Matrix [ 0.4 0.0 0.0 0.4 0.0 0.0 ]
   /Length 183
->>
-endobj
+>> endobj
 --END-OBJ--
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
@@ -88,7 +87,7 @@ $page.gfx.ops: [
     :re[25, 175, 175, -150],                # Construct rectangular path
     :f[],                                   # Fill path
     :cs[<Pattern>],                           # Set pattern color space
-    :scn[$page.resource($pattern-obj).key], # Set pattern as nonstroking color
+    :scn[$page.use-resource($pattern-obj).key], # Set pattern as nonstroking color
 
     :m[99.92, 49.92],                                # Start new path
     :c[99.92, 77.52, 77.52, 99.92, 49.92, 99.92],    # Construct lower-left circle

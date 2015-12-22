@@ -26,8 +26,7 @@ my $input = q:to"--END-OBJ--";
   /StructTreeRoot 25 0 R
   /AcroForm << /Fields [] >>
   /ViewerPreferences << /HideToolbar true /Direction /R2L >>
->>
-endobj
+>> endobj
 --END-OBJ--
 
 my $reader = class { has $.auto-deref = False }.new;
