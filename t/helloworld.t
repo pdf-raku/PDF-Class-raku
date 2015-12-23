@@ -51,25 +51,28 @@ $page.graphics: -> $gfx {
 
     $page.graphics: -> $gfx {
 	$gfx.SetFillRGB(0.9, 0.5, 0.0);
-	$gfx.Rectangle(350, 300, 100, 100);
-	$gfx.Fill;
-	$gfx.block: -> $_ {
-	    .SetFillRGB(0.1, 0.9, 0.5);
-	    .Rectangle(100, 200, 200, 200);
-	    .Fill;
-	}
-    }
-
-    $page.graphics: -> $gfx {
-	$gfx.transform( :translate[285, 250]);
-	$gfx.transform( :rotate(-10), :scale(1.5) );
-	$gfx.set-graphics( :transparency(.5) );
-	$gfx.Rectangle(0, 0, 50, 50);
+	$gfx.Rectangle(340, 300, 100, 100);
 	$gfx.Fill;
 
 	my $img = $gfx.image("t/images/snoopy-happy-dance.jpg");
 	ok $img.Width, '$img.Width';
 	$gfx.do($img, 232, 380, :width(150) );
+
+	$gfx.block: -> $_ {
+	    .SetFillRGB(0.1, 0.9, 0.5);
+	    .Rectangle(90, 200, 200, 200);
+	    .Fill;
+	}
+    }
+
+    $page.graphics: -> $gfx {
+
+	$gfx.transform( :translate[275, 250]);
+	$gfx.transform( :rotate(-10), :scale(1.5) );
+	$gfx.set-graphics( :transparency(.5) );
+	$gfx.Rectangle(0, 0, 50, 50);
+	$gfx.Fill;
+
     }
 
 }
@@ -77,16 +80,16 @@ $page.graphics: -> $gfx {
 $page.graphics: -> $_ {
     $page.text: -> $_ {
          use PDF::DOM::Op :TextMode;
-        .set-font( $header-font, 12);
+        .set-font( $header-font, 16);
         .SetTextRender: TextMode::OutlineText;
         .SetLineWidth: .5;
         .text-transform( :translate[50, 550], :slant(12) );
-        .ShowText('Outline Slanted Text @(50,550)');
+        .say('Outline Slanted Text @(50,550)', :width(150));
     }
 }
 
 $page.text: -> $_ {
-    .text-position = [100, 300];
+    .text-position = [110, 300];
     .set-font( $header-font, 24);
     .say('Hello, world!');
 }
