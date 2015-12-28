@@ -1,6 +1,7 @@
 #!/usr/bin/env perl6
 use v6;
 use PDF::DOM;
+use PDF::DOM::Type::Pages;
 use PDF::DAO::Type::Encrypt :PermissionsFlag;
 
 sub MAIN(*@files, Str :$save-as)  {
@@ -10,19 +11,20 @@ sub MAIN(*@files, Str :$save-as)  {
     die "nothing to do"
 	unless @files;
 
+    die "PDF forbids modification\n"
+	unless $pdf.permitted( PermissionsFlag::Modify );
+
+    # create a new page root. 
+    my $pages = $pdf.Root.Pages;
+
     for @files -> $in-file {
 	my $in-pdf = PDF::DOM.open: $in-file;
 
 	die "PDF forbids copy: $in-file"
 	    unless $in-pdf.permitted( PermissionsFlag::Copy );
 
-	for 1 .. $in-pdf.page-count -> $page-no {
-	    $pdf.add-page( $in-pdf.page($page-no) )
-	}
+	$pages.add-pages: $in-pdf.Root.Pages;
     }
-
-    die "PDF forbids modification\n"
-	unless $pdf.permitted( PermissionsFlag::Modify );
 
     if $save-as {
 	# save to a new file
