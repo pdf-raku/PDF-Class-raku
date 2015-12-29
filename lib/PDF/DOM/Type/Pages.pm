@@ -43,7 +43,7 @@ class PDF::DOM::Type::Pages
 	    }
 	}
 	else {
-	    $page = PDF::DOM::Type::Page.new;
+	    $page = PDF::DAO.coerce: { :Type( :name<Page> ) };
 	}
 
         if $sub-pages && $sub-pages.can('add-page') {
