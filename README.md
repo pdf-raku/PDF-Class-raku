@@ -1,9 +1,7 @@
 # perl6-PDF-DOM
 
-PDF::DOM is a set of intermediate Perl 6 classes for structured manipulation of PDF documents.
-
-It's goal is to implement a subset of the classes described in the PDF 1.7 Specification for general PDF
-development.
+PDF::DOM is a set of intermediate Perl 6 classes for structured manipulation of PDF documents. These classes are
+based on document objects described in the PDF 1.7 Specification.
 
 ```
 use v6;
@@ -239,15 +237,52 @@ Resource types are: ExtGState (graphics state), ColorSpace, Pattern, Shading, XO
 
 Resources of type Pattern and XObject/Image may have further associated resources.
 
+### Reuse
+
+Pages and resources may be copied from one PDF to another.
+
+The `to-xobject` method can be used to convert a page to an XObject Form to layup one or more input pages on an output page.
+
+```
+use PDF::DOM;
+my $doc1 = PDF::DOM.open: "t/helloworld.pdf";
+my $doc2 = PDF::DOM.open: "t/dom-pattern.pdf";
+
+my $new-doc = PDF::DOM.new;
+
+# copy pages from doc1
+for 1 .. $doc1.page-count -> $page-no {
+    $new-doc.add-page: $doc1.page($page-no);
+}
+
+# add a page; layup imported pages and images
+my $page = $new-doc.add-page;
+
+my $xobj-image = $doc1.page(1).resources('XObject').values[0];
+my $xobj-page1  = $doc1.page(1).to-xobject;
+my $xobj-page2  = $doc2.page(1).to-xobject;
+
+$page.graphics: -> $_ {
+    .do($xobj-image, 200, 500);
+    .do($xobj-page1, 100, 200, :width(200) );
+    .do($xobj-page2, 300, 300, :width(200) );
+}
+
+$new-doc.save-as: "t/reuse.pdf";
+
+```
+
 ## Development Status
 
 The PDF::DOM module is under construction and not yet functionally complete.
+
+Latest tested rakudo version: 2015.11-168-g6d9d0f1 built on MoarVM version 2015.11-19-g623eadf implementing Perl v6.b.
 
 # Bugs and Restrictions
 At this stage:
 - Only core fonts are supported. There are a total of 14
 font variations available. Please see the Font::AFM module for details.
-- Only JPEG images are supported. This is basically a port of PDF::API2::XObject::Image::JPEG
+- Only JPEG images have been implimented, as a proof of concept. This is basically a port of PDF::API2::XObject::Image::JPEG
 from the Perl 5 PDF::API2 module. Other image types should port fairly readily.
 - The classess in the PDF::DOM::Type::* namespace represent a common subset of
 the objects that can appear in a PDF. It is envisioned that the range of classes
