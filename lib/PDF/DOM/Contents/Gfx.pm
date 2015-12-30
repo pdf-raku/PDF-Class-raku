@@ -22,7 +22,7 @@ class PDF::DOM::Contents::Gfx
         $.op(EndText);
     }
 
-    method image($spec where Str | PDF::DOM::Type::XObject::Image ) {
+    method image(Str $spec ) {
         PDF::DOM::Type::XObject::Image.open( $spec );
     }
 
