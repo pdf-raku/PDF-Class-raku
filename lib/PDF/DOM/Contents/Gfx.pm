@@ -22,7 +22,7 @@ class PDF::DOM::Contents::Gfx
         $.op(EndText);
     }
 
-    method image($spec where Str | PDF::DOM::Type::XObject::Image ) {
+    method image(Str $spec ) {
         PDF::DOM::Type::XObject::Image.open( $spec );
     }
 
@@ -31,8 +31,8 @@ class PDF::DOM::Contents::Gfx
 
     #| place an image, or form object
     method do(PDF::DOM::Type::XObject $obj!,
-              Numeric $x!,
-              Numeric $y!,
+              Numeric $x = 0,
+              Numeric $y = 0,
               Numeric :$width is copy,
               Numeric :$height is copy,
               Align   :$align  = 'left',

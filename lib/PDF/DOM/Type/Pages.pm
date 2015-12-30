@@ -43,7 +43,7 @@ class PDF::DOM::Type::Pages
 	    }
 	}
 	else {
-	    $page = PDF::DAO.coerce( { :Type( :name<Page> ) } );
+	    $page = PDF::DAO.coerce: { :Type( :name<Page> ) };
 	}
 
         if $sub-pages && $sub-pages.can('add-page') {
@@ -57,6 +57,14 @@ class PDF::DOM::Type::Pages
         self<Count>++;
 
         $page
+    }
+
+    #| append page subtree
+    method add-pages( PDF::DOM::Type::Pages $pages ) {
+	self<Count> += $pages<Count>;
+	self<Kids>.push: $pages;
+	$pages<Parent> = self;
+        $pages;
     }
 
     #| $.page(0) or $.page(-1) adds a new page
@@ -148,7 +156,7 @@ class PDF::DOM::Type::Pages
         my Array $kids = self.Kids;
         for $kids.keys {
             my $kid = $kids[$_];
-            $kid.<Parent> = self.link;
+            $kid<Parent> = self.link;
             $kid.cb-finish;
             $count += $kid.can('Count') ?? $kid.Count !! 1;
         }

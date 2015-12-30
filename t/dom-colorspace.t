@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 41;
+plan 45;
 
 use PDF::DOM::Type;
 use PDF::Storage::IndObj;
@@ -124,4 +124,12 @@ my $orange-seperation = $colorants<Orange>;
 is-json-equiv $orange-seperation, [ 'Separation', 'Orange', 'DeviceCMYK',  :ind-ref[2, 0] ], 'seperation (Orange)';
 does-ok $orange-seperation, ::('PDF::DOM::Type')::('ColorSpace::Separation'), 'seperation (Orange)';
 
+# build from scratch
+use PDF::DOM::Type::Function::Exponential;
+my $exp-func = PDF::DOM::Type::Function::Exponential.new: { :Domain[ 0, 1], :Range[flat (0.0, 1.0) xx 4], :C0[0.0 xx 4], :C1[0.85, 0.24, 0.0, 0.0], :N(1.0) };
+is $exp-func.FunctionType, 2, '$exp-func.FunctionType';
+my $cs1 = ::('PDF::DOM::Type')::('ColorSpace::Separation').new: [ 'Separation', 'My Spot 1', :name<DeviceCMYK>, $exp-func ];
+is $cs1.Name, 'My Spot 1', 'cs1.Name';
+does-ok $cs1.Name,::('PDF::DAO::Name'), 'cs1.Name';
+is-deeply $cs1.TintTransform, $exp-func, 'cs1.TintTransform';
 
