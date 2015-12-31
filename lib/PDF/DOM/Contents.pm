@@ -36,19 +36,19 @@ role PDF::DOM::Contents {
 
     method cb-finish {
 
-        if $!pre-gfx.ops || $!gfx.ops {
+	if ($!pre-gfx && $!pre-gfx.ops) || ($!gfx && $!gfx.ops) {
 
 	    my $content = self.decoded;
 	    if $content.defined && $content.chars {
 		# dont trust existing content. wrap it in q ... Q
-		$!pre-gfx.ops.push: OpNames::Save => [];
-		$!gfx.ops.unshift: OpNames::Restore => [];
+		$.pre-gfx.ops.push: OpNames::Save => [];
+		$.gfx.ops.unshift: OpNames::Restore => [];
 	    }
-	    my $prepend = $!pre-gfx.ops
+	    my $prepend = $!pre-gfx && $!pre-gfx.ops
 		?? $!pre-gfx.content ~ "\n"
 		!! '';
 
-	    my $append = $!gfx.ops
+	    my $append = $!gfx && $!gfx.ops
 		?? "\n" ~ $!gfx.content
 		!! '';
 
