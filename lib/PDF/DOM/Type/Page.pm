@@ -101,23 +101,23 @@ class PDF::DOM::Type::Page
 
 	self.MediaBox //= [0, 0, 612, 792];
 
-	if $!pre-gfx.ops || $!gfx.ops {
-	    # handle new content.
+	if ($!pre-gfx && $!pre-gfx.ops) || ($!gfx && $!gfx.ops) {
+	    # serialize new content
 	    my @content-streams = @$.content-streams;
 	    if +@content-streams {
 		# dont trust existing content. wrap it in q ... Q
-		$!pre-gfx.ops.push: OpNames::Save => [];
-		$!gfx.ops.unshift: OpNames::Restore => [];
+		$.pre-gfx.ops.push: OpNames::Save => [];
+		$.gfx.ops.unshift: OpNames::Restore => [];
 	    }
 
 	    @content-streams.unshift: PDF::DAO::Stream.new( :decoded( $!pre-gfx.content ~ "\n") )
-		if $!pre-gfx.ops;
+		if $!pre-gfx && $!pre-gfx.ops;
 
 	    @content-streams.push: PDF::DAO::Stream.new( :decoded("\n" ~ $!gfx.content ) )
-		if $!gfx.ops;
+		if $!gfx && $!gfx.ops;
 
-	    $!pre-gfx.ops = ();
-	    $!gfx.ops = ();
+	    $!pre-gfx = Nil;
+	    $!gfx = Nil;
 	    self.Contents = @content-streams == 1 
 		?? @content-streams[0]
 		!! @content-streams;

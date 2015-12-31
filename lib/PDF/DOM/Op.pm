@@ -5,6 +5,8 @@ use PDF::DAO::Util :from-ast;
 
 role PDF::DOM::Op {
 
+    has &.callback is rw;
+
 =begin pod
 
 This role implements methods and mnemonics for the full operator table, as defined in specification [PDF 1.7 Appendix A]:
@@ -148,9 +150,6 @@ y | CurveTo2 | x1 y1 x3 y3 | Append curved segment to path (final point replicat
     has Numeric $!Tfs;      #| font size
     has Numeric @!Tm  = [ 1, 0, 0, 1, 0, 0, ];      #| text matrix
     has Numeric @!CTM = [ 1, 0, 0, 1, 0, 0, ];      #| graphics matrix;
-
-    method !bind-state {
-    }
 
     has @!gsave;
     has @!tags;
@@ -427,6 +426,8 @@ y | CurveTo2 | x1 y1 x3 y3 | Append curved segment to path (final point replicat
 	@!ops.push($opn);
         self!track-context($op-name, $last-op);
         self.track-graphics($op-name, |@args );
+        (self.callback)($op-name, |@args, :gfx(self) )
+	    if self.callback.defined;
 
 	@!ops[*-1];
     }
