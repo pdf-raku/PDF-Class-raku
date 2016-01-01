@@ -12,50 +12,48 @@ role PDF::DOM::Contents {
     method pre-graphics(&code) { self.pre-gfx.block( &code ) }
 
     has PDF::DOM::Contents::Gfx $!gfx;  #| appended graphics
-    multi method gfx { $!gfx //= PDF::DOM::Contents::Gfx.new( :parent(self) ) }
-    multi method graphics(&code) { self.gfx.block( &code ) }
-    multi method text(&code) { self.gfx.text( &code ) }
+    method gfx(|c) {
+	$!gfx //= do {
+	    my Pair @ops = self.contents-parse;
+	    my $gfx = PDF::DOM::Contents::Gfx.new( :parent(self), |c );
+	    if @ops && ! (@ops[0] eq OpNames::Save && @ops[*-1] eq OpNames::Restore) {
+		@ops.unshift: OpNames::Save => [];
+		@ops.push: OpNames::Restore => [];
+	    }
+	    $gfx.ops: @ops;
+	    $gfx;
+	}
+    }
+    method graphics(&code) { self.gfx.block( &code ) }
+    method text(&code) { self.gfx.text( &code ) }
 
     method contents-parse(Str $contents = $.contents ) {
 	PDF::DOM::Contents::Gfx.parse($contents);
     }
 
     method contents returns Str {
-	$.decoded;
+	$.decoded // '';
     }
 
-    method render(&callback?) {
-	self.cb-finish;
-	my Array $ops = self.contents-parse;
-	my $gfx = PDF::DOM::Contents::Gfx.new( :parent(self) );
-	$gfx.callback = &callback
-	    if &callback.defined;
-	$gfx.ops: $ops;
-	$gfx.finish;
+    method render(&callback) {
+	die "too late to install render callback"
+	    if $!gfx;
+	self.gfx(:&callback);
     }
 
     method cb-finish {
 
 	if ($!pre-gfx && $!pre-gfx.ops) || ($!gfx && $!gfx.ops) {
 
-	    my $content = self.decoded;
-	    if $content.defined && $content.chars {
-		# dont trust existing content. wrap it in q ... Q
-		$.pre-gfx.ops.push: OpNames::Save => [];
-		$.gfx.ops.unshift: OpNames::Restore => [];
-	    }
 	    my $prepend = $!pre-gfx && $!pre-gfx.ops
 		?? $!pre-gfx.content ~ "\n"
 		!! '';
 
 	    my $append = $!gfx && $!gfx.ops
-		?? "\n" ~ $!gfx.content
+		?? $!gfx.content
 		!! '';
 
-	    $!pre-gfx = Nil;
-	    $!gfx = Nil;
-	    self.edit-stream(:$prepend, :$append)
-		if $prepend.chars || $append.chars;
+	    self.decoded = $prepend ~ $append;
         }
     }
 
