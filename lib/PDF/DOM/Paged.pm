@@ -39,19 +39,10 @@ role PDF::DOM::Paged {
         self."$bbox"();
     }
 
-    multi method bbox('media') is rw {
-        self.MediaBox //= PageSizes::Letter;
-	self.MediaBox
-    }
-
-    multi method bbox('crop') is rw {
-	self.CropBox
-	    // self.bbox('media');
-    }
-
-    multi method bbox(BoxName $box) is rw is default {
-	self!"get-prop"($box)
-	    // self.bbox('crop');
+    method bbox(BoxName $_) is rw {
+	when 'media' { self.MediaBox //= PageSizes::Letter }
+	when 'crop'  { self.CropBox // self.bbox('media') }
+	default      { self!get-prop($_) // self.bbox('crop') }
     }
 
     method media-box(|c) is rw { self.bbox('media', |c ) }
