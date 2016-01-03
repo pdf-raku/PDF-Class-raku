@@ -220,7 +220,7 @@ y | CurveTo2 | x1 y1 x3 y3 | Append curved segment to path (final point replicat
         $op => [ :$encoded ];
     }
     multi sub op(Str $op! where 'EI') {
-        return $op => []
+        $op => []
     }
 
     multi sub op(Str $op! where 'BX' | 'EX',

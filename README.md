@@ -76,7 +76,7 @@ my $doc = PDF::DOM.new;
 my $page = $doc.add-page;
 
 $page.graphics: -> $gfx {
-    my $img = $gfx.image("t/images/snoopy-happy-dance.jpg");
+    my $img = $gfx.load-image("t/images/snoopy-happy-dance.jpg");
     $gfx.do($img, 150, 380, :width(150) );
 
     # displays the image again, semi-transparently with translation, rotation and scaling
@@ -258,7 +258,7 @@ for 1 .. $doc1.page-count -> $page-no {
 # add a page; layup imported pages and images
 my $page = $new-doc.add-page;
 
-my $xobj-image = $doc1.page(1).resources('XObject').values[0];
+my $xobj-image = $doc1.page(1).images[0];
 my $xobj-page1  = $doc1.page(1).to-xobject;
 my $xobj-page2  = $doc2.page(1).to-xobject;
 

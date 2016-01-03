@@ -45,4 +45,10 @@ role PDF::DOM::Resourced {
 	$resources.find-resource(|c);
     }
 
+    method images(Bool :$inline = True) {
+	my %forms = self.resources: 'XObject';
+	my @images = %forms.values.grep( *.Subtype eq 'Image');
+	@images.append: self.gfx.inline-images
+	    if $inline;
+    }
 }
