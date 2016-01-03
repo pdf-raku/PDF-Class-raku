@@ -54,7 +54,7 @@ $page.graphics: -> $gfx {
 	$gfx.Rectangle(340, 300, 100, 100);
 	$gfx.Fill;
 
-	my $img = $gfx.image("t/images/snoopy-happy-dance.jpg");
+	my $img = $gfx.load-image("t/images/snoopy-happy-dance.jpg");
 	ok $img.Width, '$img.Width';
 	$gfx.do($img, 232, 380, :width(150) );
 

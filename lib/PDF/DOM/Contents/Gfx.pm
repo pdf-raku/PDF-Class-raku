@@ -22,8 +22,25 @@ class PDF::DOM::Contents::Gfx
         $.op(EndText);
     }
 
-    method image(Str $spec ) {
+    method load-image(Str $spec ) {
         PDF::DOM::Type::XObject::Image.open( $spec );
+    }
+
+    method inline-images {
+	my PDF::DOM::Type::XObject::Image @images;
+	for $.ops.keys -> $i {
+	    my $v = $.ops[$i];
+	    next unless $v.key eq 'BI';
+
+	    my $dict = $v.value[0]<dict>;
+	    my $v1 = $.ops[$i+1];
+	    die "BI not followed by ID image in content stream"
+		unless $v1 && $v1.key eq 'ID';
+	    my $encoded = $v1.value[0]<encoded>;
+
+	    @images.push: PDF::DOM::Type::XObject::Image.new( :$dict, :$encoded );
+	}
+	@images;
     }
 
     my subset Align of Str where 'left' | 'center' | 'right';
