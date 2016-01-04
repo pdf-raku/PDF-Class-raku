@@ -81,12 +81,12 @@ my $pdf = PDF::DOM.new;
 my $page = $pdf.Pages.add-page;
 $page<MediaBox> = [0, 0, 230, 210];
 $page.gfx.ops: [
-    :q[],                                   # Graphics save
-    :G[0.0],                                # Set stroking color to black
-    :rg[1.0, 1.0, 0.0],                     # Set nonstroking color to yellow
-    :re[25, 175, 175, -150],                # Construct rectangular path
-    :f[],                                   # Fill path
-    :cs[<Pattern>],                           # Set pattern color space
+    :q[],                                       # Graphics save
+    :G[0.0],                                    # Set stroking color to black
+    :rg[1.0, 1.0, 0.0],                         # Set nonstroking color to yellow
+    :re[25, 175, 175, -150],                    # Construct rectangular path
+    :f[],                                       # Fill path
+    :cs[<Pattern>],                             # Set pattern color space
     :scn[$page.use-resource($pattern-obj).key], # Set pattern as nonstroking color
 
     :m[99.92, 49.92],                                # Start new path
