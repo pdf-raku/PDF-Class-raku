@@ -51,7 +51,6 @@ class PDF::DOM::Type::XObject::Image
     }
 
     multi method read(IO::Handle $fh! where $fh.path.extension ~~ m:i/ jpe?g $/) {
-        use experimental :pack;
         my Blob $buf;
         my Int ($bpc, $height, $width, $cs);
         my Bool $is-dct;
