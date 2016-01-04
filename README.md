@@ -1,6 +1,6 @@
 # perl6-PDF-DOM
 
-PDF::DOM is a set of intermediate Perl 6 classes for structured manipulation of PDF documents. These classes are
+PDF::DOM is a set of intermediate Perl 6 classes and methods for the manipulation of PDF documents. These are
 based on document objects described in the PDF 1.7 Specification.
 
 ```
@@ -214,7 +214,8 @@ See also:
 - PDF::DOM::Type::Field
 - PDF::FDF (under construction), which handles import/export from FDF files.
 
-### Resources
+### Resources and Reuse
+
 To list all images and forms for each page
 ```
 use PDF::DOM;
@@ -223,6 +224,13 @@ for 1 ... $doc.page-count -> $page-no {
     say "page: $page-no";
     my $page = $doc.page: $page-no;
     my %object = $page.resources('XObject');
+
+    # also report on images embedded in the page content
+    my $k = "(inline-0)";
+
+    %object{++$k} = $_
+        for $page.gfx.inline-images;
+
     for %object.keys -> $key {
         my $xobject = %object{$key};
         my $type = $xobject.Type;
@@ -236,8 +244,6 @@ for 1 ... $doc.page-count -> $page-no {
 Resource types are: ExtGState (graphics state), ColorSpace, Pattern, Shading, XObject (forms and images) and Properties.
 
 Resources of type Pattern and XObject/Image may have further associated resources.
-
-### Reuse
 
 Pages and resources may be copied from one PDF to another.
 
@@ -282,7 +288,7 @@ Latest tested rakudo version: 2015.11-168-g6d9d0f1 built on MoarVM version 2015.
 At this stage:
 - Only core fonts are supported. There are a total of 14
 font variations available. Please see the Font::AFM module for details.
-- Only JPEG images have been implimented, as a proof of concept. This is basically a port of PDF::API2::XObject::Image::JPEG
+- Only JPEG images have been implemented, as a proof of concept. This is basically a port of PDF::API2::XObject::Image::JPEG
 from the Perl 5 PDF::API2 module. Other image types should port fairly readily.
 - The classess in the PDF::DOM::Type::* namespace represent a common subset of
 the objects that can appear in a PDF. It is envisioned that the range of classes
