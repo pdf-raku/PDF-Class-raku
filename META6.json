@@ -1,6 +1,7 @@
 {
+    "perl"        : "v6",
     "name"        : "PDF::DOM",
-    "version"     : "0.1",
+    "version"     : "0.0.1",
     "description" : "PDF Document Object Model",
     "depends"     : [ "PDF", "PDF::Grammar", "Font::AFM" ],
     "source-url"  : "git://github.com/p6-pdf/p6-PDF-Tools.git",
@@ -108,6 +109,9 @@
         "PDF::DOM::Type::XObject::PS" : "lib/PDF/DOM/Type/XObject/PS.pm",
 
         "PDF::DOM::Util::Font" : "lib/PDF/DOM/Util/Font.pm",        
-        "PDF::DOM::Util::TransformMatrix" : "lib/PDF/DOM/Util/TransformMatrix.pm"        
+        "PDF::DOM::Util::TransformMatrix" : "lib/PDF/DOM/Util/TransformMatrix.pm",
+
+        // Testing
+        "t::DOM::Page" : "t/DOM/Page.pm"
     }
 }
