@@ -29,12 +29,13 @@ class PDF::DOM::Delegator
         my Bool $resolved;
 
 	for self.class-paths -> $class-path {
-	    try {
-		try { require ::($class-path)::($subclass) };
-		$handler-class = ::($class-path)::($subclass);
-		$resolved = True;
-	    }
-	    last if $resolved;
+            require ::($class-path)::($subclass);
+            $handler-class = ::($class-path)::($subclass);
+            $resolved = True;
+            last;
+            CATCH {
+                when X::CompUnit::UnsatisfiedDependency { }
+            }
 	}
 		
 	note "No DOM handler class [{self.class-paths}]::{$subclass}"

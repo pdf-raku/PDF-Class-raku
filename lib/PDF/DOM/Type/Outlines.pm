@@ -5,7 +5,8 @@ use PDF::DOM::Type;
 
 # /Type /Outlines - the Outlines dictionary
 
-my class Outlines
+
+class PDF::DOM::Type::Outlines
     is PDF::DAO::Dict
     does PDF::DOM::Type {
 
@@ -19,4 +20,3 @@ my class Outlines
 
 }
 
-class PDF::DOM::Type::Outlines is Outlines {}
