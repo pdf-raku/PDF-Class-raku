@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 38;
+plan 39;
 
 use PDF::DOM::Type;
 use PDF::Storage::IndObj;
@@ -73,10 +73,8 @@ my $null = PDF::DAO.coerce( :null(Any) );
 lives-ok { $catalog.OpenAction = [{}, 'FitH', $null ] }, '$catalog.OpenAction assignment - null';
 is-json-equiv $catalog.OpenAction, [{}, 'FitH', Mu ], '$catalog.OpenAction assignment - null';
 
-#lives-ok {
- $catalog.OpenAction = { :S( :name<GoTo> ), :D[{}, :name<Fit>] } ;#}, '$catalog.OpenAction assignment - destination dict';
+lives-ok { $catalog.OpenAction = { :S( :name<GoTo> ), :D[{}, :name<Fit>] } }, '$catalog.OpenAction assignment - destination dict';
 is-json-equiv $catalog.OpenAction, { :S<GoTo>, :D[{}, 'Fit'] }, '$catalog.OpenAction - destination dict';
-todo "complete Action subtypes (precomp issues)";
 does-ok $catalog.OpenAction, ::('PDF::DOM::Type')::('Action::GoTo');
 
 lives-ok {$catalog.core-font('Helvetica')}, 'can add resource (core-font) to catalog';
