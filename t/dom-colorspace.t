@@ -27,8 +27,8 @@ my $color-space-obj = $ind-obj.object;
 isa-ok $color-space-obj, ::('PDF::DOM::Type')::('ColorSpace::CalRGB');
 is $color-space-obj.type, 'ColorSpace', '$.type accessor';
 is $color-space-obj.subtype, 'CalRGB', '$.subtype accessor';
-is-json-equiv $color-space-obj[1], { :WhitePoint[ 1.0, 1.0, 1.0 ] }, 'array access';
-is-json-equiv $color-space-obj[1]<WhitePoint>, [ 1.0, 1.0, 1.0 ], 'WhitePoint dereference';
+is-json-equiv $color-space-obj[1], { :WhitePoint[ 1.0, 1.0, 1.0 ] }, 'array dereference';
+is-json-equiv $color-space-obj[1]<WhitePoint>, [ 1.0, 1.0, 1.0 ], 'array, hash dereference';
 is-json-equiv $color-space-obj.WhitePoint, $color-space-obj[1]<WhitePoint>, '$WhitePoint accessor';
 is-json-equiv $ind-obj.ast, %ast, 'ast regeneration';
 

@@ -37,7 +37,7 @@ is $text-annot.Contents, "This is an open annotation. You'll need acro-reader...
 my $open-text-annot = ::('PDF::DOM::Type::Annot::Text').new(:dict{
     :Rect[ 120, 120, 200, 200],
     :Contents("...xpdf doesn't display annotations. This annotation is closed, btw"),
-    :Open(False),
+    :!Open,
 });
 
 is-deeply $open-text-annot.Open, False, '.Open';

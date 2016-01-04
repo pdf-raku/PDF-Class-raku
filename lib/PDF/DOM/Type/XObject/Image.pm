@@ -18,7 +18,7 @@ class PDF::DOM::Type::XObject::Image
     has Numeric $.Height is entry(:required);     #| (Required) The height of the image, in samples.
     use PDF::DOM::Type::ColorSpace;
     my subset NameOrColorSpace of PDF::DAO where PDF::DAO::Name | PDF::DOM::Type::ColorSpace;
-    has NameOrColorSpace $.ColorSpace is entry;        #| (Required for images, except those that use the JPXDecode filter; not allowed for image masks) The color space in which image samples are specified; it can be any type of color space except Pattern.
+    has NameOrColorSpace $.ColorSpace is entry;   #| (Required for images, except those that use the JPXDecode filter; not allowed for image masks) The color space in which image samples are specified; it can be any type of color space except Pattern.
     has UInt $.BitsPerComponent is entry;         #| (Required except for image masks and images that use the JPXDecode filter)The number of bits used to represent each color component.
     has PDF::DAO::Name $.Intent is entry;         #| (Optional; PDF 1.1) The name of a color rendering intent to be used in rendering the image
     has Bool $.ImageMask is entry;                #| (Optional) A flag indicating whether the image is to be treated as an image mask. If this flag is true, the value of BitsPerComponent must be 1 and Mask and ColorSpace should not be specified;
@@ -39,7 +39,7 @@ class PDF::DOM::Type::XObject::Image
     has UInt $.StructParent is entry;             #| (Required if the image is a structural content item; PDF 1.3) The integer key of the image’s entry in the structural parent tree
     has Str $.ID is entry;                        #| (Optional; PDF 1.3; indirect reference preferred) The digital identifier of the image’s parent Web Capture content set
     has Hash $.OPI is entry;                      #| Optional; PDF 1.2) An OPI version dictionary for the image. If ImageMask is true, this entry is ignored.
-    has PDF::DAO::Stream $.Metadata is entry;  #| (Optional; PDF 1.4) A metadata stream containing metadata for the image
+    has PDF::DAO::Stream $.Metadata is entry;     #| (Optional; PDF 1.4) A metadata stream containing metadata for the image
     has Hash $.OC is entry;                       #| (Optional; PDF 1.5) An optional content group or optional content membership dictionary
 
     method open($spec! where Str | IO::Handle ) {
@@ -51,7 +51,7 @@ class PDF::DOM::Type::XObject::Image
     }
 
     multi method read(IO::Handle $fh! where $fh.path.extension ~~ m:i/ jpe?g $/) {
-
+        use experimental :pack;
         my Blob $buf;
         my Int ($bpc, $height, $width, $cs);
         my Bool $is-dct;
@@ -63,20 +63,20 @@ class PDF::DOM::Type::XObject::Image
             unless @soi[0] == 0xFF and @soi[1] == 0xD8;
 
         loop {
-            $buf = $fh.read(4);
-            my Int ($ff, $mark, $len) = $buf.unpack("CCn");
-            last if ( $ff != 0xFF);
-            last if ( $mark == 0xDA || $mark == 0xD9);  # SOS/EOI
-            last if ( $len < 2);
-            last if ( $fh.eof);
+            $buf = $fh.read: 4;
+            my Int ($ff, $mark, $len) = $buf.unpack: "CCn";
+            last if $ff != 0xFF;
+            last if $mark == 0xDA | 0xD9;  # SOS/EOI
+            last if $len < 2;
+            last if $fh.eof;
 
             $buf = $fh.read($len-2);
-            next if ($mark == 0xFE);
-            next if ($mark >= 0xE0 && $mark <= 0xEF);
-            if (($mark >= 0xC0) && ($mark <= 0xCF) && 
-                ($mark != 0xC4) && ($mark != 0xC8) && ($mark != 0xCC)) {
+            next if $mark == 0xFE;
+            next if 0xE0 <= $mark <= 0xEF;
+            if 0xC0 <= $mark <= 0xCF
+            && $mark != 0xC4 | 0xC8 | 0xCC {
                 $is-dct = ?( $mark == 0xC0 | 0xC2);
-                ($bpc, $height, $width, $cs) = $buf.unpack("CnnC");
+                ($bpc, $height, $width, $cs) = $buf.unpack: "CnnC";
                 last;
             }
         }
