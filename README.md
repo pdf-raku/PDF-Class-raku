@@ -278,6 +278,31 @@ $new-doc.save-as: "t/reuse.pdf";
 
 ```
 
+## Raw Data Access
+
+In general, PDF::DOM provides accessors for safe access and update of PDF objects.
+
+However you may choose to bypass accessors dereference hashes and arrays directly,
+for raw untyped access to internal data structures:
+
+This will also bypass type coercements, so you may need to be more explicit. In
+the following example we cast the PageMode to a name, so it appears as a name
+in the out put stream `/UseToes`, rather than a string `(UseToes)`.
+
+```
+    use PDF::DOM;
+    my $pdf = PDF::DOM.new;
+
+    my $doc = $pdf.Root;
+    try {
+        $doc.PageMode   = 'UseToes';
+        CATCH { default { say "err, that didn't work: $_" } }
+    }
+
+    # same again, bypassing type checking
+    $doc<PageMode>  = :name<UseToes>;
+```
+
 ## Development Status
 
 The PDF::DOM module is under construction and not yet functionally complete.
