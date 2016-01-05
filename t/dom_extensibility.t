@@ -6,7 +6,6 @@ use PDF::DAO::Type;
 use PDF::DAO::Tie;
 use PDF::DOM;
 use PDF::DOM::Delegator;
-use lib '.';
 
 =begin pod
 

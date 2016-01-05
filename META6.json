@@ -112,6 +112,6 @@
         "PDF::DOM::Util::TransformMatrix" : "lib/PDF/DOM/Util/TransformMatrix.pm",
 
         // Testing
-        "t::DOM::Page" : "t/DOM/Page.pm"
+        "t::DOM::Page" : "lib/t/DOM/Page.pm"
     }
 }
