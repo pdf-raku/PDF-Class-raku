@@ -205,7 +205,7 @@ y | CurveTo2 | x1 y1 x3 y3 | Append curved segment to path (final point replicat
            }
        }
 
-       warn "unexpected '$op' operation " ~ ($last-op ?? "(following '$last-op)" !! '(first operation)')
+       warn "unexpected '$op' operation " ~ ($last-op ?? "(following '$last-op')" !! '(first operation)')
 	   unless $ok-here;
     }
 
