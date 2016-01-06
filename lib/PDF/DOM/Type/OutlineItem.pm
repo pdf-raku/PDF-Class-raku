@@ -22,7 +22,8 @@ my role OutlineItem
     has Hash $.SE is entry(:indirect);                #| (Optional; PDF 1.3; must be an indirect reference) The structure element to which the item refers.
     #| Note: The ability to associate an outline item with a structure element (such as the beginning of a chapter) is a PDF 1.3 feature. For backward compatibility with earlier PDF versions, such an item should also specify a destination (Dest) corresponding to an area of a page where the contents of the designated structure element are displayed.
     has Numeric @.C is entry(:len(3));                #| (Optional; PDF 1.4) An array of three numbers in the range 0.0 to 1.0, representing the components in the DeviceRGB color space of the color to be used for the outline entry’s text. Default value: [ 0.0 0.0 0.0 ].
-    has UInt $.F is entry;                            #| (Optional; PDF 1.4) A set of flags specifying style characteristics for displaying the outline item’s text (see Table 8.5). Default value: 0.
+    my enum OutlineFlag is export(:OutlineFlag) « :Italic(1) :Bold(2) »;
+    has UInt $.F is entry;                            #| (Optional; PDF 1.4) A set of flags specifying style characteristics for displaying the outline item’s text. Default value: 0.
 
 }
 role PDF::DOM::Type::OutlineItem does OutlineItem {}

@@ -144,6 +144,7 @@ my $page = $doc.add-page;
 
 # ------------------------
 # Alternative 1: Using operator functions (see PDF::DOM::Op)
+
 sub draw-curve1($gfx) {
     $gfx.Save;
     $gfx.MoveTo(175, 720);
@@ -175,8 +176,8 @@ draw-curve2($doc.add-page.gfx);
 
 # ------------------------
 # Altrnative 3: draw from raw data
-sub draw-curve3($gfx) {
 
+sub draw-curve3($gfx) {
     $gfx.ops: [
          'q',               # save,
          :m[175, 720],      # move-to
