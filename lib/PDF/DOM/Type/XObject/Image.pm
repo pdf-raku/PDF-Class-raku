@@ -13,6 +13,22 @@ class PDF::DOM::Type::XObject::Image
     use PDF::DAO::Array;
     use PDF::DAO::Name;
 
+    #| lightweight replacement for deprecated $buf.unpack
+    sub unpack(buf8 $buf, *@templ) {
+	my @bytes = $buf.list;
+	my $i = 0;
+	my UInt @out;
+	for @templ -> $unit {
+	    my UInt $size = $unit.^nativesize div 8;
+	    my UInt $v = 0;
+	    for 1 .. $size {
+		$v *= 0xFF; $v += @bytes[$i++];
+	    }
+	    @out.append: $v
+	}
+	@out;
+    }
+
     # See [PDF 1.7 TABLE 4.39 Additional entries specific to an image dictionary]
     has Numeric $.Width is entry(:required);      #| (Required) The width of the image, in samples.
     has Numeric $.Height is entry(:required);     #| (Required) The height of the image, in samples.
@@ -57,13 +73,13 @@ class PDF::DOM::Type::XObject::Image
 
         $fh.seek(0, SeekFromBeginning);
         $buf = $fh.read(2);
-        my @soi = $buf.unpack("CC");
+        my @soi = unpack($buf, uint8, uint8);
         die "image doesn't have a JPEG header"
             unless @soi[0] == 0xFF and @soi[1] == 0xD8;
 
         loop {
             $buf = $fh.read: 4;
-            my Int ($ff, $mark, $len) = $buf.unpack: "CCn";
+            my UInt ($ff, $mark, $len) = unpack($buf, uint8, uint8, uint16);
             last if $ff != 0xFF;
             last if $mark == 0xDA | 0xD9;  # SOS/EOI
             last if $len < 2;
@@ -75,7 +91,7 @@ class PDF::DOM::Type::XObject::Image
             if 0xC0 <= $mark <= 0xCF
             && $mark != 0xC4 | 0xC8 | 0xCC {
                 $is-dct = ?( $mark == 0xC0 | 0xC2);
-                ($bpc, $height, $width, $cs) = $buf.unpack: "CnnC";
+                ($bpc, $height, $width, $cs) = unpack($buf, uint8, uint16, uint16, uint8);
                 last;
             }
         }
