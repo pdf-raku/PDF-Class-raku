@@ -1,5 +1,7 @@
 use v6;
 
+role PDF::DOM::Type::OutlineItem {...}
+
 use PDF::DAO::Tie::Hash;
 
 # /Type /Outlines - the Outlines dictionary
@@ -17,8 +19,9 @@ role PDF::DOM::Type::OutlineItem
     has PDF::DOM::Type::OutlineItem $.Last is entry(:indirect);       #| (Required if the item has any descendants; must be an indirect reference) The last of this item’s immediate children in the outline hierarchy.
     has UInt $.Count is entry;                        #| (Required if the item has any descendants) If the item is open, the total number of its open descendants at all lower levels of the outline hierarchy. If the item is closed, a negative integer whose absolute value specifies how many descendants would appear if the item were reopened.
     has $.Dest is entry;                              #| (Optional; not permitted if an A entry is present) The destination to be displayed when this item is activated
-    has Hash $.A is entry;                            #| (Optional; PDF 1.1; not permitted if a Dest entry is present) The action to be performed when this item is activate
-    has Hash $.SE is entry(:indirect);                #| (Optional; PDF 1.3; must be an indirect reference) The structure element to which the item refers (see Section 10.6.1, “Structure Hierarchy”).
+    use PDF::DOM::Type::Action;
+    has PDF::DOM::Type::Action $.A is entry;          #| (Optional; PDF 1.1; not permitted if a Dest entry is present) The action to be performed when this item is activate
+    has Hash $.SE is entry(:indirect);                #| (Optional; PDF 1.3; must be an indirect reference) The structure element to which the item refers.
     #| Note: The ability to associate an outline item with a structure element (such as the beginning of a chapter) is a PDF 1.3 feature. For backward compatibility with earlier PDF versions, such an item should also specify a destination (Dest) corresponding to an area of a page where the contents of the designated structure element are displayed.
     has Numeric @.C is entry(:len(3));                #| (Optional; PDF 1.4) An array of three numbers in the range 0.0 to 1.0, representing the components in the DeviceRGB color space of the color to be used for the outline entry’s text. Default value: [ 0.0 0.0 0.0 ].
     my enum OutlineFlag is export(:OutlineFlag) « :Italic(1) :Bold(2) »;

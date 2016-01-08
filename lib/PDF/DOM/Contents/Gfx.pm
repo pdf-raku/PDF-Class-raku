@@ -115,14 +115,14 @@ class PDF::DOM::Contents::Gfx
     }
 
     use PDF::DOM::Util::TransformMatrix;
-    method transform( *%transforms ) {
-	my @transform-matrix = PDF::DOM::Util::TransformMatrix::transform-matrix( |%transforms );
-	$.ConcatMatrix( @transform-matrix );
+    method transform( |c ) {
+	my Numeric @matrix = PDF::DOM::Util::TransformMatrix::transform-matrix( |c );
+	$.ConcatMatrix( @matrix );
     }
 
-    method text-transform( *%transforms ) {
-	my @transform-matrix = PDF::DOM::Util::TransformMatrix::transform-matrix( |%transforms );
-	$.SetTextMatrix( @transform-matrix );
+    method text-transform( |c ) {
+	my Numeric @matrix = PDF::DOM::Util::TransformMatrix::transform-matrix( |c );
+	$.SetTextMatrix( @matrix );
     }
 
     my subset Vector of List where {.elems == 2 && .[0] ~~ Numeric && .[1] ~~ Numeric}

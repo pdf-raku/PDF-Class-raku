@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 44;
+plan 39;
 
 use PDF::Storage::IndObj;
 use PDF::DOM::Type;
@@ -89,21 +89,11 @@ is-json-equiv $page.media-box, [0,0,1190,842], 'media-box page-name setter :land
 
 $page.gfx.ops(['BT', :Tj[ :literal('Hello, world!') ], 'ET']);
 $page.cb-finish;
-
-my $contents = $page.Contents;
-isa-ok $contents, Array, 'finished Contents';
-is-deeply +$contents, 3, 'finished Contents count';
-
-isa-ok $contents[0], ::('PDF::DAO::Stream'), 'finished Contents';
-is $contents[0].decoded, "q\n", 'finished Contents pretext';
-is $contents[1].decoded, '%dummy stream', 'finished Contents existing text';
-is-deeply [$contents[2].decoded.lines], ['', 'Q', 'BT', '  (Hello, world!) Tj', 'ET'], 'finished Contents post-text';
+is-deeply [$page.Contents.decoded.lines], ['BT', '  (Hello, world!) Tj', 'ET'], 'finished Contents';
 
 my $xobject = $page.to-xobject;
 isa-ok $xobject, ::('PDF::DOM::Type::XObject::Form');
 is-deeply $xobject.BBox, $page.trim-box, 'xobject copied trim-box';
-is-deeply [$xobject.decoded.lines], ['q',
-                                     '%dummy stream',
-                                     'Q', 'BT', '  (Hello, world!) Tj', 'ET' ], 'xobject decoded';
+is-deeply [$xobject.decoded.lines], ['BT', '  (Hello, world!) Tj', 'ET' ], 'xobject decoded';
 
 

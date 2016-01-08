@@ -105,8 +105,9 @@ ok $pdf.save-as('t/helloworld-compressed.pdf', :compress), '.save-as( :compress 
 
 lives-ok {$pdf = PDF::DOM.open: 't/helloworld-compressed.pdf'}, 'pdf reload lives';
 isa-ok $pdf.reader.trailer, PDF::DOM, 'trailer type';
-isa-ok $pdf.page(1), ::('PDF::DOM::Type::Page'), 'first pages';
-is $pdf.page(1).Contents.Filter, 'FlateDecode', 'page stream is compressed';
+$page = $pdf.page: 1;
+isa-ok $page, ::('PDF::DOM::Type::Page'), 'first pages';
+is $page.Contents.Filter, 'FlateDecode', 'page stream is compressed';
 is $pdf.Info.Author, 't/helloworld.t', '$pdf.Info.Author reload';
 
 my $contents-ast;
@@ -115,6 +116,9 @@ isa-ok $contents-ast, Array, '.contents type';
 ok +$contents-ast > 24, '.contents elems';
 is-deeply $contents-ast[0], (:q[]), '.contents first elem';
 is-deeply $contents-ast[*-1], (:ET[]), '.contents last elem';
+
+my $gfx = $page.gfx;
+is-json-equiv $gfx.ops[*-3 .. *], $( "T*" => [], :ET[], :Q[] ), '$page.gfx.ops (tail)';
 
 lives-ok { PDF::DOM.new.save-as: "t/pdf/no-pages.pdf" }, 'create empty PDF';
 

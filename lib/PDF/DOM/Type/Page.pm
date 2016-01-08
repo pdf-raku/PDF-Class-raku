@@ -101,26 +101,21 @@ class PDF::DOM::Type::Page
 
 	self.MediaBox //= [0, 0, 612, 792];
 
-	if $!pre-gfx.ops || $!gfx.ops {
-	    # handle new content.
-	    my @content-streams = @$.content-streams;
-	    if +@content-streams {
-		# dont trust existing content. wrap it in q ... Q
-		$!pre-gfx.ops.push: OpNames::Save => [];
-		$!gfx.ops.unshift: OpNames::Restore => [];
+	if ($!pre-gfx && $!pre-gfx.ops) || ($!gfx && $!gfx.ops) {
+	    my $prepend = $!pre-gfx && $!pre-gfx.ops
+		?? $!pre-gfx.content ~ "\n"
+		!! '';
+
+	    my $append = $!gfx && $!gfx.ops
+		?? $!gfx.content
+		!! '';
+
+	    if self.Contents ~~ PDF::DAO::Stream {
+		self.Contents.encoded = $prepend ~ $append;
 	    }
-
-	    @content-streams.unshift: PDF::DAO::Stream.new( :decoded( $!pre-gfx.content ~ "\n") )
-		if $!pre-gfx.ops;
-
-	    @content-streams.push: PDF::DAO::Stream.new( :decoded("\n" ~ $!gfx.content ) )
-		if $!gfx.ops;
-
-	    $!pre-gfx.ops = ();
-	    $!gfx.ops = ();
-	    self.Contents = @content-streams == 1 
-		?? @content-streams[0]
-		!! @content-streams;
+	    else {
+		self.Contents = PDF::DAO::Stream.new( :decoded($prepend ~ $append) );
+	    }
         }
     }
 

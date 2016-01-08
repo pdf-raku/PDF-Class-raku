@@ -74,7 +74,7 @@ $pattern-obj.cb-finish;
 
 my $contents = $pattern-obj.decoded;
 my @lines = $contents.lines;
-is-deeply [ @lines[0..3] ], ['', 'q', '  BT', '    /F1 1 Tf'], 'first four lines of content';
+is-deeply [ @lines[0..2] ], ['q', '  BT', '    /F1 1 Tf'], 'first three lines of content';
 is-deeply [ @lines[*-4..*] ], ['    0 0 0 rg', '    (\250) Tj', '  ET', 'Q'], 'last 5 lines of content';
 
 my $pdf = PDF::DOM.new;
