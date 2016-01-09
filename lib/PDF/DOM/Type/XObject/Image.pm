@@ -22,7 +22,8 @@ class PDF::DOM::Type::XObject::Image
 	    my UInt $size = $unit.^nativesize div 8;
 	    my UInt $v = 0;
 	    for 1 .. $size {
-		$v *= 0xFF; $v += @bytes[$i++];
+                # network byte order
+		$v +<= 8; $v += @bytes[$i++];
 	    }
 	    @out.append: $v
 	}
