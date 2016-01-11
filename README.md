@@ -308,16 +308,11 @@ in the out put stream `/UseToes`, rather than a string `(UseToes)`.
 
 The PDF::DOM module is under construction and not yet functionally complete.
 
-branches:
-
-- master: Latest tested: Rakudo version 2015.12-93-g812a48b built on MoarVM version 2015.12
+- master: Latest tested: Rakudo version 2015.12-165-g620d893 built on MoarVM version 2015.12-29-g8079ca5
 implementing Perl 6.c (failing t/dom_extensibilty.t; has precompilation performance regressions)
-
-- rakudo-2015.11-168: (recommended development version) Latest tested: Rakudo version 2015.11-168-g6d9d0f1 built on MoarVM version 2015.11-19-g623eadf implementing Perl v6.b.
 
 # Bugs and Restrictions
 At this stage:
-- I'm mostly developing on the rakudo-2015.11-19 branch and compiling with Rakudo v6.b/ufo (faster than precompilation, at the moment).
 - Only core fonts are supported. There are a total of 14
 font variations available. Please see the Font::AFM module for details.
 - Only JPEG images have been implemented, as a proof of concept. This is basically a port of PDF::API2::XObject::Image::JPEG
