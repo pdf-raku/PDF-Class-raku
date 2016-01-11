@@ -2,13 +2,13 @@ use v6;
 use Test;
 
 use PDF::Grammar::Test :is-json-equiv;
-use PDF::DOM;
-use PDF::DOM::Op :OpNames;
+use PDF::Doc;
+use PDF::Doc::Op :OpNames;
 
 # ensure consistant document ID generation
 srand(123456);
 
-my $pdf = PDF::DOM.new;
+my $pdf = PDF::Doc.new;
 my $page = $pdf.add-page;
 $page.MediaBox = [0, 0, 595, 842];
 
@@ -36,7 +36,7 @@ $page.graphics: -> $gfx {
 
 	    $txt.set-font($font, $font-size);
 	    my $text-block = $txt.say( $para, :$width, :$align, :kern);
-	    isa-ok $text-block, ::('PDF::DOM::Contents::Text::Block');
+	    isa-ok $text-block, ::('PDF::Doc::Contents::Text::Block');
 	    $x += 275;
         }
 
@@ -79,7 +79,7 @@ $page.graphics: -> $gfx {
 
 $page.graphics: -> $_ {
     $page.text: -> $_ {
-         use PDF::DOM::Op :TextMode;
+         use PDF::Doc::Op :TextMode;
         .set-font( $header-font, 16);
         .SetTextRender: TextMode::OutlineText;
         .SetLineWidth: .5;
@@ -103,10 +103,10 @@ skip '$pdf.Info<Author> - not completing';
 ok $pdf.save-as('t/helloworld.pdf'), '.save-as';
 ok $pdf.save-as('t/helloworld-compressed.pdf', :compress), '.save-as( :compress )';
 
-lives-ok {$pdf = PDF::DOM.open: 't/helloworld-compressed.pdf'}, 'pdf reload lives';
-isa-ok $pdf.reader.trailer, PDF::DOM, 'trailer type';
+lives-ok {$pdf = PDF::Doc.open: 't/helloworld-compressed.pdf'}, 'pdf reload lives';
+isa-ok $pdf.reader.trailer, PDF::Doc, 'trailer type';
 $page = $pdf.page: 1;
-isa-ok $page, ::('PDF::DOM::Type::Page'), 'first pages';
+isa-ok $page, ::('PDF::Doc::Type::Page'), 'first pages';
 is $page.Contents.Filter, 'FlateDecode', 'page stream is compressed';
 is $pdf.Info.Author, 't/helloworld.t', '$pdf.Info.Author reload';
 
@@ -120,6 +120,6 @@ is-deeply $contents-ast[*-1], (:ET[]), '.contents last elem';
 my $gfx = $page.gfx;
 is-json-equiv $gfx.ops[*-3 .. *], $( "T*" => [], :ET[], :Q[] ), '$page.gfx.ops (tail)';
 
-lives-ok { PDF::DOM.new.save-as: "t/pdf/no-pages.pdf" }, 'create empty PDF';
+lives-ok { PDF::Doc.new.save-as: "t/pdf/no-pages.pdf" }, 'create empty PDF';
 
 done-testing;

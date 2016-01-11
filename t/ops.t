@@ -1,9 +1,9 @@
 use v6;
 use Test;
 use PDF::Grammar::Test :is-json-equiv;
-use PDF::DOM::Op :OpNames;
+use PDF::Doc::Op :OpNames;
 
-class T does PDF::DOM::Op {};
+class T does PDF::Doc::Op {};
 my $g = T.new;
 
 $g.op(Save);
@@ -98,7 +98,7 @@ is-json-equiv $g.ops[*-3], {:BI[:dict{:BPC(:int(8)),
 is-json-equiv $g.ops[*-2], {:ID[:encoded("J1/gKA>.]AN\&J?]-<HW]aRVcg*bb.\\eKAdVV\%/PcZ\n\%…Omitted data…\n\%R.s(4KE3\&d\&7hb*7[\%Ct2HCqC~>")]}, 'Image ID';
 is-json-equiv $g.ops[*-1], (:EI[]), 'Image EI';
 
-BEGIN our $compile-time = PDF::DOM::Op.parse("BT/F1 16 Tf\n(Hi)Tj ET");
+BEGIN our $compile-time = PDF::Doc::Op.parse("BT/F1 16 Tf\n(Hi)Tj ET");
 is-json-equiv $compile-time[*-1], (:ET[]), 'compile time ops parse';
 $g.ops( $compile-time);
 is-json-equiv [ $g.ops[*-4..*] ], [ :BT[],
