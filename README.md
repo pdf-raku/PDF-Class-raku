@@ -109,7 +109,7 @@ $page.graphics: -> $_ {
 	$txt.SetWordSpacing(16);
 	my $nbsp = "\c[NO-BREAK SPACE]";
 	$txt.print("♠ ♣$nbsp");
-	$txt.SetFillRGB( 1, .3, .3);  # redish
+	$txt.SetFillRGB( 1, .3, .3);  # reddish
 	$txt.say("♦ ♥");
     }
 
@@ -175,7 +175,7 @@ sub draw-curve2($gfx) {
 draw-curve2($doc.add-page.gfx);
 
 # ------------------------
-# Altrnative 3: draw from raw data
+# Alternative 3: draw from raw data
 
 sub draw-curve3($gfx) {
     $gfx.ops: [
@@ -309,7 +309,7 @@ in the out put stream `/UseToes`, rather than a string `(UseToes)`.
 The PDF::Doc module is under construction and not yet functionally complete.
 
 - master: Latest tested: Rakudo version 2015.12-165-g620d893 built on MoarVM version 2015.12-29-g8079ca5
-implementing Perl 6.c (failing t/doc_extensibilty.t; has precompilation performance regressions)
+implementing Perl 6.c (failing t/doc_extensibility.t; has precompilation performance regressions)
 
 # Bugs and Restrictions
 At this stage:
@@ -317,9 +317,9 @@ At this stage:
 font variations available. Please see the Font::AFM module for details.
 - Only JPEG images have been implemented, as a proof of concept. This is basically a port of PDF::API2::XObject::Image::JPEG
 from the Perl 5 PDF::API2 module. Other image types should port fairly readily.
-- The classess in the PDF::Doc::Type::* namespace represent a common subset of
+- The classes in the PDF::Doc::Type::* name-space represent a common subset of
 the objects that can appear in a PDF. It is envisioned that the range of classes
 with expand over time to cover most or all types described in the PDF specification.
 - Many of the classes are skeletal at the moment and do little more that declare
-fields for validation purposes; for example, the classes in the PDF::Doc::Type::Font::* namespace.
+fields for validation purposes; for example, the classes in the PDF::Doc::Type::Font::* name-space.
 - No structured exceptions yet.
