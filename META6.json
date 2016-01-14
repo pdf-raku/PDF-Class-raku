@@ -25,7 +25,6 @@
 
         "PDF::Doc::Type::Action" : "lib/PDF/Doc/Type/Action.pm",
         "PDF::Doc::Type::Action::GoTo" : "lib/PDF/Doc/Type/Action/GoTo.pm",
-	// todo: complete action types - see [PDF 1.7 TABLE 8.48 Action types]
 
         "PDF::Doc::Type::Annot" : "lib/PDF/Doc/Type/Annot.pm",
         "PDF::Doc::Type::Annot::Circle" : "lib/PDF/Doc/Type/Annot/Circle.pm",
@@ -33,7 +32,6 @@
         "PDF::Doc::Type::Annot::Square" : "lib/PDF/Doc/Type/Annot/Square.pm",
         "PDF::Doc::Type::Annot::Text" : "lib/PDF/Doc/Type/Annot/Text.pm",
         "PDF::Doc::Type::Annot::Widget" : "lib/PDF/Doc/Type/Annot/Widget.pm",
-        // todo: complete annotation types - see [PDF 1.7 TABLE 8.20 Annotation types]
 
         "PDF::Doc::Type::Appearance" : "lib/PDF/Doc/Type/Appearance.pm",
 
@@ -111,7 +109,6 @@
         "PDF::Doc::Util::Font" : "lib/PDF/Doc/Util/Font.pm",        
         "PDF::Doc::Util::TransformMatrix" : "lib/PDF/Doc/Util/TransformMatrix.pm",
 
-        // Testing
         "t::Doc::Page" : "lib/t/Doc/Page.pm"
     }
 }
