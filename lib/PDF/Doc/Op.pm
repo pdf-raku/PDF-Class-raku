@@ -153,7 +153,6 @@ y | CurveTo2 | x1 y1 x3 y3 | Append curved segment to path (final point replicat
 
     has @!gsave;
     has @!tags;
-    has Bool $.in-text-block = False;
 
     method TextMatrix   is rw { @!Tm }
     method CharSpacing  is rw { $!Tc  }
@@ -166,9 +165,9 @@ y | CurveTo2 | x1 y1 x3 y3 | Append curved segment to path (final point replicat
     method GraphicsMatrix is rw { @!CTM  }
 
     # States and transitions in [PDF 1.4 FIGURE 4.1 Graphics objects]
-    my enum GraphicsContext <Path Text Clipping Page Shading External Image>;
+    my enum GraphicsContext is export(:GraphicsContext) <Path Text Clipping Page Shading External Image>;
 
-    has GraphicsContext $!context = Page;
+    has GraphicsContext $.context = Page;
 
     method !track-context(Str $op, $last-op) {
         my $transition = do given $op {
@@ -402,13 +401,14 @@ y | CurveTo2 | x1 y1 x3 y3 | Append curved segment to path (final point replicat
 	    $op-name = $opn.Str;
 	}
 
-	warn "text operation '$op-name' outside of a BT ... ET text block\n"
-	    if $op-name ∈ TextOps && !$!in-text-block;
-
-	if $op-name ∈ SpecialGraphicOps {
+        if $!context == Text {
 	    warn "special graphics operation '$op-name' used in a BT ... ET text block"
-	        if @!tags && @!tags.first({ $_ eq 'BT' });
-	}
+	        if $op-name ∈ SpecialGraphicOps;
+        }
+        else {
+            warn "text operation '$op-name' outside of a BT ... ET text block\n"
+	        if $op-name ∈ TextOps;
+        }
 
 	# not illegal just bad practice. makes it harder to later edit/reuse this content stream
 	# and may upset downstream utilities
@@ -476,18 +476,8 @@ y | CurveTo2 | x1 y1 x3 y3 | Append curved segment to path (final point replicat
         use PDF::Doc::Util::TransformMatrix;
         @!CTM = PDF::Doc::Util::TransformMatrix::multiply(@!CTM, @transform);
     }
-    multi method track-graphics('BT') {
-        die "illegal nesting of BT text-blocks in PDF content\n"
-            if @!tags && @!tags[*-1] eq 'BT';
-	@!tags.push: 'BT';
-        $!in-text-block = True;
-    }
     multi method track-graphics('ET') {
-	die "closing ET without opening BT in PDF content\n"
-	    unless @!tags && @!tags[*-1] eq 'BT';
         @!Tm = [ 1, 0, 0, 1, 0, 0, ];
-	@!tags.pop;
-        $!in-text-block = False;
     }
     multi method track-graphics('BMC', Str $name!) {
 	@!tags.push: 'BMC';

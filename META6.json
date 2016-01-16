@@ -1,5 +1,5 @@
 {
-    "perl"        : "v6",
+    "perl"        : "6",
     "name"        : "PDF::Doc",
     "version"     : "0.0.1",
     "description" : "PDF Document Object Model",

@@ -1,6 +1,6 @@
 use v6;
 
-use PDF::Doc::Op :OpNames;
+use PDF::Doc::Op :OpNames, :GraphicsContext;
 
 class PDF::Doc::Contents::Gfx 
     does PDF::Doc::Op {
@@ -204,7 +204,7 @@ class PDF::Doc::Contents::Gfx
 	my $font-size = $text-block.font-size;
 	my $font-key = $text-block.font-key;
 
-	my Bool $in-text = $.in-text-block;
+	my Bool $in-text = $.context == GraphicsContext::Text;
 	$.op(BeginText) unless $in-text;
 
 	$.op(SetFont, $font-key, $font-size)
