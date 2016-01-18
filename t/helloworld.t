@@ -3,7 +3,7 @@ use Test;
 
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Doc;
-use PDF::Doc::Op :OpNames;
+use PDF::Graphics :OpNames;
 
 # ensure consistant document ID generation
 srand(123456);
@@ -36,7 +36,7 @@ $page.graphics: -> $gfx {
 
 	    $txt.set-font($font, $font-size);
 	    my $text-block = $txt.say( $para, :$width, :$align, :kern);
-	    isa-ok $text-block, ::('PDF::Doc::Contents::Text::Block');
+	    isa-ok $text-block, ::('PDF::Graphics::Text::Block');
 	    $x += 275;
         }
 
@@ -79,7 +79,7 @@ $page.graphics: -> $gfx {
 
 $page.graphics: -> $_ {
     $page.text: -> $_ {
-         use PDF::Doc::Op :TextMode;
+         use PDF::Graphics :TextMode;
         .set-font( $header-font, 16);
         .SetTextRender: TextMode::OutlineText;
         .SetLineWidth: .5;

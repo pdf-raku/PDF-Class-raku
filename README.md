@@ -118,7 +118,7 @@ $page.graphics: -> $_ {
     my $header-font = $page.core-font( :family<Helvetica>, :weight<bold> );
 
     $page.text: -> $_ {
-	 use PDF::Doc::Op :TextMode;
+	 use PDF::Graphics :TextMode;
 	.set-font( $header-font, 12);
 	.SetTextRender: TextMode::OutlineText;
 	.SetLineWidth: .5;
@@ -133,7 +133,7 @@ Note: at this stage, only the PDF core fonts are supported: Courier, Times, Helv
 
 #### Low level graphics, colors and drawing
 
-PDF::Doc::Contents::Gfx inherits from PDF::Doc::Op, which implements the full range of PDF content operations:
+PDF::Doc::Contents::Gfx inherits from PDF::Graphics, which implements the full range of PDF content operations:
 
 ```
 use PDF::Doc;
@@ -143,7 +143,7 @@ my $page = $doc.add-page;
 # Draw a simple Bézier curve:
 
 # ------------------------
-# Alternative 1: Using operator functions (see PDF::Doc::Op)
+# Alternative 1: Using operator functions (see PDF::Graphics)
 
 sub draw-curve1($gfx) {
     $gfx.Save;
@@ -193,7 +193,7 @@ draw-curve3($doc.add-page.gfx);
 
 ```
 
-For a full list of operators, please see PDF::Doc::Op.
+For a full list of operators, please see PDF::Graphics.
 
 ### AcroForm Fields
 

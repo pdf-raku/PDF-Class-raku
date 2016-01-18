@@ -19,7 +19,7 @@ class PDF::Doc::Type::Page
     use PDF::DAO::Tie;
 
     use PDF::Doc::Type::XObject::Form;
-    use PDF::Doc::Op :OpNames;
+    use PDF::Graphics :OpNames;
     use PDF::DAO::Stream;
 
     # see [PDF 1.7 TABLE 3.27 Entries in a page object]

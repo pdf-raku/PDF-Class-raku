@@ -1,12 +1,12 @@
 use v6;
 
-use PDF::Doc::Op :OpNames, :GraphicsContext;
+use PDF::Graphics :OpNames, :GraphicsContext;
 
 class PDF::Doc::Contents::Gfx 
-    does PDF::Doc::Op {
+    does PDF::Graphics {
     has $.parent;
 
-    use PDF::Doc::Contents::Text::Block;
+    use PDF::Graphics::Text::Block;
     use PDF::Doc::Type::XObject;
     use PDF::Doc::Type::XObject::Image;
 
@@ -114,14 +114,14 @@ class PDF::Doc::Contents::Gfx
         };
     }
 
-    use PDF::Doc::Util::TransformMatrix;
+    use PDF::Graphics::Util::TransformMatrix;
     method transform( |c ) {
-	my Numeric @matrix = PDF::Doc::Util::TransformMatrix::transform-matrix( |c );
+	my Numeric @matrix = PDF::Graphics::Util::TransformMatrix::transform-matrix( |c );
 	$.ConcatMatrix( @matrix );
     }
 
     method text-transform( |c ) {
-	my Numeric @matrix = PDF::Doc::Util::TransformMatrix::transform-matrix( |c );
+	my Numeric @matrix = PDF::Graphics::Util::TransformMatrix::transform-matrix( |c );
 	$.SetTextMatrix( @matrix );
     }
 
@@ -187,7 +187,7 @@ class PDF::Doc::Contents::Gfx
 	my Numeric $horiz-scaling = $.HorizScaling;
 	my Numeric $char-spacing = $.CharSpacing;
 
-        my $text-block = PDF::Doc::Contents::Text::Block.new( :$text, :$font, :$font-size,
+        my $text-block = PDF::Graphics::Text::Block.new( :$text, :$font, :$font-size,
 							      :$word-spacing, :$horiz-scaling, :$char-spacing,
 							      |c );
 
@@ -197,7 +197,7 @@ class PDF::Doc::Contents::Gfx
 	$text-block;
     }
 
-    multi method print(PDF::Doc::Contents::Text::Block $text-block,
+    multi method print(PDF::Graphics::Text::Block $text-block,
 		       Bool :$nl = False,
 	) {
 

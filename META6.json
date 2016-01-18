@@ -3,7 +3,7 @@
     "name"        : "PDF::Doc",
     "version"     : "0.0.1",
     "description" : "PDF Document Object Model",
-    "depends"     : [ "PDF", "PDF::Grammar", "Font::AFM" ],
+    "depends"     : [ "PDF", "PDF::Grammar", "PDF::Graphics", "Font::AFM" ],
     "source-url"  : "git://github.com/p6-pdf/p6-PDF-Tools.git",
     "provides"    : {
 
@@ -11,11 +11,7 @@
 
         "PDF::Doc::Contents" : "lib/PDF/Doc/Contents.pm",
         "PDF::Doc::Contents::Gfx" : "lib/PDF/Doc/Contents/Gfx.pm",
-        "PDF::Doc::Contents::Text::Atom" : "lib/PDF/Doc/Contents/Text/Atom.pm",
-        "PDF::Doc::Contents::Text::Block" : "lib/PDF/Doc/Contents/Text/Block.pm",
-        "PDF::Doc::Contents::Text::Line" : "lib/PDF/Doc/Contents/Text/Line.pm",
 
-        "PDF::Doc::Op" : "lib/PDF/Doc/Op.pm",
         "PDF::Doc::Paged" : "lib/PDF/Doc/Paged.pm",
         "PDF::Doc::Resourced" : "lib/PDF/Doc/Resourced.pm",
 
@@ -106,9 +102,6 @@
         "PDF::Doc::Type::XObject::Image" : "lib/PDF/Doc/Type/XObject/Image.pm",
         "PDF::Doc::Type::XObject::PS" : "lib/PDF/Doc/Type/XObject/PS.pm",
 
-        "PDF::Doc::Util::Font" : "lib/PDF/Doc/Util/Font.pm",        
-        "PDF::Doc::Util::TransformMatrix" : "lib/PDF/Doc/Util/TransformMatrix.pm",
-
-        "t::Doc::Page" : "lib/t/Doc/Page.pm"
+        "PDF::Doc::Util::Font" : "lib/PDF/Doc/Util/Font.pm"
     }
 }

@@ -132,7 +132,7 @@ class PDF::Doc::Type::XObject::Image
         nextsame unless $inline;   # normal case, constructing Doc object
 
         # for serialization to content stream ops: BI dict ID data EI
-        use PDF::Doc::Op :OpNames;
+        use PDF::Graphics :OpNames;
         use PDF::DAO::Util :to-ast-native;
         # serialize to content ops
         my %dict = to-ast-native(self).value.list;

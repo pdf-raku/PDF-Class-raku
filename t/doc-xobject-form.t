@@ -4,7 +4,7 @@ use Test;
 plan 9;
 
 use PDF::Doc;
-use PDF::Doc::Op :OpNames;
+use PDF::Graphics :OpNames;
 use PDF::Storage::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
