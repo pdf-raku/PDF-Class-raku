@@ -91,12 +91,12 @@ role PDF::Doc::Type::Resources
 	use PDF::Doc::Type::Font;
 	use PDF::Doc::Util::Font;
 
-        my $core-font = PDF::Doc::Util::Font::core-font( |c );
-        self!find-resource(sub ($_){.isa(PDF::Doc::Type::Font) && .font-obj === $core-font}, :type<Font>)
+        my $font-obj = PDF::Doc::Util::Font::core-font( |c );
+        self!find-resource(sub ($_){.isa(PDF::Doc::Type::Font) && .font-obj === $font-obj}, :type<Font>)
             // do {
-                my %params = $core-font.to-doc('Font');
-                my $new-obj = PDF::DAO.coerce( |%params );
-                self!register-resource( $new-obj );
+                my $dict = $font-obj.to-dict;
+                my $font-dict = PDF::DAO.coerce( :$dict, :$font-obj );
+                self!register-resource( $font-dict );
         };
     }
 

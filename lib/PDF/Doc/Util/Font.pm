@@ -111,7 +111,7 @@ module PDF::Doc::Util::Font {
 	}
 
 	#| map ourselves to a PDF::Doc object
-        method to-doc('Font') {
+        method to-dict {
             my %enc-name = :win<WinAnsiEncoding>, :mac<MacRomanEncoding>;
             my $dict = { :Type( :name<Font> ), :Subtype( :name<Type1> ),
 			 :BaseFont( :name( self.FontName ) ),
@@ -121,7 +121,7 @@ module PDF::Doc::Util::Font {
                 $dict<Encoding> = :$name;
             }
 
-            %( :$dict, :font-obj(self) )
+            $dict;
         }
 
         method stringwidth(Str $str, Numeric $pointsize=0, Bool :$kern=False) {

@@ -23,14 +23,6 @@ my $hb-afm-again = PDF::Doc::Util::Font::core-font( 'Helvetica-Bold' );
 
 ok $hb-afm-again === $hb-afm, 'font caching';
 
-my %params = $hbi-afm.to-doc('Font');
-
-my $font = PDF::DAO.coerce( |%params );
-isa-ok $font, ::('PDF::Doc::Type::Font::Type1');
-is $font.BaseFont, 'Helvetica-BoldOblique', '.BaseFont';
-is $font.Encoding, 'WinAnsiEncoding', '.Encoding';
-is-deeply $font.font-obj, $hbi-afm, '.font-obj';
-
 my $tr-afm = PDF::Doc::Util::Font::core-font( 'Times-Roman' );
 is $tr-afm.stringwidth("RVX", :!kern), 2111, 'stringwidth :!kern';
 is $tr-afm.stringwidth("RVX", :kern), 2111 - 80, 'stringwidth :kern';
@@ -49,24 +41,9 @@ isa-ok $zapf, ::('Font::Metrics::zapfdingbats');
 is $zapf.enc, 'zapf', '.enc';
 is $zapf.encode("♥♣✔").join, "ª¨4", '.encode(...)'; # /a110 /a112 /a20
 
-%params = $zapf.to-doc('Font');
-
-my $zapf-font = PDF::DAO.coerce( |%params );
-isa-ok $zapf-font, ::('PDF::Doc::Type::Font::Type1');
-is $zapf-font.BaseFont, 'ZapfDingbats', '.BaseFont';
-ok !$zapf-font.Encoding.defined, '!.Encoding';
-
 my $sym = PDF::Doc::Util::Font::core-font( 'Symbol' );
 isa-ok $sym, ::('Font::Metrics::symbol');
 is $sym.enc, 'sym', '.enc';
 is $sym.encode("ΑΒΓ").join, "ABG", '.encode(...)'; # /Alpha /Beta /Gamma
-
-%params = $sym.to-doc('Font');
-
-my $sym-font = PDF::DAO.coerce( |%params );
-isa-ok $sym-font, ::('PDF::Doc::Type::Font::Type1');
-is $sym-font.BaseFont, 'Symbol', '.BaseFont';
-ok !$sym-font.Encoding.defined, '!.Encoding';
-is $sym-font.encode("ΑΒΓ").join, "ABG", '.encode(...)'; # /Alpha /Beta /Gamma
 
 done-testing;
