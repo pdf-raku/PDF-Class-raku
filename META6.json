@@ -1,7 +1,7 @@
 {
     "perl"        : "6.c",
     "name"        : "PDF::Doc",
-    "version"     : "0.0.1",
+    "version"     : "0.0.2",
     "description" : "PDF Document Object Model",
     "depends"     : [ "PDF", "PDF::Grammar", "PDF::Graphics", "Font::AFM" ],
     "source-url"  : "git://github.com/p6-pdf/p6-PDF-Tools.git",
@@ -100,8 +100,6 @@
         "PDF::Doc::Type::XObject" : "lib/PDF/Doc/Type/XObject.pm",
         "PDF::Doc::Type::XObject::Form" : "lib/PDF/Doc/Type/XObject/Form.pm",
         "PDF::Doc::Type::XObject::Image" : "lib/PDF/Doc/Type/XObject/Image.pm",
-        "PDF::Doc::Type::XObject::PS" : "lib/PDF/Doc/Type/XObject/PS.pm",
-
-        "PDF::Doc::Util::Font" : "lib/PDF/Doc/Util/Font.pm"
+        "PDF::Doc::Type::XObject::PS" : "lib/PDF/Doc/Type/XObject/PS.pm"
     }
 }

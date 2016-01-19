@@ -89,9 +89,9 @@ role PDF::Doc::Type::Resources
 
     method core-font(|c) {
 	use PDF::Doc::Type::Font;
-	use PDF::Doc::Util::Font;
+	use PDF::Graphics::Font;
 
-        my $font-obj = PDF::Doc::Util::Font::core-font( |c );
+        my $font-obj = PDF::Graphics::Font::core-font( |c );
         self!find-resource(sub ($_){.isa(PDF::Doc::Type::Font) && .font-obj === $font-obj}, :type<Font>)
             // do {
                 my $dict = $font-obj.to-dict;

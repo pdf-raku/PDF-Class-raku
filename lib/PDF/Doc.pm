@@ -1,12 +1,10 @@
 use v6;
 
-class PDF::Doc {...}
-
 use PDF::DAO;
 use PDF::DAO::Doc;
 
 #| Doc entry-point. either a trailer dict or an XRef stream
-class PDF::Doc
+class PDF::Doc:ver<0.0.2>
     is PDF::DAO::Doc {
 
     # base class declares: $.Size, $.Encrypt, $.Info, $.ID
