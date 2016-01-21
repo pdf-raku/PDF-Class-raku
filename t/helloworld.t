@@ -3,7 +3,6 @@ use Test;
 
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Doc;
-use PDF::Graphics :OpNames;
 
 # ensure consistant document ID generation
 srand(123456);
@@ -66,7 +65,6 @@ $page.graphics: -> $gfx {
     }
 
     $page.graphics: -> $gfx {
-
 	$gfx.transform( :translate[275, 250]);
 	$gfx.transform( :rotate(-10), :scale(1.5) );
 	$gfx.set-graphics( :transparency(.5) );
@@ -74,12 +72,11 @@ $page.graphics: -> $gfx {
 	$gfx.Fill;
 
     }
-
 }
 
 $page.graphics: -> $_ {
     $page.text: -> $_ {
-         use PDF::Graphics :TextMode;
+         use PDF::Graphics::Ops :TextMode;
         .set-font( $header-font, 16);
         .SetTextRender: TextMode::OutlineText;
         .SetLineWidth: .5;

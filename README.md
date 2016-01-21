@@ -118,7 +118,7 @@ $page.graphics: -> $_ {
     my $header-font = $page.core-font( :family<Helvetica>, :weight<bold> );
 
     $page.text: -> $_ {
-	 use PDF::Graphics :TextMode;
+	 use PDF::Graphics::Ops :TextMode;
 	.set-font( $header-font, 12);
 	.SetTextRender: TextMode::OutlineText;
 	.SetLineWidth: .5;
@@ -133,7 +133,8 @@ Note: at this stage, only the PDF core fonts are supported: Courier, Times, Helv
 
 #### Low level graphics, colors and drawing
 
-PDF::Doc::Contents::Gfx inherits from PDF::Graphics, which implements the full range of PDF content operations:
+PDF::Doc::Contents::Gfx inherits from PDF::Graphics, which implements the full range of PDF content operations, plus
+utility methods for handling text, images and graphics coordinates:
 
 ```
 use PDF::Doc;

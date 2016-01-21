@@ -5,7 +5,7 @@ role PDF::Doc::Contents {
 
     use PDF::Doc::Contents::Gfx;
     use PDF::Doc::Type::XObject;
-    use PDF::Graphics :OpNames;
+    use PDF::Graphics::Ops :OpNames;
 
     has PDF::Doc::Contents::Gfx $!pre-gfx; #| prepended graphics
     method pre-gfx { $!pre-gfx //= PDF::Doc::Contents::Gfx.new( :parent(self) ) }
