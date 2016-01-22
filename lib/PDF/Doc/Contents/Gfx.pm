@@ -1,13 +1,11 @@
 use v6;
 
 use PDF::Graphics;
-use PDF::Graphics::Ops :OpNames, :GraphicsContext;
+use PDF::Graphics::Ops :OpNames;
 
 class PDF::Doc::Contents::Gfx 
     is PDF::Graphics {
     has $.parent;
-
-    use PDF::Graphics::Text::Block;
 
     use PDF::Doc::Type::XObject;
     use PDF::Doc::Type::XObject::Image;
@@ -45,55 +43,14 @@ class PDF::Doc::Contents::Gfx
 	self.SetGraphicsState($gs-entry.key);
     }
 
-    #! output text leave the text position at the end of the current line
-    multi method print(Str $text,
-		       Bool :$stage = False,
-		       :$font is copy,
-		       |c,  #| :$align, :$kern, :$line-height, :$width, :$height
-        ) {
-	# detect and use the current text-state font
-        $font //= $.parent.resource-entry('Font', $.FontKey)
-            if $.FontKey;
-        $font //= $!parent.core-font('Courier');
-	my Numeric $font-size = $.FontSize || 16;
-	my Numeric $word-spacing = $.WordSpacing;
-	my Numeric $horiz-scaling = $.HorizScaling;
-	my Numeric $char-spacing = $.CharSpacing;
-
-        my $text-block = PDF::Graphics::Text::Block.new( :$text, :$font, :$font-size,
-                                                         :$word-spacing, :$horiz-scaling, :$char-spacing,
-                                                         |c );
-
-	$.print( $text-block, |c)
-	    unless $stage;
-
-	$text-block;
+    method !get-font {
+       my $font = $.parent.resource-entry('Font', $.FontKey)
+           if $.FontKey;
+       $font // $!parent.core-font('Courier');
     }
 
-    multi method print(PDF::Graphics::Text::Block $text-block,
-		       Bool :$nl = False,
-	) {
-
-	my $font-size = $text-block.font-size;
-	my $font-key = $text-block.font-key;
-
-	my Bool $in-text = $.context == GraphicsContext::Text;
-	$.op(BeginText) unless $in-text;
-
-	$.op(SetFont, $font-key, $font-size)
-	    unless $.FontKey
-	    && $font-key eq $.FontKey
-	    && $font-size == $.FontSize;
-	$.ops( $text-block.content(:$nl) );
-
-	$.op(EndText) unless $in-text;
-
-        $text-block;
-    }
-
-    #! output text move the  text position down one line
-    method say($text, |c) {
-        $.print($text, :nl, |c);
+    multi method print(Str $text, :$font = self!get-font, |c) {
+        nextwith( $text, :$font, |c);
     }
 
 }
