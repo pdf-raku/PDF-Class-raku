@@ -17,7 +17,7 @@
               ]
             },
             "Size": {
-              "int": 14
+              "int": 16
             },
             "ID": {
               "array": [
@@ -128,6 +128,12 @@
                       },
                       "XObject": {
                         "dict": {
+                          "Im2": {
+                            "ind-ref": [
+                              14,
+                              0
+                            ]
+                          },
                           "Im1": {
                             "ind-ref": [
                               13,
@@ -211,10 +217,10 @@
               0,
               {
                 "stream": {
-                  "encoded": "q\n  BT\n    1 0 0 1 35 750 Tm\n    /F1 18 Tf\n    19.8 TL\n    [ (*** left ***) ] TJ\n    T*\n    /F2 15 Tf\n    16.5 TL\n    [ (Lorem ipsum dolor sit) ] TJ\n    T*\n    [ (amet, consectetur) ] TJ\n    T*\n    [ (adipiscing elit, sed do) ] TJ\n    T*\n    [ (eiusmod tempor) ] TJ\n    T*\n    [ (incididunt ut labore et) ] TJ\n    T*\n    [ (dolore magna aliqua.) ] TJ\n    T*\n    1 0 0 1 310 750 Tm\n    /F1 18 Tf\n    19.8 TL\n    [ 2946 (*** center ***) ] TJ\n    T*\n    /F2 15 Tf\n    16.5 TL\n    [ 4779 (Lorem ipsum dolor sit) ] TJ\n    T*\n    [ 3974 (amet, consectetur) ] TJ\n    T*\n    [ 4780 (adipiscing elit, sed do) ] TJ\n    T*\n    [ 3585 (eiusmod tempor) ] TJ\n    T*\n    [ 4753 (incididunt ut labore et) ] TJ\n    T*\n    [ 4669 (dolore magna aliqua.) ] TJ\n    T*\n    1 0 0 1 585 750 Tm\n    /F1 18 Tf\n    19.8 TL\n    [ 5112 (*** right ***) ] TJ\n    T*\n    /F2 15 Tf\n    16.5 TL\n    [ 9558 (Lorem ipsum dolor sit) ] TJ\n    T*\n    [ 7948 (amet, consectetur) ] TJ\n    T*\n    [ 9560 (adipiscing elit, sed do) ] TJ\n    T*\n    [ 7169 (eiusmod tempor) ] TJ\n    T*\n    [ 9505 (incididunt ut labore et) ] TJ\n    T*\n    [ 9338 (dolore magna aliqua.) ] TJ\n    T*\n    1 0 0 1 240 600 Tm\n    /F3 24 Tf\n    16 Tw\n    26.4 TL\n    [ (\\253) -945 (\\250 ) ] TJ\n    1 0.3 0.3 rg\n    26.4 TL\n    [ (\\251) -945 (\\252) ] TJ\n    T*\n  ET\n  q\n    0.9 0.5 0 rg\n    340 300 100 100 re\n    f\n    q\n      150 0 0 190.5 232 380 cm\n      /Im1 Do\n    Q\n    q\n      0.1 0.9 0.5 rg\n      90 200 200 200 re\n      f\n    Q\n  Q\n  q\n    1 0 0 1 275 250 cm\n    1.47721 -0.26047 0.26047 1.47721 0 0 cm\n    /GS1 gs\n    0 0 50 50 re\n    f\n  Q\nQ\nq\n  BT\n    /F1 16 Tf\n    1 Tr\n    0.5 w\n    1 0 0.21256 1 50 550 Tm\n    17.6 TL\n    [ (Outline Slanted) ] TJ\n    T*\n    [ (Text @\\(50,550\\)) ] TJ\n    T*\n  ET\nQ\nBT\n  1 0 0 1 110 300 Tm\n  /F1 24 Tf\n  26.4 TL\n  [ (Hello, world!) ] TJ\n  T*\nET",
+                  "encoded": "q\n  BT\n    1 0 0 1 22 750 Tm\n    /F1 18 Tf\n    19.8 TL\n    [ (*** left ***) ] TJ\n    T*\n    /F2 15 Tf\n    16.5 TL\n    [ (Lorem ipsum dolor sit) ] TJ\n    T*\n    [ (amet, consectetur) ] TJ\n    T*\n    [ (adipiscing elit, sed do) ] TJ\n    T*\n    [ (eiusmod tempor) ] TJ\n    T*\n    [ (incididunt ut labore et) ] TJ\n    T*\n    [ (dolore magna aliqua.) ] TJ\n    T*\n    1 0 0 1 297 750 Tm\n    /F1 18 Tf\n    19.8 TL\n    [ 2946 (*** center ***) ] TJ\n    T*\n    /F2 15 Tf\n    16.5 TL\n    [ 4779 (Lorem ipsum dolor sit) ] TJ\n    T*\n    [ 3974 (amet, consectetur) ] TJ\n    T*\n    [ 4780 (adipiscing elit, sed do) ] TJ\n    T*\n    [ 3585 (eiusmod tempor) ] TJ\n    T*\n    [ 4753 (incididunt ut labore et) ] TJ\n    T*\n    [ 4669 (dolore magna aliqua.) ] TJ\n    T*\n    1 0 0 1 572 750 Tm\n    /F1 18 Tf\n    19.8 TL\n    [ 5112 (*** right ***) ] TJ\n    T*\n    /F2 15 Tf\n    16.5 TL\n    [ 9558 (Lorem ipsum dolor sit) ] TJ\n    T*\n    [ 7948 (amet, consectetur) ] TJ\n    T*\n    [ 9560 (adipiscing elit, sed do) ] TJ\n    T*\n    [ 7169 (eiusmod tempor) ] TJ\n    T*\n    [ 9505 (incididunt ut labore et) ] TJ\n    T*\n    [ 9338 (dolore magna aliqua.) ] TJ\n    T*\n    1 0 0 1 240 600 Tm\n    /F3 24 Tf\n    16 Tw\n    26.4 TL\n    [ (\\253) -945 (\\250 ) ] TJ\n    1 0.3 0.3 rg\n    26.4 TL\n    [ (\\251) -945 (\\252) ] TJ\n    T*\n  ET\n  q\n    0.9 0.5 0 rg\n    340 300 100 100 re\n    f\n    q\n      150 0 0 190.5 232 380 cm\n      /Im1 Do\n    Q\n    q\n      37 0 0 42 500 357 cm\n      /Im2 Do\n    Q\n    q\n      37 0 0 42 480 394 cm\n      /Im2 Do\n    Q\n    q\n      37 0 0 42 460 431 cm\n      /Im2 Do\n    Q\n    q\n      0.1 0.9 0.5 rg\n      90 200 200 200 re\n      f\n    Q\n  Q\n  q\n    1 0 0 1 275 250 cm\n    1.47721 -0.26047 0.26047 1.47721 0 0 cm\n    /GS1 gs\n    0 0 50 50 re\n    f\n  Q\nQ\nq\n  BT\n    /F1 16 Tf\n    1 Tr\n    0.5 w\n    1 0 0.21256 1 50 550 Tm\n    17.6 TL\n    [ (Outline Slanted) ] TJ\n    T*\n    [ (Text @\\(50,550\\)) ] TJ\n    T*\n  ET\nQ\nBT\n  1 0 0 1 110 300 Tm\n  /F1 24 Tf\n  26.4 TL\n  [ (Hello, world!) ] TJ\n  T*\nET",
                   "dict": {
                     "Length": {
-                      "int": 1822
+                      "int": 1981
                     }
                   }
                 }
@@ -413,6 +419,72 @@
                     },
                     "BitsPerComponent": {
                       "int": 8
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ind-obj": [
+              14,
+              0,
+              {
+                "stream": {
+                  "encoded": ">ÚñXzÞ*ºÄãÈì~úLørÃâ\r5Î/ô4M¸/4ø}ñ*{áaaNNå=!S¢Ó,ÎÖsW<ÃÒÎe¦Í54W·ò00t0óÔÊÅheM}nB»hÒe¦¬;ÏtòaFÝC«ìiÌ-Q%Õ\"-j5ZÒe²I¦}'ß ¦Ùv88)#°OxCbÅ¦T±É5;uÚÍÈC/eÄTËÉk°%N%9lHH£ø}Ëj¤h.²êWïÖ¿óÙ/SÊÂo+lv¿4ê,ârLeLBÛhW8Oåtttû]ßtúC!¿VårïÃÖh{õQöÍ3Sc&&kå\nÍÍá2_]vÈ(;5ÃhBÉ((]=ç&°­9cÕTá¡zTóækû%{öè@5Öe½Y¢£|­Ô=ûó|_2 Þ ¯××úN\nvvÕB¼¤Ã4Ö±î¸înôË£1çìvú *_#too&=Å6,6JGÎ@jÜRÁôn;kÊ8ÔAÚ×Ø00\nqßQQ*A­h¼¸Àä´¼¸î¬®³Ñ!çSt\nx·ßºÚ2!°£yZ¹<Ò®JBGôêL5W¿1åE :Iui¥FZ¨¤âÛhTËÑÎ(õÔH\\DòÇãº¯ÞI `¶ç§´j½¨¸GísGp¤,ù)¥ÐV¥ëÌAÚ_m_µ!ll¶Ýêpf}¹¨÷êZ³÷h@(¥æÔ8Ý¯a'i\\S¢>ºb|§f®Ò¼FZÀÒJ½Ë£ç888·oëÌ|:ii§cCQJ¸WîîBRWJ¼$Å|ÈSÈ\\)!åæ!¥¶ã:µ¥H¿3VÄÓ²îÜÜ¼Á/C`Ý3Êçæ~`¡ÙEa`3©-²TÁ÷Ë±\tJ´ZùnuZ©È~å0t  ]O¢\"Òn,÷ê5jøPÁ@rjî¢«l99tßoßñõKª¦ÒÞÛ¾$Å*ÒgRZèé°ëtÙº¡ººë8iø´@âGâU$º¡à¬ÜÁal[%xÇß/IºzããV3©{èWh}\râe´ù»ÃpÒ¤£kådaL22··éÐÊVC÷5ðÎ´âU¬Ë¦<êhHi~úÞàázºtxcv]£ZZÍ-}WÒËá¦<\rh±¤¼Ý3È­­|ºmãòCÂÂ==dÅ\tÓ4ø¯,Í¬àïRnïÜÅ`Æå&Ùú·\no_8Ì]£FXW´ö{ê6÷wÒ»¨»C\nzÚ2Ý««ßé=¢F;?{ô¤U»ÒU¤Ò¾,¹=]ë_ÄIÌÔcqûv]Ð`6^syÒBÎ¬»7¼\"F%]]K:I¶Êé°9KKGPÅP$JâàÒâ@<@Å;ddAÄ_~cûvOÔ¸,46¾Á5²âU¹ÒG}¹¼|Â|¶º¢KcßºA!HÊj¬½näh¸¼M;jÅúÉÅ`iÆ Ú¡¯!ì×G\tnuÄe¬nÃÍ¸L\"\tY£ÌV+z: {Â/(Ñä.ä\räpÉ²\tèöL£i\\CÄº¯°8ûlaw;-MÏä.Bêw²L-èÓ;\t-biì>z(Ýã[ÐÈx?Wä,Í\"Éu@-\rWL;å[*µØ®ìSlaíËôÑnUhwwÍW¹À¹ Â8OÇÇ·××[[ªpÏ²pn$¤7®ä,¡Trr£©o'úfñ¦C°|¦Ë³àÄPPàwT¡Ö³äAdÂÈ[¿tÇ_ñáw2b¢xËÛ",
+                  "dict": {
+                    "ColorSpace": {
+                      "array": [
+                        {
+                          "name": "Indexed"
+                        },
+                        {
+                          "name": "DeviceRGB"
+                        },
+                        {
+                          "int": 255
+                        },
+                        {
+                          "ind-ref": [
+                            15,
+                            0
+                          ]
+                        }
+                      ]
+                    },
+                    "Width": {
+                      "int": 37
+                    },
+                    "Height": {
+                      "int": 42
+                    },
+                    "Type": {
+                      "name": "XObject"
+                    },
+                    "Subtype": {
+                      "name": "Image"
+                    },
+                    "Length": {
+                      "int": 1554
+                    },
+                    "BitsPerComponent": {
+                      "int": 8
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "ind-obj": [
+              15,
+              0,
+              {
+                "stream": {
+                  "encoded": "¶E2B×&<0\\W'E¬C!K0l+>Á0%BåB+iK$CC'EE;^*,J%OÄ),'&,Nf¹?6cÆV¯ !¯++NÄ7H5eè??UÊB0!L£6='È1\"À 8?%^³2+/4X-KFQ$k@'v®:Ù>?oâR=_0f:D×Eã1?j6D[ß2\rKBiJ[#EZ:P%^x42¯# <O8%!Jæ[):[+PÖ)5!]<Z?Æ?c\"H$BàH(eIÐU2]2%I009Ñ:Ûhà9\r1H'CUH\"2|<?Þ>±2\"d)&M2L!YÑ[-=ÞBÏ!:PH­7\"d¾**[<EÄ$=2&pÝ-Uª R17|6*L 3#7 MÖ6±=#[NE¡$1·3ÎÆ='È5IE3WS$[6oß)g+=J;$QçOA)F#g1W\"R4qD]É>T\t5µA+@uµV&TÄ+.a0.z°(3)@ËF ^Ó?.JÂE%Sç-UÔ1%MJJÆ%)_!_B%0YOc´M¥4*L,!DC4W%3#!R3ëT#\\3¿;U$)j29ÕT³>ÓI,^×H*aÃL* R#U[ïRFS)=éKTC4iL*f&5i'Q$9p(g#7a2?%-q¯(@(Q:j\\e1d+ mÔE\"ØMÕK+.Ö:_· Üa#[!.\"PV/j±!;ÞSh?>[HB\"KGu*EÝ7            ",
+                  "dict": {
+                    "Length": {
+                      "int": 768
                     }
                   }
                 }

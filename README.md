@@ -1,4 +1,4 @@
-# perl6-PDF-Doc
+ perl6-PDF-Doc
 
 PDF::Doc is a set of intermediate Perl 6 classes and methods for the manipulation of PDF documents. These are
 based on document objects described in the PDF 1.7 Specification.
@@ -88,7 +88,7 @@ $page.graphics: -> $gfx {
 }
 ```
 
-Note: at this stage, only the `JPEG` image format is supported.
+Note: at this stage, only the `JPEG` and 'GIF' image formats are supported.
 
 For a full description of `.set-graphics` options, please see PDF::Doc::Type::ExtGState.
 
@@ -316,8 +316,6 @@ implementing Perl 6.c.
 At this stage:
 - Only core fonts are supported. There are a total of 14
 font variations available. Please see the Font::AFM module for details.
-- Only JPEG images have been implemented, as a proof of concept. This is basically a port of PDF::API2::XObject::Image::JPEG
-from the Perl 5 PDF::API2 module. Other image types should port fairly readily.
 - The classes in the PDF::Doc::Type::* name-space represent a common subset of
 the objects that can appear in a PDF. It is envisioned that the range of classes
 with expand over time to cover most or all types described in the PDF specification.

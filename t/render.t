@@ -3,19 +3,21 @@ use PDF::Doc;
 use PDF::Grammar::Test :is-json-equiv;
 use Test;
 
-plan 5;
+plan 11;
 
 my $pdf = PDF::Doc.open: "t/helloworld.pdf";
 my $page = $pdf.page: 1;
 
 my %seen;
+# image 2 is painted 3 times
+my @img-seq = <Im1 Im2 Im2 Im2>;
 
 my sub callback($op, *@args, :$gfx) {
    %seen{$op}++;
    given $op {
        when 'Do' {
            isa-ok $gfx, ::('PDF::Doc::Contents::Gfx'), ':gfx argument';
-           is-json-equiv @args, ['Im1'], 'Do callback arguments';
+           is-json-equiv @args, [shift @img-seq], 'Do callback arguments';
        }
    }
 }

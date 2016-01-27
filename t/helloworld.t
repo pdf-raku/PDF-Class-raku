@@ -17,7 +17,7 @@ my $header-font = $page.core-font( :family<Helvetica>, :weight<bold> );
 my $font = $page.core-font( :family<Helvetica> );
 my $width = 150;
 my $font-size = 15;
-my $x = 35;
+my $x = 22;
 
 $page.graphics: -> $gfx {
 
@@ -56,6 +56,13 @@ $page.graphics: -> $gfx {
 	my $img = $gfx.load-image("t/images/snoopy-happy-dance.jpg");
 	ok $img.Width, '$img.Width';
 	$gfx.do($img, 232, 380, :width(150) );
+
+        $img = $gfx.load-image("t/images/dna.small.gif");
+	ok $img.Width, '$img.Width';
+        my $y = 320;
+        my $x = 520;
+        $gfx.do($img, $x -= 20, $y += $img.Height-5, )
+            for 1 .. 3;
 
 	$gfx.block: -> $_ {
 	    .SetFillRGB(0.1, 0.9, 0.5);
