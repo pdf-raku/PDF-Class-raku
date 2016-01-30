@@ -3,7 +3,7 @@ use v6;
 use PDF::Graphics;
 use PDF::Graphics::Ops :OpNames;
 
-class PDF::Doc::Contents::Gfx 
+class PDF::Doc::Graphics 
     is PDF::Graphics {
     has $.parent;
 

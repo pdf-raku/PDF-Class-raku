@@ -9,11 +9,9 @@
 
         "PDF::Doc" : "lib/PDF/Doc.pm",
 
-        "PDF::Doc::Contents" : "lib/PDF/Doc/Contents.pm",
-        "PDF::Doc::Contents::Gfx" : "lib/PDF/Doc/Contents/Gfx.pm",
+        "PDF::Doc::Contents" : "lib/PDF/Doc/Content.pm",
 
-        "PDF::Doc::Paged" : "lib/PDF/Doc/Paged.pm",
-        "PDF::Doc::Resourced" : "lib/PDF/Doc/Resourced.pm",
+        "PDF::Doc::Graphics" : "lib/PDF/Doc/Graphics.pm",
 
         "PDF::Doc::Type" : "lib/PDF/Doc/Type.pm",
 

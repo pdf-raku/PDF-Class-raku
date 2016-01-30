@@ -1,4 +1,4 @@
- perl6-PDF-Doc
+# perl6-PDF-Doc
 
 PDF::Doc is a set of intermediate Perl 6 classes and methods for the manipulation of PDF documents. These are
 based on document objects described in the PDF 1.7 Specification.

@@ -4,8 +4,8 @@ use PDF::DAO::Dict;
 use PDF::DAO::Stream;
 use PDF::Doc::Type;
 use PDF::Doc::Contents;
-use PDF::Doc::Paged;
-use PDF::Doc::Resourced;
+use PDF::Graphics::Paged;
+use PDF::Graphics::Resourced;
 
 # /Type /Page - describes a single PDF page
 
@@ -13,8 +13,8 @@ class PDF::Doc::Type::Page
     is PDF::DAO::Dict
     does PDF::Doc::Type
     does PDF::Doc::Contents
-    does PDF::Doc::Paged
-    does PDF::Doc::Resourced {
+    does PDF::Graphics::Paged
+    does PDF::Graphics::Resourced {
 
     use PDF::DAO::Tie;
 

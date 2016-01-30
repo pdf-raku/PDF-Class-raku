@@ -3,16 +3,16 @@ use v6;
 use PDF::DAO::Dict;
 use PDF::Doc::Type;
 use PDF::Doc::Type::Page;
-use PDF::Doc::Paged;
-use PDF::Doc::Resourced;
+use PDF::Graphics::Paged;
+use PDF::Graphics::Resourced;
 
 # /Type /Pages - a node in the page tree
 
 class PDF::Doc::Type::Pages
     is PDF::DAO::Dict
     does PDF::Doc::Type
-    does PDF::Doc::Paged
-    does PDF::Doc::Resourced {
+    does PDF::Graphics::Paged
+    does PDF::Graphics::Resourced {
 
     use PDF::DAO::Tie;
     use PDF::DAO;

@@ -16,7 +16,7 @@ my sub callback($op, *@args, :$gfx) {
    %seen{$op}++;
    given $op {
        when 'Do' {
-           isa-ok $gfx, ::('PDF::Doc::Contents::Gfx'), ':gfx argument';
+           isa-ok $gfx, ::('PDF::Doc::Graphics'), ':gfx argument';
            is-json-equiv @args, [shift @img-seq], 'Do callback arguments';
        }
    }
