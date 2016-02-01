@@ -3,7 +3,7 @@ use v6;
 use PDF::DAO::Dict;
 use PDF::DAO::Stream;
 use PDF::Doc::Type;
-use PDF::Doc::Contents;
+use PDF::Graphics::Contents;
 use PDF::Graphics::Paged;
 use PDF::Graphics::Resourced;
 
@@ -12,7 +12,7 @@ use PDF::Graphics::Resourced;
 class PDF::Doc::Type::Page
     is PDF::DAO::Dict
     does PDF::Doc::Type
-    does PDF::Doc::Contents
+    does PDF::Graphics::Contents
     does PDF::Graphics::Paged
     does PDF::Graphics::Resourced {
 

@@ -13,7 +13,7 @@ role PDF::Doc::Type::Resources
 	has Str $.key is rw;
     }
 
-    # See [pDF 1.7 TABLE 3.30 Entries in a resource dictionary]
+    # See [PDF 1.7 TABLE 3.30 Entries in a resource dictionary]
 
     has %.ExtGState  is entry;  #| (Optional) A dictionary that maps resource names to graphics state parameter dictionaries
 

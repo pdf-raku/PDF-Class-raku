@@ -9,10 +9,6 @@
 
         "PDF::Doc" : "lib/PDF/Doc.pm",
 
-        "PDF::Doc::Contents" : "lib/PDF/Doc/Content.pm",
-
-        "PDF::Doc::Graphics" : "lib/PDF/Doc/Graphics.pm",
-
         "PDF::Doc::Type" : "lib/PDF/Doc/Type.pm",
 
         "PDF::Doc::Type::AcroForm" : "lib/PDF/Doc/Type/AcroForm.pm",
