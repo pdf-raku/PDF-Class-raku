@@ -26,7 +26,7 @@ role PDF::Doc::Type::Field
             when 'Ch'  {'Choice'}
             when 'Sig' {'Signature'}
 	};
-	PDF::DAO.delegator.find-delegate( 'Field::' ~ $field-role, :fallback(PDF::Doc::Type::Field) );
+	PDF::DAO.delegator.find-delegate( 'Field', $field-role );
     }
 
     multi method field-delegate( PDF::DAO::Dict $dict)  {

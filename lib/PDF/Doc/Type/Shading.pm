@@ -41,7 +41,7 @@ class PDF::Doc::Type::Shading
 	}
 
 	my $subtype = ShadingTypes[$type-int - 1];
-	PDF::DAO.delegator.find-delegate( 'Shading::' ~ $subtype, :fallback(PDF::Doc::Type::Shading) );
+	PDF::DAO.delegator.find-delegate( 'Shading', $subtype );
     }
 
     method cb-init {

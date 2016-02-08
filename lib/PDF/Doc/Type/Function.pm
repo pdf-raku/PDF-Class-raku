@@ -35,7 +35,7 @@ class PDF::Doc::Type::Function
 	}
 
 	my $subtype = FunctionTypes[$function-type];
-	PDF::DAO.delegator.find-delegate( 'Function::' ~ $subtype, :fallback(PDF::Doc::Type::Function) );
+	PDF::DAO.delegator.find-delegate( 'Function', $subtype );
     }
 
     method cb-init {

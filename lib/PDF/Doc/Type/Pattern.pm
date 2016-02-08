@@ -35,7 +35,7 @@ role PDF::Doc::Type::Pattern
 	}
 
 	my $subtype = PatternNames{~$type-int};
-	PDF::DAO.delegator.find-delegate( 'Pattern::' ~ $subtype, :fallback(PDF::Doc::Type::Pattern) );
+	PDF::DAO.delegator.find-delegate( 'Pattern', $subtype );
     }
 
     method cb-init {

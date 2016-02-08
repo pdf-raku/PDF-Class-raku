@@ -60,7 +60,7 @@ role PDF::Doc::Type::Action
     proto sub coerce($,$) is export(:coerce) {*}
 
     multi sub coerce(Hash $dict is rw where { .<S> ~~ ActionSubtype }, PDF::Doc::Type::Action) {
-	my $subclass = PDF::DAO.delegator.find-delegate( 'Action::' ~ $dict<S>, :fallback(PDF::Doc::Type::Action) );
+	my $subclass = PDF::DAO.delegator.find-delegate( 'Action', $dict<S> );
 	PDF::DAO.coerce($dict, $subclass);
     }
 

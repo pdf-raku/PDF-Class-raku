@@ -14,16 +14,13 @@ class PDF::Doc::Delegator
 
     method class-paths {<PDF::Doc::Type PDF::DAO::Type>}
 
-    multi method find-delegate( Str $subclass! where { self.handler{$_}:exists } ) {
-        self.handler{$subclass}
-    }
+    method find-delegate( Str $type!, $subtype?, :$fallback) is default {
 
-    multi method find-delegate( Str $subclass! where 'XRef' | 'ObjStm') {
-	require ::('PDF::DAO::Type')::($subclass);
-	self.install-delegate( $subclass, ::('PDF::DAO::Type')::($subclass) );
-    }
+	my $subclass = $type;
+	$subclass ~= '::' ~ $subtype if $subtype;
 
-    multi method find-delegate( Str $subclass!, :$fallback!) is default {
+	return self.handler{$subclass}
+	    if self.handler{$subclass}:exists;
 
         my $handler-class = $fallback;
         my Bool $resolved;
@@ -34,7 +31,11 @@ class PDF::Doc::Delegator
             $resolved = True;
             last;
             CATCH {
-                when X::CompUnit::UnsatisfiedDependency { }
+                when X::CompUnit::UnsatisfiedDependency {
+		    # try loading just the parent class
+		    $handler-class = $.find-delegate($type, :$fallback)
+			if $subtype;
+		}
             }
 	}
 		
@@ -45,33 +46,27 @@ class PDF::Doc::Delegator
     }
 
     multi method delegate(Hash :$dict! where {.<FunctionType>:exists}) {
-	require ::('PDF::Doc::Type::Function');
-	::('PDF::Doc::Type::Function').delegate-function( :$dict );
+	$.find-delegate('Function').delegate-function( :$dict );
     }
 
     multi method delegate(Hash :$dict! where {.<PatternType>:exists}) {
-	require ::('PDF::Doc::Type::Pattern');
-	::('PDF::Doc::Type::Pattern').delegate-pattern( :$dict );
+	$.find-delegate('Pattern').delegate-pattern( :$dict );
     }
 
     multi method delegate(Hash :$dict! where {.<ShadingType>:exists}) {
-	require ::('PDF::Doc::Type::Shading');
-	::('PDF::Doc::Type::Shading').delegate-shading( :$dict );
+	$.find-delegate('Shading').delegate-shading( :$dict );
     }
 
     multi method delegate(Hash :$dict! where {(.<Registry>:exists) && (.<Ordering>:exists)}) {
-	require ::('PDF::Doc::Type::CIDSystemInfo');
-	::('PDF::Doc::Type::CIDSystemInfo');
+	$.find-delegate('CIDSystemInfo');
     }
 
     multi method delegate( Hash :$dict! where {.<Type>:exists}, :$fallback) {
-        my $subclass = from-ast($dict<Type>);
-        unless $subclass eq 'Border' {
-	    my $subtype = from-ast($dict<Subtype> // $dict<S>);
-	    $subclass ~= '::' ~ $subtype if $subtype.defined;
-	}
-        my $delegate = $.find-delegate( $subclass, :$fallback );
-        $delegate;
+        my $type = from-ast($dict<Type>);
+        my $subtype = from-ast($dict<Subtype> // $dict<S>)
+	    unless $type eq 'Border';
+
+        $.find-delegate( $type, $subtype, :$fallback );
     }
 
     #| Reverse lookup for classes when /Subtype is required but /Type is optional
@@ -79,18 +74,18 @@ class PDF::Doc::Delegator
 	my $subtype = from-ast $dict<Subtype>;
 
 	my $type = do given $subtype {
-	    when 'Circle' | 'Link' | 'Square' | 'Text' | 'Widget' {
-		# todo other Annot sub-types, NYI
-		'Annot'
-	    }
+	    # See [PDF 1.7 - TABLE 8.20 Annotation types]
+	    when 'Text' | 'Link' | 'FreeText' | 'Line' | 'Square' | 'Circle'
+		| 'Polygon' | 'PolyLine' | 'Highlight' |' Underline' | 'Squiggly'
+		| 'StrikeOut' | 'Stamp' | 'Caret' | 'Ink' | 'Popup' | 'FileAttachment'
+		| 'Sound' | 'Movie' | 'Widget' | 'Screen' | 'PrinterMark' | 'TrapNet'
+		| 'Watermark' | '3D' { 'Annot' }
 	    when 'PS' | 'Image' | 'Form'  { 'XObject' }
 	    default { Nil }
 	};
 
 	if $type {
-	    my $class = "PDF::Doc::Type::{$type}::{$subtype}";
-	    require ::($class);
-	    ::($class);
+	    $.find-delegate($type, $subtype);
 	}
 	else {
 	    note "unhandled subtype: PDF::Doc::Type::*::{$subtype}";
