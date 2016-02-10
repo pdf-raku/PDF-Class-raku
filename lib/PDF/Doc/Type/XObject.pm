@@ -10,4 +10,9 @@ class PDF::Doc::Type::XObject
     is PDF::DAO::Stream
     does PDF::Doc::Type {
 
+	use PDF::DAO::Tie;
+	my subset Name-XObject of PDF::DAO::Name where 'XObject';
+	has Name-XObject $.Type is entry;
+	has PDF::DAO::Name  $.Subtype is entry;
+
 }

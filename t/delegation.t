@@ -3,7 +3,7 @@ use Test;
 use PDF::Doc;
 use PDF::Doc::Delegator;
 
-plan 14;
+plan 15;
 
 isa-ok PDF::Doc::Delegator.delegate( :dict{ :Type<Page> }), ::('PDF::Doc::Type::Page'), 'delegation sanity';
 isa-ok PDF::Doc::Delegator.delegate( :dict{ :Type<XObject>, :Subtype<Image> }), ::('PDF::Doc::Type::XObject::Image'), 'delegation to subclass';
@@ -15,6 +15,7 @@ isa-ok PDF::Doc::Delegator.delegate( :dict{ :FunctionType(3) }),  ::('PDF::Doc::
 isa-ok PDF::Doc::Delegator.delegate( :dict{ :Subtype<Link> }),  ::('PDF::Doc::Type::Annot::Link'), 'annot defaulted /Type - implemented';
 require ::('PDF::Doc::Type::Annot');
 isa-ok PDF::Doc::Delegator.delegate( :dict{ :Subtype<Caret> }, ),  ::('PDF::Doc::Type::Annot'), 'annot defaulted /Type - unimplemented';
+isa-ok PDF::Doc::Delegator.delegate( :dict{ :S<GTS_PDFX> }, ),  ::('PDF::Doc::Type::OutputIntent'), 'output intent defaulted /Type';
 
 require ::('PDF::Doc::Type::Pages');
 my $pages = ::('PDF::Doc::Type::Pages').new;

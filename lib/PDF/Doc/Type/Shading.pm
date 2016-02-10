@@ -11,7 +11,7 @@ class PDF::Doc::Type::Shading
     use PDF::DAO::Array;
     use PDF::DAO::Name;
     subset ShadingTypeInt of Int where 1..7;
-    has ShadingTypeInt $.ShadingType is entry;
+    has ShadingTypeInt $.ShadingType is entry(:required);
 
     # see [PDF 1.7 TABLE 4.28 Entries common to all shading dictionaries]
     ## precomp woes

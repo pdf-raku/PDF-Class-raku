@@ -1,13 +1,11 @@
 use v6;
 
 use PDF::DAO;
-use PDF::DAO::Type;
 use PDF::Doc::Delegator;
 
 # autoload from PDF::Doc::Type
 
-role PDF::Doc::Type[$type-entry = 'Type', $subtype-entry = 'Subtype']
-    does PDF::DAO::Type {
+role PDF::Doc::Type[$type-entry = 'Type', $subtype-entry = 'Subtype'] {
 
     #| enforce tie-ins between /Type, /Subtype & the class name. e.g.
     #| PDF::Doc::Type::Catalog should have /Type = /Catalog

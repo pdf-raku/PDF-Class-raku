@@ -105,13 +105,13 @@ is-deeply $fm1.key, 'Fm1', 'xobject form name';
 
 my $form2 = PDF::Doc::Type::XObject::Form.new( :dict{ :BBox[-3, -3, 103, 123] } );
 my $image = PDF::Doc::Type::XObject::Image.new( :dict{ :ColorSpace( :name<DeviceRGB> ), :Width(120), :Height(150) } );
-my $font = PDF::Doc::Type::Font.new;
 my $fm2 = $new-page.use-resource( $form2 );
 is-deeply $fm2.key, 'Fm2', 'xobject form name';
 
 my $im1 = $new-page.use-resource( $image );
 is-deeply $im1.key, 'Im1', 'xobject form name';
 
+my $font = ::('PDF::Doc::Type::Font::Type1').new: { :BaseFont<Helvetica> };
 my $f1 = $new-page.use-resource( $font );
 is-deeply $f1.key, 'F1', 'font name';
 

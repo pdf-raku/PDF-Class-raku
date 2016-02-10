@@ -7,6 +7,8 @@ use PDF::DAO::Tie::Array;
 class PDF::Doc::Type::ColorSpace
     is PDF::DAO::Array {
 
+    # See [PDF 1.7 Section 4.5 Color Spaces]
+
     method type {'ColorSpace'}
     method subtype {$.Subtype}
     use PDF::DAO::Name;

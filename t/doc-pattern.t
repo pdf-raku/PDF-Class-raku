@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 8;
+plan 7;
 
 use PDF::Doc;
 use PDF::Storage::IndObj;
@@ -40,7 +40,6 @@ is $ind-obj.gen-num, 0, '$.gen-num';
 my $pattern-obj = $ind-obj.object;
 isa-ok $pattern-obj, ::('PDF::Doc::Type')::('Pattern::Tiling');
 is $pattern-obj.Type, 'Pattern', '$.Type accessor';
-ok !$pattern-obj.Subtype.defined, '$.Subtype accessor';
 is-json-equiv $pattern-obj.BBox, [ 0, 0, 100, 100 ], '$.BBox accessor';
 my $zfont = $pattern-obj.core-font('ZapfDingbats');
 # example from [PDF 1.7 Example 4.24]

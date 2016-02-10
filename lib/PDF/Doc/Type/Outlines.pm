@@ -10,6 +10,9 @@ class PDF::Doc::Type::Outlines
     does PDF::Doc::Type {
 
     use PDF::DAO::Tie;
+    use PDF::DAO::Name;
+    my subset Name-Outlines of PDF::DAO::Name where 'Outlines';
+    has PDF::DAO::Name $.Type is entry;
     use PDF::Doc::Type::OutlineItem;
 
     # see TABLE 8.3 Entries in the outline dictionary

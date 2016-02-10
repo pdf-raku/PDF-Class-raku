@@ -22,6 +22,9 @@ class PDF::Doc::Type::Catalog
     use PDF::DAO::TextString;
     use PDF::Doc::Type::Pages;
 
+    my subset Name-Catalog of PDF::DAO::Name where 'Catalog';
+    has Name-Catalog $.Type is entry(:required);
+
     has PDF::DAO::Name $.Version is entry;               #| (Optional; PDF 1.4) The version of the PDF specification to which the document conforms (for example, 1.4)
 
     has PDF::Doc::Type::Pages $.Pages is entry(:required, :indirect);

@@ -31,8 +31,8 @@ role PDF::Doc::Type::Action
     use PDF::DAO::Tie;
     use PDF::DAO::Name;
 
-    my subset ActionType of PDF::DAO::Name where 'Action';
-    has ActionType $.Type is entry;
+    my subset Name-Action of PDF::DAO::Name where 'Action';
+    has Name-Action $.Type is entry;
 
     my subset ActionSubtype of PDF::DAO::Name where
 	'GoTo'         #| Go to a destination in the current document.

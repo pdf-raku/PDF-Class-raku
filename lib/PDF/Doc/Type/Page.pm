@@ -17,11 +17,14 @@ class PDF::Doc::Type::Page
     does PDF::Graphics::Resourced {
 
     use PDF::DAO::Tie;
+    use PDF::DAO::Name;
 
     use PDF::Doc::Type::XObject::Form;
     use PDF::DAO::Stream;
 
     # see [PDF 1.7 TABLE 3.27 Entries in a page object]
+    my subset Name-Page of PDF::DAO::Name where 'Page';
+    has Name-Page $.Type is entry(:required);
     has Hash $.Parent is entry(:indirect);       #| (Required; must be an indirect reference) The page tree node that is the immediate parent of this page object.
     has Str $.LastModified is entry;             #| (Required if PieceInfo is present; optional otherwise; PDF 1.3) The date and time when the page’s contents were most recently modified
     use PDF::Doc::Type::Resources;

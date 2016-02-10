@@ -14,6 +14,8 @@ class PDF::Doc::Type::FontDescriptor
     use PDF::DAO::Name;
 
     # see [PDF 1.7 TABLE 5.19 Entries common to all font descriptors]
+    my subset Name-FontDescriptor of PDF::DAO::Name where 'FontDescriptor';
+    has Name-FontDescriptor $.Type is entry(:required);
     has PDF::DAO::Name $.FontName is entry(:required); #| (Required) The PostScript name of the font.
     has Str $.FontFamily is entry;                        #| (Optional; PDF 1.5; strongly recommended for Type 3 fonts in Tagged PDF documents) A byte string specifying the preferred font family name
     subset FontStretchName of PDF::DAO::Name where 'ExtraCondensed'|'Condensed'|'SemiCondensed'|'Normal'|'SemiExpanded'|'Expanded'|'ExtraExpanded'|'UltraExpanded';

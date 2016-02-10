@@ -6,6 +6,7 @@ class PDF::Doc::Type::OutputIntent::GTS_PDFX
     is PDF::Doc::Type::OutputIntent {
 
     use PDF::DAO::Tie;
+    use PDF::DAO::Stream;
 
     # see [PDF 1.7 TABLE 10.51 Entries in a PDF/X output intent dictionary]
     has Str $.OutputCondition is entry;                       #| (Optional) An ASCII string concisely identifying the intended output device or production condition in human-readable form

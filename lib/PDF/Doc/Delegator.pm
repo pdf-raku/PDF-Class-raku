@@ -93,6 +93,11 @@ class PDF::Doc::Delegator
 	}
     }
 
+    #| Reverse lookup for classes when /Subtype is required but /Type is optional
+    multi method delegate(Hash :$dict where {.<S>:exists && .<S> ~~ 'GTS_PDFX' },) {
+	    $.find-delegate('OutputIntent', 'GTS_PDFX');
+    }
+
     #| PDF Spec 1.7 Section 4.5.4 CIE-Based Color Spaces
     subset ColorSpace-Array-CIE where {
 	.elems == 2 && do {

@@ -1,7 +1,6 @@
 use v6;
 
 use PDF::DAO::Dict;
-use PDF::DAO::Type;
 
 class PDF::Doc::Type::CIDSystemInfo
     is PDF::DAO::Dict {
