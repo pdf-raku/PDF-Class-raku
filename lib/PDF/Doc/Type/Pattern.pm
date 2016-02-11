@@ -58,14 +58,10 @@ role PDF::Doc::Type::Pattern
 		    die "$class-name has unknown subtype $subtype"
 			unless PatternTypes{$subtype}:exists;
 
-                    if self<PatternType>:!exists {
-                        self<PatternType> = PatternTypes{$subtype};
-                    }
-                    else {
-                        # /Subtype already set. check it agrees with the class name
-                        die "conflict between class-name $class-name ($subtype) and /PatternType /{self<PatternType>.value}"
-                            unless self<PatternType> == PatternTypes{$subtype};
-                    }
+		    self<PatternType> //= PatternTypes{$subtype};
+
+		    die "conflict between class-name $class-name ($subtype) and /PatternType /{self<PatternType>.value}"
+			unless self<PatternType> == PatternTypes{$subtype};
                 }
 
                 last;

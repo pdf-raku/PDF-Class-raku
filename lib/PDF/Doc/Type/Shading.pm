@@ -60,14 +60,10 @@ class PDF::Doc::Type::Shading
 
 		my ShadingTypeInt $shading-type-int = ShadingNames{ $shading-type } + 1;
 
-		if self<ShadingType>:!exists {
-		    self<ShadingType> = $shading-type-int;
-		}
-		else {
-		    # /Subtype already set. check it agrees with the class name
-		    die "conflict between class-name $class-name /ShadingType. Expected $shading-type-int, got  self<ShadingType>"
-			unless self<ShadingType> == $shading-type-int;
-		}
+		self<ShadingType> //= $shading-type-int;
+
+		die "conflict between class-name $class-name /ShadingType. Expected $shading-type-int, got  self<ShadingType>"
+		    unless self<ShadingType> == $shading-type-int;
 
                 last;
             }

@@ -54,14 +54,10 @@ class PDF::Doc::Type::Function
 
 		my FunctionTypeInt $function-type = FunctionNames{ $function };
 
-		if self<FunctionType>:!exists {
-		    self<FunctionType> = $function-type;
-		}
-		else {
-		    # /Subtype already set. check it agrees with the class name
-		    die "conflict between class-name $class-name /FunctionType. Expected $function-type, got self<FunctionType>"
-			unless self<FunctionType> == $function-type;
-		}
+		self<FunctionType> //= $function-type;
+
+		die "conflict between class-name $class-name /FunctionType. Expected $function-type, got self<FunctionType>"
+		    unless self<FunctionType> == $function-type;
 
                 last;
             }

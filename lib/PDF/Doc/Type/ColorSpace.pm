@@ -1,8 +1,6 @@
 use v6;
 
 use PDF::DAO::Array;
-use PDF::DAO::Tie;
-use PDF::DAO::Tie::Array;
 
 class PDF::Doc::Type::ColorSpace
     is PDF::DAO::Array {
@@ -13,7 +11,7 @@ class PDF::Doc::Type::ColorSpace
     method subtype {$.Subtype}
     use PDF::DAO::Name;
     use PDF::DAO::Tie;
-    has PDF::DAO::Name $.Subtype is index(0);
+    has PDF::DAO::Name $.Subtype is index(0, :required);
 
     #| enforce tie-ins between self[0] & the class name. e.g.
     #| PDF::Doc::Type::ColorSpace::CalGray should have self[0] == 'CalGray'
@@ -23,20 +21,18 @@ class PDF::Doc::Type::ColorSpace
 
             if $class-name ~~ /^ 'PDF::Doc::Type::' (\w+) '::' (\w+) $/ {
 
-		die "bad class-name $class-name"
+		die "bad class-name $class-name: $class-name"
 		    unless ~$0 eq $.type;
 		
                 my Str $subtype = ~$1;
 
-                if ! self.Subtype {
-                    self.Subtype = PDF::DAO.coerce( :name($subtype) );
-                }
-                else {
-                    # /Type already set. check it agrees with the class name
-                    die "conflict between class-name $class-name ($subtype) and array[0] type /{self[0]}"
-                        unless self.Subtype eq $subtype;
-                }
+		self[0] //= PDF::DAO.coerce( :name($subtype) );
+
+		die "conflict between class-name $class-name ($subtype) and array[0] type /{self[0]}"
+		    unless self.Subtype eq $subtype;
+
 		self[1] //= { :WhitePoint[ 1.0, 1.0, 1.0 ] };
+
                 last;
             }
         }
