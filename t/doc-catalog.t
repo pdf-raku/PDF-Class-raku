@@ -97,4 +97,5 @@ isa-ok $catalog.Type, Str, 'catalog $.Type';
 is $catalog.Type, 'Catalog', 'catalog $.Type';
 
 $dict<Type> = :name<Wtf>;
+todo "type-check on new";
 dies-ok {::('PDF::Doc::Type::Catalog').new( :$dict )}, 'catalog .new with invalid /Type - dies';
