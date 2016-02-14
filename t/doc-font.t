@@ -9,7 +9,7 @@ use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::DAO;
-use PDF::Graphics::Font;
+use PDF::Graphics::Util::Font;
 
 my $actions = PDF::Grammar::PDF::Actions.new;
 
@@ -44,7 +44,7 @@ sub to-doc($font-obj) {
     { :$dict, :$font-obj }
 }
 
-my $hbi-afm = PDF::Graphics::Font::core-font( :family<Helvetica>, :weight<Bold>, :style<Italic> );
+my $hbi-afm = PDF::Graphics::Util::Font::core-font( :family<Helvetica>, :weight<Bold>, :style<Italic> );
 
 my %params = to-doc($hbi-afm);
 my $font = PDF::DAO.coerce( |%params );
@@ -53,7 +53,7 @@ is $font.BaseFont, 'Helvetica-BoldOblique', '.BaseFont';
 is $font.Encoding, 'WinAnsiEncoding', '.Encoding';
 is-deeply $font.font-obj, $hbi-afm, '.font-obj';
 
-my $zapf = PDF::Graphics::Font::core-font( 'ZapfDingbats' );
+my $zapf = PDF::Graphics::Util::Font::core-font( 'ZapfDingbats' );
 
 %params = to-doc($zapf);
 my $zapf-font = PDF::DAO.coerce( |%params );
@@ -61,7 +61,7 @@ isa-ok $zapf-font, ::('PDF::Doc::Type::Font::Type1');
 is $zapf-font.BaseFont, 'ZapfDingbats', '.BaseFont';
 ok !$zapf-font.Encoding.defined, '!.Encoding';
 
-my $sym = PDF::Graphics::Font::core-font( 'Symbol' );
+my $sym = PDF::Graphics::Util::Font::core-font( 'Symbol' );
 
 %params = to-doc($sym);
 my $sym-font = PDF::DAO.coerce( |%params );

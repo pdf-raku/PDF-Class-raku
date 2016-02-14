@@ -11,6 +11,8 @@ role PDF::Doc::Type::Resources
     use PDF::DAO::Name;
     use PDF::DAO::Stream;
 
+    use PDF::Doc::Type::Font; # rakudo 2015.12 compile breaks if this is removed
+
     # See [PDF 1.7 TABLE 3.30 Entries in a resource dictionary]
 
     has %.ExtGState  is entry;  #| (Optional) A dictionary that maps resource names to graphics state parameter dictionaries
@@ -29,18 +31,6 @@ role PDF::Doc::Type::Resources
     has PDF::DAO::Name @.ProcSet    is entry;  #| (Optional) An array of predefined procedure set names
     has Hash %.Properties is entry;  #|  (Optional; PDF 1.2) A dictionary that maps resource names to property list dictionaries for marked content
 
-    method core-font(|c) {
-	use PDF::Doc::Type::Font;
-	use PDF::Graphics::Font;
-
-        my $font-obj = PDF::Graphics::Font::core-font( |c );
-        self!find-resource(sub ($_){.isa(PDF::Doc::Type::Font) && .font-obj === $font-obj}, :type<Font>)
-            // do {
-                my $dict = $font-obj.to-dict;
-                my $font-dict = PDF::DAO.coerce( :$dict, :$font-obj );
-                self!register-resource( $font-dict );
-        };
-    }
 
 }
 
