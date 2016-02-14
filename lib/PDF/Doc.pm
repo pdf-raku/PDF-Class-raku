@@ -42,18 +42,7 @@ class PDF::Doc:ver<0.0.2>
 	$doc;
     }
 
-    method update(|c) {
-	self.cb-init
-	    unless self<Root>:exists;
-	self<Root>.cb-finish;
-
-	nextsame;
-    }
-
     method save-as($spec, Bool :$force, |c) {
-	self<Root>:exists
-	    ?? self<Root>.?cb-finish
-	    !! die "no top-level Root entry";
 
 	if !$force and self.reader and my $sig-flags = self.Root.?AcroForm.?SigFlags {
 	    use PDF::Doc::Type::AcroForm :SigFlags;

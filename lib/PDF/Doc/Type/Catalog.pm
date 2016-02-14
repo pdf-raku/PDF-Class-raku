@@ -102,7 +102,7 @@ class PDF::Doc::Type::Catalog
     method cb-init {
         # vivify pages
 	self<Type> //= PDF::DAO.coerce( :name<Catalog> );
-	die "invalid /Type {self<Type>}" unless self<Type> eq 'Catalog';
+
         self<Pages> //= PDF::Doc::Type::Pages.new(
             :dict{
                 :Resources{ :Procset[ :name<PDF>, :name<Text> ] },

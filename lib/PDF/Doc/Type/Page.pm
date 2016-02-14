@@ -4,17 +4,16 @@ use PDF::DAO::Dict;
 use PDF::DAO::Stream;
 use PDF::Doc::Type;
 use PDF::Graphics::Contents;
-use PDF::Graphics::Paged;
-use PDF::Graphics::Resourced;
+use PDF::Graphics::Page;
+use PDF::Graphics::PageNode;
 
 # /Type /Page - describes a single PDF page
 
 class PDF::Doc::Type::Page
     is PDF::DAO::Dict
     does PDF::Doc::Type
-    does PDF::Graphics::Contents
-    does PDF::Graphics::Paged
-    does PDF::Graphics::Resourced {
+    does PDF::Graphics::Page
+    does PDF::Graphics::PageNode {
 
     use PDF::DAO::Tie;
     use PDF::DAO::Name;
@@ -58,68 +57,6 @@ class PDF::Doc::Type::Page
     has Hash $.PressSteps is entry;              #| (Optional; PDF 1.5) A navigation node dictionary representing the first node on the pag
     has Numeric $.UserUnit is entry;             #| (Optional; PDF 1.6) A positive number giving the size of default user space units, in multiples of 1 ⁄ 72 inch
     has $.VP is entry;                           #| Optional; PDF 1.6) An array of viewport dictionaries
-
-    #| contents may either be a stream on an array of streams
-    method content-streams returns Array {
-        given $.Contents {
-            when !.defined { [] }
-            when Array     { $_ }
-            when Hash      { [$_] }
-            default { die "unexpected page content: {.perl}" }
-        }
-    }
-
-    method contents returns Str {
-	my $streams = $.content-streams;
-	$streams.keys.map({ $streams[$_].decoded }).join: '';
-    }
-
-    #| produce an XObject form for this page
-    method to-xobject(Array :$bbox = self.trim-box) {
-
-        my %dict = (Resources => self.Resources.clone,
-                    BBox => $bbox.clone);
-
-        my $xobject = PDF::Doc::Type::XObject::Form.new(:%dict);
-        $xobject.pre-gfx.ops(self.pre-gfx.ops);
-        $xobject.gfx.ops(self.gfx.ops);
-
-	my Array $content-streams = $.content-streams;
-        $xobject.edit-stream: :append( [~] $content-streams.map: *.decoded );
-        if +$content-streams {
-            # inherit compression from the first stream segment
-            for $content-streams[0] {
-                $xobject<Filter> = .<Filter>.clone
-                    if .<Filter>:exists;
-                $xobject<DecodeParms> = .<DecodeParms>.clone
-                    if .<DecodeParms>:exists;
-            }
-        }
-
-        $xobject;
-    }
-
-    method cb-finish {
-
-	self.MediaBox //= [0, 0, 612, 792];
-
-	if ($!pre-gfx && $!pre-gfx.ops) || ($!gfx && $!gfx.ops) {
-	    my $prepend = $!pre-gfx && $!pre-gfx.ops
-		?? $!pre-gfx.content ~ "\n"
-		!! '';
-
-	    my $append = $!gfx && $!gfx.ops
-		?? $!gfx.content
-		!! '';
-
-	    if self.Contents ~~ PDF::DAO::Stream {
-		self.Contents.encoded = $prepend ~ $append;
-	    }
-	    else {
-		self.Contents = PDF::DAO::Stream.new( :decoded($prepend ~ $append) );
-	    }
-        }
-    }
 
 }
 
