@@ -1,6 +1,6 @@
 #!/usr/bin/env perl6
 use v6;
-use PDF::DOM;
+use PDF::Doc;
 
 sub MAIN(Str $infile,              #| input PDF
 	 Str :$password = '',      #| password for the input PDF, if encrypted
@@ -12,7 +12,7 @@ sub MAIN(Str $infile,              #| input PDF
         ?? $*IN
 	!! $infile;
 
-    my $doc = PDF::DOM.open( $input, :$password);
+    my $doc = PDF::Doc.open( $input, :$password);
 
     my UInt $revs = + $doc.reader.xrefs;
 
@@ -75,7 +75,7 @@ has endured and applies no changes.
 =head1 SEE ALSO
 
 CAM::PDF (Perl 5)
-PDF::DOM (Perl 6)
+PDF::Doc (Perl 6)
 
 =head1 AUTHOR
 

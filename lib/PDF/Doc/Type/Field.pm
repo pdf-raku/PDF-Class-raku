@@ -56,14 +56,17 @@ role PDF::Doc::Type::Field
     proto sub coerce( $, $ ) is export(:coerce) {*}
     multi sub coerce( PDF::DAO::Dict $dict is rw, PDF::Doc::Type::Field $field ) {
 	# refuse to coerce an annotation as a field
-	PDF::DAO.coerce( $dict, $field.field-delegate( $dict ) )
-	    unless is-annot-only($dict)
+	PDF::DAO.coerce( $dict, $field.field-delegate( $dict ) );
     }
 
     has FieldTypeName $.FT is entry(:inherit);  #| Required for terminal fields; inheritable) The type of field that this dictionary describes
     has PDF::Doc::Type::Field $.Parent is entry(:indirect);      #| (Required if this field is the child of another in the field hierarchy; absent otherwise) The field that is the immediate parent of this one (the field, if any, whose Kids array includes this field). A field can have at most one parent; that is, it can be included in the Kids array of at most one other field.
 
     my subset AnnotOrField of Hash where { is-annot-only($_) || $_ ~~ PDF::Doc::Type::Field }
+    multi sub coerce( PDF::DAO::Dict $dict is rw, AnnotOrField) {
+	PDF::DAO.coerce( $dict, PDF::Doc::Type::Field.field-delegate( $dict ) )
+	    unless is-annot-only($dict)
+    }
     has AnnotOrField @.Kids is entry(:indirect, :&coerce); #| (Sometimes required, as described below) An array of indirect references to the immediate children of this field.
                                                 #| In a non-terminal field, the Kids array is required to refer to field dictionaries that are immediate descendants of this field. In a terminal field, the Kids array ordinarily must refer to one or more separate widget annotations that are associated with this field. However, if there is only one associated widget annotation, and its contents have been merged into the field dictionary, Kids must be omitted.
 

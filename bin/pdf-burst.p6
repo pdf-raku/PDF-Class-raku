@@ -1,6 +1,6 @@
 #!/usr/bin/env perl6
 use v6;
-use PDF::DOM;
+use PDF::Doc;
 
 #| reading from stdin
 multi sub output-filename('-') {"pdf-page%03d.pdf"}
@@ -25,7 +25,7 @@ sub MAIN(Str $infile,            #| input PDF
         ?? $*IN
 	!! $infile;
 
-    my $doc = PDF::DOM.open( $input, :$password);
+    my $doc = PDF::Doc.open( $input, :$password);
     my $catalog = $doc<Root>;
 
     my UInt $pages = $doc.page-count;
@@ -70,10 +70,10 @@ for generation of the individual output files.
 
 =head1 SEE ALSO
 
-PDF::DOM
+PDF::Doc
 
 =head1 AUTHOR
 
-See L<PDF::DOM>
+See L<PDF::Doc>
 
 =end pod

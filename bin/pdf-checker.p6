@@ -1,9 +1,9 @@
 #!/usr/bin/env perl6
 use v6;
 
-use PDF::DOM;
-use PDF::DOM::Contents;
-use PDF::DOM::Type::Annot;
+use PDF::Doc;
+use PDF::Graphics;
+use PDF::Doc::Type::Annot;
 
 my UInt $*max-depth;
 my Bool $*contents;
@@ -11,7 +11,7 @@ my Bool $*trace;
 my Bool $*strict = False;
 my %seen;
 
-#| check a PDF against PDF::DOM class definitions
+#| check a PDF against PDF::Doc class definitions
 sub MAIN(Str $infile,               #| input PDF
          Str  :$password = '',      #| password for the input PDF, if encrypted
          Bool :$*trace,             #| show progress
@@ -20,7 +20,7 @@ sub MAIN(Str $infile,               #| input PDF
          UInt :$*max-depth = 100,   #| maximum recursion depth
          ) {
 
-    my $doc = PDF::DOM.open( $infile, :$password );
+    my $doc = PDF::Doc.open( $infile, :$password );
     check( $doc, :ent<xref> );
 }
 
@@ -38,12 +38,12 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     my Str @unknown-entries;
 
     check-contents($obj, :$ref)
-	if $*contents && $obj.does(PDF::DOM::Contents);
+	if $*contents && $obj.does(PDF::Graphics);
 
     for $obj.keys.sort {
 
         # Avoid following /P back to page then back here via page /Annots
-        next if $_ eq 'P' && $obj.isa(PDF::DOM::Type::Annot);
+        next if $_ eq 'P' && $obj.isa(PDF::Doc::Type::Annot);
 
 	my $kid;
 
@@ -110,8 +110,9 @@ sub check-contents( $obj, Str :$ref!) {
     my $resources = $obj.Resources
 	// die "no /Resources dict found";
 
-    use PDF::DOM::Op;
-    my $ops = PDF::DOM::Op.new(:$*strict);
+    use PDF::Graphics::Ops;
+    my class Ops does PDF::Graphics::Ops {};
+    my $ops = Ops.new(:$*strict);
 
     for $ast.list {
 	$ops.op($_);
@@ -171,10 +172,10 @@ root, reporting any errors or warnings that were encountered.
 
 =head1 SEE ALSO
 
-PDF::DOM
+PDF::Doc
 
 =head1 AUTHOR
 
-See L<PDF::DOM>
+See L<PDF::Doc>
 
 =end pod
