@@ -38,16 +38,4 @@ class PDF::Doc::Type::Pages
 	}
     }
 
-    method cb-finish {
-        my Int $count = 0;
-        my Array $kids = self.Kids;
-        for $kids.keys {
-            my $kid = $kids[$_];
-            $kid<Parent> = self.link;
-            $kid.cb-finish;
-            $count += $kid.can('Count') ?? $kid.Count !! 1;
-        }
-        self<Count> = $count;
-    }
-
 }
