@@ -9,6 +9,7 @@ my UInt $*max-depth;
 my Bool $*contents;
 my Bool $*trace;
 my Bool $*strict = False;
+my Str @*exclude;
 my %seen;
 
 #| check a PDF against PDF::Doc class definitions
@@ -18,9 +19,12 @@ sub MAIN(Str $infile,               #| input PDF
          Bool :$*contents,          #| validate/check contents of pages, etc         
          Bool :$*strict,            #| perform additional checks
          UInt :$*max-depth = 100,   #| maximum recursion depth
+	 Str  :$exclude,            #| excluded entries: Entry1,Entry2
          ) {
 
     my $doc = PDF::Doc.open( $infile, :$password );
+    @*exclude = $exclude.split(/:s ',' /)
+    	      if $exclude;
     check( $doc, :ent<xref> );
 }
 
@@ -44,6 +48,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 
         # Avoid following /P back to page then back here via page /Annots
         next if $_ eq 'P' && $obj.isa(PDF::Doc::Type::Annot);
+	next if @*exclude.grep: $_;
 
 	my $kid;
 
