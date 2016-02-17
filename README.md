@@ -1,13 +1,12 @@
-# perl6-PDF-Doc
+# perl6-PDF-Struct
 
-PDF::Doc is a set of intermediate Perl 6 classes and methods for the manipulation of PDF documents. These are
-based on document objects described in the PDF 1.7 Specification.
+PDF::Struct is a set of intermediate Perl 6 classes and methods for the internal structure PDF documents, as described in the PDF 1.7 Specification.
 
 ```
 use v6;
-use PDF::Doc;
+use PDF::Struct::Doc;
 
-my $pdf = PDF::Doc.new;
+my $pdf = PDF::Struct::Doc.new;
 my $page = $pdf.add-page;
 $page.MediaBox = [0, 0, 595, 842];
 my $font = $page.core-font( :family<Helvetica>, :weight<bold>, :style<italic> );
@@ -25,8 +24,8 @@ $pdf.save-as: "t/example.pdf";
 
 ### Page Layout & Viewer Preferences
 ```
-    use PDF::Doc;
-    my $pdf = PDF::Doc.new;
+    use PDF::Struct::Doc;
+    my $pdf = PDF::Struct::Doc.new;
 
     my $doc = $pdf.Root;
     $doc.PageLayout = 'TwoColumnLeft';
@@ -35,21 +34,21 @@ $pdf.save-as: "t/example.pdf";
     my $viewer-prefs = $doc.ViewerPreferences //= {};
     $viewer-prefs.Duplex = 'DuplexFlipShortEdge';
     $viewer-prefs.NonFullScreenPageMode = 'UseOutlines';
-    # ...etc, see PDF::Doc::Type::ViewerPreferences
+    # ...etc, see PDF::Struct::ViewerPreferences
 ```
 
 ### General Content and Graphics
 
-The PDF::Doc::Contents::Gfx role is performed by PDF::Doc::Type::Page (as shown here), and also PDF::Doc::Type::Pattern and PDF::Doc::Type::XObject::Form.
+The PDF::Struct::Doc::Contents::Gfx role is performed by PDF::Struct::Page (as shown here), and also PDF::Struct::Pattern and PDF::Struct::XObject::Form.
 
 #### Text
 
 `.say` and `.print` are simple convenience methods for displaying simple blocks of text with optional line-wrapping, alignment and kerning.
 
 ```
-use PDF::Doc;
-use PDF::Doc::Type::Catalog;
-my $doc = PDF::Doc.new;
+use PDF::Struct::Doc;
+use PDF::Struct::Catalog;
+my $doc = PDF::Struct::Doc.new;
 my $page = $doc.add-page;
 my $font = $page.core-font( :family<Helvetica> );
 
@@ -70,9 +69,9 @@ The `.image` method can be used to load an image and register it as a page resou
 The `.do` method can them be used to render it.
 
 ```
-use PDF::Doc;
-use PDF::Doc::Type::Catalog;
-my $doc = PDF::Doc.new;
+use PDF::Struct::Doc;
+use PDF::Struct::Catalog;
+my $doc = PDF::Struct::Doc.new;
 my $page = $doc.add-page;
 
 $page.graphics: -> $gfx {
@@ -90,15 +89,15 @@ $page.graphics: -> $gfx {
 
 Note: at this stage, only the `JPEG` and 'GIF' image formats are supported.
 
-For a full description of `.set-graphics` options, please see PDF::Doc::Type::ExtGState.
+For a full description of `.set-graphics` options, please see PDF::Struct::ExtGState.
 
 ### Text effects
 
 To display card suits symbols, using the ZapfDingbats core-font. Diamond and hearts colored red:
 
 ```
-use PDF::Doc;
-my $doc = PDF::Doc.new;
+use PDF::Struct::Doc;
+my $doc = PDF::Struct::Doc.new;
 my $page = $doc.add-page;
 
 $page.graphics: -> $_ {
@@ -133,12 +132,12 @@ Note: at this stage, only the PDF core fonts are supported: Courier, Times, Helv
 
 #### Low level graphics, colors and drawing
 
-PDF::Doc::Contents::Gfx inherits from PDF::Graphics, which implements the full range of PDF content operations, plus
+PDF::Struct::Doc::Contents::Gfx inherits from PDF::Graphics, which implements the full range of PDF content operations, plus
 utility methods for handling text, images and graphics coordinates:
 
 ```
-use PDF::Doc;
-my $doc = PDF::Doc.new;
+use PDF::Struct::Doc;
+my $doc = PDF::Struct::Doc.new;
 my $page = $doc.add-page;
 
 # Draw a simple Bézier curve:
@@ -199,8 +198,8 @@ For a full list of operators, please see PDF::Graphics.
 ### AcroForm Fields
 
 ```
-use PDF::Doc;
-my $doc = PDF::Doc.open: "t/pdf/samples/OoPdfFormExample.pdf";
+use PDF::Struct::Doc;
+my $doc = PDF::Struct::Doc.open: "t/pdf/samples/OoPdfFormExample.pdf";
 if my $acroform = $doc.Root.AcroForm {
     my @fields = $acroform.fields;
     # display field names and values
@@ -212,16 +211,16 @@ if my $acroform = $doc.Root.AcroForm {
 ```
 
 See also:
-- PDF::Doc::Type::AcroForm
-- PDF::Doc::Type::Field
+- PDF::Struct::AcroForm
+- PDF::Struct::Field
 - PDF::FDF (under construction), which handles import/export from FDF files.
 
 ### Resources and Reuse
 
 To list all images and forms for each page
 ```
-use PDF::Doc;
-my $doc = PDF::Doc.open: "t/helloworld.pdf";
+use PDF::Struct::Doc;
+my $doc = PDF::Struct::Doc.open: "t/helloworld.pdf";
 for 1 ... $doc.page-count -> $page-no {
     say "page: $page-no";
     my $page = $doc.page: $page-no;
@@ -252,11 +251,11 @@ Pages and resources may be copied from one PDF to another.
 The `to-xobject` method can be used to convert a page to an XObject Form to layup one or more input pages on an output page.
 
 ```
-use PDF::Doc;
-my $doc1 = PDF::Doc.open: "t/helloworld.pdf";
-my $doc2 = PDF::Doc.open: "t/doc-pattern.pdf";
+use PDF::Struct::Doc;
+my $doc1 = PDF::Struct::Doc.open: "t/helloworld.pdf";
+my $doc2 = PDF::Struct::Doc.open: "t/struct-pattern.pdf";
 
-my $new-doc = PDF::Doc.new;
+my $new-doc = PDF::Struct::Doc.new;
 
 # copy pages from doc1
 for 1 .. $doc1.page-count -> $page-no {
@@ -282,7 +281,7 @@ $new-doc.save-as: "t/reuse.pdf";
 
 ## Raw Data Access
 
-In general, PDF::Doc provides accessors for safe access and update of PDF objects.
+In general, PDF::Struct::Doc provides accessors for safe access and update of PDF objects.
 
 However you may choose to bypass accessors dereference hashes and arrays directly,
 for raw untyped access to internal data structures:
@@ -292,8 +291,8 @@ the following example we cast the PageMode to a name, so it appears as a name
 in the out put stream `/UseToes`, rather than a string `(UseToes)`.
 
 ```
-    use PDF::Doc;
-    my $pdf = PDF::Doc.new;
+    use PDF::Struct::Doc;
+    my $pdf = PDF::Struct::Doc.new;
 
     my $doc = $pdf.Root;
     try {
@@ -307,7 +306,7 @@ in the out put stream `/UseToes`, rather than a string `(UseToes)`.
 
 ## Development Status
 
-The PDF::Doc module is under construction and not yet functionally complete.
+The PDF::Struct::Doc module is under construction and not yet functionally complete.
 
 - master: Latest tested: Rakudo version 2015.12-199-g5ed58f6 built on MoarVM version 2015.12-29-g8079ca5
 implementing Perl 6.c.
@@ -316,9 +315,9 @@ implementing Perl 6.c.
 At this stage:
 - Only core fonts are supported. There are a total of 14
 font variations available. Please see the Font::AFM module for details.
-- The classes in the PDF::Doc::Type::* name-space represent a common subset of
+- The classes in the PDF::Struct::* name-space represent a common subset of
 the objects that can appear in a PDF. It is envisioned that the range of classes
 with expand over time to cover most or all types described in the PDF specification.
 - Many of the classes are skeletal at the moment and do little more that declare
-fields for validation purposes; for example, the classes in the PDF::Doc::Type::Font::* name-space.
+fields for validation purposes; for example, the classes in the PDF::Struct::Font::* name-space.
 - No structured exceptions yet.

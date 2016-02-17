@@ -1,11 +1,11 @@
 use v6;
-use PDF::Doc;
+use PDF::Struct::Doc;
 use PDF::Grammar::Test :is-json-equiv;
 use Test;
 
 plan 11;
 
-my $pdf = PDF::Doc.open: "t/helloworld.pdf";
+my $pdf = PDF::Struct::Doc.open: "t/helloworld.pdf";
 my $page = $pdf.page: 1;
 
 my %seen;

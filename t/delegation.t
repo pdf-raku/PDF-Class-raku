@@ -1,39 +1,39 @@
 use v6;
 use Test;
-use PDF::Doc;
-use PDF::Doc::Delegator;
+use PDF::Struct::Doc;
+use PDF::Struct::Doc::Delegator;
 
 plan 15;
 
-isa-ok PDF::Doc::Delegator.delegate( :dict{ :Type<Page> }), ::('PDF::Doc::Type::Page'), 'delegation sanity';
-isa-ok PDF::Doc::Delegator.delegate( :dict{ :Type<XObject>, :Subtype<Image> }), ::('PDF::Doc::Type::XObject::Image'), 'delegation to subclass';
-isa-ok PDF::Doc::Delegator.delegate( :dict{ :ShadingType(7) }),  ::('PDF::Doc::Type::Shading::Tensor'), 'delegation by ShadingType';
-isa-ok PDF::Doc::Delegator.delegate( :dict{ :ShadingType(42) }),  ::('PDF::Doc::Type::Shading'), 'delegation by ShadingType (unknown)';
-isa-ok PDF::Doc::Delegator.delegate( :dict{ :Type<Unknown> }, :fallback(Hash)), Hash, 'delegation fallback';
-isa-ok PDF::Doc::Delegator.delegate( :dict{ :FunctionType(3) }),  ::('PDF::Doc::Type::Function::Stitching'), 'delegation by FunctionType';
+isa-ok PDF::Struct::Doc::Delegator.delegate( :dict{ :Type<Page> }), ::('PDF::Struct::Page'), 'delegation sanity';
+isa-ok PDF::Struct::Doc::Delegator.delegate( :dict{ :Type<XObject>, :Subtype<Image> }), ::('PDF::Struct::XObject::Image'), 'delegation to subclass';
+isa-ok PDF::Struct::Doc::Delegator.delegate( :dict{ :ShadingType(7) }),  ::('PDF::Struct::Shading::Tensor'), 'delegation by ShadingType';
+isa-ok PDF::Struct::Doc::Delegator.delegate( :dict{ :ShadingType(42) }),  ::('PDF::Struct::Shading'), 'delegation by ShadingType (unknown)';
+isa-ok PDF::Struct::Doc::Delegator.delegate( :dict{ :Type<Unknown> }, :fallback(Hash)), Hash, 'delegation fallback';
+isa-ok PDF::Struct::Doc::Delegator.delegate( :dict{ :FunctionType(3) }),  ::('PDF::Struct::Function::Stitching'), 'delegation by FunctionType';
 
-isa-ok PDF::Doc::Delegator.delegate( :dict{ :Subtype<Link> }),  ::('PDF::Doc::Type::Annot::Link'), 'annot defaulted /Type - implemented';
-require ::('PDF::Doc::Type::Annot');
-isa-ok PDF::Doc::Delegator.delegate( :dict{ :Subtype<Caret> }, ),  ::('PDF::Doc::Type::Annot'), 'annot defaulted /Type - unimplemented';
-isa-ok PDF::Doc::Delegator.delegate( :dict{ :S<GTS_PDFX> }, ),  ::('PDF::Doc::Type::OutputIntent'), 'output intent defaulted /Type';
+isa-ok PDF::Struct::Doc::Delegator.delegate( :dict{ :Subtype<Link> }),  ::('PDF::Struct::Annot::Link'), 'annot defaulted /Type - implemented';
+require ::('PDF::Struct::Annot');
+isa-ok PDF::Struct::Doc::Delegator.delegate( :dict{ :Subtype<Caret> }, ),  ::('PDF::Struct::Annot'), 'annot defaulted /Type - unimplemented';
+isa-ok PDF::Struct::Doc::Delegator.delegate( :dict{ :S<GTS_PDFX> }, ),  ::('PDF::Struct::OutputIntent'), 'output intent defaulted /Type';
 
-require ::('PDF::Doc::Type::Pages');
-my $pages = ::('PDF::Doc::Type::Pages').new;
+require ::('PDF::Struct::Pages');
+my $pages = ::('PDF::Struct::Pages').new;
 is $pages.Type, 'Pages', '$.Type init';
 
-require ::('PDF::Doc::Type::XObject::Form');
-my $form = ::('PDF::Doc::Type::XObject::Form').new( :dict{ :BBox[0, 0, 100, 140 ] } );
+require ::('PDF::Struct::XObject::Form');
+my $form = ::('PDF::Struct::XObject::Form').new( :dict{ :BBox[0, 0, 100, 140 ] } );
 is $form.Type, 'XObject', '$.Type init';
 is $form.Subtype, 'Form', '$.Subtype init';
 
-require ::('PDF::Doc::Type::Shading::Radial');
-my $shading = ::('PDF::Doc::Type::Shading::Radial').new( :dict{ :ColorSpace(:name<DeviceRGB>),
+require ::('PDF::Struct::Shading::Radial');
+my $shading = ::('PDF::Struct::Shading::Radial').new( :dict{ :ColorSpace(:name<DeviceRGB>),
 								:Function(:ind-ref[15, 0]),
 								:Coords[ 0.0, 0.0, 0.096, 0.0, 0.0, 1.0, 0],
 							 } );
 is $shading.ShadingType, 3, '$.ShadingType init';
 
-require ::('PDF::Doc::Type::Function::PostScript');
+require ::('PDF::Struct::Function::PostScript');
 my $function;
-lives-ok { $function = ::('PDF::Doc::Type::Function::PostScript').new( :dict{ :Domain[-1, 1, -1, 1] } )}, "PostScript require";
+lives-ok { $function = ::('PDF::Struct::Function::PostScript').new( :dict{ :Domain[-1, 1, -1, 1] } )}, "PostScript require";
 lives-ok {$function.FunctionType}, 'FunctionType accessor';

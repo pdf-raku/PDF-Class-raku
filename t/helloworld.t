@@ -2,12 +2,12 @@ use v6;
 use Test;
 
 use PDF::Grammar::Test :is-json-equiv;
-use PDF::Doc;
+use PDF::Struct::Doc;
 
 # ensure consistant document ID generation
 srand(123456);
 
-my $pdf = PDF::Doc.new;
+my $pdf = PDF::Struct::Doc.new;
 my $page = $pdf.add-page;
 $page.MediaBox = [0, 0, 595, 842];
 
@@ -107,10 +107,10 @@ skip '$pdf.Info<Author> - not completing';
 ok $pdf.save-as('t/helloworld.pdf'), '.save-as';
 ok $pdf.save-as('t/helloworld-compressed.pdf', :compress), '.save-as( :compress )';
 
-lives-ok {$pdf = PDF::Doc.open: 't/helloworld-compressed.pdf'}, 'pdf reload lives';
-isa-ok $pdf.reader.trailer, PDF::Doc, 'trailer type';
+lives-ok {$pdf = PDF::Struct::Doc.open: 't/helloworld-compressed.pdf'}, 'pdf reload lives';
+isa-ok $pdf.reader.trailer, PDF::Struct::Doc, 'trailer type';
 $page = $pdf.page: 1;
-isa-ok $page, ::('PDF::Doc::Type::Page'), 'first pages';
+isa-ok $page, ::('PDF::Struct::Page'), 'first pages';
 is $page.Contents.Filter, 'FlateDecode', 'page stream is compressed';
 is $pdf.Info.Author, 't/helloworld.t', '$pdf.Info.Author reload';
 
@@ -124,6 +124,6 @@ is-deeply $contents-ast[*-1], (:ET[]), '.contents last elem';
 my $gfx = $page.gfx;
 is-json-equiv $gfx.ops[*-3 .. *], $( "T*" => [], :ET[], :Q[] ), '$page.gfx.ops (tail)';
 
-lives-ok { PDF::Doc.new.save-as: "t/pdf/no-pages.pdf" }, 'create empty PDF';
+lives-ok { PDF::Struct::Doc.new.save-as: "t/pdf/no-pages.pdf" }, 'create empty PDF';
 
 done-testing;

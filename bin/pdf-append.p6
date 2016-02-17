@@ -1,12 +1,12 @@
 #!/usr/bin/env perl6
 use v6;
-use PDF::Doc;
-use PDF::Doc::Type::Pages;
+use PDF::Struct::Doc;
+use PDF::Struct::Pages;
 use PDF::DAO::Type::Encrypt :PermissionsFlag;
 
 sub MAIN(*@files, Str :$save-as)  {
 
-    my $pdf = PDF::Doc.open: @files.shift;
+    my $pdf = PDF::Struct::Doc.open: @files.shift;
 
     die "nothing to do"
 	unless @files;
@@ -18,7 +18,7 @@ sub MAIN(*@files, Str :$save-as)  {
     my $pages = $pdf.Root.Pages;
 
     for @files -> $in-file {
-	my $in-pdf = PDF::Doc.open: $in-file;
+	my $in-pdf = PDF::Struct::Doc.open: $in-file;
 
 	die "PDF forbids copy: $in-file"
 	    unless $in-pdf.permitted( PermissionsFlag::Copy );
@@ -57,7 +57,7 @@ provided to eliminate those elements from the resulting PDF.
 
 =head1 SEE ALSO
 
-PDF::Doc (Perl 6)
+PDF::Struct::Doc (Perl 6)
 CAM::PDF (Perl 5)
 
 =head1 AUTHOR
