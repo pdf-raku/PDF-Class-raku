@@ -7,7 +7,7 @@ use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 
-plan 63;
+plan 64;
 require ::('PDF::Struct::Catalog');
 my $dict = { :Outlines(:ind-ref[2, 0]), :Type( :name<Catalog> ), :Pages{ :Type( :name<Pages> ) } };
 my $catalog-obj = ::('PDF::Struct::Catalog').new( :$dict );
@@ -152,6 +152,7 @@ is $gs-obj.ca, 0.5, 'transparency setter';
 lives-ok {$gs-obj.fill-alpha = .7}, 'transparency setter - alias';
 is $gs-obj.fill-alpha, .7, 'transparency getter - alias';
 is $gs-obj.stroke-alpha, .5, 'transparency getter - alias';
+throws-like { $gs-obj.wtf }, X::Method::NotFound, 'ExtGState - unknown method';
 
 $gs-obj.BG = {};
 is-deeply $gs-obj.black-generation, {}, 'black-generation accessor';

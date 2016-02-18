@@ -92,6 +92,8 @@ class PDF::Struct::ExtGState
         self."$name"(|c);
     }
 
-    multi method FALLBACK($name) is default { die "unknown method: $name" }
+    multi method FALLBACK(Str $method, |c) is default {
+	die X::Method::NotFound.new( :$method, :typename(self.^name) );
+    }
 
 }

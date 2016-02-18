@@ -15,16 +15,8 @@ class PDF::Struct::Doc:ver<0.0.2>
     use PDF::Struct::Page;
     use PDF::Struct::Font;
 
-    method Pages           returns PDF::Struct::Pages { self.Root.Pages }
-
-    method add-page(|c)    returns PDF::Struct::Page { self.Pages.add-page(|c) }
-    method core-font(|c)   returns PDF::Struct::Font { self.Pages.core-font(|c) }
-    method delete-page(|c) returns PDF::Struct::Page { self.Pages.delete-page(|c) }
-    method media-box(|c)   returns Array                { self.Pages.media-box(|c) }
-    method page(|c)        returns PDF::Struct::Page { self.Pages.page(|c) }
-    method page-count      returns UInt                 { self.Pages.Count }
     method type { 'PDF' }
-    method version         returns Version:_ {
+    method version returns Version:_ {
 	my $version = self.Root.Version;
 	# reader extracts version from the PDF Header, e.g.: '%PDF-1.4'
 	$version //= self.reader.version
@@ -55,6 +47,18 @@ class PDF::Struct::Doc:ver<0.0.2>
 
     method cb-init {
 	self<Root> //= PDF::Struct::Catalog.new;
+    }
+
+    method Pages      returns PDF::Struct::Pages { self.Root.Pages }
+    method page-count returns UInt               { self.Pages.Count }
+    #| fallback delegation to pages root; handle add-page, pages, page-count, etc...
+    multi method FALLBACK(Str $meth where { self.Root.Pages.can($meth) }, |c) {
+        self.WHAT.^add_method($meth,  method (|a) { self<Root><Pages>."$meth"(|a) } );
+        self."$meth"(|c);
+    }
+
+    multi method FALLBACK(Str $method, |c) is default {
+	die X::Method::NotFound.new( :$method, :typename(self.^name) );
     }
 
 }

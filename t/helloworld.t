@@ -106,6 +106,7 @@ skip '$pdf.Info<Author> - not completing';
 ##is $pdf.Info<Author>, 't/helloworld.t', '$root.Info accessor';
 ok $pdf.save-as('t/helloworld.pdf'), '.save-as';
 ok $pdf.save-as('t/helloworld-compressed.pdf', :compress), '.save-as( :compress )';
+throws-like { $pdf.wtf }, X::Method::NotFound;
 
 lives-ok {$pdf = PDF::Struct::Doc.open: 't/helloworld-compressed.pdf'}, 'pdf reload lives';
 isa-ok $pdf.reader.trailer, PDF::Struct::Doc, 'trailer type';
