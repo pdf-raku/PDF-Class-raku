@@ -50,7 +50,6 @@ class PDF::Struct::Doc:ver<0.0.2>
     }
 
     method Pages      returns PDF::Struct::Pages { self.Root.Pages }
-    method page-count returns UInt               { self.Pages.Count }
     #| fallback delegation to pages root; handle add-page, pages, page-count, etc...
     multi method FALLBACK(Str $meth where { self.Root.Pages.can($meth) }, |c) {
         self.WHAT.^add_method($meth,  method (|a) { self<Root><Pages>."$meth"(|a) } );

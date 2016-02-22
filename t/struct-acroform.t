@@ -60,11 +60,12 @@ ok %fields{'Given Name Text Box'} == @fields[0], 'field hash lookup by .T';
 ok %fields{'First name'} == @fields[0], 'field hash lookup by .TU';
 
 # check meta-data
-isa-ok $cat.reader, ::('PDF::Reader'), '$cat.reader';
-isa-ok $cat.AcroForm.reader, ::('PDF::Reader'), '$cat.AcroForm.reader';
-isa-ok @fields[0].reader, ::('PDF::Reader'), '$cat.AcroForm.Fields[0].reader';
+use PDF::Reader;
+isa-ok $cat.reader, PDF::Reader, '$cat.reader';
+isa-ok $cat.AcroForm.reader, PDF::Reader, '$cat.AcroForm.reader';
+isa-ok @fields[0].reader, PDF::Reader, '$cat.AcroForm.Fields[0].reader';
 is @fields[0].obj-num, 5, '.obj-num';
 is @fields[0].gen-num, 0, '.gen-num';
-isa-ok @fields[0].P.reader, ::('PDF::Reader'), '$cat.AcroForm.Fields[0].P.reader';
+isa-ok @fields[0].P.reader, PDF::Reader, '$cat.AcroForm.Fields[0].P.reader';
 
 done-testing;
