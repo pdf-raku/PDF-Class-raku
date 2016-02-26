@@ -44,13 +44,12 @@ is $Catalog.Version, '1.3', '$Catalog.Version';
 
 # view preferences is a role
 my $viewer-preferences;
-todo "rakudo compunit load issues.", 7;
+todo "rakudo compunit load issues.", 4;
 lives-ok {$viewer-preferences = $Catalog.ViewerPreferences}, '$Catalog.ViewerPreferences';
 does-ok $viewer-preferences, ::('t::Doc::ViewerPreferences'), '$Catalog.ViewerPreferences';
 ok try { $viewer-preferences.HideToolBar }, '$Catalog.ViewerPreferences.HideToolBar';
 is try { $viewer-preferences.some-custom-method }, 'howdy', '$Catalog.ViewerPreferences.some-custom-method';
 
-warn :$Catalog.perl;
 isa-ok try { $Catalog.Pages }, ::('t::Doc::Pages');
 
 # should autoload from t/Doc/Page.pm
