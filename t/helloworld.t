@@ -35,7 +35,7 @@ $page.graphics: -> $gfx {
 
 	    $txt.set-font($font, $font-size);
 	    my $text-block = $txt.say( $para, :$width, :$align, :kern);
-	    isa-ok $text-block, ::('PDF::Graphics::Text::Block');
+	    isa-ok $text-block, ::('PDF::Content::Text::Block');
 	    $x += 275;
         }
 
@@ -83,7 +83,7 @@ $page.graphics: -> $gfx {
 
 $page.graphics: -> $_ {
     $page.text: -> $_ {
-         use PDF::Graphics::Ops :TextMode;
+         use PDF::Content::Ops :TextMode;
         .set-font( $header-font, 16);
         .SetTextRender: TextMode::OutlineText;
         .SetLineWidth: .5;

@@ -2,7 +2,7 @@ use v6;
 use Test;
 use PDF::Struct::Doc;
 use PDF::Struct::Page;
-use PDF::Graphics::Ops :OpNames;
+use PDF::Content::Ops :OpNames;
 
 # ensure consistant document ID generation
 srand(123456);

@@ -3,7 +3,7 @@
     "name"        : "PDF::Struct::Doc",
     "version"     : "0.0.2",
     "description" : "Data Structures for PDF Documents",
-    "depends"     : [ "PDF", "PDF::Grammar", "PDF::Graphics" ],
+    "depends"     : [ "PDF", "PDF::Grammar", "PDF::Content" ],
     "source-url"  : "git://github.com/p6-pdf/p6-PDF-Tools.git",
     "provides"    : {
 

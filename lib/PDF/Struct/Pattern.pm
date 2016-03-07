@@ -1,12 +1,12 @@
 use v6;
 
 use PDF::DAO::Stream;
-use PDF::Graphics::Contents;
-use PDF::Graphics::Resourced;
+use PDF::Content::Graphics;
+use PDF::Content::Resourced;
 
 role PDF::Struct::Pattern
-    does PDF::Graphics::Contents
-    does PDF::Graphics::Resourced {
+    does PDF::Content::Graphics
+    does PDF::Content::Resourced {
 
     use PDF::DAO;
     use PDF::DAO::Tie;

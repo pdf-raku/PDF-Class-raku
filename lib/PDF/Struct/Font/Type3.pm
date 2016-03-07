@@ -1,10 +1,10 @@
 use v6;
 use PDF::Struct::Font;
-use PDF::Graphics::Resourced;
+use PDF::Content::Resourced;
 
 class PDF::Struct::Font::Type3
     is PDF::Struct::Font
-    does PDF::Graphics::Resourced {
+    does PDF::Content::Resourced {
 
     use PDF::DAO::Tie;
     use PDF::DAO::Dict;
