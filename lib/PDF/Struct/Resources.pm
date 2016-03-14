@@ -1,11 +1,11 @@
 use v6;
 
 use PDF::DAO::Tie::Hash;
-use PDF::Content::ResourceDict;
+use PDF::Basic::ResourceDict;
 
 role PDF::Struct::Resources
     does PDF::DAO::Tie::Hash
-    does PDF::Content::ResourceDict {
+    does PDF::Basic::ResourceDict {
 
     use PDF::DAO::Tie;
     use PDF::DAO::Name;

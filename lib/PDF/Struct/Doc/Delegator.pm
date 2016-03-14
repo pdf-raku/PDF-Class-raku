@@ -16,7 +16,7 @@ class PDF::Struct::Doc::Delegator
 
     method find-delegate( Str $type!, $subtype?, :$fallback) is default {
 
-	my $subclass = $type;
+	my Str $subclass = $type;
 	$subclass ~= '::' ~ $subtype if $subtype;
 
 	return self.handler{$subclass}

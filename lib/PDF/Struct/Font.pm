@@ -2,13 +2,13 @@ use v6;
 
 use PDF::DAO::Dict;
 use PDF::Struct;
-use PDF::Content::Font;
+use PDF::Basic::Font;
 
 # /Type /Font - Describes a font
 
 class PDF::Struct::Font
     is PDF::DAO::Dict
-    does PDF::Content::Font
+    does PDF::Basic::Font
     does PDF::Struct {
 
     use PDF::DAO::Tie;

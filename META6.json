@@ -1,10 +1,10 @@
 {
     "perl"        : "6.c",
-    "name"        : "PDF::Struct::Doc",
-    "version"     : "0.0.2",
-    "description" : "Data Structures for PDF Documents",
-    "depends"     : [ "PDF", "PDF::Grammar", "PDF::Content" ],
-    "source-url"  : "git://github.com/p6-pdf/p6-PDF-Tools.git",
+    "name"        : "PDF::Struct",
+    "version"     : "0.0.3",
+    "description" : "Structured access to PDF Documents",
+    "depends"     : [ "PDF", "PDF::Grammar", "PDF::Basic" ],
+    "source-url"  : "git://github.com/p6-pdf/p6-PDF-Struct.git",
     "provides"    : {
 
         "PDF::Struct" : "lib/PDF/Struct.pm",

@@ -1,7 +1,7 @@
 # perl6-PDF-Struct
 
-This Perl 6 module is under constuction. It extends PDF::Graphics providing access to 
-a much wider range of general PDF features and functionality.
+This Perl 6 module is under constuction. It is a superset PDF::Basic providing
+structured access to a much wider range of general PDF features and functionality.
 
 ### Page Layout & Viewer Preferences
 ```

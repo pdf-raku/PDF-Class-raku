@@ -1,14 +1,14 @@
 use v6;
 
 use PDF::Struct::XObject;
-use PDF::Content::Image;
+use PDF::Basic::Image;
 
 #| XObjects
 #| /Type XObject /Subtype /Image
 #| See [PDF 1.7 Section 4.8 - Images ]
 class PDF::Struct::XObject::Image
     is PDF::Struct::XObject
-    does PDF::Content::Image {
+    does PDF::Basic::Image {
 
     use PDF::DAO::Tie;
     use PDF::DAO::Stream;
@@ -48,7 +48,7 @@ class PDF::Struct::XObject::Image
         nextsame unless $inline;   # normal case, constructing Doc object
 
         # for serialization to content stream ops: BI dict ID data EI
-        use PDF::Content::Ops :OpNames;
+        use PDF::Basic::Ops :OpNames;
         use PDF::DAO::Util :to-ast-native;
         # serialize to content ops
         my %dict = to-ast-native(self).value.list;

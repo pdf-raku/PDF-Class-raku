@@ -83,7 +83,7 @@ class PDF::Struct::ExtGState
 	    });
     }
 
-    use PDF::Content::Ops :ExtGState;
+    use PDF::Basic::Ops :ExtGState;
     # Method aliases. E.g. text-knockout => TK
     multi method FALLBACK(Str $name where {ExtGState.enums{$name}:exists}, |c ) {
 	my $entry = ExtGState.enums{$name};
