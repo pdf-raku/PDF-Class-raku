@@ -1,6 +1,6 @@
 # perl6-PDF-Struct
 
-This Perl 6 module is under constuction. It is a superset PDF::Basic providing
+This Perl 6 module is under construction. It is a superset of PDF::Basic, providing
 structured access to a much wider range of general PDF features and functionality.
 
 ### Page Layout & Viewer Preferences
@@ -42,8 +42,7 @@ See also:
 
 In general, PDF::Struct::Doc provides accessors for safe access and update of PDF objects.
 
-However you may choose to bypass accessors dereference hashes and arrays directly,
-for raw untyped access to internal data structures:
+However you may choose to bypass these accessors and dereference hashes and arrays directly, giving raw untyped access to internal data structures:
 
 This will also bypass type coercements, so you may need to be more explicit. In
 the following example we cast the PageMode to a name, so it appears as a name

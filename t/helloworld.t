@@ -24,8 +24,8 @@ $page.graphics: -> $gfx {
     $page.text: -> $txt {
 	for <left center right> -> $align {
 	    $txt.text-position = [$x, 750];
+	    $txt.font = [$header-font, 18];
 	    my $header = [~] '*** ', $align, ' ***', "\n";
-	    $txt.set-font($header-font, 18);
 	    $txt.say( $header, :$width, :$align);
 
 	    my $para = q:to"--ENOUGH!!--";
@@ -33,14 +33,14 @@ $page.graphics: -> $gfx {
 	    ut labore et dolore magna aliqua.
 	    --ENOUGH!!--
 
-	    $txt.set-font($font, $font-size);
+	    $txt.font = [$font, $font-size];
 	    my $text-block = $txt.say( $para, :$width, :$align, :kern);
 	    isa-ok $text-block, ::('PDF::Basic::Text::Block');
 	    $x += 275;
         }
 
         $txt.text-position = [240, 600];
-        $txt.set-font($page.core-font('ZapfDingbats'), 24);
+        $txt.font = [$page.core-font('ZapfDingbats'), 24];
         $txt.SetWordSpacing(16);
         my $nbsp = "\c[NO-BREAK SPACE]";
         $txt.print("♠ ♣$nbsp");
@@ -84,7 +84,7 @@ $page.graphics: -> $gfx {
 $page.graphics: -> $_ {
     $page.text: -> $_ {
          use PDF::Basic::Ops :TextMode;
-        .set-font( $header-font, 16);
+        .font = ( $header-font, 16);
         .SetTextRender: TextMode::OutlineText;
         .SetLineWidth: .5;
         .text-transform( :translate[50, 550], :slant(12) );
@@ -94,7 +94,7 @@ $page.graphics: -> $_ {
 
 $page.text: -> $_ {
     .text-position = [110, 300];
-    .set-font( $header-font, 24);
+    .font = [$header-font, 24];
     .say('Hello, world!');
 }
 
