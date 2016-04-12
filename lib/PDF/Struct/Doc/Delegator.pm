@@ -26,7 +26,7 @@ class PDF::Struct::Doc::Delegator
         my Bool $resolved;
 
 	for self.class-paths -> $class-path {
-            require ::($class-path)::($subclass);
+            PDF::DAO.required($class-path, $subclass);
             $handler-class = ::($class-path)::($subclass);
             $resolved = True;
             last;
