@@ -101,19 +101,19 @@ use PDF::Struct::XObject::Image;
 my $new-page = PDF::Struct::Page.new;
 my $form1 = PDF::Struct::XObject::Form.new( :dict{ :BBox[0, 0, 100, 120] } );
 my $fm1 = $new-page.use-resource( $form1 );
-is-deeply $fm1.key, 'Fm1', 'xobject form name';
+is-deeply $new-page.resource-key($fm1), 'Fm1', 'xobject form name';
 
 my $form2 = PDF::Struct::XObject::Form.new( :dict{ :BBox[-3, -3, 103, 123] } );
 my $image = PDF::Struct::XObject::Image.new( :dict{ :ColorSpace( :name<DeviceRGB> ), :Width(120), :Height(150) } );
 my $fm2 = $new-page.use-resource( $form2 );
-is-deeply $fm2.key, 'Fm2', 'xobject form name';
+is-deeply $new-page.resource-key($fm2), 'Fm2', 'xobject form name';
 
 my $im1 = $new-page.use-resource( $image );
-is-deeply $im1.key, 'Im1', 'xobject form name';
+is-deeply $new-page.resource-key($im1), 'Im1', 'xobject form name';
 
 my $font = ::('PDF::Struct::Font::Type1').new: { :BaseFont<Helvetica> };
 my $f1 = $new-page.use-resource( $font );
-is-deeply $f1.key, 'F1', 'font name';
+is-deeply $new-page.resource-key($f1), 'F1', 'font name';
 
 is-json-equiv $new-page<Resources><XObject>, { :Fm1($form1), :Fm2($form2), :Im1($image) }, 'Resource XObject content';
 is-json-equiv $new-page<Resources><Font>, { :F1($font) }, 'Resource Font content';
@@ -155,20 +155,20 @@ is $gs-obj.stroke-alpha, .5, 'transparency getter - alias';
 throws-like { $gs-obj.wtf }, X::Method::NotFound, 'ExtGState - unknown method';
 
 $gs-obj.BG = {};
-is-deeply $gs-obj.black-generation, {}, 'black-generation accessor';
+is-json-equiv $gs-obj.black-generation, {}, 'black-generation accessor';
 $gs-obj.black-generation = PDF::DAO.coerce: :name<MyFunc>;
 is $gs-obj.BG2, 'MyFunc', 'BG2 accessor';
 ok !$gs-obj.BG.defined, 'BG accessor';
 is $gs-obj.black-generation, 'MyFunc', 'black-generation accessor';
 
 my $gs1 = $new-page.use-resource( $gs-obj );
-is-deeply $gs1.key, 'GS1', 'ExtGState resource entry';
+is-deeply $new-page.resource-key($gs1), 'GS1', 'ExtGState resource entry';
 
 use PDF::Struct::ColorSpace::Lab;
 my $colorspace = PDF::Struct::ColorSpace::Lab.new;
 isa-ok $colorspace, PDF::Struct::ColorSpace::Lab;
 my $cs1 = $new-page.use-resource( $colorspace );
-is $cs1.key, 'CS1', 'ColorSpace resource entry';
+is $new-page.resource-key($cs1), 'CS1', 'ColorSpace resource entry';
 
 use PDF::Struct::Shading::Axial;
 my $Shading = PDF::Struct::Shading::Axial.new( :dict{ :ColorSpace(:name<DeviceRGB>),
@@ -177,12 +177,12 @@ my $Shading = PDF::Struct::Shading::Axial.new( :dict{ :ColorSpace(:name<DeviceRG
 							 },
 				                   :$reader );
 my $sh1 = $new-page.use-resource( $Shading );
-is $sh1.key, 'Sh1', 'Shading resource entry';
+is $new-page.resource-key($sh1), 'Sh1', 'Shading resource entry';
 
 use PDF::Struct::Pattern::Shading;
 my $pat-obj = PDF::Struct::Pattern::Shading.new( :dict{ :PaintType(1), :TilingType(2), :$Shading } );
 my $pt1 = $new-page.use-resource( $pat-obj );
-is $pt1.key, 'Pt1', 'Shading resource entry';
+is $new-page.resource-key($pt1), 'Pt1', 'Shading resource entry';
 
 my $resources = $new-page.Resources;
 does-ok $resources, ::('PDF::Struct::Resources'), 'Resources type';
