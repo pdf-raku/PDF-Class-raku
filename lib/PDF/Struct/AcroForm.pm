@@ -47,7 +47,10 @@ role PDF::Struct::AcroForm
     has Bool $.NeedAppearances is entry;       #| (Optional) A flag specifying whether to construct appearance streams and appearance dictionaries for all widget annotations in the document
 
     my subset SigFlagsInt of UInt where 0..3;
-    my enum SigFlags is export(:SigFlags) « :SignaturesExist(1) :Append(2) »;
+    my enum SigFlags is export(:SigFlags) «
+        :SignaturesExist(1) #| If set, the document contains at least one signature field
+        :AppendOnly(2)      #| If set, the document contains signatures that may be invalidated if the file is saved (written) in a way that alters its previous contents, as opposed to an incremental update.
+    »;
     has SigFlagsInt $.SigFlags is entry;       #| (Optional; PDF 1.3) A set of flags specifying various document-level characteristics related to signature fields
 
     has Hash @.CO is entry(:indirect);         #| (Required if any fields in the document have additional-actions dictionaries containing a C entry; PDF 1.3) An array of indirect references to field dictionaries with calculation actions, defining the calculation order in which their values will be recalculated when the value of any field changes

@@ -34,15 +34,25 @@ class PDF::Struct::Doc:ver<0.0.2>
 	$doc;
     }
 
-    method save-as($spec, Bool :$force, |c) {
+    method save-as($spec, Bool :$update is copy, |c) {
 
-	if !$force and self.reader and my $sig-flags = self.Root.?AcroForm.?SigFlags {
+	if !$update and self.reader and my $sig-flags = self.Root.?AcroForm.?SigFlags {
 	    use PDF::Struct::AcroForm :SigFlags;
-	    die "This PDF contains digital signatures that may invalidated by a full save. Please append via the .update method, or use :force"
-		if $sig-flags.flag-is-set: SigFlags::Append;
+	    if $sig-flags.flag-is-set: SigFlags::AppendOnly {
+		# The document contains digital signatures that may be invalidated
+		# by a full write
+		with $update {
+		    # callee has specified :!update
+		    die "This PDF contains digital signatures that will be invalidated with .save-as :!update"
+		}
+		else {
+		    # set :update to preserve digital signatures
+		    $update = True;
+		}
+	    }
 	}
 
-	nextwith( $spec, |c);
+	nextwith($spec, :$update, |c);
     }
 
     method cb-init {
