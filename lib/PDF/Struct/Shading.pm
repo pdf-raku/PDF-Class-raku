@@ -14,11 +14,9 @@ class PDF::Struct::Shading
     has ShadingTypeInt $.ShadingType is entry(:required);
 
     # see [PDF 1.7 TABLE 4.28 Entries common to all shading dictionaries]
-    ## precomp woes
-    ## use PDF::Struct::ColorSpace;
-    ##my subset NameOrColorSpace of PDF::DAO where PDF::DAO::Name or PDF::Struct::ColorSpace;
-    subset NameOrArray of Any where PDF::DAO::Array | PDF::DAO::Name;
-    has NameOrArray $.ColorSpace is entry(:required); #| (Required) The color space in which color values are expressed.
+    use PDF::Struct::ColorSpace;
+    my subset NameOrColorSpace of PDF::DAO where PDF::DAO::Name or PDF::Struct::ColorSpace;
+    has NameOrColorSpace $.ColorSpace is entry(:required); #| (Required) The color space in which color values are expressed.
     has @.Background is entry;                        #| (Optional) An array of color components appropriate to the color space, specifying a single background color value.
     has Numeric @.BBox is entry(:len(4));             #| (Optional) An array of four numbers giving the left, bottom, right, and top coordinates, respectively, of the shading’s bounding box
     has Bool $.AntiAlias is entry;                    #| (Optional) A flag indicating whether to filter the shading function to prevent aliasing artifacts.
