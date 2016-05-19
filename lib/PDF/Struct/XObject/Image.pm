@@ -44,21 +44,4 @@ class PDF::Struct::XObject::Image
     has PDF::DAO::Stream $.Metadata is entry;     #| (Optional; PDF 1.4) A metadata stream containing metadata for the image
     has Hash $.OC is entry;                       #| (Optional; PDF 1.5) An optional content group or optional content membership dictionary
 
-    method content(Bool :$inline) {
-        nextsame unless $inline;   # normal case, constructing Doc object
-
-        # for serialization to content stream ops: BI dict ID data EI
-        use PDF::Basic::Ops :OpNames;
-        use PDF::DAO::Util :to-ast-native;
-        # serialize to content ops
-        my %dict = to-ast-native(self).value.list;
-        %dict<Type Subtype Length>:delete;
-        %dict = self.inline-to-xobject( %dict, :invert );
-
-        [ (BeginImage) => [ :%dict ],
-          (ImageData)  => [ :$.encoded ],
-          (EndImage)   => [],
-        ]
-    }
-
 }
