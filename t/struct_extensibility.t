@@ -1,6 +1,6 @@
 use v6;
 use Test;
-use PDF::Struct::Doc::Delegator;
+use PDF::Delegator;
 
 =begin pod
 
@@ -17,7 +17,7 @@ extension classes
 
 plan 10;
 
-class MyDelegator is PDF::Struct::Doc::Delegator {
+class MyDelegator is PDF::Delegator {
     method class-paths {
          <t::Doc PDF::Struct PDF::DAO::Type>
     }
@@ -37,7 +37,6 @@ my $Catalog = t::Doc::Catalog.new( :dict{ :Type( :name<Catalog> ),
                                         },
                                    );
 
-warn :$Catalog.perl;
 isa-ok $Catalog, t::Doc::Catalog;
 is $Catalog.Type, 'Catalog', '$Catalog.Type';
 is $Catalog.Version, '1.3', '$Catalog.Version';

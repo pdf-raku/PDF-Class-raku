@@ -1,15 +1,15 @@
 use v6;
 
 use PDF::Struct::XObject;
-use PDF::Basic::Resourced;
-use PDF::Basic::Graphics;
+use PDF::Content::Resourced;
+use PDF::Content::Graphics;
 
 #| XObject Forms - /Type /Xobject /Subtype Form
 #| See [PDF Spec 1.7 4.9 Form XObjects]
 class PDF::Struct::XObject::Form
     is PDF::Struct::XObject
-    does PDF::Basic::Graphics
-    does PDF::Basic::Resourced {
+    does PDF::Content::Graphics
+    does PDF::Content::Resourced {
 
     use PDF::DAO::Tie;
     use PDF::DAO::DateString;

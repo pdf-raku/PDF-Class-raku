@@ -3,13 +3,14 @@
     "name"        : "PDF::Struct",
     "version"     : "0.0.3",
     "description" : "Structured access to PDF Documents",
-    "depends"     : [ "PDF", "PDF::Grammar", "PDF::Basic" ],
+    "depends"     : [ "PDF", "PDF::Grammar", "PDF::Content" ],
     "source-url"  : "git://github.com/p6-pdf/p6-PDF-Struct.git",
     "provides"    : {
 
         "PDF::Struct" : "lib/PDF/Struct.pm",
 
-        "PDF::Struct::Doc" : "lib/PDF/Struct/Doc.pm",
+        "PDF" : "lib/PDF/Struct/PDF.pm",
+        "PDF::Delegator" : "lib/PDF/Struct/PDF/Delegator.pm",
 
         "PDF::Struct::AcroForm" : "lib/PDF/Struct/AcroForm.pm",
 

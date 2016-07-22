@@ -4,10 +4,10 @@ use PDF::DAO;
 use PDF::DAO::Name;
 use PDF::DAO::Delegator;
 
-class PDF::Struct::Doc::Delegator {...}
-PDF::DAO.delegator = PDF::Struct::Doc::Delegator;
+class PDF::Delegator {...}
+PDF::DAO.delegator = PDF::Delegator;
 
-class PDF::Struct::Doc::Delegator
+class PDF::Delegator
     is PDF::DAO::Delegator {
 
     use PDF::DAO::Util :from-ast;

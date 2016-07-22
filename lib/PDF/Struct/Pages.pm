@@ -2,16 +2,16 @@ use v6;
 
 use PDF::DAO::Dict;
 use PDF::Struct;
-use PDF::Basic::PageNode;
-use PDF::Basic::PageTree;
+use PDF::Content::PageNode;
+use PDF::Content::PageTree;
 
 # /Type /Pages - a node in the page tree
 
 class PDF::Struct::Pages
     is PDF::DAO::Dict
     does PDF::Struct
-    does PDF::Basic::PageNode
-    does PDF::Basic::PageTree {
+    does PDF::Content::PageNode
+    does PDF::Content::PageTree {
 
     use PDF::DAO;
     use PDF::DAO::Tie;
@@ -21,7 +21,7 @@ class PDF::Struct::Pages
     # see [PDF 1.7 TABLE 3.26 Required entries in a page tree node
     has Name-Pages $.Type is entry(:required);
     has Hash $.Parent is entry(:indirect); #| (Required except in root node; must be an indirect reference) The page tree node that is the immediate parent of this one.
-    has PDF::Basic::PageNode @.Kids is entry(:required, :indirect);  #| (Required) An array of indirect references to the immediate children of this node. The children may be page objects or other page tree nodes.
+    has PDF::Content::PageNode @.Kids is entry(:required, :indirect);  #| (Required) An array of indirect references to the immediate children of this node. The children may be page objects or other page tree nodes.
     has UInt $.Count is entry(:required);   #| (Required) The number of leaf nodes (page objects) that are descendants of this node within the page tree.
     use PDF::Struct::Resources;
     has PDF::Struct::Resources $.Resources is entry(:inherit);

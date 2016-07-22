@@ -1,12 +1,11 @@
-# perl6-PDF-Struct
+# perl6-PDF
 
-This Perl 6 module is under construction. It is a superset of PDF::Basic, providing
-structured access to a much wider range of general PDF features and functionality.
+This Perl 6 module is under construction as a general purpose PDF manipulation library.
 
 ### Page Layout & Viewer Preferences
 ```
-    use PDF::Struct::Doc;
-    my $pdf = PDF::Struct::Doc.new;
+    use PDF;
+    my $pdf = PDF.new;
 
     my $doc = $pdf.Root;
     $doc.PageLayout = 'TwoColumnLeft';
@@ -21,8 +20,8 @@ structured access to a much wider range of general PDF features and functionalit
 ### AcroForm Fields
 
 ```
-use PDF::Struct::Doc;
-my $doc = PDF::Struct::Doc.open: "t/pdf/samples/OoPdfFormExample.pdf";
+use PDF;
+my $doc = PDF.open: "t/pdf/samples/OoPdfFormExample.pdf";
 if my $acroform = $doc.Root.AcroForm {
     my @fields = $acroform.fields;
     # display field names and values
@@ -40,7 +39,7 @@ See also:
 
 ## Raw Data Access
 
-In general, PDF::Struct::Doc provides accessors for safe access and update of PDF objects.
+In general, PDF provides accessors for safe access and update of PDF objects.
 
 However you may choose to bypass these accessors and dereference hashes and arrays directly, giving raw untyped access to internal data structures:
 
@@ -49,8 +48,8 @@ the following example we cast the PageMode to a name, so it appears as a name
 in the out put stream `/UseToes`, rather than a string `(UseToes)`.
 
 ```
-    use PDF::Struct::Doc;
-    my $pdf = PDF::Struct::Doc.new;
+    use PDF;
+    my $pdf = PDF.new;
 
     my $doc = $pdf.Root;
     try {
@@ -64,7 +63,7 @@ in the out put stream `/UseToes`, rather than a string `(UseToes)`.
 
 ## Development Status
 
-The PDF::Struct::Doc module is under construction and not yet functionally complete.
+The PDF module is under construction and not yet functionally complete.
 
 - master: Latest tested: Rakudo version 2015.12-199-g5ed58f6 built on MoarVM version 2015.12-29-g8079ca5
 implementing Perl 6.c.

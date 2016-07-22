@@ -1,12 +1,12 @@
 use v6;
 
 use PDF::DAO::Stream;
-use PDF::Basic::Graphics;
-use PDF::Basic::Resourced;
+use PDF::Content::Graphics;
+use PDF::Content::Resourced;
 
 role PDF::Struct::Pattern
-    does PDF::Basic::Graphics
-    does PDF::Basic::Resourced {
+    does PDF::Content::Graphics
+    does PDF::Content::Resourced {
 
     use PDF::DAO;
     use PDF::DAO::Tie;
@@ -24,7 +24,7 @@ role PDF::Struct::Pattern
     method type    { 'Pattern' }
     method subtype { PatternNames[ self<PatternType> ] }
 
-    #| see also PDF::Struct::Doc::Delegator
+    #| see also PDF::Delegator
     method delegate-pattern(Hash :$dict!) {
 
 	use PDF::DAO::Util :from-ast;

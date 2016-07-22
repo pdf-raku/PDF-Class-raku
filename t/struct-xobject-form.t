@@ -3,7 +3,7 @@ use Test;
 
 plan 9;
 
-use PDF::Struct::Doc;
+use PDF;
 use PDF::Storage::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
@@ -63,7 +63,7 @@ is-deeply [$contents.lines], [
     '  /F1 16 Tf', '  17.6 TL', '  [ (Hello, again!) ] TJ', '  T*', 'ET'
     ], 'finished contents';
 
-my $pdf = PDF::Struct::Doc.new;
+my $pdf = PDF.new;
 $pdf.media-box = [0, 0, 220, 220];
 my $page = $pdf.add-page;
 $page.gfx.block: {

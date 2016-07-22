@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-use PDF::Struct::Doc;
+use PDF;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::Storage::IndObj;

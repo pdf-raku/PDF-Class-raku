@@ -1,11 +1,11 @@
 use v6;
-use PDF::Struct::Doc;
+use PDF;
 use PDF::Grammar::Test :is-json-equiv;
 use Test;
 
 plan 11;
 
-my $pdf = PDF::Struct::Doc.open: "t/helloworld.pdf";
+my $pdf = PDF.open: "t/helloworld.pdf";
 my $page = $pdf.page: 1;
 
 my %seen;
@@ -16,7 +16,7 @@ my sub callback($op, *@args, :$gfx) {
    %seen{$op}++;
    given $op {
        when 'Do' {
-           does-ok $gfx, ::('PDF::Basic'), ':gfx argument';
+           does-ok $gfx, ::('PDF::Content'), ':gfx argument';
            is-json-equiv @args, [shift @img-seq], 'Do callback arguments';
        }
    }

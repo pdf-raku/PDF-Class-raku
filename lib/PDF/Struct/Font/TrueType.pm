@@ -1,6 +1,4 @@
 use v6;
-class PDF::Struct::Font::TrueType {...}
-use PDF::Struct::Font;
 use PDF::Struct::Font::Type1;
 
 # TrueType fonts - /Type /Font /Subtype TrueType

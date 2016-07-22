@@ -1,7 +1,5 @@
 use v6;
 
-role PDF::Struct::OutlineItem {...}
-
 use PDF::DAO::Tie::Hash;
 
 # /Type /Outlines - the Outlines dictionary

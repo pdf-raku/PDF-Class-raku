@@ -1,19 +1,22 @@
 use v6;
-use PDF::Struct::Doc;
+use PDF;
 use PDF::Grammar::Test :$is-json-equiv;
 use Test;
 my $doc;
 
-lives-ok {$doc = PDF::Struct::Doc.open("t/pdf/samples/OoPdfFormExample.pdf")}, "open form example  lives";
-
+lives-ok {$doc = PDF.open("t/pdf/samples/OoPdfFormExample.pdf")}, "open form example  lives";
+warn "getting Root...";
 my $cat = $doc.Root;
+warn "got Root...";
 isa-ok $cat, ::('PDF::Struct::Catalog'), 'document root';
 
+warn "getting acroform...";
 my $acroform = $cat.AcroForm;
+warn "got acroform...";
 does-ok $cat.AcroForm, ::('PDF::Struct::AcroForm');
 
 lives-ok {$cat.OpenAction}, '$cat.OpenAction';
-does-ok $cat.AcroForm, ::('PDF::Struct::AcroForm');
+does-ok $cat.OpenAction, ::('PDF::Struct::Action::Destination');
 
 my @fields = $acroform.fields;
 isa-ok @fields, Array, '.Fields';

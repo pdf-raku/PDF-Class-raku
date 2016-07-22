@@ -1,8 +1,8 @@
 use v6;
 use Test;
-use PDF::Struct::Doc;
+use PDF;
 use PDF::Struct::Page;
-use PDF::Basic::Ops :OpNames;
+use PDF::Content::Ops :OpNames;
 
 # ensure consistant document ID generation
 srand(123456);
@@ -12,7 +12,7 @@ my $gfx = $page.gfx;
 my $width = 50;
 my $font-size = 18;
 
-my $pdf = PDF::Struct::Doc.new;
+my $pdf = PDF.new;
 $pdf.Pages.add-page: $page;
 my $bold-font = $pdf.core-font( :family<Helvetica>, :weight<bold> );
 my $reg-font = $pdf.core-font( :family<Helvetica> );

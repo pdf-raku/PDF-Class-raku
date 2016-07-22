@@ -1,14 +1,14 @@
 use v6;
 
 use PDF::Struct::XObject;
-use PDF::Basic::Image;
+use PDF::Content::Image;
 
 #| XObjects
 #| /Type XObject /Subtype /Image
 #| See [PDF 1.7 Section 4.8 - Images ]
 class PDF::Struct::XObject::Image
     is PDF::Struct::XObject
-    does PDF::Basic::Image {
+    does PDF::Content::Image {
 
     use PDF::DAO::Tie;
     use PDF::DAO::Stream;

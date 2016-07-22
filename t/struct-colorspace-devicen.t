@@ -1,9 +1,9 @@
 use v6;
 use Test;
-use PDF::Struct::Doc;
+use PDF;
 use PDF::Grammar::Test :is-json-equiv;
 
-my $doc = PDF::Struct::Doc.open: "t/pdf/colorspace-devicen.in";
+my $doc = PDF.open: "t/pdf/colorspace-devicen.in";
 my %cs = $doc.Root.Pages.resources: 'ColorSpace';
 
 my $cs1 = %cs<CS1>;

@@ -3,7 +3,7 @@ use Test;
 
 plan 7;
 
-use PDF::Struct::Doc;
+use PDF;
 use PDF::Storage::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
@@ -76,7 +76,7 @@ my @lines = $contents.lines;
 is-deeply [ @lines[0..2] ], ['q', '  BT', '    /F1 1 Tf'], 'first three lines of content';
 is-deeply [ @lines[*-4..*] ], ['    0 0 0 rg', '    (\250) Tj', '  ET', 'Q'], 'last 5 lines of content';
 
-my $pdf = PDF::Struct::Doc.new;
+my $pdf = PDF.new;
 my $page = $pdf.Pages.add-page;
 $page<MediaBox> = [0, 0, 230, 210];
 $page.gfx.ops: [

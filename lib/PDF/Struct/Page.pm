@@ -3,17 +3,17 @@ use v6;
 use PDF::DAO::Dict;
 use PDF::DAO::Stream;
 use PDF::Struct;
-use PDF::Basic::Graphics;
-use PDF::Basic::Page;
-use PDF::Basic::PageNode;
+use PDF::Content::Graphics;
+use PDF::Content::Page;
+use PDF::Content::PageNode;
 
 # /Type /Page - describes a single PDF page
 
 class PDF::Struct::Page
     is PDF::DAO::Dict
     does PDF::Struct
-    does PDF::Basic::Page
-    does PDF::Basic::PageNode {
+    does PDF::Content::Page
+    does PDF::Content::PageNode {
 
     use PDF::DAO::Tie;
     use PDF::DAO::Name;

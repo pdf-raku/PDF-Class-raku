@@ -2,12 +2,12 @@ use v6;
 use Test;
 
 use PDF::Grammar::Test :is-json-equiv;
-use PDF::Struct::Doc;
+use PDF;
 
 # ensure consistant document ID generation
 srand(123456);
 
-my $pdf = PDF::Struct::Doc.new;
+my $pdf = PDF.new;
 my $page = $pdf.add-page;
 $page.MediaBox = [0, 0, 595, 842];
 
@@ -35,7 +35,7 @@ $page.graphics: -> $gfx {
 
 	    $txt.font = [$font, $font-size];
 	    my $text-block = $txt.say( $para, :$width, :$align, :kern);
-	    isa-ok $text-block, ::('PDF::Basic::Text::Block');
+	    isa-ok $text-block, ::('PDF::Content::Text::Block');
 	    $x += 275;
         }
 
@@ -83,7 +83,7 @@ $page.graphics: -> $gfx {
 
 $page.graphics: -> $_ {
     $page.text: -> $_ {
-         use PDF::Basic::Ops :TextMode;
+         use PDF::Content::Ops :TextMode;
         .font = ( $header-font, 16);
         .SetTextRender: TextMode::OutlineText;
         .SetLineWidth: .5;
@@ -108,8 +108,8 @@ ok $pdf.save-as('t/helloworld.pdf'), '.save-as';
 ok $pdf.save-as('t/helloworld-compressed.pdf', :compress), '.save-as( :compress )';
 throws-like { $pdf.wtf }, X::Method::NotFound;
 
-lives-ok {$pdf = PDF::Struct::Doc.open: 't/helloworld-compressed.pdf'}, 'pdf reload lives';
-isa-ok $pdf.reader.trailer, PDF::Struct::Doc, 'trailer type';
+lives-ok {$pdf = PDF.open: 't/helloworld-compressed.pdf'}, 'pdf reload lives';
+isa-ok $pdf.reader.trailer, PDF, 'trailer type';
 $page = $pdf.page: 1;
 isa-ok $page, ::('PDF::Struct::Page'), 'first pages';
 is $page.Contents.Filter, 'FlateDecode', 'page stream is compressed';
@@ -125,6 +125,6 @@ is-deeply $contents-ast[*-1], (:ET[]), '.contents last elem';
 my $gfx = $page.gfx;
 is-json-equiv $gfx.ops[*-3 .. *], $( "T*" => [], :ET[], :Q[] ), '$page.gfx.ops (tail)';
 
-lives-ok { PDF::Struct::Doc.new.save-as: "t/pdf/no-pages.pdf" }, 'create empty PDF';
+lives-ok { PDF.new.save-as: "t/pdf/no-pages.pdf" }, 'create empty PDF';
 
 done-testing;

@@ -2,8 +2,6 @@ use v6;
 
 use PDF::DAO::Tie::Hash;
 
-role PDF::Struct::Action {...}
-
 # See [PDF 1.7 TABLE 8.2 Destination syntax]
 my subset NumNull of Any where { .does(Numeric) || !.defined };  #| UInt value or null
 multi sub is-destination($page, 'XYZ', NumNull $left,

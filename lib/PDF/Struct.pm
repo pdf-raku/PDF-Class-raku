@@ -1,7 +1,7 @@
 use v6;
 
 use PDF::DAO;
-use PDF::Struct::Doc::Delegator;
+use PDF::Delegator;
 
 # autoload from PDF::Struct
 

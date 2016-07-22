@@ -3,7 +3,7 @@ use Test;
 
 plan 21;
 
-use PDF::Struct::Doc;
+use PDF;
 use PDF::Struct;
 use PDF::Storage::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
@@ -63,7 +63,7 @@ is-json-equiv $inline[0], (:BI[ :dict{ BPC => :int(8),
 is-json-equiv $inline[1], (:ID[ :encoded($snoopy.encoded) ]), 'second .content(:inline) op: :ID[...]';
 is-json-equiv $inline[2], (:EI[ ]), 'third .content(:inline) op: :EI[]';
 
-my $pdf = PDF::Struct::Doc.new;
+my $pdf = PDF.new;
 $pdf.media-box = [0, 0, 220,220];
 my $page = $pdf.add-page;
 $page.gfx.do($snoopy, 10, 15, :width(100), :height(190), :inline);

@@ -1,21 +1,21 @@
 use v6;
 use Test;
-use PDF::Struct::Doc;
-use PDF::Struct::Doc::Delegator;
+use PDF;
+use PDF::Delegator;
 
 plan 15;
 
-isa-ok PDF::Struct::Doc::Delegator.delegate( :dict{ :Type<Page> }), ::('PDF::Struct::Page'), 'delegation sanity';
-isa-ok PDF::Struct::Doc::Delegator.delegate( :dict{ :Type<XObject>, :Subtype<Image> }), ::('PDF::Struct::XObject::Image'), 'delegation to subclass';
-isa-ok PDF::Struct::Doc::Delegator.delegate( :dict{ :ShadingType(7) }),  ::('PDF::Struct::Shading::Tensor'), 'delegation by ShadingType';
-isa-ok PDF::Struct::Doc::Delegator.delegate( :dict{ :ShadingType(42) }),  ::('PDF::Struct::Shading'), 'delegation by ShadingType (unknown)';
-isa-ok PDF::Struct::Doc::Delegator.delegate( :dict{ :Type<Unknown> }, :fallback(Hash)), Hash, 'delegation fallback';
-isa-ok PDF::Struct::Doc::Delegator.delegate( :dict{ :FunctionType(3) }),  ::('PDF::Struct::Function::Stitching'), 'delegation by FunctionType';
+isa-ok PDF::Delegator.delegate( :dict{ :Type<Page> }), ::('PDF::Struct::Page'), 'delegation sanity';
+isa-ok PDF::Delegator.delegate( :dict{ :Type<XObject>, :Subtype<Image> }), ::('PDF::Struct::XObject::Image'), 'delegation to subclass';
+isa-ok PDF::Delegator.delegate( :dict{ :ShadingType(7) }),  ::('PDF::Struct::Shading::Tensor'), 'delegation by ShadingType';
+isa-ok PDF::Delegator.delegate( :dict{ :ShadingType(42) }),  ::('PDF::Struct::Shading'), 'delegation by ShadingType (unknown)';
+isa-ok PDF::Delegator.delegate( :dict{ :Type<Unknown> }, :fallback(Hash)), Hash, 'delegation fallback';
+isa-ok PDF::Delegator.delegate( :dict{ :FunctionType(3) }),  ::('PDF::Struct::Function::Stitching'), 'delegation by FunctionType';
 
-isa-ok PDF::Struct::Doc::Delegator.delegate( :dict{ :Subtype<Link> }),  ::('PDF::Struct::Annot::Link'), 'annot defaulted /Type - implemented';
+isa-ok PDF::Delegator.delegate( :dict{ :Subtype<Link> }),  ::('PDF::Struct::Annot::Link'), 'annot defaulted /Type - implemented';
 require ::('PDF::Struct::Annot');
-isa-ok PDF::Struct::Doc::Delegator.delegate( :dict{ :Subtype<Caret> }, ),  ::('PDF::Struct::Annot'), 'annot defaulted /Type - unimplemented';
-isa-ok PDF::Struct::Doc::Delegator.delegate( :dict{ :S<GTS_PDFX> }, ),  ::('PDF::Struct::OutputIntent'), 'output intent defaulted /Type';
+isa-ok PDF::Delegator.delegate( :dict{ :Subtype<Caret> }, ),  ::('PDF::Struct::Annot'), 'annot defaulted /Type - unimplemented';
+isa-ok PDF::Delegator.delegate( :dict{ :S<GTS_PDFX> }, ),  ::('PDF::Struct::OutputIntent'), 'output intent defaulted /Type';
 
 require ::('PDF::Struct::Pages');
 my $pages = ::('PDF::Struct::Pages').new;

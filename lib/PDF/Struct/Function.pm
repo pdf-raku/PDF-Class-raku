@@ -23,7 +23,7 @@ class PDF::Struct::Function
     method type {'Function'}
     method subtype { FunctionTypes[ $.FunctionType ] }
 
-    #| see also PDF::Struct::Doc::Delegator
+    #| see also PDF::Delegator
     method delegate-function(Hash :$dict!) {
 
 	use PDF::DAO::Util :from-ast;
