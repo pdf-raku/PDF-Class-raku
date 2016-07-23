@@ -4,7 +4,7 @@ use PDF::DAO::Dict;
 use PDF::DAO::Stream;
 use PDF::Type;
 
-# /Type /OutputIntent
+# /Type /CMap
 
 class PDF::CMap
     is PDF::DAO::Stream

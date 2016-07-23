@@ -18,7 +18,7 @@ class PDF::Pages
     use PDF::DAO::Name;
     my subset Name-Pages of PDF::DAO::Name where 'Pages';
 
-    # see [PDF 1.7 TABLE 3.26 Required entries in a page tree node
+    # see [PDF 1.7 TABLE 3.26 Required entries in a page tree node]
     has Name-Pages $.Type is entry(:required);
     has Hash $.Parent is entry(:indirect); #| (Required except in root node; must be an indirect reference) The page tree node that is the immediate parent of this one.
     has PDF::Content::PageNode @.Kids is entry(:required, :indirect);  #| (Required) An array of indirect references to the immediate children of this node. The children may be page objects or other page tree nodes.

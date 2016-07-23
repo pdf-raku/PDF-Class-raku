@@ -1,9 +1,7 @@
 use v6;
 
 use PDF::DAO::Dict;
-use PDF::DAO::Stream;
 use PDF::Type;
-use PDF::Content::Graphics;
 use PDF::Content::Page;
 use PDF::Content::PageNode;
 
@@ -17,8 +15,6 @@ class PDF::Page
 
     use PDF::DAO::Tie;
     use PDF::DAO::Name;
-
-    use PDF::XObject::Form;
     use PDF::DAO::Stream;
 
     # see [PDF 1.7 TABLE 3.27 Entries in a page object]
@@ -27,7 +23,7 @@ class PDF::Page
     has Hash $.Parent is entry(:indirect);       #| (Required; must be an indirect reference) The page tree node that is the immediate parent of this page object.
     has Str $.LastModified is entry;             #| (Required if PieceInfo is present; optional otherwise; PDF 1.3) The date and time when the page’s contents were most recently modified
     use PDF::Resources;
-    has PDF::Resources $.Resources is entry(:inherit);     #| (Required; inheritable) A dictionary containing any resources required by the page
+    has PDF::Resources $.Resources is entry(:inherit);   #| (Required; inheritable) A dictionary containing any resources required by the page
     has Numeric @.MediaBox is entry(:inherit,:len(4));   #| (Required; inheritable) A rectangle, expressed in default user space units, defining the boundaries of the physical medium on which the page is intended to be displayed or printed
     has Numeric @.CropBox is entry(:inherit,:len(4));    #| Optional; inheritable) A rectangle, expressed in default user space units, defining the visible region of default user space. When the page is displayed or printed, its contents are to be clipped (cropped) to this rectangle and then imposed on the output medium in some implementation-defined manner
     has Numeric @.BleedBox is entry(:len(4));    #| (Optional; PDF 1.3) A rectangle, expressed in default user space units, defining the region to which the contents of the page should be clipped when output in a production environment
@@ -43,8 +39,8 @@ class PDF::Page
     has @.B is entry(:indirect);                 #| (Optional; PDF 1.1; recommended if the page contains article beads) An array of indirect references to article beads appearing on the page
     has Numeric $.Dur is entry;                  #| (Optional; PDF 1.1) The page’s display duration (also called its advance timing): the maximum length of time, in seconds, that the page is displayed during presentations before the viewer application automatically advances to the next page
     has Hash $.Trans is entry;                   #| (Optional; PDF 1.1) A transition dictionary describing the transition effect to be used when displaying the page during presentations
-    use PDF::Annot;
-    has PDF::Annot @.Annots is entry; #| (Optional) An array of annotation dictionaries representing annotations associated with the page
+    my subset Annot of PDF::Type where { .type eq 'Annot' }
+    has Annot @.Annots is entry; #| (Optional) An array of annotation dictionaries representing annotations associated with the page
     has Hash $.AA is entry;                      #| (Optional; PDF 1.2) An additional-actions dictionary defining actions to be performed when the page is opened or closed
     has PDF::DAO::Stream $.Metadata is entry;    #| (Optional; PDF 1.4) A metadata stream containing metadata for the page
     has Hash $.PieceInfo is entry;               #| (Optional; PDF 1.3) A page-piece dictionary associated with the page

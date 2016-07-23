@@ -12,7 +12,7 @@ class PDF::Outlines
     use PDF::DAO::Tie;
     use PDF::DAO::Name;
     my subset Name-Outlines of PDF::DAO::Name where 'Outlines';
-    has PDF::DAO::Name $.Type is entry;
+    has Name-Outlines $.Type is entry;
     use PDF::OutlineItem;
 
     # see TABLE 8.3 Entries in the outline dictionary

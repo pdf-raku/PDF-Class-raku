@@ -20,14 +20,14 @@ class PDF::Catalog
     use PDF::DAO::Null;
     use PDF::DAO::Stream;
     use PDF::DAO::TextString;
-    use PDF::Pages;
 
     my subset Name-Catalog of PDF::DAO::Name where 'Catalog';
     has Name-Catalog $.Type is entry(:required);
 
     has PDF::DAO::Name $.Version is entry;               #| (Optional; PDF 1.4) The version of the PDF specification to which the document conforms (for example, 1.4)
 
-    has PDF::Pages $.Pages is entry(:required, :indirect);
+    my subset Pages of PDF::Type where { .type eq 'Pages' };
+    has Pages $.Pages is entry(:required, :indirect);
                                                             #| (Required; must be an indirect reference) The page tree node that is the root of the document’s page tree
 
     #tba distinct number tree objects
@@ -46,8 +46,8 @@ class PDF::Catalog
     subset PageMode of PDF::DAO::Name where 'UseNone'|'UseOutlines'|'UseThumbs'|'FullScreen'|'UseOC'|'UseAttachments';
     has PageMode $.PageMode is entry;                       #| (Optional) A name object specifying how the document should be displayed when opened
 
-    use PDF::Outlines;
-    has PDF::Outlines $.Outlines is entry(:indirect); #| (Optional; must be an indirect reference) The outline dictionary that is the root of the document’s outline hierarchy
+    my subset Outlines of PDF::Type where { .type eq 'Outlines' };
+    has Outlines $.Outlines is entry(:indirect); #| (Optional; must be an indirect reference) The outline dictionary that is the root of the document’s outline hierarchy
 
     has PDF::DAO::Array $.Threads is entry(:indirect);        #| (Optional; PDF 1.1; must be an indirect reference) An array of thread dictionaries representing the document’s article threads
 
@@ -103,8 +103,9 @@ class PDF::Catalog
         # vivify pages
 	self<Type> //= PDF::DAO.coerce( :name<Catalog> );
 
-        self<Pages> //= PDF::Pages.new(
+        self<Pages> //= PDF::DAO.coerce(
             :dict{
+                :Type( :name<Pages> ),
                 :Resources{ :Procset[ :name<PDF>, :name<Text> ] },
                 :Count(0),
                 :Kids[],
