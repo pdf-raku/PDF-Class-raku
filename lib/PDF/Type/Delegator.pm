@@ -1,7 +1,5 @@
 use v6;
 
-use PDF::DAO;
-use PDF::DAO::Name;
 use PDF::DAO::Delegator;
 
 class PDF::Type::Delegator {...}
@@ -11,6 +9,7 @@ class PDF::Type::Delegator
     is PDF::DAO::Delegator {
 
     use PDF::DAO::Util :from-ast;
+    use PDF::DAO::Name;
 
     method class-paths {<PDF PDF::DAO::Type>}
 
