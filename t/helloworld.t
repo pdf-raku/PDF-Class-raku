@@ -64,35 +64,35 @@ $page.graphics: -> $gfx {
         $gfx.do($img, $x -= 20, $y += $img.Height-5, )
             for 1 .. 3;
 
-	$gfx.block: -> $_ {
+	$gfx.block: {
 	    .SetFillRGB(0.1, 0.9, 0.5);
 	    .Rectangle(90, 200, 200, 200);
 	    .Fill;
 	}
     }
 
-    $page.graphics: -> $gfx {
-	$gfx.transform( :translate[275, 250]);
-	$gfx.transform( :rotate(-10), :scale(1.5) );
-	$gfx.set-graphics( :transparency(.5) );
-	$gfx.Rectangle(0, 0, 50, 50);
-	$gfx.Fill;
-
+    $page.graphics: {
+	.transform( :translate[275, 250]);
+	.transform( :rotate(-10), :scale(1.5) );
+	.set-graphics( :transparency(.5) );
+	.Rectangle(0, 0, 50, 50);
+	.Fill;
     }
 }
 
-$page.graphics: -> $_ {
-    $page.text: -> $_ {
+$page.graphics: {
+    $page.text: {
          use PDF::Content::Ops :TextMode;
         .font = ( $header-font, 16);
         .SetTextRender: TextMode::OutlineText;
         .SetLineWidth: .5;
-        .text-transform( :translate[50, 550], :slant(12) );
+        .text-transform( :skew[0, 12] );
+        .text-transform( :translate[50, 550] );
         .say('Outline Slanted Text @(50,550)', :width(150));
     }
 }
 
-$page.text: -> $_ {
+$page.text: {
     .text-position = [110, 300];
     .font = [$header-font, 24];
     .say('Hello, world!');

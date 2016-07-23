@@ -14,8 +14,8 @@ my $font-size = 18;
 
 my $pdf = PDF.new;
 $pdf.Pages.add-page: $page;
-my $bold-font = $pdf.core-font( :family<Helvetica>, :weight<bold> );
-my $reg-font = $pdf.core-font( :family<Helvetica> );
+my $bold-font = $page.core-font( :family<Helvetica>, :weight<bold> );
+my $reg-font = $page.core-font( :family<Helvetica> );
 
 $gfx.BeginText;
 $gfx.TextMove(50,100);

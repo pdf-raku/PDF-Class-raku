@@ -53,7 +53,7 @@ is $snoopy.ColorSpace, 'DeviceRGB', '$img.ColorSpace (jpeg)';
 is $snoopy.BitsPerComponent, 8, '$img.BitsPerComponent (jpeg)';
 is $snoopy.Length, $snoopy.encoded.chars, '$img Length (jpeg)';
 
-my $inline = $snoopy.content( :inline );
+my $inline = $snoopy.inline-content;
 is +$inline, 3, '.content(:inline) has 3 ops';
 is-json-equiv $inline[0], (:BI[ :dict{ BPC => :int(8),
                                        CS  => :name<DeviceRGB>,
@@ -64,8 +64,8 @@ is-json-equiv $inline[1], (:ID[ :encoded($snoopy.encoded) ]), 'second .content(:
 is-json-equiv $inline[2], (:EI[ ]), 'third .content(:inline) op: :EI[]';
 
 my $pdf = PDF.new;
-$pdf.media-box = [0, 0, 220,220];
 my $page = $pdf.add-page;
+$page.media-box = [0, 0, 220,220];
 $page.gfx.do($snoopy, 10, 15, :width(100), :height(190), :inline);
 $page.gfx.do($snoopy, 120, 15, :width(90));
 $page.gfx.do($snoopy, 120, 115, :width(90));

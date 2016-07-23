@@ -1,26 +1,22 @@
 use v6;
 
-use PDF::DAO;
-use PDF::DAO::Doc;
+use PDF::DAO::Type::PDF;
 
 #| Doc entry-point. either a trailer dict or an XRef stream
-class PDF:ver<0.0.2>
-    is PDF::DAO::Doc {
+class PDF:ver<0.0.3>
+    is PDF::DAO::Type::PDF {
 
     # base class declares: $.Size, $.Encrypt, $.Info, $.ID
     use PDF::DAO::Tie;
     use PDF::Struct::Catalog;
     has PDF::Struct::Catalog $.Root is entry(:required,:indirect);
 
-    use PDF::Struct::Page;
-    use PDF::Struct::Font;
-
     method type { 'PDF' }
     method version returns Version:_ {
 	my $version = self.Root.Version;
 	# reader extracts version from the PDF Header, e.g.: '%PDF-1.4'
-	$version //= self.reader.version
-	    if self.reader;
+	$version //= .version
+	    with self.reader;
 
 	$version
 	    ?? Version.new( $version )
@@ -28,6 +24,7 @@ class PDF:ver<0.0.2>
     }
 
     method open(|c) {
+
 	my $doc = callsame;
 	die "PDF file has wrong type: " ~ $doc.reader.type
 	    unless $doc.reader.type eq 'PDF';
@@ -59,15 +56,11 @@ class PDF:ver<0.0.2>
 	self<Root> //= PDF::Struct::Catalog.new;
     }
 
-    method Pages      returns PDF::Struct::Pages { self.Root.Pages }
-    #| fallback delegation to pages root; handle add-page, pages, page-count, etc...
-    multi method FALLBACK(Str $meth where { self.Root.Pages.can($meth) }, |c) {
-        self.WHAT.^add_method($meth,  method (|a) { self<Root><Pages>."$meth"(|a) } );
-        self."$meth"(|c);
-    }
+    use PDF::Struct::Pages;
+    method Pages returns PDF::Struct::Pages { self.Root.Pages }
 
-    multi method FALLBACK(Str $method, |c) is default {
-	die X::Method::NotFound.new( :$method, :typename(self.^name) );
+    for <page add-page page-count> {
+        $?CLASS.^add_method($_, method (|a) { self<Root><Pages>."$_"(|a) } );
     }
 
 }

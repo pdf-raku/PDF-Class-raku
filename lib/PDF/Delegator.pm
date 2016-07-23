@@ -130,9 +130,8 @@ class PDF::Delegator
     subset ColorSpace-Array of Array where ColorSpace-Array-CIE | ColorSpace-Array-Special;
 
     multi method delegate(ColorSpace-Array :$array!) {
-	my $colorspace = from-ast $array[0];
-	require ::('PDF::Struct::ColorSpace')::($colorspace);
-	::('PDF::Struct::ColorSpace')::($colorspace);
+	my $color-type = from-ast $array[0];
+	$.find-delegate('ColorSpace', $color-type);
     }
 
     multi method delegate(:$fallback!) is default {

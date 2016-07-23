@@ -2,21 +2,17 @@ use v6;
 use PDF;
 use PDF::Grammar::Test :$is-json-equiv;
 use Test;
-my $doc;
+my $pdf;
 
-lives-ok {$doc = PDF.open("t/pdf/samples/OoPdfFormExample.pdf")}, "open form example  lives";
-warn "getting Root...";
-my $cat = $doc.Root;
-warn "got Root...";
-isa-ok $cat, ::('PDF::Struct::Catalog'), 'document root';
+lives-ok {$pdf = PDF.open("t/pdf/samples/OoPdfFormExample.pdf")}, "open form example  lives";
+my $doc = $pdf.Root;
+isa-ok $doc, ::('PDF::Struct::Catalog'), 'document root';
 
-warn "getting acroform...";
-my $acroform = $cat.AcroForm;
-warn "got acroform...";
-does-ok $cat.AcroForm, ::('PDF::Struct::AcroForm');
+my $acroform = $doc.AcroForm;
+does-ok $doc.AcroForm, ::('PDF::Struct::AcroForm');
 
-lives-ok {$cat.OpenAction}, '$cat.OpenAction';
-does-ok $cat.OpenAction, ::('PDF::Struct::Action::Destination');
+lives-ok {$doc.OpenAction}, '$doc.OpenAction';
+does-ok $doc.OpenAction, ::('PDF::Struct::Action::Destination');
 
 my @fields = $acroform.fields;
 isa-ok @fields, Array, '.Fields';
@@ -64,11 +60,11 @@ ok %fields{'First name'} == @fields[0], 'field hash lookup by .TU';
 
 # check meta-data
 use PDF::Reader;
-isa-ok $cat.reader, PDF::Reader, '$cat.reader';
-isa-ok $cat.AcroForm.reader, PDF::Reader, '$cat.AcroForm.reader';
-isa-ok @fields[0].reader, PDF::Reader, '$cat.AcroForm.Fields[0].reader';
+isa-ok $doc.reader, PDF::Reader, '$doc.reader';
+isa-ok $doc.AcroForm.reader, PDF::Reader, '$doc.AcroForm.reader';
+isa-ok @fields[0].reader, PDF::Reader, '$doc.AcroForm.Fields[0].reader';
 is @fields[0].obj-num, 5, '.obj-num';
 is @fields[0].gen-num, 0, '.gen-num';
-isa-ok @fields[0].P.reader, PDF::Reader, '$cat.AcroForm.Fields[0].P.reader';
+isa-ok @fields[0].P.reader, PDF::Reader, '$doc.AcroForm.Fields[0].P.reader';
 
 done-testing;

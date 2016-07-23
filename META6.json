@@ -1,16 +1,16 @@
 {
     "perl"        : "6.c",
-    "name"        : "PDF::Struct",
+    "name"        : "PDF",
     "version"     : "0.0.3",
-    "description" : "Structured access to PDF Documents",
-    "depends"     : [ "PDF", "PDF::Grammar", "PDF::Content" ],
+    "description" : "PDF manipulation library",
+    "depends"     : [ "PDF::DAO", "PDF::Grammar", "PDF::Content" ],
     "source-url"  : "git://github.com/p6-pdf/p6-PDF-Struct.git",
     "provides"    : {
 
         "PDF::Struct" : "lib/PDF/Struct.pm",
 
-        "PDF" : "lib/PDF/Struct/PDF.pm",
-        "PDF::Delegator" : "lib/PDF/Struct/PDF/Delegator.pm",
+        "PDF" : "lib/PDF.pm",
+        "PDF::Delegator" : "lib/PDF/Delegator.pm",
 
         "PDF::Struct::AcroForm" : "lib/PDF/Struct/AcroForm.pm",
 

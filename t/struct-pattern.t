@@ -46,7 +46,7 @@ my $zfont = $pattern-obj.core-font('ZapfDingbats');
 $pattern-obj.gfx.ops: [
     'q',
     'BT',                              # Begin text object
-    :Tf[$zfont.key, 1],                # Set text font and size
+    :Tf[$pattern-obj.resource-key($zfont), 1],                # Set text font and size
     :Tm[64, 0, 0, 64, 7.1771, 2.4414], # Set text matrix
     :Tc[0],                            # Set character spacing
     :Tw[0],                            # Set word spacing
@@ -86,7 +86,7 @@ $page.gfx.ops: [
     :re[25, 175, 175, -150],                    # Construct rectangular path
     :f[],                                       # Fill path
     :cs[<Pattern>],                             # Set pattern color space
-    :scn[$page.use-resource($pattern-obj).key], # Set pattern as nonstroking color
+    :scn[$page.resource-key($pattern-obj)],     # Set pattern as nonstroking color
 
     :m[99.92, 49.92],                                # Start new path
     :c[99.92, 77.52, 77.52, 99.92, 49.92, 99.92],    # Construct lower-left circle
