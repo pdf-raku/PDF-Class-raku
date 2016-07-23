@@ -1,8 +1,8 @@
 use v6;
 
-use PDF::Struct::ViewerPreferences;
+use PDF::ViewerPreferences;
 
 role t::Doc::ViewerPreferences
-    does PDF::Struct::ViewerPreferences {
+    does PDF::ViewerPreferences {
 	method some-custom-method {'howdy'}
 }

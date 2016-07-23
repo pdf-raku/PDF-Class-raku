@@ -3,7 +3,7 @@ use Test;
 
 plan 8;
 
-use PDF::Struct;
+use PDF::Type;
 use PDF::Storage::IndObj;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
@@ -28,7 +28,7 @@ my $ind-obj = PDF::Storage::IndObj.new( |%ast);
 is $ind-obj.obj-num, 5, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $shading-obj = $ind-obj.object;
-isa-ok $shading-obj, ::('PDF::Struct')::('Shading::Radial');
+isa-ok $shading-obj, ::('PDF::Type')::('Shading::Radial');
 is $shading-obj.ShadingType, 3, '$.ShadingType accessor';
 is $shading-obj.type, 'Shading', '$.type accessor';
 is $shading-obj.subtype, 'Radial', '$.subtype accessor';

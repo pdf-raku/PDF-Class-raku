@@ -3,7 +3,7 @@ use Test;
 
 plan 9;
 
-use PDF::Struct;
+use PDF::Type;
 use PDF::Storage::IndObj;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
@@ -34,7 +34,7 @@ my $ind-obj = PDF::Storage::IndObj.new( :$input, |%ast);
 is $ind-obj.obj-num, 10, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $function-obj = $ind-obj.object;
-isa-ok $function-obj, ::('PDF::Struct')::('Function::PostScript');
+isa-ok $function-obj, ::('PDF::Type')::('Function::PostScript');
 is $function-obj.FunctionType, 4, '$.FunctionType accessor';
 is $function-obj.type, 'Function', '$.type accessor';
 is $function-obj.subtype, 'PostScript', '$.subtype accessor';

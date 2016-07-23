@@ -3,7 +3,7 @@ use Test;
 
 plan 45;
 
-use PDF::Struct;
+use PDF::Type;
 use PDF::Storage::IndObj;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
@@ -24,7 +24,7 @@ my $ind-obj = PDF::Storage::IndObj.new( |%ast);
 is $ind-obj.obj-num, 16, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $color-space-obj = $ind-obj.object;
-isa-ok $color-space-obj, ::('PDF::Struct')::('ColorSpace::CalRGB');
+isa-ok $color-space-obj, ::('PDF::Type')::('ColorSpace::CalRGB');
 is $color-space-obj.type, 'ColorSpace', '$.type accessor';
 is $color-space-obj.subtype, 'CalRGB', '$.subtype accessor';
 is-json-equiv $color-space-obj[1], { :WhitePoint[ 1.0, 1.0, 1.0 ] }, 'array dereference';
@@ -32,9 +32,9 @@ is-json-equiv $color-space-obj[1]<WhitePoint>, [ 1.0, 1.0, 1.0 ], 'array, hash d
 is-json-equiv $color-space-obj.WhitePoint, $color-space-obj[1]<WhitePoint>, '$WhitePoint accessor';
 is-json-equiv $ind-obj.ast, %ast, 'ast regeneration';
 
-require ::('PDF::Struct')::('ColorSpace::CalGray');
-my $cal-gray = ::('PDF::Struct')::('ColorSpace::CalGray').new;
-isa-ok $cal-gray, ::('PDF::Struct')::('ColorSpace::CalGray'), 'new CS class';
+require ::('PDF::Type')::('ColorSpace::CalGray');
+my $cal-gray = ::('PDF::Type')::('ColorSpace::CalGray').new;
+isa-ok $cal-gray, ::('PDF::Type')::('ColorSpace::CalGray'), 'new CS class';
 is $cal-gray.subtype, 'CalGray', 'new CS subtype';
 isa-ok $cal-gray[1], Hash, 'new CS Dict';
 
@@ -47,7 +47,7 @@ $ind-obj = PDF::Storage::IndObj.new( |%ast);
 is $ind-obj.obj-num, 10, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 $color-space-obj = $ind-obj.object;
-isa-ok $color-space-obj, ::('PDF::Struct')::('ColorSpace::ICCBased');
+isa-ok $color-space-obj, ::('PDF::Type')::('ColorSpace::ICCBased');
 is $color-space-obj.type, 'ColorSpace', '$.type accessor';
 is $color-space-obj.subtype, 'ICCBased', '$.subtype accessor';
 is $color-space-obj.N, 3, 'N accessor';
@@ -62,7 +62,7 @@ $ind-obj = PDF::Storage::IndObj.new( |%ast);
 is $ind-obj.obj-num, 11, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 $color-space-obj = $ind-obj.object;
-isa-ok $color-space-obj, ::('PDF::Struct')::('ColorSpace::Indexed');
+isa-ok $color-space-obj, ::('PDF::Type')::('ColorSpace::Indexed');
 is $color-space-obj.type, 'ColorSpace', '$.type accessor';
 is $color-space-obj.subtype, 'Indexed', '$.subtype accessor';
 is $color-space-obj.Base, 'DeviceRGB', 'Base accessor';
@@ -86,7 +86,7 @@ $ind-obj = PDF::Storage::IndObj.new( |%ast, :$reader);
 is $ind-obj.obj-num, 5, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 $color-space-obj = $ind-obj.object;
-isa-ok $color-space-obj, ::('PDF::Struct')::('ColorSpace::Separation');
+isa-ok $color-space-obj, ::('PDF::Type')::('ColorSpace::Separation');
 is $color-space-obj.type, 'ColorSpace', '$.type accessor';
 is $color-space-obj.subtype, 'Separation', '$.subtype accessor';
 is $color-space-obj.Name, 'LogoGreen', 'Name accessor';
@@ -113,7 +113,7 @@ PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
 %ast = $/.ast;
 $ind-obj = PDF::Storage::IndObj.new( |%ast, :$reader);
 $color-space-obj = $ind-obj.object;
-isa-ok $color-space-obj, ::('PDF::Struct')::('ColorSpace::DeviceN');
+isa-ok $color-space-obj, ::('PDF::Type')::('ColorSpace::DeviceN');
 is-json-equiv $color-space-obj.TintTransform, (:ind-ref[1, 0]), 'TintTransform accessor';
 is-json-equiv $color-space-obj.Names, [ <Orange Green None> ], 'Names Accessor';
 my $attributes = $color-space-obj.Attributes;
@@ -122,13 +122,13 @@ my $colorants = $attributes.Colorants;
 ok $colorants, 'Attributes.Colorants sub-accessor';
 my $orange-seperation = $colorants<Orange>;
 is-json-equiv $orange-seperation, [ 'Separation', 'Orange', 'DeviceCMYK',  :ind-ref[2, 0] ], 'seperation (Orange)';
-does-ok $orange-seperation, ::('PDF::Struct')::('ColorSpace::Separation'), 'seperation (Orange)';
+does-ok $orange-seperation, ::('PDF::Type')::('ColorSpace::Separation'), 'seperation (Orange)';
 
 # build from scratch
-use PDF::Struct::Function::Exponential;
-my $exp-func = PDF::Struct::Function::Exponential.new: { :Domain[ 0, 1], :Range[flat (0.0, 1.0) xx 4], :C0[0.0 xx 4], :C1[0.85, 0.24, 0.0, 0.0], :N(1.0) };
+use PDF::Function::Exponential;
+my $exp-func = PDF::Function::Exponential.new: { :Domain[ 0, 1], :Range[flat (0.0, 1.0) xx 4], :C0[0.0 xx 4], :C1[0.85, 0.24, 0.0, 0.0], :N(1.0) };
 is $exp-func.FunctionType, 2, '$exp-func.FunctionType';
-my $cs1 = ::('PDF::Struct')::('ColorSpace::Separation').new: [ 'Separation', 'My Spot 1', :name<DeviceCMYK>, $exp-func ];
+my $cs1 = ::('PDF::Type')::('ColorSpace::Separation').new: [ 'Separation', 'My Spot 1', :name<DeviceCMYK>, $exp-func ];
 is $cs1.Name, 'My Spot 1', 'cs1.Name';
 does-ok $cs1.Name,::('PDF::DAO::Name'), 'cs1.Name';
 is-deeply $cs1.TintTransform, $exp-func, 'cs1.TintTransform';

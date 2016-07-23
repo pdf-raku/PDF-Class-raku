@@ -4,7 +4,7 @@ use Test;
 plan 21;
 
 use PDF;
-use PDF::Struct;
+use PDF::Type;
 use PDF::Storage::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
@@ -39,14 +39,14 @@ my $ind-obj = PDF::Storage::IndObj.new( |%ast, :$input);
 is $ind-obj.obj-num, 14, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $ximage-obj = $ind-obj.object;
-isa-ok $ximage-obj, ::('PDF::Struct')::('XObject::Image');
+isa-ok $ximage-obj, ::('PDF::Type')::('XObject::Image');
 is $ximage-obj.Type, 'XObject', '$.Type accessor';
 is $ximage-obj.Subtype, 'Image', '$.Subtype accessor';
 is-json-equiv $ximage-obj.ColorSpace, 'DeviceGray', '$.ColorSpace accessor';
 is-json-equiv $ximage-obj.BitsPerComponent, 8, '$.BitsPerComponent accessor';
 is $ximage-obj.encoded, "(binary data)", '$.encoded accessor';
 
-my $snoopy = ::('PDF::Struct')::('XObject::Image').open("t/images/snoopy-happy-dance.jpg");
+my $snoopy = ::('PDF::Type')::('XObject::Image').open("t/images/snoopy-happy-dance.jpg");
 is $snoopy.Width, 200, '$img.Width (jpeg)';
 is $snoopy.Height, 254, '$img.Height (jpeg)';
 is $snoopy.ColorSpace, 'DeviceRGB', '$img.ColorSpace (jpeg)';
@@ -73,7 +73,7 @@ $page.gfx.do($snoopy, 120, 115, :width(90));
 my @images = $page.images;
 is +@images, 2, '$page.images';
 my $image = @images[1];
-isa-ok $image, ::('PDF::Struct')::('XObject::Image');
+isa-ok $image, ::('PDF::Type')::('XObject::Image');
 is-json-equiv $image, $snoopy, '$images dict';
 is $image.encoded, $snoopy.encoded, '$images encoded';
 

@@ -30,13 +30,13 @@ my %ast = $/.ast;
 
 my $ind-obj = PDF::Storage::IndObj.new( :$input, |%ast );
 my $cmap-obj = $ind-obj.object;
-isa-ok $cmap-obj, ::('PDF::Struct::CMap');
+isa-ok $cmap-obj, ::('PDF::CMap');
 is $cmap-obj.Type, 'CMap', 'CMap Type';
 is $cmap-obj.CMapName, '90ms-RKSJ-H', 'CMapName';
 is $cmap-obj.WMode, 0, 'WMode';
 lives-ok {$cmap-obj.WMode = 1}, '$cmap.WMode setter - lives';
 is $cmap-obj.WMode, 1, 'WMode';
-isa-ok $cmap-obj.CIDSystemInfo, ::('PDF::Struct::CIDSystemInfo');
+isa-ok $cmap-obj.CIDSystemInfo, ::('PDF::CIDSystemInfo');
 like $cmap-obj.decoded, rx/^'%!PS-Adobe-3.0 Resource-CMap'/, 'CMap stream content';
 
 done-testing;

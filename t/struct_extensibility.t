@@ -1,6 +1,6 @@
 use v6;
 use Test;
-use PDF::Delegator;
+use PDF::Type::Delegator;
 
 =begin pod
 
@@ -17,9 +17,9 @@ extension classes
 
 plan 10;
 
-class MyDelegator is PDF::Delegator {
+class MyDelegator is PDF::Type::Delegator {
     method class-paths {
-         <t::Doc PDF::Struct PDF::DAO::Type>
+         <t::Doc PDF::Type PDF::DAO::Type>
     }
 }
 
@@ -57,5 +57,5 @@ my $page = try { $Catalog.Pages.add-page };
 isa-ok $page, ::('t::Doc::Page');
 
 my $form = try { $page.to-xobject };
-isa-ok $form, ::('PDF::Struct::XObject::Form'), 'unextended class';
+isa-ok $form, ::('PDF::XObject::Form'), 'unextended class';
 

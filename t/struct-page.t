@@ -4,7 +4,7 @@ use Test;
 plan 39;
 
 use PDF::Storage::IndObj;
-use PDF::Struct;
+use PDF::Type;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
@@ -32,7 +32,7 @@ my $ind-obj = PDF::Storage::IndObj.new( |%ast, :$reader);
 is $ind-obj.obj-num, 4, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $page = $ind-obj.object;
-isa-ok $page, ::('PDF::Struct')::('Page');
+isa-ok $page, ::('PDF::Type')::('Page');
 is $page.Type, 'Page', '$.Type accessor';
 my $dummy-stream = PDF::DAO::Stream.new( :decoded('%dummy stream') );
 is $page<Parent>, (:ind-ref[3, 0]), '$page<Parent>';
@@ -46,7 +46,7 @@ is-deeply $page.content-streams, [$dummy-stream], '$.contents accessor';
 is-deeply $page.contents, '%dummy stream', '$.contents accessor';
 
 my $font = $page.core-font( 'Helvetica' );
-isa-ok $font, ::('PDF::Struct::Font::Type1');
+isa-ok $font, ::('PDF::Font::Type1');
 is $font.font-obj.FontName, 'Helvetica', '.FontName';
 my $font-again = $page.core-font( 'Helvetica' );
 is-deeply $font-again, $font, 'core font caching';
@@ -92,7 +92,7 @@ $page.cb-finish;
 is-deeply [$page.Contents.decoded.lines], ['BT', '  (Hello, world!) Tj', 'ET'], 'finished Contents';
 
 my $xobject = $page.to-xobject;
-isa-ok $xobject, ::('PDF::Struct::XObject::Form');
+isa-ok $xobject, ::('PDF::XObject::Form');
 is-deeply $xobject.BBox, $page.trim-box, 'xobject copied trim-box';
 is-deeply [$xobject.decoded.lines], ['BT', '  (Hello, world!) Tj', 'ET' ], 'xobject decoded';
 

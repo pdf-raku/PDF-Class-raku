@@ -40,7 +40,7 @@ my $ind-obj = PDF::Storage::IndObj.new( |%ast, :$input);
 is $ind-obj.obj-num, 6, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $xform = $ind-obj.object;
-isa-ok $xform, ::('PDF::Struct')::('XObject::Form');
+isa-ok $xform, ::('PDF::Type')::('XObject::Form');
 is $xform.Type, 'XObject', '$.Type accessor';
 is $xform.Subtype, 'Form', '$.Subtype accessor';
 is-json-equiv $xform.Resources, { :ProcSet( [ <PDF> ] ) }, '$.Resources accessor';

@@ -1,13 +1,13 @@
 use v6;
 use Test;
 use PDF;
-use PDF::Struct::Page;
+use PDF::Page;
 use PDF::Content::Ops :OpNames;
 
 # ensure consistant document ID generation
 srand(123456);
 
-my $page = PDF::Struct::Page.new;
+my $page = PDF::Page.new;
 my $gfx = $page.gfx;
 my $width = 50;
 my $font-size = 18;

@@ -8,8 +8,8 @@ class PDF:ver<0.0.3>
 
     # base class declares: $.Size, $.Encrypt, $.Info, $.ID
     use PDF::DAO::Tie;
-    use PDF::Struct::Catalog;
-    has PDF::Struct::Catalog $.Root is entry(:required,:indirect);
+    use PDF::Catalog;
+    has PDF::Catalog $.Root is entry(:required,:indirect);
 
     method type { 'PDF' }
     method version returns Version:_ {
@@ -34,7 +34,7 @@ class PDF:ver<0.0.3>
     method save-as($spec, Bool :$update is copy, |c) {
 
 	if !$update and self.reader and my $sig-flags = self.Root.?AcroForm.?SigFlags {
-	    use PDF::Struct::AcroForm :SigFlags;
+	    use PDF::AcroForm :SigFlags;
 	    if $sig-flags.flag-is-set: SigFlags::AppendOnly {
 		# The document contains digital signatures that may be invalidated
 		# by a full write
@@ -53,11 +53,11 @@ class PDF:ver<0.0.3>
     }
 
     method cb-init {
-	self<Root> //= PDF::Struct::Catalog.new;
+	self<Root> //= PDF::Catalog.new;
     }
 
-    use PDF::Struct::Pages;
-    method Pages returns PDF::Struct::Pages { self.Root.Pages }
+    use PDF::Pages;
+    method Pages returns PDF::Pages { self.Root.Pages }
 
     for <page add-page page-count> {
         $?CLASS.^add_method($_, method (|a) { self<Root><Pages>."$_"(|a) } );
