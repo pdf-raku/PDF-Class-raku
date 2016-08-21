@@ -15,7 +15,7 @@ class PDF::Shading
 
     # see [PDF 1.7 TABLE 4.28 Entries common to all shading dictionaries]
     use PDF::ColorSpace;
-    my subset NameOrColorSpace of PDF::DAO where PDF::DAO::Name or PDF::ColorSpace;
+    my subset NameOrColorSpace of PDF::DAO where PDF::DAO::Name | PDF::ColorSpace;
     has NameOrColorSpace $.ColorSpace is entry(:required); #| (Required) The color space in which color values are expressed.
     has @.Background is entry;                        #| (Optional) An array of color components appropriate to the color space, specifying a single background color value.
     has Numeric @.BBox is entry(:len(4));             #| (Optional) An array of four numbers giving the left, bottom, right, and top coordinates, respectively, of the shading’s bounding box
