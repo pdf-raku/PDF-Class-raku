@@ -39,7 +39,7 @@ class PDF::Page
     has @.B is entry(:indirect);                 #| (Optional; PDF 1.1; recommended if the page contains article beads) An array of indirect references to article beads appearing on the page
     has Numeric $.Dur is entry;                  #| (Optional; PDF 1.1) The page’s display duration (also called its advance timing): the maximum length of time, in seconds, that the page is displayed during presentations before the viewer application automatically advances to the next page
     has Hash $.Trans is entry;                   #| (Optional; PDF 1.1) A transition dictionary describing the transition effect to be used when displaying the page during presentations
-    my subset Annot of PDF::Type where { .type eq 'Annot' }
+    my subset Annot of Hash where { .<Type> ~~ 'Annot' }
     has Annot @.Annots is entry; #| (Optional) An array of annotation dictionaries representing annotations associated with the page
     has Hash $.AA is entry;                      #| (Optional; PDF 1.2) An additional-actions dictionary defining actions to be performed when the page is opened or closed
     has PDF::DAO::Stream $.Metadata is entry;    #| (Optional; PDF 1.4) A metadata stream containing metadata for the page

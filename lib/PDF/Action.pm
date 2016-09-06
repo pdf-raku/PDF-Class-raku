@@ -1,5 +1,4 @@
 use v6;
-
 use PDF::DAO::Tie::Hash;
 
 # See [PDF 1.7 TABLE 8.2 Destination syntax]
@@ -17,7 +16,8 @@ multi sub is-destination($page, 'FitBH', NumNull $top)       { True }
 multi sub is-destination($page, 'FitBV', NumNull $left)      { True }
 multi sub is-destination(|c)                      is default { False }
 
-my subset DestinationArray of Array where is-destination(|@$_);
+my subset DestinationArray of Array where is-destination(|$_);
+role PDF::Action {...}
 subset PDF::Action::Destination of PDF::DAO where DestinationArray | PDF::Action; #| e.g. for Catalog /OpenAction entry
 
 # /Type /Action

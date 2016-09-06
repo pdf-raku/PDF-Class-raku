@@ -15,15 +15,15 @@ class PDF::ExtGState
     sub dual-entry(PDF::ExtGState $obj, Str $entry, Str $entry2) is rw {
 	Proxy.new( 
 	    FETCH => method {
-		my $val   = $obj{$entry};
-		my $val2  = $obj{$entry2};
-		$val.defined && !$val2.defined
-		    ?? $val
-		    !! $val2;
+		my \val   = $obj{$entry};
+		my \val2  = $obj{$entry2};
+		val.defined && !val2.defined
+		    ?? val
+		    !! val2;
 	    },
-	    STORE => method ($val is copy) {
+	    STORE => method (\val) {
 		$obj{$entry}:delete;
-		$obj{$entry2} = $val;
+		$obj{$entry2} = val;
 	    });
     }
 

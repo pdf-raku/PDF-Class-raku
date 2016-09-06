@@ -62,7 +62,7 @@ class PDF:ver<0.0.3>
     my subset Pages of PDF::Type where { .type eq 'Pages' };
     method Pages returns Pages { self.Root.Pages }
 
-    for <page add-page page-count> {
+    for <page add-page delete-page page-count> {
         $?CLASS.^add_method($_, method (|a) { self<Root><Pages>."$_"(|a) } );
     }
 
