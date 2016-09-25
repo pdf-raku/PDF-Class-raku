@@ -41,15 +41,15 @@ $page.graphics: -> $gfx {
 
         $txt.text-position = [240, 600];
         $txt.font = [$page.core-font('ZapfDingbats'), 24];
-        $txt.SetWordSpacing(16);
+        $txt.WordSpacing = 16;
         my $nbsp = "\c[NO-BREAK SPACE]";
         $txt.print("♠ ♣$nbsp");
-        $txt.SetFillRGB( 1, .3, .3);
+        $txt.FillColor = :DeviceRGB[ 1, .3, .3 ];
 	$txt.say("♦ ♥");
     }
 
     $page.graphics: -> $gfx {
-	$gfx.SetFillRGB(0.9, 0.5, 0.0);
+	$gfx.FillColor = :DeviceRGB[0.9, 0.5, 0.0];
 	$gfx.Rectangle(340, 300, 100, 100);
 	$gfx.Fill;
 
@@ -64,8 +64,8 @@ $page.graphics: -> $gfx {
         $gfx.do($img, $x -= 20, $y += $img.Height-5, )
             for 1 .. 3;
 
-	$gfx.block: {
-	    .SetFillRGB(0.1, 0.9, 0.5);
+	$gfx.graphics: {
+	    .FillColor = :DeviceRGB[0.1, 0.9, 0.5];
 	    .Rectangle(90, 200, 200, 200);
 	    .Fill;
 	}
@@ -74,7 +74,7 @@ $page.graphics: -> $gfx {
     $page.graphics: {
 	.transform( :translate[275, 250]);
 	.transform( :rotate(-10), :scale(1.5) );
-	.set-graphics( :transparency(.5) );
+	.FillAlpha = .5;
 	.Rectangle(0, 0, 50, 50);
 	.Fill;
     }
@@ -84,8 +84,8 @@ $page.graphics: {
     $page.text: {
          use PDF::Content::Ops :TextMode;
         .font = ( $header-font, 16);
-        .SetTextRender: TextMode::OutlineText;
-        .SetLineWidth: .5;
+        .TextRender = TextMode::OutlineText;
+        .LineWidth = .5;
         .text-transform( :skew[0, 12] );
         .text-transform( :translate[50, 550] );
         .say('Outline Slanted Text @(50,550)', :width(150));

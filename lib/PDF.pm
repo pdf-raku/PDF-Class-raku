@@ -3,7 +3,7 @@ use v6;
 use PDF::DAO::Type::PDF;
 
 #| Doc entry-point. either a trailer dict or an XRef stream
-class PDF:ver<0.0.3>
+class PDF:ver<0.0.3> #:api<iso-32000-1>
     is PDF::DAO::Type::PDF {
 
     # base class declares: $.Size, $.Encrypt, $.Info, $.ID

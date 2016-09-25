@@ -66,7 +66,7 @@ is-deeply [$contents.lines], [
 my $pdf = PDF.new;
 $pdf.Pages.media-box = [0, 0, 220, 220];
 my $page = $pdf.add-page;
-$page.gfx.block: {
+$page.graphics: {
     $page.gfx.do($xform, 10, 15, :width(100), :height(190));
     $page.gfx.do($xform, 120, 15, :width(90));
     $page.gfx.do($xform, 120, 115, :width(90));

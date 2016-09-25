@@ -12,18 +12,18 @@ class PDF::ExtGState
     use PDF::DAO::Tie;
     use PDF::DAO::Name;
 
-    sub dual-entry(PDF::ExtGState $obj, Str $entry, Str $entry2) is rw {
+    method !dual-entry(Str $entry, Str $entry2) is rw {
 	Proxy.new( 
-	    FETCH => method {
-		my \val   = $obj{$entry};
-		my \val2  = $obj{$entry2};
+	    FETCH => sub (\p) {
+		my \val   = self{$entry};
+		my \val2  = self{$entry2};
 		val.defined && !val2.defined
 		    ?? val
 		    !! val2;
 	    },
-	    STORE => method (\val) {
-		$obj{$entry}:delete;
-		$obj{$entry2} = val;
+	    STORE => sub (\p, \val) {
+		self{$entry}:delete;
+		self{$entry2} = val;
 	    });
     }
 
@@ -44,16 +44,16 @@ class PDF::ExtGState
     has $.BG is entry;                     #| (Optional) The black-generation function, which maps the interval [ 0.0 1.0 ] to the interval [ 0.0 1.0 ]
     has $.BG2 is entry;                    #| (Optional; PDF 1.3) Same as BG except that the value may also be the name Default, denoting the black-generation function that was in effect at the start of the page
     #| If both BG and BG2 are present in the same graphics state parameter dictionary, BG2 takes precedence.
-    method black-generation is rw { dual-entry(self, 'BG', 'BG2') }
+    method black-generation is rw { self!dual-entry('BG', 'BG2') }
 
     has $.UCR is entry;                    #| (Optional) The undercolor-removal function, which maps the interval [ 0.0 1.0 ] to the interval [ −1.0 1.0 ]
     has $.UCR2 is entry;                   #| (Optional; PDF 1.3) Same as UCR except that the value may also be the name Default, denoting the undercolor-removal function that was in effect at the start of the page.
-    method undercover-removal-function is rw { dual-entry(self, 'BG', 'BG2') }
+    method undercover-removal-function is rw { self!dual-entry('BG', 'BG2') }
 
 
     has $.TR is entry;                     #| (Optional) The transfer function, which maps the interval [ 0.0 1.0 ] to the interval [ 0.0 1.0 ]
     has $.TR2 is entry;                    #| (Optional; PDF 1.3) Same as TR except that the value may also be the name Default, denoting the transfer function that was in effect at the start of the page.
-    method transfer-function is rw { dual-entry(self, 'TR', 'TR2') }
+    method transfer-function is rw { self!dual-entry('TR', 'TR2') }
 
     has Hash $.HT is entry;                #| (Optional) The halftone dictionary or stream (see Section 6.4, “Halftones”) or the name
     has Numeric $.FL is entry;             #| (Optional; PDF 1.3) The flatness tolerance
@@ -70,16 +70,15 @@ class PDF::ExtGState
     # The graphics transparency , with 0 being fully opaque and 1 being fully transparent.
     # This is a convenience method setting proper values for strokeaplha and fillalpha.
     method transparency is rw {
-	my $obj = self;
 	Proxy.new( 
-	    FETCH => method {
-		my $fill-alpha = $obj.ca;
-		$fill-alpha eqv $obj.CA
-		    ?? $fill-alpha
+	    FETCH => sub (\p) {
+		my \fill-alpha = self.ca;
+		fill-alpha eqv self.CA
+		    ?? fill-alpha
 		    !! Mu
 	    },
-	    STORE => method (Alpha $val is copy) {
-		$obj.ca = $obj.CA = $val;
+	    STORE => sub (\p, Alpha \val) {
+		self.ca = self.CA = val;
 	    });
     }
 

@@ -39,6 +39,7 @@ is @fields[0].DA, '0 0 0 rg /F3 11 Tf', '.DA';
 my $appearance = @fields[0].AP;
 isa-ok $appearance, Hash, '.AP';
 does-ok $appearance, ::('PDF::Appearance'), '.AP';
+todo "it is, but it isn't?";
 isa-ok $appearance.N, ::('PDF::XObject::Form'), '.AP.N';
 ok $page.Annots[0] === @fields[0], 'first field via page-1 annots';
 

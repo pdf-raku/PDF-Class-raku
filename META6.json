@@ -1,9 +1,10 @@
 {
     "perl"        : "6.c",
-    "name"        : "PDF",
+    "name"        : "PDF::Type",
     "version"     : "0.0.3",
+    "api"         : "iso-32000-1",
     "description" : "PDF manipulation library",
-    "depends"     : [ "PDF::DAO", "PDF::Grammar", "PDF::Content" ],
+    "depends"     : [ "PDF", "PDF::Grammar", "PDF::Content" ],
     "source-url"  : "git://github.com/p6-pdf/p6-PDF-Struct.git",
     "provides"    : {
 
