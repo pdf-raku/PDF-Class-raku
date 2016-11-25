@@ -1,6 +1,6 @@
 #!/usr/bin/env perl6
 use v6;
-use PDF::Struct::Doc;
+use PDF;
 
 #| reading from stdin
 multi sub output-filename('-') {"pdf-page%03d.pdf"}
@@ -25,22 +25,28 @@ sub MAIN(Str $infile,            #| input PDF
         ?? $*IN
 	!! $infile;
 
-    my $doc = PDF::Struct::Doc.open( $input, :$password);
+    my $doc = PDF.open( $input, :$password);
     my $catalog = $doc<Root>;
 
     my UInt $pages = $doc.page-count;
 
     for 1 .. $pages -> UInt $page-num {
 
-	my $save-page-as = sprintf($save-as, $page-num);
+	my $save-page-as = $save-as.sprintf($page-num);
 	die "invalid 'sprintf' output page format: $save-as"
 	    if $save-page-as eq $save-as;
 
 	my $page = $doc.page($page-num);
 
-	temp $catalog.Pages = { :Type( :name<Pages> ), :Count(1), :Kids[ $page ], };
-	warn "saving page: $save-page-as";
-	$doc.save-as( $save-page-as, :rebuild );
+        with $catalog.Pages {
+            # pretend this is the only page in the document
+	    temp .Kids = [ $page, ];
+	    temp .Count = 1;
+            temp $page.Parent = $catalog;
+
+	    warn "saving page: $save-page-as";
+	    $doc.save-as( $save-page-as, :rebuild );
+        }
     }
 
 }
@@ -70,10 +76,10 @@ for generation of the individual output files.
 
 =head1 SEE ALSO
 
-PDF::Struct::Doc
+PDF
 
 =head1 AUTHOR
 
-See L<PDF::Struct::Doc>
+See L<PDF>
 
 =end pod

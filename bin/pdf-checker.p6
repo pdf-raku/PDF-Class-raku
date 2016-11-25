@@ -1,9 +1,9 @@
 #!/usr/bin/env perl6
 use v6;
 
-use PDF::Struct::Doc;
+use PDF;
 use PDF::Graphics;
-use PDF::Struct::Annot;
+use PDF::Annot;
 
 my UInt $*max-depth;
 my Bool $*contents;
@@ -12,7 +12,7 @@ my Bool $*strict = False;
 my Str @*exclude;
 my %seen;
 
-#| check a PDF against PDF::Struct::Doc class definitions
+#| check a PDF against PDF class definitions
 sub MAIN(Str $infile,               #| input PDF
          Str  :$password = '',      #| password for the input PDF, if encrypted
          Bool :$*trace,             #| show progress
@@ -22,7 +22,7 @@ sub MAIN(Str $infile,               #| input PDF
 	 Str  :$exclude,            #| excluded entries: Entry1,Entry2
          ) {
 
-    my $doc = PDF::Struct::Doc.open( $infile, :$password );
+    my $doc = PDF.open( $infile, :$password );
     @*exclude = $exclude.split(/:s ',' /)
     	      if $exclude;
     check( $doc, :ent<xref> );
@@ -47,7 +47,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     for $obj.keys.sort {
 
         # Avoid following /P back to page then back here via page /Annots
-        next if $_ eq 'P' && $obj.isa(PDF::Struct::Annot);
+        next if $_ eq 'P' && $obj.isa(PDF::Annot);
 	next if @*exclude.grep: $_;
 
 	my $kid;
@@ -177,10 +177,10 @@ root, reporting any errors or warnings that were encountered.
 
 =head1 SEE ALSO
 
-PDF::Struct::Doc
+PDF
 
 =head1 AUTHOR
 
-See L<PDF::Struct::Doc>
+See L<PDF>
 
 =end pod

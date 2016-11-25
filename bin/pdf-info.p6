@@ -1,7 +1,7 @@
 #!/usr/bin/env perl6
 use v6;
 
-use PDF::Struct::Doc;
+use PDF;
 use PDF::Storage::Input::Str;
 use PDF::Storage::Input::IOH;
 
@@ -14,15 +14,15 @@ multi sub pretty-print(DateTime $dt --> Str) {
 	    $dt.year)
 }
 
-multi sub pretty-print(Mu $val is copy --> Str) is default {
+multi sub pretty-print(Mu $val --> Str) is default {
     ~$val
 }
 
-# A port of pdfinfo.pl from the Perl 5 CAM::PDF module to PDF::Struct::Doc and Perl 6
+# A port of pdfinfo.pl from the Perl 5 CAM::PDF module to PDF and Perl 6
 
 multi sub MAIN(Bool :$version! where $_) {
     # nyi in rakudo https://rt.perl.org/Ticket/Display.html?id=125017
-    say "PDF::Struct::Doc {$PDF::Struct::Doc.^version}";
+    say "PDF {PDF.^version}";
     say "this script was ported from the CAM::PDF PDF Manipulation library";
     say "see - https://metacpan.org/pod/CAM::PDF";
 }
@@ -39,7 +39,7 @@ multi sub MAIN(Str $infile,           #| input PDF
 	?? PDF::Storage::Input::Str.new( :value($*IN.slurp-rest( :enc<latin-1> )) )
 	!! PDF::Storage::Input::IOH.new( :value($infile.IO.open( :enc<latin-1> )) );
 
-    my $doc = PDF::Struct::Doc.open( $input, :$password );
+    my $doc = PDF.open( $input, :$password );
 
     my UInt $size = $input.codes;
     my UInt $pages = $doc.page-count;
@@ -121,7 +121,7 @@ file(s).
 =head1 SEE ALSO
 
 CAM::PDF (Perl 5)
-PDF::Struct::Doc (Perl 6)
+PDF (Perl 6)
 
 =head1 AUTHOR
 
