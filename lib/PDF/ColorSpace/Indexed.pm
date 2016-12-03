@@ -10,10 +10,10 @@ class PDF::ColorSpace::Indexed
     use PDF::DAO::Stream;
     use PDF::DAO::ByteString;
     # see [PDF 1.7 Section 4.5.5 Special Color Spaces] 
-    subset ArrayOrName of Any where Array | PDF::DAO::Name;
+    subset ArrayOrName where Array | PDF::DAO::Name;
     has ArrayOrName $.Base is index(1);
     has UInt $.Hival is index(2);
-    subset StreamOrByteString of Any where PDF::DAO::Stream | PDF::DAO::ByteString;
+    subset StreamOrByteString where PDF::DAO::Stream | PDF::DAO::ByteString;
     has StreamOrByteString $.Lookup is index(3);
 
 }

@@ -98,7 +98,7 @@ class PDF::Type::Delegator
     }
 
     #| PDF Spec 1.7 Section 4.5.4 CIE-Based Color Spaces
-    subset ColorSpace-Array-CIE where {
+    subset ColorSpace-Array-CIE of List where {
 	.elems == 2 && do {
 	    my $t = from-ast .[0];
 	    if $t ~~  PDF::DAO::Name {

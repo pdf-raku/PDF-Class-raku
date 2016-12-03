@@ -3,7 +3,7 @@ use v6;
 use PDF::DAO::Type::PDF;
 
 #| Doc entry-point. either a trailer dict or an XRef stream
-class PDF:ver<0.0.3> #:api<iso-32000-1>
+class PDF:ver<0.0.3> #:api<PDF-1.7>
     is PDF::DAO::Type::PDF {
 
     # base class declares: $.Size, $.Encrypt, $.Info, $.ID
@@ -34,8 +34,8 @@ class PDF:ver<0.0.3> #:api<iso-32000-1>
     method save-as($spec, Bool :$update is copy, |c) {
 
 	if !$update and self.reader and my $sig-flags = self.Root.?AcroForm.?SigFlags {
-	    use PDF::AcroForm :SigFlags;
-	    if $sig-flags.flag-is-set: SigFlags::AppendOnly {
+            constant AppendOnly = 2;
+	    if $sig-flags.flag-is-set: AppendOnly {
 		# The document contains digital signatures that may be invalidated
 		# by a full write
 		with $update {

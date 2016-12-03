@@ -8,11 +8,11 @@ class PDF::Function::PostScript
     is PDF::Function {
 
     method parse(Str $decoded = $.decoded) {
-	use PDF::Grammar::Function;
-	use PDF::Grammar::Function::Actions;
-	state $actions //= PDF::Grammar::Function::Actions.new;
-	PDF::Grammar::Function.parse($decoded, :$actions)
-	    // die "unable to parse postscript function: $decoded";
+	require PDF::Grammar::Function;
+	require PDF::Grammar::Function::Actions;
+	state $actions //= ::('PDF::Grammar::Function::Actions').new;
+	::('PDF::Grammar::Function').parse($decoded, :$actions)
+	    or die "unable to parse postscript function: $decoded";
 	$/.ast
     }
 

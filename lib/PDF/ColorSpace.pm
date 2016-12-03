@@ -7,12 +7,12 @@ class PDF::ColorSpace
 
     # See [PDF 1.7 Section 4.5 Color Spaces]
 
-    method type {'ColorSpace'}
-    method subtype {$.Subtype}
     use PDF::DAO::Name;
     use PDF::DAO::Tie;
     has PDF::DAO::Name $.Subtype is index(0, :required);
 
+    method type {'ColorSpace'}
+    method subtype {$.Subtype}
     #| enforce tie-ins between self[0] & the class name. e.g.
     #| PDF::ColorSpace::CalGray should have self[0] == 'CalGray'
     method cb-init {

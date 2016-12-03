@@ -24,7 +24,7 @@ class PDF::Font::Type1
     has PDF::FontDescriptor $.FontDescriptor is entry(:indirect);      #| (Required except for the standard 14 fonts; must be an indirect reference) A font descriptor describing the font’s metrics other than its glyph widths
 
     use PDF::Encoding;
-    subset NameOrEncoding of Any where PDF::DAO::Name | PDF::Encoding;
+    subset NameOrEncoding where PDF::DAO::Name | PDF::Encoding;
     has NameOrEncoding $.Encoding is entry;             #| (Optional) A specification of the font’s character encoding if different from its built-in encoding. The value of Encoding is either the name of a predefined encoding (MacRomanEncoding, MacExpertEncoding, or WinAnsiEncoding, as described in Appendix D) or an encoding dictionary that specifies differences from the font’s built-in encoding or from a specified predefined encoding
 
     use PDF::CMap;

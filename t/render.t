@@ -1,4 +1,6 @@
 use v6;
+use PDF::Content::Util::TransformMatrix; # give rakudo a helping hand
+
 use PDF;
 use PDF::Grammar::Test :is-json-equiv;
 use Test;
@@ -12,11 +14,11 @@ my %seen;
 # image 2 is painted 3 times
 my @img-seq = <Im1 Im2 Im2 Im2>;
 
-my sub callback($op, *@args, :$gfx) {
+my sub callback($op, *@args, :$obj) {
    %seen{$op}++;
    given $op {
        when 'Do' {
-           does-ok $gfx, ::('PDF::Content'), ':gfx argument';
+           does-ok $obj, ::('PDF::Content'), ':obj argument';
            is-json-equiv @args, [shift @img-seq], 'Do callback arguments';
        }
    }

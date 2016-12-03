@@ -4,7 +4,7 @@ use Test;
 plan 20;
 
 use PDF::Type;
-use PDF::Storage::IndObj;
+use PDF::IO::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
@@ -26,7 +26,7 @@ my $input = q:to"--END-OBJ--";
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
 my %ast = $/.ast;
-my $ind-obj = PDF::Storage::IndObj.new( |%ast);
+my $ind-obj = PDF::IO::IndObj.new( |%ast);
 my $object = $ind-obj.object;
 is $ind-obj.obj-num, 7, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';

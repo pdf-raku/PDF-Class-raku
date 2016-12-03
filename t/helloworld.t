@@ -1,6 +1,7 @@
 use v6;
 use Test;
 
+use PDF::Content::Util::TransformMatrix; # give rakudo a helping hand
 use PDF::Grammar::Test :is-json-equiv;
 use PDF;
 
@@ -123,7 +124,7 @@ is-deeply $contents-ast[0], (:q[]), '.contents first elem';
 is-deeply $contents-ast[*-1], (:ET[]), '.contents last elem';
 
 my $gfx = $page.gfx;
-is-json-equiv $gfx.ops[*-3 .. *], $( "T*" => [], :ET[], :Q[] ), '$page.gfx.ops (tail)';
+is-json-equiv $gfx.ops[*-3 .. *], $(:Tj[{:literal("Hello, world!")}], "T*" => [], :ET[]), '$page.gfx.ops (tail)';
 
 lives-ok { PDF.new.save-as: "t/pdf/no-pages.pdf" }, 'create empty PDF';
 

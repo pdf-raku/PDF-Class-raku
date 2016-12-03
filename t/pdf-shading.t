@@ -4,7 +4,7 @@ use Test;
 plan 8;
 
 use PDF::Type;
-use PDF::Storage::IndObj;
+use PDF::IO::IndObj;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::Grammar::Test :is-json-equiv;
@@ -24,7 +24,7 @@ my $input = q:to"--END-OBJ--";
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
 my %ast = $/.ast;
-my $ind-obj = PDF::Storage::IndObj.new( |%ast);
+my $ind-obj = PDF::IO::IndObj.new( |%ast);
 is $ind-obj.obj-num, 5, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $shading-obj = $ind-obj.object;

@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-use PDF::Storage::IndObj;
+use PDF::IO::IndObj;
 use PDF::Type;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
@@ -33,7 +33,7 @@ my %ast = $/.ast;
 
 # misc types follow
 
-my $ind-obj = PDF::Storage::IndObj.new( :$input, |%ast );
+my $ind-obj = PDF::IO::IndObj.new( :$input, |%ast );
 my $tt-font-obj = $ind-obj.object;
 isa-ok $tt-font-obj, ::('PDF::Font::TrueType');
 is $tt-font-obj.Type, 'Font', 'tt font $.Type';
@@ -57,7 +57,7 @@ is $sc-font-obj.Subtype, 'Type1', 'sc font $.Subtype';
 is $sc-font-obj.BaseFont, 'Helvetica', 'sc font $.BaseFont';
 
 my $enc-ast = :ind-obj[5, 2, :dict{ :Type( :name<Encoding> ), :BaseEncoding( :name<MacRomanEncoding> ) } ];
-my $enc-ind-obj = PDF::Storage::IndObj.new( |%($enc-ast) );
+my $enc-ind-obj = PDF::IO::IndObj.new( |%($enc-ast) );
 my $enc-obj = $enc-ind-obj.object;
 isa-ok $enc-obj, ::('PDF::Encoding');
 is $enc-obj.Type, 'Encoding', '$enc.Type';
@@ -65,7 +65,7 @@ is $enc-obj.BaseEncoding, 'MacRomanEncoding', '$enc.BaseEncoding';
 
 my $objr-ast = :ind-obj[6, 0, :dict{ :Type( :name<OBJR> ), :Pg( :ind-ref[6, 1] ), :Obj( :ind-ref[6, 2]) } ];
 my $reader = class { has $.auto-deref = False }.new;
-my $objr-ind-obj = PDF::Storage::IndObj.new( |%($objr-ast), :$reader );
+my $objr-ind-obj = PDF::IO::IndObj.new( |%($objr-ast), :$reader );
 my $objr-obj = $objr-ind-obj.object;
 isa-ok $objr-obj, ::('PDF::OBJR');
 is $objr-obj.Type, 'OBJR', '$objr.Type';
@@ -88,7 +88,7 @@ PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed: $input";
 %ast = $/.ast;
 
-$ind-obj = PDF::Storage::IndObj.new( :$input, |%ast );
+$ind-obj = PDF::IO::IndObj.new( :$input, |%ast );
 my $oi-font-obj = $ind-obj.object;
 isa-ok $oi-font-obj, ::('PDF::OutputIntent');
 is $oi-font-obj.S, 'GTS_PDFX', 'OutputIntent S';
@@ -130,7 +130,7 @@ $grammar.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed: $input";
 %ast = $/.ast;
 
-$ind-obj = PDF::Storage::IndObj.new( :$input, |%ast, :$reader );
+$ind-obj = PDF::IO::IndObj.new( :$input, |%ast, :$reader );
 my $gs-obj = $ind-obj.object;
 isa-ok $gs-obj, ::('PDF::ExtGState');
 is $gs-obj.Type, 'ExtGState', 'ExtGState Type';

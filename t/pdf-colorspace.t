@@ -4,7 +4,7 @@ use Test;
 plan 45;
 
 use PDF::Type;
-use PDF::Storage::IndObj;
+use PDF::IO::IndObj;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::Grammar::Test :is-json-equiv;
@@ -20,7 +20,7 @@ endobj
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
 my %ast = $/.ast;
-my $ind-obj = PDF::Storage::IndObj.new( |%ast);
+my $ind-obj = PDF::IO::IndObj.new( |%ast);
 is $ind-obj.obj-num, 16, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $color-space-obj = $ind-obj.object;
@@ -43,7 +43,7 @@ $input = "10 0 obj [/ICCBased << /N 3 /Alternate /DeviceRGB >>] endobj";
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
 %ast = $/.ast;
-$ind-obj = PDF::Storage::IndObj.new( |%ast);
+$ind-obj = PDF::IO::IndObj.new( |%ast);
 is $ind-obj.obj-num, 10, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 $color-space-obj = $ind-obj.object;
@@ -58,7 +58,7 @@ $input = "11 0 obj [ /Indexed /DeviceRGB 255 < 000000 FF0000 00FF00 0000FF B5734
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
 %ast = $/.ast;
-$ind-obj = PDF::Storage::IndObj.new( |%ast);
+$ind-obj = PDF::IO::IndObj.new( |%ast);
 is $ind-obj.obj-num, 11, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 $color-space-obj = $ind-obj.object;
@@ -82,7 +82,7 @@ my $reader = class { has $.auto-deref = False }.new;
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
 %ast = $/.ast;
-$ind-obj = PDF::Storage::IndObj.new( |%ast, :$reader);
+$ind-obj = PDF::IO::IndObj.new( |%ast, :$reader);
 is $ind-obj.obj-num, 5, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 $color-space-obj = $ind-obj.object;
@@ -111,7 +111,7 @@ $input = q:to"--END-OBJ--";
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
 %ast = $/.ast;
-$ind-obj = PDF::Storage::IndObj.new( |%ast, :$reader);
+$ind-obj = PDF::IO::IndObj.new( |%ast, :$reader);
 $color-space-obj = $ind-obj.object;
 isa-ok $color-space-obj, ::('PDF')::('ColorSpace::DeviceN');
 is-json-equiv $color-space-obj.TintTransform, (:ind-ref[1, 0]), 'TintTransform accessor';
@@ -126,9 +126,9 @@ does-ok $orange-seperation, ::('PDF')::('ColorSpace::Separation'), 'seperation (
 
 # build from scratch
 use PDF::Function::Exponential;
-my $exp-func = PDF::Function::Exponential.new: { :Domain[ 0, 1], :Range[flat (0.0, 1.0) xx 4], :C0[0.0 xx 4], :C1[0.85, 0.24, 0.0, 0.0], :N(1.0) };
+my $exp-func = PDF::Function::Exponential.new: :dict{ :Domain[ 0, 1], :Range[flat (0.0, 1.0) xx 4], :C0[0.0 xx 4], :C1[0.85, 0.24, 0.0, 0.0], :N(1.0) };
 is $exp-func.FunctionType, 2, '$exp-func.FunctionType';
-my $cs1 = ::('PDF')::('ColorSpace::Separation').new: [ 'Separation', 'My Spot 1', :name<DeviceCMYK>, $exp-func ];
+my $cs1 = ::('PDF')::('ColorSpace::Separation').new: :array[ 'Separation', 'My Spot 1', :name<DeviceCMYK>, $exp-func ];
 is $cs1.Name, 'My Spot 1', 'cs1.Name';
 does-ok $cs1.Name,::('PDF::DAO::Name'), 'cs1.Name';
 is-deeply $cs1.TintTransform, $exp-func, 'cs1.TintTransform';

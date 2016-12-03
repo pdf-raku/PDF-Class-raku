@@ -1,5 +1,6 @@
 use v6;
 use Test;
+use PDF::Content::Util::TransformMatrix; # give rakudo a helping hand
 use PDF;
 
 # ensure consistant document ID generation

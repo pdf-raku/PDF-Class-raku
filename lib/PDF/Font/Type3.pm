@@ -18,7 +18,7 @@ class PDF::Font::Type3
     has PDF::DAO::Stream %.CharProcs is entry(:required);        #| (Required) A dictionary in which each key is a character name and the value associated with that key is a content stream that constructs and paints the glyph for that character.
 
     use PDF::Encoding
-    my subset NameOrEncoding of Any where PDF::DAO::Name | PDF::Encodiing;
+    my subset NameOrEncoding where PDF::DAO::Name | PDF::Encodiing;
     has NameOrEncoding $.Encoding is entry(:required); #| (Required) An encoding dictionary whose Differences array specifies the complete character encoding for this font
 
     has UInt $.FirstChar is entry(:required);          #| (Required) The first character code defined in the font’s Widths array

@@ -11,7 +11,7 @@ role PDF::Field::Choice
     use PDF::DAO::TextString;
 
     my subset ArrayOfTextStrings of Array where { !.first( !*.isa(PDF::DAO::TextString) ) }
-    my subset FieldOption of Any where ArrayOfTextStrings | PDF::DAO::TextString;
+    my subset FieldOption where ArrayOfTextStrings | PDF::DAO::TextString;
     multi sub coerce(Str $s is rw, FieldOption) {
 	PDF::DAO.coerce($s, PDF::DAO::TextString)
     }

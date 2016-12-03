@@ -136,7 +136,7 @@ role PDF::Field
     has PDF::DAO::TextString $.DS is entry;     #| Optional; PDF 1.5) A default style string
 
     use PDF::DAO::Stream;
-    my subset TextOrStream of Any where PDF::DAO::TextString | PDF::DAO::Stream;
+    my subset TextOrStream where PDF::DAO::TextString | PDF::DAO::Stream;
     multi sub coerce(Str $value is rw, TextOrStream) {
 	$value = PDF::DAO.coerce( $value, PDF::DAO::TextString );
     }

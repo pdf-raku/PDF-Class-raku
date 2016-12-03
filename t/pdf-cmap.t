@@ -4,7 +4,7 @@ use Test;
 use PDF;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
-use PDF::Storage::IndObj;
+use PDF::IO::IndObj;
 
 my $input = q:to"--END--";
 22 0 obj <<
@@ -28,7 +28,7 @@ PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed: $input";
 my %ast = $/.ast;
 
-my $ind-obj = PDF::Storage::IndObj.new( :$input, |%ast );
+my $ind-obj = PDF::IO::IndObj.new( :$input, |%ast );
 my $cmap-obj = $ind-obj.object;
 isa-ok $cmap-obj, ::('PDF::CMap');
 is $cmap-obj.Type, 'CMap', 'CMap Type';

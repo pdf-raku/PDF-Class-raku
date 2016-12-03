@@ -2,7 +2,7 @@ use v6;
 use PDF::DAO::Tie::Hash;
 
 # See [PDF 1.7 TABLE 8.2 Destination syntax]
-my subset NumNull of Any where { .does(Numeric) || !.defined };  #| UInt value or null
+my subset NumNull where { .does(Numeric) || !.defined };  #| UInt value or null
 multi sub is-destination($page, 'XYZ', NumNull $left,
 			 NumNull $top, NumNull $zoom)        { True }
 multi sub is-destination($page, 'Fit')                       { True }
@@ -73,7 +73,7 @@ role PDF::Action
     }
 
     my subset NextActionArray of Array where { !.first( !*.isa(PDF::Action) ) }
-    my subset NextAction of Any where PDF::Action | NextActionArray;
+    my subset NextAction where PDF::Action | NextActionArray;
 
     multi sub coerce(Hash $actions, NextAction) {
       PDF::DAO.coerce( $_, PDF::Action )

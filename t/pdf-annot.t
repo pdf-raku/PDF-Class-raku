@@ -5,7 +5,7 @@ use PDF;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::Grammar::Test :is-json-equiv;
-use PDF::Storage::IndObj;
+use PDF::IO::IndObj;
 
 # ensure consistant document ID generation
 srand(123456);
@@ -27,7 +27,7 @@ my %ast = $/.ast;
 
 my $reader = class { has $.auto-deref = False }.new;
 
-my $ind-obj = PDF::Storage::IndObj.new( :$input, |%ast, :$reader );
+my $ind-obj = PDF::IO::IndObj.new( :$input, |%ast, :$reader );
 my $text-annot = $ind-obj.object;
 isa-ok $text-annot, ::('PDF::Annot::Text');
 is-json-equiv $text-annot.Rect, [ 100, 100, 300, 200 ], '.Rect';
@@ -66,7 +66,7 @@ PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed: $input";
 %ast = $/.ast;
 
-$ind-obj = PDF::Storage::IndObj.new( :$input, |%ast, :$reader );
+$ind-obj = PDF::IO::IndObj.new( :$input, |%ast, :$reader );
 my $link-annot = $ind-obj.object;
 isa-ok $link-annot, ::('PDF::Annot::Link');
 is $link-annot.Type, 'Annot', 'Annot with /Type defaulted';

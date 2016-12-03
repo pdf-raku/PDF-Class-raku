@@ -13,7 +13,7 @@ class PDF::ColorSpace::DeviceN
 
     has PDF::DAO::Name @.Names is index(1, :required);
 
-    subset ArrayOrName of Any where Array | PDF::DAO::Name;
+    subset ArrayOrName where Array | PDF::DAO::Name;
     has ArrayOrName $.AlternateSpace is index(2, :required);
 
     use PDF::Function;
