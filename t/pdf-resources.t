@@ -1,6 +1,7 @@
 use v6;
 use Test;
 
+use PDF;
 use PDF::IO::IndObj;
 use PDF::Type;
 use PDF::Grammar::Test :is-json-equiv;

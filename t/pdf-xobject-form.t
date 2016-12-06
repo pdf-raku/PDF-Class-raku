@@ -96,4 +96,4 @@ $page.graphics: {
     }
 }
 
-$pdf.save-as('t/pdf-xobject-form.pdf');
+$pdf.save-as('t/pdf-xobject-form.pdf', :!info);

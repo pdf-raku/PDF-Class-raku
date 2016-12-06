@@ -2,7 +2,7 @@ use v6;
 
 use PDF::DAO::Type::PDF;
 
-#| Doc entry-point. either a trailer dict or an XRef stream
+#| PDF entry-point. either a trailer dict or an XRef stream
 class PDF:ver<0.0.3> #:api<PDF-1.7>
     is PDF::DAO::Type::PDF {
 
@@ -31,7 +31,7 @@ class PDF:ver<0.0.3> #:api<PDF-1.7>
 	$doc;
     }
 
-    method save-as($spec, Bool :$update is copy, |c) {
+    method save-as($spec, Bool :$update is copy, Bool :$info = True, |c) {
 
 	if !$update and self.reader and my $sig-flags = self.Root.?AcroForm.?SigFlags {
             constant AppendOnly = 2;
@@ -49,7 +49,30 @@ class PDF:ver<0.0.3> #:api<PDF-1.7>
 	    }
 	}
 
-	nextwith($spec, :$update, |c);
+        if $info {
+            my $now = DateTime.now;
+            my $Info = self.Info //= {};
+            $Info.Producer //= "Perl 6 PDF {self.^ver}";
+            with self.reader {
+                # updating
+                $Info.ModDate = $now;
+            }
+            else {
+                # creating
+                $Info.CreationDate //= $now
+            }
+        }
+	nextwith($spec, :!info, :$update, |c);
+    }
+
+    method update(Bool :$info = True, |c) {
+        if $info {
+            # for the benefit of the test suite
+            my $now = DateTime.now;
+            my $Info = self.Info //= {};
+            $Info.ModDate = $now;
+        }
+        nextsame;
     }
 
     method cb-init {

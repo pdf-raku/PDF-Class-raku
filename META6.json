@@ -2,6 +2,7 @@
     "perl"        : "6.*",
     "name"        : "PDF",
     "version"     : "0.0.3",
+    "auth"        : "github:p6-pdf",
     "api"         : "PDF-1.7",
     "description" : "PDF manipulation library",
     "depends"     : [ "PDF::IO", "PDF::Grammar", "PDF::Content" ],

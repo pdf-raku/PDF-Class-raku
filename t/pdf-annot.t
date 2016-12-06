@@ -50,7 +50,7 @@ $page.gfx.TextMove(50, 50);
 $page.gfx.say('Page with an open annotation');
 $page.gfx.EndText;
 
-$pdf.save-as('t/pdf-annot.pdf');
+$pdf.save-as('t/pdf-annot.pdf', :!info);
 
 $input = q:to"--END--";
 93 0 obj <<

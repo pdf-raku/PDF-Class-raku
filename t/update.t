@@ -10,12 +10,12 @@ srand(123456);
 my $pdf = PDF.open('t/update.pdf');
 my $new-page = $pdf.Pages.add-page;
 $new-page.gfx.say( 'New Last Page!!' );
-ok $pdf.update, 'update';
+ok $pdf.update(:!info), 'update';
 
 $pdf = PDF.open('t/update.pdf');
 is $pdf.page-count, 2, 'pdf now has two pages';
 
-ok $pdf.save-as('t/pdf/update-resaved.json'), 'save-as json';
+ok $pdf.save-as('t/pdf/update-resaved.json', :!info), 'save-as json';
 
 $pdf = PDF.open('t/pdf/update-resaved.json');
 is $pdf<Info><Author>, 't/helloworld.t', '$pdf<Info><Author>';

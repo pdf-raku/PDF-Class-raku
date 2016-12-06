@@ -1,6 +1,5 @@
 use v6;
 
-use PDF::Type; # just to help rakudo
 use PDF::DAO::Tie;
 use PDF::DAO::Tie::Hash;
 

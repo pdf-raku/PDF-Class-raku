@@ -81,13 +81,17 @@ $page.graphics: -> $gfx {
     }
 }
 
+sub deg2rad(Numeric \deg) {
+    return deg * pi / 180;
+}
+
 $page.graphics: {
     $page.text: {
          use PDF::Content::Ops :TextMode;
         .font = ( $header-font, 16);
         .TextRender = TextMode::OutlineText;
         .LineWidth = .5;
-        .text-transform( :skew[0, 12] );
+        .text-transform( :skew[0, deg2rad(12)] );
         .text-transform( :translate[50, 550] );
         .say('Outline Slanted Text @(50,550)', :width(150));
     }
@@ -102,11 +106,11 @@ $page.text: {
 my $info = $pdf.Info = {}
 $info.Author = 't/helloworld.t';
 $info.Creator = 'PDF::Tools';
-$info.CreationDate = DateTime.new( :year(2015), :month(12), :day(25) );
+$info.CreationDate = DateTime.new: :year(2015), :month(12), :day(25);
 skip '$pdf.Info<Author> - not completing';
 ##is $pdf.Info<Author>, 't/helloworld.t', '$root.Info accessor';
 ok $pdf.save-as('t/helloworld.pdf'), '.save-as';
-ok $pdf.save-as('t/helloworld-compressed.pdf', :compress), '.save-as( :compress )';
+ok $pdf.save-as('t/helloworld-compressed.pdf', :compress, :!info), '.save-as( :compress )';
 throws-like { $pdf.wtf }, X::Method::NotFound;
 
 lives-ok {$pdf = PDF.open: 't/helloworld-compressed.pdf'}, 'pdf reload lives';
@@ -126,6 +130,6 @@ is-deeply $contents-ast[*-1], (:ET[]), '.contents last elem';
 my $gfx = $page.gfx;
 is-json-equiv $gfx.ops[*-3 .. *], $(:Tj[{:literal("Hello, world!")}], "T*" => [], :ET[]), '$page.gfx.ops (tail)';
 
-lives-ok { PDF.new.save-as: "t/pdf/no-pages.pdf" }, 'create empty PDF';
+lives-ok { PDF.new.save-as: "t/pdf/no-pages.pdf", :!info }, 'create empty PDF';
 
 done-testing;

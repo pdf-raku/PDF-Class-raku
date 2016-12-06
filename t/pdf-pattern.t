@@ -116,4 +116,4 @@ $page.gfx.ops: [
     :Q[],               # Graphics restore
     ];
 
-$pdf.save-as('t/pdf-pattern.pdf');
+$pdf.save-as('t/pdf-pattern.pdf', :!info);

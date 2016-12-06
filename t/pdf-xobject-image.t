@@ -94,4 +94,4 @@ for <top center bottom> -> $valign {
     $x += 60;
 }
 
-$pdf.save-as('t/pdf-xobject-image.pdf');
+$pdf.save-as('t/pdf-xobject-image.pdf', :!info);
