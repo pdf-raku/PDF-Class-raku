@@ -1,6 +1,7 @@
 use v6;
 
 use PDF::XObject;
+use PDF::Content::XObject;
 use PDF::Content::Resourced;
 use PDF::Content::Graphics;
 
@@ -8,6 +9,7 @@ use PDF::Content::Graphics;
 #| See [PDF Spec 1.7 4.9 Form XObjects]
 class PDF::XObject::Form
     is PDF::XObject
+    does PDF::Content::XObject
     does PDF::Content::Graphics
     does PDF::Content::Resourced {
 

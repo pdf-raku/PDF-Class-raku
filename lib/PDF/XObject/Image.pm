@@ -1,6 +1,7 @@
 use v6;
 
 use PDF::XObject;
+use PDF::Content::XObject;
 use PDF::Content::Image;
 
 #| XObjects
@@ -8,7 +9,8 @@ use PDF::Content::Image;
 #| See [PDF 1.7 Section 4.8 - Images ]
 class PDF::XObject::Image
     is PDF::XObject
-    is PDF::Content::Image {
+    is PDF::Content::Image
+    does PDF::Content::XObject {
 
     use PDF::DAO::Tie;
     use PDF::DAO::Stream;
