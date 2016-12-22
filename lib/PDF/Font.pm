@@ -1,7 +1,7 @@
 use v6;
 
 use PDF::DAO::Dict;
-use PDF::Type;
+use PDF::Doc::Type;
 use PDF::Content::Font;
 
 # /Type /Font - Describes a font
@@ -9,7 +9,7 @@ use PDF::Content::Font;
 class PDF::Font
     is PDF::DAO::Dict
     does PDF::Content::Font
-    does PDF::Type {
+    does PDF::Doc::Type {
 
     use PDF::DAO::Tie;
     use PDF::DAO::Name;

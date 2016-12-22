@@ -1,11 +1,11 @@
-# perl6-PDF
+# perl6-PDF-Doc
 
 This Perl 6 module is under construction as a general purpose PDF manipulation library.
 
 ### Page Layout & Viewer Preferences
 ```
-    use PDF;
-    my $pdf = PDF.new;
+    use PDF::Doc;
+    my $pdf = PDF::Doc.new;
 
     my $doc = $pdf.Root;
     $doc.PageLayout = 'TwoColumnLeft';
@@ -20,8 +20,8 @@ This Perl 6 module is under construction as a general purpose PDF manipulation l
 ### AcroForm Fields
 
 ```
-use PDF;
-my $doc = PDF.open: "t/pdf/samples/OoPdfFormExample.pdf";
+use PDF::Doc;
+my $doc = PDF::Doc.open: "t/pdf/samples/OoPdfFormExample.pdf";
 with my $acroform = $doc.Root.AcroForm {
     my @fields = $acroform.fields;
     # display field names and values
@@ -48,8 +48,8 @@ the following example we cast the PageMode to a name, so it appears as a name
 in the out put stream `/UseToes`, rather than a string `(UseToes)`.
 
 ```
-    use PDF;
-    my $pdf = PDF.new;
+    use PDF::Doc;
+    my $pdf = PDF::Doc.new;
 
     my $doc = $pdf.Root;
     try {
@@ -63,7 +63,7 @@ in the out put stream `/UseToes`, rather than a string `(UseToes)`.
 
 ## Development Status
 
-The PDF module is under construction and not yet functionally complete.
+The PDF::Doc module is under construction and not yet functionally complete.
 
 - master: Latest tested: Rakudo version 2015.12-199-g5ed58f6 built on MoarVM version 2015.12-29-g8079ca5
 implementing Perl 6.c.

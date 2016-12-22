@@ -3,7 +3,7 @@ use Test;
 
 plan 39;
 
-use PDF::Type;
+use PDF::Doc;
 use PDF::IO::IndObj;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;

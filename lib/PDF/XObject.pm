@@ -1,14 +1,14 @@
 use v6;
 
 use PDF::DAO::Stream;
-use PDF::Type;
+use PDF::Doc::Type;
 
 # /Type /XObject - describes an abstract XObject. See also
 # PDF::XObject::Form, PDF::XObject::Image
 
 class PDF::XObject
     is PDF::DAO::Stream
-    does PDF::Type {
+    does PDF::Doc::Type {
 
 	use PDF::DAO::Tie;
 	my subset Name-XObject of PDF::DAO::Name where 'XObject';

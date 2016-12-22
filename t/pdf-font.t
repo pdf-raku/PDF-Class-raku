@@ -3,7 +3,7 @@ use Test;
 
 plan 20;
 
-use PDF::Type;
+use PDF::Doc;
 use PDF::IO::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
@@ -37,7 +37,6 @@ is $object.Name, 'F1', '$.Name accessor';
 is $object.BaseFont, 'Helvetica', '$.BaseFont accessor';
 is $object.Encoding, 'MacRomanEncoding', '$.Encoding accessor';
 is-json-equiv $ind-obj.ast, %ast, 'ast regeneration';
-
 
 sub to-doc($font-obj) {
     my $dict = $font-obj.to-dict;

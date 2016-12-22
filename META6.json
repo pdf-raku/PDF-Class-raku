@@ -1,18 +1,18 @@
 {
     "perl"        : "6.*",
-    "name"        : "PDF",
+    "name"        : "PDF::Doc",
     "version"     : "0.0.3",
     "auth"        : "github:p6-pdf",
     "api"         : "PDF-1.7",
-    "description" : "PDF manipulation library",
-    "depends"     : [ "PDF::IO", "PDF::Grammar", "PDF::Content" ],
+    "description" : "PDF Document Object Model",
+    "depends"     : [ "PDF", "PDF::Grammar", "PDF::Content" ],
     "source-url"  : "git://github.com/p6-pdf/p6-PDF-Struct.git",
     "provides"    : {
 
 
-        "PDF" : "lib/PDF.pm",
-        "PDF::Type" : "lib/PDF/Type.pm",
-        "PDF::Type::Delegator" : "lib/PDF/Delegator.pm",
+        "PDF::Doc" : "lib/PDF/Doc.pm",
+        "PDF::Doc::Type" : "lib/PDF/Doc/Type.pm",
+        "PDF::Doc::Delegator" : "lib/PDF/Doc/Delegator.pm",
 
         "PDF::AcroForm" : "lib/PDF/AcroForm.pm",
 

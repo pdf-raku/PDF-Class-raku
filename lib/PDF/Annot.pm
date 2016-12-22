@@ -1,13 +1,13 @@
 use v6;
 
 use PDF::DAO::Dict;
-use PDF::Type;
+use PDF::Doc::Type;
 
 #| /Type /Annot Annotations
 #| See [PDF 1.7 Section 8.4.1 - Annotation Dictionaries ]
 class PDF::Annot
     is PDF::DAO::Dict
-    does PDF::Type {
+    does PDF::Doc::Type {
 
     use PDF::DAO::Tie;
     use PDF::DAO::Name;

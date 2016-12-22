@@ -1,6 +1,6 @@
 use v6;
 use Test;
-use PDF::Type::Delegator;
+use PDF::Doc::Delegator;
 
 =begin pod
 
@@ -17,7 +17,7 @@ extension classes
 
 plan 10;
 
-class MyDelegator is PDF::Type::Delegator {
+class MyDelegator is PDF::Doc::Delegator {
     method class-paths {
          <t::Doc PDF PDF::DAO::Type>
     }

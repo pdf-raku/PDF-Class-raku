@@ -1,15 +1,15 @@
 use v6;
 
-use PDF::DAO::Type::PDF;
+use PDF;
 
 #| PDF entry-point. either a trailer dict or an XRef stream
-class PDF:ver<0.0.3> #:api<PDF-1.7>
-    is PDF::DAO::Type::PDF {
+class PDF::Doc:ver<0.0.3> #:api<PDF-1.7>
+    is PDF {
 
     # base class declares: $.Size, $.Encrypt, $.Info, $.ID
     use PDF::DAO::Tie;
-    use PDF::Type;
-    my subset Catalog of PDF::Type where { .type eq 'Catalog' };
+    use PDF::Doc::Type;
+    my subset Catalog of PDF::Doc::Type where { .type eq 'Catalog' };
     has Catalog $.Root is entry(:required,:indirect);
 
     method type { 'PDF' }
@@ -82,7 +82,7 @@ class PDF:ver<0.0.3> #:api<PDF-1.7>
         }
     }
 
-    my subset Pages of PDF::Type where { .type eq 'Pages' };
+    my subset Pages of PDF::Doc::Type where { .type eq 'Pages' };
     method Pages returns Pages { self.Root.Pages }
 
     for <page add-page delete-page page-count> {

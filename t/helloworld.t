@@ -3,12 +3,12 @@ use Test;
 
 use PDF::Content::Util::TransformMatrix; # give rakudo a helping hand
 use PDF::Grammar::Test :is-json-equiv;
-use PDF;
+use PDF::Doc;
 
 # ensure consistant document ID generation
 srand(123456);
 
-my $pdf = PDF.new;
+my $pdf = PDF::Doc.new;
 my $page = $pdf.add-page;
 $page.MediaBox = [0, 0, 595, 842];
 
@@ -113,7 +113,7 @@ ok $pdf.save-as('t/helloworld.pdf'), '.save-as';
 ok $pdf.save-as('t/helloworld-compressed.pdf', :compress, :!info), '.save-as( :compress )';
 throws-like { $pdf.wtf }, X::Method::NotFound;
 
-lives-ok {$pdf = PDF.open: 't/helloworld-compressed.pdf'}, 'pdf reload lives';
+lives-ok {$pdf = PDF::Doc.open: 't/helloworld-compressed.pdf'}, 'pdf reload lives';
 isa-ok $pdf.reader.trailer, PDF, 'trailer type';
 $page = $pdf.page: 1;
 isa-ok $page, ::('PDF::Page'), 'first pages';
@@ -130,6 +130,6 @@ is-deeply $contents-ast[*-1], (:ET[]), '.contents last elem';
 my $gfx = $page.gfx;
 is-json-equiv $gfx.ops[*-3 .. *], $(:Tj[{:literal("Hello, world!")}], "T*" => [], :ET[]), '$page.gfx.ops (tail)';
 
-lives-ok { PDF.new.save-as: "t/pdf/no-pages.pdf", :!info }, 'create empty PDF';
+lives-ok { PDF::Doc.new.save-as: "t/pdf/no-pages.pdf", :!info }, 'create empty PDF';
 
 done-testing;

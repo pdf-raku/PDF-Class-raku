@@ -1,13 +1,13 @@
 use v6;
 
 use PDF::DAO::Dict;
-use PDF::Type;
+use PDF::Doc::Type;
 
 # /Type /OutputIntent
 
 class PDF::OutputIntent
     is PDF::DAO::Dict
-    does PDF::Type['Type', 'S'] {
+    does PDF::Doc::Type['Type', 'S'] {
 
     use PDF::DAO::Tie;
     use PDF::DAO::Name;

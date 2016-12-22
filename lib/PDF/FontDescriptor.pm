@@ -2,13 +2,13 @@ use v6;
 
 use PDF::DAO::Dict;
 use PDF::DAO::Stream;
-use PDF::Type;
+use PDF::Doc::Type;
 
 # /Type /FontDescriptor - the FontDescriptor dictionary
 
 class PDF::FontDescriptor
     is PDF::DAO::Dict
-    does PDF::Type {
+    does PDF::Doc::Type {
 
     use PDF::DAO::Tie;
     use PDF::DAO::Name;

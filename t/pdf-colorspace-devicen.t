@@ -1,6 +1,6 @@
 use v6;
 use Test;
-use PDF;
+use PDF::Doc;
 use PDF::Grammar::Test :is-json-equiv;
 
 my $doc = PDF.open: "t/pdf/colorspace-devicen.in";

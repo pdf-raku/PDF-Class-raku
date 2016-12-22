@@ -2,10 +2,10 @@ use v6;
 
 use PDF::DAO::Delegator;
 
-class PDF::Type::Delegator {...}
-PDF::DAO.delegator = PDF::Type::Delegator;
+class PDF::Doc::Delegator {...}
+PDF::DAO.delegator = PDF::Doc::Delegator;
 
-class PDF::Type::Delegator
+class PDF::Doc::Delegator
     is PDF::DAO::Delegator {
 
     use PDF::DAO::Util :from-ast;
@@ -25,7 +25,7 @@ class PDF::Type::Delegator
         my Bool $resolved;
 
 	for self.class-paths -> $class-path {
-            PDF::DAO.required($class-path, $subclass);
+            PDF::DAO.required($class-path ~ '::' ~ $subclass);
             $handler-class = ::($class-path)::($subclass);
             $resolved = True;
             last;

@@ -1,11 +1,11 @@
 use v6;
 
 use PDF::DAO::Stream;
-use PDF::Type;
+use PDF::Doc::Type;
 
 class PDF::Metadata::XML
     is PDF::DAO::Stream
-    does PDF::Type {
+    does PDF::Doc::Type {
 
     use PDF::DAO::Tie;
     use PDF::DAO::Name;

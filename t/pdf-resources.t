@@ -1,9 +1,9 @@
 use v6;
 use Test;
 
-use PDF;
+use PDF::Doc;
 use PDF::IO::IndObj;
-use PDF::Type;
+use PDF::Doc::Type;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;

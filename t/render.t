@@ -1,13 +1,13 @@
 use v6;
-use PDF::Content::Util::TransformMatrix; # give rakudo a helping hand
-
-use PDF;
-use PDF::Grammar::Test :is-json-equiv;
 use Test;
-
 plan 11;
 
-my $pdf = PDF.open: "t/helloworld.pdf";
+use PDF::Content::Util::TransformMatrix; # give rakudo a helping hand
+
+use PDF::Doc;
+use PDF::Grammar::Test :is-json-equiv;
+
+my $pdf = PDF::Doc.open: "t/helloworld.pdf";
 my $page = $pdf.page: 1;
 
 my %seen;
