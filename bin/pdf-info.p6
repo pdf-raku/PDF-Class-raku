@@ -1,9 +1,9 @@
 #!/usr/bin/env perl6
 use v6;
 
-use PDF;
-use PDF::Storage::Input::Str;
-use PDF::Storage::Input::IOH;
+use PDF::Doc;
+use PDF::IO::Input::Str;
+use PDF::IO::Input::IOH;
 
 multi sub pretty-print(DateTime $dt --> Str) {
     sprintf('%s %s %02d %02d:%02d:%02d %04d',
@@ -22,7 +22,7 @@ multi sub pretty-print(Mu $val --> Str) is default {
 
 multi sub MAIN(Bool :$version! where $_) {
     # nyi in rakudo https://rt.perl.org/Ticket/Display.html?id=125017
-    say "PDF {PDF.^version}";
+    say "PDF::Doc {PDF::Doc.^version}";
     say "this script was ported from the CAM::PDF PDF Manipulation library";
     say "see - https://metacpan.org/pod/CAM::PDF";
 }
@@ -36,10 +36,10 @@ multi sub MAIN(Str $infile,           #| input PDF
     ) {
 
     my $input = $infile eq '-'
-	?? PDF::Storage::Input::Str.new( :value($*IN.slurp-rest( :enc<latin-1> )) )
-	!! PDF::Storage::Input::IOH.new( :value($infile.IO.open( :enc<latin-1> )) );
+	?? PDF::IO::Input::Str.new( :value($*IN.slurp-rest( :enc<latin-1> )) )
+	!! PDF::IO::Input::IOH.new( :value($infile.IO.open( :enc<latin-1> )) );
 
-    my $doc = PDF.open( $input, :$password );
+    my $doc = PDF::Doc.open( $input, :$password );
 
     my UInt $size = $input.codes;
     my UInt $pages = $doc.page-count;

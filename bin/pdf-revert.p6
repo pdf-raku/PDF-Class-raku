@@ -1,6 +1,6 @@
 #!/usr/bin/env perl6
 use v6;
-use PDF;
+use PDF::Doc;
 
 sub MAIN(Str $infile,              #| input PDF
 	 Str :$password = '',      #| password for the input PDF, if encrypted
@@ -12,7 +12,7 @@ sub MAIN(Str $infile,              #| input PDF
         ?? $*IN
 	!! $infile;
 
-    my $doc = PDF.open( $input, :$password);
+    my $doc = PDF::Doc.open( $input, :$password);
 
     my UInt $revs = + $doc.reader.xrefs;
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env perl6
 use v6;
 
-use PDF;
+use PDF::Doc;
 use PDF::Graphics;
 use PDF::Annot;
 
@@ -22,7 +22,7 @@ sub MAIN(Str $infile,               #| input PDF
 	 Str  :$exclude,            #| excluded entries: Entry1,Entry2
          ) {
 
-    my $doc = PDF.open( $infile, :$password );
+    my $doc = PDF::Doc.open( $infile, :$password );
     @*exclude = $exclude.split(/:s ',' /)
     	      if $exclude;
     check( $doc, :ent<xref> );
