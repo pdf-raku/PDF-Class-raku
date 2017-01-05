@@ -10,7 +10,7 @@ use PDF::Content::Image;
 class PDF::XObject::Image
     is PDF::XObject
     is PDF::Content::Image
-    does PDF::Content::XObject {
+    does PDF::Content::XObject['Image'] {
 
     use PDF::DAO::Tie;
     use PDF::DAO::Stream;

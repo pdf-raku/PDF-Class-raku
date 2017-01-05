@@ -1,11 +1,13 @@
 use v6;
 
 use PDF::XObject;
+use PDF::Content::XObject;
 
 #| Postscript XObjects /Type XObject /Subtype PS
 #| See [PDF 1.7 Section 4.7.1 PostScript XObjects]
 class PDF::XObject::PS
-    is PDF::XObject {
+    is PDF::XObject
+    does PDF::Content::XObject[PS] {
 
     use PDF::DAO::Tie;
     use PDF::DAO::Stream;
