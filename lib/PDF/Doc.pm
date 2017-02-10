@@ -1,9 +1,9 @@
 use v6;
 
-use PDF;
+use PDF:ver(v0.2.1..*);
 
 #| PDF entry-point. either a trailer dict or an XRef stream
-class PDF::Doc:ver<0.0.3> #:api<PDF-1.7>
+class PDF::Doc #:api<PDF-1.7>
     is PDF {
 
     # base class declares: $.Size, $.Encrypt, $.Info, $.ID
@@ -52,7 +52,7 @@ class PDF::Doc:ver<0.0.3> #:api<PDF-1.7>
         if $info {
             my $now = DateTime.now;
             my $Info = self.Info //= {};
-            $Info.Producer //= "Perl 6 PDF {self.^ver}";
+            $Info.Producer //= "Perl 6 PDF::Doc {self.^ver}";
             with self.reader {
                 # updating
                 $Info.ModDate = $now;

@@ -18,8 +18,8 @@ role PDF::Pattern
     has PatternTypeInt $.PatternType is entry(:required);  #| (Required) A code identifying the type of pattern that this dictionary describes; must be 1 for a tiling pattern, or 2 for a shading pattern.
     has Numeric @.Matrix is entry(:len(6));                #| (Optional) An array of six numbers specifying the pattern matrix (see Section 4.6.1, “General Properties of Patterns”). Default value: the identity matrix [ 1 0 0 1 0 0 ].
 
-    my constant PatternTypes = %( :Tiling(1), :Shading(2) );
-    my constant PatternNames = %( PatternTypes.pairs.invert );
+    my enum PatternTypes is export(:PatternTypes) « :Tiling(1) :Shading(2) »;
+    my constant PatternNames = %( PatternTypes.enums.invert );
 
     method type    { 'Pattern' }
     method subtype { PatternNames[ self<PatternType> ] }
@@ -56,12 +56,12 @@ role PDF::Pattern
                 if $1 {
                     my Str $subtype = ~$1;
 		    die "$class-name has unknown subtype $subtype"
-			unless PatternTypes{$subtype}:exists;
+			unless PatternTypes.enums{$subtype}:exists;
 
-		    self<PatternType> //= PatternTypes{$subtype};
+		    self<PatternType> //= PatternTypes.enums{$subtype};
 
 		    die "conflict between class-name $class-name ($subtype) and /PatternType /{self<PatternType>.value}"
-			unless self<PatternType> == PatternTypes{$subtype};
+			unless self<PatternType> == PatternTypes.enums{$subtype};
                 }
 
                 last;
