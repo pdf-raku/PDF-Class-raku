@@ -32,11 +32,6 @@ with my $acroform = $doc.Root.AcroForm {
 
 ```
 
-See also:
-- PDF::AcroForm
-- PDF::Field
-- FDF (under construction), which handles import/export from FDF files.
-
 ## Raw Data Access
 
 In general, PDF provides accessors for safe access and update of PDF objects.
@@ -64,9 +59,6 @@ in the out put stream `/UseToes`, rather than a string `(UseToes)`.
 ## Development Status
 
 The PDF::Doc module is under construction and not yet functionally complete.
-
-- master: Latest tested: Rakudo version 2015.12-199-g5ed58f6 built on MoarVM version 2015.12-29-g8079ca5
-implementing Perl 6.c.
 
 # Bugs and Restrictions
 At this stage:
