@@ -36,7 +36,7 @@ $page.graphics: -> $gfx {
 
 	    $txt.font = [$font, $font-size];
 	    my $text-block = $txt.say( $para, :$width, :$align, :kern);
-	    isa-ok $text-block, ::('PDF::Content::Text::Block');
+	    isa-ok $text-block, (require ::('PDF::Content::Text::Block'));
 	    $x += 275;
         }
 
@@ -116,7 +116,7 @@ throws-like { $pdf.wtf }, X::Method::NotFound;
 lives-ok {$pdf = PDF::Doc.open: 't/helloworld-compressed.pdf'}, 'pdf reload lives';
 isa-ok $pdf.reader.trailer, PDF, 'trailer type';
 $page = $pdf.page: 1;
-isa-ok $page, ::('PDF::Page'), 'first pages';
+isa-ok $page, (require ::('PDF::Page')), 'first pages';
 is $page.Contents.Filter, 'FlateDecode', 'page stream is compressed';
 is $pdf.Info.Author, 't/helloworld.t', '$pdf.Info.Author reload';
 
@@ -128,7 +128,7 @@ is-deeply $contents-ast[0], (:q[]), '.contents first elem';
 is-deeply $contents-ast[*-1], (:ET[]), '.contents last elem';
 
 my $gfx = $page.gfx;
-is-json-equiv $gfx.ops[*-3 .. *], $(:Tj[{:literal("Hello, world!")}], "T*" => [], :ET[]), '$page.gfx.ops (tail)';
+is-json-equiv $gfx.ops[*-4 .. *], $(:Tj[{:literal("Hello, world!")}], :TL[:real(26.4)], "T*" => [], :ET[]), '$page.gfx.ops (tail)';
 
 lives-ok { PDF::Doc.new.save-as: "t/pdf/no-pages.pdf", :!info }, 'create empty PDF';
 

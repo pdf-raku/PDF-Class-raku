@@ -6,7 +6,7 @@
     "api"         : "PDF-1.7",
     "description" : "PDF Document Object Model",
     "depends"     : [ "PDF", "PDF::Grammar", "PDF::Content" ],
-    "source-url"  : "git://github.com/p6-pdf/p6-PDF-Struct.git",
+    "source-url"  : "git://github.com/p6-pdf/PDF-Doc-p6.git",
     "provides"    : {
 
 

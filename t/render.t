@@ -3,7 +3,7 @@ use Test;
 plan 11;
 
 use PDF::Content::Util::TransformMatrix; # give rakudo a helping hand
-
+use PDF::Content:ver(v0.0.5..*);
 use PDF::Doc;
 use PDF::Grammar::Test :is-json-equiv;
 
@@ -18,7 +18,7 @@ my sub callback($op, *@args, :$obj) {
    %seen{$op}++;
    given $op {
        when 'Do' {
-           does-ok $obj, ::('PDF::Content'), ':obj argument';
+           isa-ok $obj, PDF::Content, ':obj argument';
            is-json-equiv @args, [shift @img-seq], 'Do callback arguments';
        }
    }

@@ -41,7 +41,7 @@ my $ind-obj = PDF::IO::IndObj.new( |%ast, :$input);
 is $ind-obj.obj-num, 6, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $xform = $ind-obj.object;
-isa-ok $xform, ::('PDF')::('XObject::Form');
+isa-ok $xform, (require ::('PDF')::('XObject::Form'));
 is $xform.Type, 'XObject', '$.Type accessor';
 is $xform.Subtype, 'Form', '$.Subtype accessor';
 is-json-equiv $xform.Resources, { :ProcSet( [ <PDF> ] ) }, '$.Resources accessor';
@@ -66,7 +66,9 @@ is-deeply [$contents.lines], [
     '  BT',
     '    50 50 Td',
     '    0.5 0.95 0.5 rg',
-    '    /F1 16 Tf', '    17.6 TL', '    (Hello, again!) Tj',
+    '    /F1 16 Tf',
+    '    (Hello, again!) Tj',
+    '    17.6 TL', 
     '    T*',
     '  ET',
     'Q',

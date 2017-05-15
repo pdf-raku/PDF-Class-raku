@@ -32,7 +32,7 @@ my $ind-obj = PDF::IO::IndObj.new( |%ast, :$reader);
 is $ind-obj.obj-num, 4, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $page = $ind-obj.object;
-isa-ok $page, ::('PDF')::('Page');
+isa-ok $page, (require ::('PDF::Page'));
 is $page.Type, 'Page', '$.Type accessor';
 my $dummy-stream = PDF::DAO::Stream.new( :decoded('%dummy stream') );
 is $page<Parent>, (:ind-ref[3, 0]), '$page<Parent>';
@@ -46,7 +46,7 @@ is-deeply $page.content-streams, [$dummy-stream], '$.contents accessor';
 is-deeply $page.contents, '%dummy stream', '$.contents accessor';
 
 my $font = $page.core-font( 'Helvetica' );
-isa-ok $font, ::('PDF::Font::Type1');
+isa-ok $font, (require ::('PDF::Font::Type1'));
 is $font.font-obj.FontName, 'Helvetica', '.FontName';
 my $font-again = $page.core-font( 'Helvetica' );
 is-deeply $font-again, $font, 'core font caching';

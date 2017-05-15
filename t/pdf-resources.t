@@ -112,7 +112,7 @@ is-deeply $new-page.resource-key($fm2), 'Fm2', 'xobject form name';
 my $im1 = $new-page.use-resource( $image );
 is-deeply $new-page.resource-key($im1), 'Im1', 'xobject form name';
 
-my $font = ::('PDF::Font::Type1').new: { :BaseFont<Helvetica> };
+my $font = ::('PDF::Font::Type1').new: :dict{ :BaseFont<Helvetica> };
 my $f1 = $new-page.use-resource( $font );
 is-deeply $new-page.resource-key($f1), 'F1', 'font name';
 
@@ -136,11 +136,13 @@ my $gs-obj = $ind-obj.object;
 isa-ok $gs-obj, ::('PDF::ExtGState');
 is $gs-obj.Type, 'ExtGState', 'ExtGState Type';
 is-deeply $gs-obj.OP, False, 'ExtGState.OP';
-lives-ok {$gs-obj<OP> = 42}, 'Typechecking setter bypass';
-is-deeply $gs-obj<OP>, 42, 'Typechecking setter bypass';
-dies-ok {$gs-obj.OP}, 'Typechecking on gettter';
-lives-ok {$gs-obj.OP = False}, 'Type reassignment';
-dies-ok {$gs-obj.OP = 42}, 'Typechecking on assignment';
+quietly {
+    lives-ok {$gs-obj<OP> = 42}, 'Typechecking setter bypass';
+    is-deeply $gs-obj<OP>, 42, 'Typechecking setter bypass';
+    dies-ok {$gs-obj.OP}, 'Typechecking on gettter';
+    lives-ok {$gs-obj.OP = False}, 'Type reassignment';
+    dies-ok {$gs-obj.OP = 42}, 'Typechecking on assignment';
+}
 is-deeply $gs-obj.OP, False, 'ExtGState.OP';
 $gs-obj<OP> = False;
 lives-ok {$gs-obj<OP> = True}, 'Valid property assignment';
@@ -150,9 +152,9 @@ is $gs-obj.TR, (:ind-ref[36, 0]), 'ExtGState TR';
 $gs-obj.transparency = .5;
 is $gs-obj.CA, 0.5, 'transparency setter';
 is $gs-obj.ca, 0.5, 'transparency setter';
-lives-ok {$gs-obj.fill-alpha = .7}, 'transparency setter - alias';
-is $gs-obj.fill-alpha, .7, 'transparency getter - alias';
-is $gs-obj.stroke-alpha, .5, 'transparency getter - alias';
+lives-ok {$gs-obj.FillAlpha = .7}, 'transparency setter - alias';
+is $gs-obj.FillAlpha, .7, 'transparency getter - alias';
+is $gs-obj.StrokeAlpha, .5, 'transparency getter - alias';
 throws-like { $gs-obj.wtf }, X::Method::NotFound, 'ExtGState - unknown method';
 
 $gs-obj.BG = {};
