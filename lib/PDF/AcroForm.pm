@@ -14,7 +14,7 @@ role PDF::AcroForm
     use PDF::DAO;
 
     has PDF::Field @.Fields is entry(:required, :&coerce);    #| (Required) An array of references to the document’s root fields (those with no ancestors in the field hierarchy).
-    #| returns an inorder array of all desendant fields
+    #| returns an inorder array of all descendant fields
     method fields returns Seq {
 	my PDF::Field @fields;
 	for $.Fields.keys {

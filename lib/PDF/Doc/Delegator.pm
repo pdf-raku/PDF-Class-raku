@@ -77,9 +77,9 @@ class PDF::Doc::Delegator
 		| 'Polygon' | 'PolyLine' | 'Highlight' |' Underline' | 'Squiggly'
 		| 'StrikeOut' | 'Stamp' | 'Caret' | 'Ink' | 'Popup' | 'FileAttachment'
 		| 'Sound' | 'Movie' | 'Widget' | 'Screen' | 'PrinterMark' | 'TrapNet'
-		| 'Watermark' | '3D' { 'Annot' }
+		| 'Watermark' | '3D'      { 'Annot' }
 	    when 'PS' | 'Image' | 'Form'  { 'XObject' }
-	    default { Nil }
+	    default                       { Nil }
 	};
 
 	if $type {
@@ -92,7 +92,7 @@ class PDF::Doc::Delegator
     }
 
     #| Reverse lookup for classes when /Subtype is required but /Type is optional
-    multi method delegate(Hash :$dict where {.<S>:exists && .<S> ~~ 'GTS_PDFX' },) {
+    multi method delegate(Hash :$dict where {from-ast($_) ~~ 'GTS_PDFX' given .<S>},) {
 	    $.find-delegate('OutputIntent', 'GTS_PDFX');
     }
 
