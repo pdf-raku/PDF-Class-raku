@@ -2,10 +2,10 @@ use v6;
 
 use PDF::DAO::Delegator;
 
-class PDF::Doc::Delegator {...}
-PDF::DAO.delegator = PDF::Doc::Delegator;
+class PDF::Zen::Delegator {...}
+PDF::DAO.delegator = PDF::Zen::Delegator;
 
-class PDF::Doc::Delegator
+class PDF::Zen::Delegator
     is PDF::DAO::Delegator {
 
     use PDF::DAO::Util :from-ast;

@@ -1,13 +1,13 @@
 use v6;
 
 use PDF::DAO::Dict;
-use PDF::Doc::Type;
+use PDF::Zen::Type;
 
 # /Type /ExtGState
 
 class PDF::ExtGState
     is PDF::DAO::Dict
-    does PDF::Doc::Type {
+    does PDF::Zen::Type {
 
     use PDF::DAO::Tie;
     use PDF::DAO::Name;

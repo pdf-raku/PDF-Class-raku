@@ -4,8 +4,8 @@ use Test;
 plan 21;
 
 use PDF::Content::Util::TransformMatrix; # give rakudo a helping hand
-use PDF::Doc;
-use PDF::Doc::Type;
+use PDF::Zen;
+use PDF::Zen::Type;
 use PDF::IO::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
@@ -64,7 +64,7 @@ is-json-equiv $inline[0], (:BI[ :dict{ BPC => :int(8),
 is-json-equiv $inline[1], (:ID[ :encoded($snoopy.encoded) ]), 'second .content(:inline) op: :ID[...]';
 is-json-equiv $inline[2], (:EI[ ]), 'third .content(:inline) op: :EI[]';
 
-my $pdf = PDF::Doc.new;
+my $pdf = PDF::Zen.new;
 my $page = $pdf.add-page;
 $page.media-box = [0, 0, 220,220];
 $page.gfx.do($snoopy, 10, 15, :width(100), :height(190), :inline);

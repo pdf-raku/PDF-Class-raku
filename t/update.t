@@ -1,23 +1,23 @@
 use v6;
 use Test;
 use PDF::Content::Util::TransformMatrix; # give rakudo a helping hand
-use PDF::Doc;
+use PDF::Zen;
 
 # ensure consistant document ID generation
 srand(123456);
 
 't/helloworld.pdf'.IO.copy('t/update.pdf');
-my $pdf = PDF::Doc.open('t/update.pdf');
+my $pdf = PDF::Zen.open('t/update.pdf');
 my $new-page = $pdf.Pages.add-page;
 $new-page.gfx.say( 'New Last Page!!' );
 ok $pdf.update(:!info), 'update';
 
-$pdf = PDF::Doc.open('t/update.pdf');
+$pdf = PDF::Zen.open('t/update.pdf');
 is $pdf.page-count, 2, 'pdf now has two pages';
 
 ok $pdf.save-as('t/pdf/update-resaved.json', :!info), 'save-as json';
 
-$pdf = PDF::Doc.open('t/pdf/update-resaved.json');
+$pdf = PDF::Zen.open('t/pdf/update-resaved.json');
 is $pdf<Info><Author>, 't/helloworld.t', '$pdf<Info><Author>';
 is $pdf<Info><Creator>, 'PDF::Tools', '$pdf<Info><Creator>';
 ok my $p2 = $pdf.page(2), 'pdf reload from json';

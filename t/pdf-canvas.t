@@ -5,8 +5,8 @@ plan 2;
 srand(123456);
 
 use PDF::Content::Util::TransformMatrix; # give rakudo a helping hand
-use PDF::Doc;
-my PDF::Doc $pdf .= new;
+use PDF::Zen;
+my PDF::Zen $pdf .= new;
 my $page = $pdf.add-page;
 my $header-font = $page.core-font( :family<Helvetica>, :weight<bold> );
 

@@ -3,7 +3,7 @@ use Test;
 
 plan 20;
 
-use PDF::Doc;
+use PDF::Zen;
 use PDF::IO::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
@@ -67,5 +67,5 @@ my $sym-font = PDF::DAO.coerce( |%params );
 isa-ok $sym-font, ::('PDF::Font::Type1');
 is $sym-font.BaseFont, 'Symbol', '.BaseFont';
 ok !$sym-font.Encoding.defined, '!.Encoding';
-is $sym-font.encode("ΑΒΓ").join, "ABG", '.encode(...)'; # /Alpha /Beta /Gamma
+is $sym-font.encode("ΑΒΓ").map(*.chr).join, "ABG", '.encode(...)'; # /Alpha /Beta /Gamma
 

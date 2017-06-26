@@ -3,13 +3,13 @@ use v6;
 use PDF:ver(v0.2.1..*);
 
 #| PDF entry-point. either a trailer dict or an XRef stream
-class PDF::Doc #:api<PDF-1.7>
+class PDF::Zen #:api<PDF-1.7>
     is PDF {
 
     # base class declares: $.Size, $.Encrypt, $.Info, $.ID
     use PDF::DAO::Tie;
-    use PDF::Doc::Type;
-    my subset Catalog of PDF::Doc::Type where { .type eq 'Catalog' };
+    use PDF::Zen::Type;
+    my subset Catalog of PDF::Zen::Type where { .type eq 'Catalog' };
     has Catalog $.Root is entry(:required,:indirect);
 
     method type { 'PDF' }
@@ -52,7 +52,7 @@ class PDF::Doc #:api<PDF-1.7>
         if $info {
             my $now = DateTime.now;
             my $Info = self.Info //= {};
-            $Info.Producer //= "Perl 6 PDF::Doc {self.^ver}";
+            $Info.Producer //= "Perl 6 PDF::Zen {self.^ver}";
             with self.reader {
                 # updating
                 $Info.ModDate = $now;
@@ -82,7 +82,7 @@ class PDF::Doc #:api<PDF-1.7>
         }
     }
 
-    my subset Pages of PDF::Doc::Type where { .type eq 'Pages' };
+    my subset Pages of PDF::Zen::Type where { .type eq 'Pages' };
     method Pages returns Pages { self.Root.Pages }
 
     for <page add-page delete-page page-count> {

@@ -27,7 +27,7 @@ class PDF::Shading
     method type {'Shading'}
     method subtype { ShadingTypes[ $.ShadingType - 1] }
 
-    #| see also PDF::Doc::Delegator
+    #| see also PDF::Zen::Delegator
     method delegate-shading(Hash :$dict!) {
 
 	use PDF::DAO::Util :from-ast;

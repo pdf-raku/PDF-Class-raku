@@ -3,7 +3,7 @@ use Test;
 
 plan 7;
 
-use PDF::Doc;
+use PDF::Zen;
 use PDF::IO::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
@@ -52,19 +52,19 @@ $pattern-obj.gfx.ops: [
     :Tw[0],                            # Set word spacing
 
     :rg[1.0, 0.0, 0.0],                # Set nonstroking color to red
-    :Tj($zfont.encode("♠")),           # Show spade glyph
+    :Tj($zfont.encode("♠", :str)),           # Show spade glyph
 
     :TD[0.7478, -0.007],               # Move text position
     :rg[0.0, 1.0, 0.0],                # Set nonstroking color to green
-    :Tj($zfont.encode("♥")),           # Show heart glyph
+    :Tj($zfont.encode("♥", :str)),           # Show heart glyph
 
     :TD[-0.7323, 0.7813],              # Move text position
     :rg[0.0, 0.0, 1.0],                # Set nonstroking color to blue
-    :Tj($zfont.encode("♦")),           # Show diamond glyph
+    :Tj($zfont.encode("♦", :str)),           # Show diamond glyph
 
     :TD[0.6913, 0.007],                # Move text position
     :rg[0.0, 0.0, 0.0],                # Set nonstroking color to black
-    :Tj($zfont.encode("♣")),           # Show club glyph
+    :Tj($zfont.encode("♣", :str)),           # Show club glyph
     'ET',                              # End text object
     'Q',
     ];
@@ -76,7 +76,7 @@ my @lines = $contents.lines;
 is-deeply [ @lines[0..2] ], ['q', '  BT', '    /F1 1 Tf'], 'first three lines of content';
 is-deeply [ @lines[*-4..*] ], ['    0 0 0 rg', '    (\250) Tj', '  ET', 'Q'], 'last 5 lines of content';
 
-my $pdf = PDF::Doc.new;
+my $pdf = PDF::Zen.new;
 my $page = $pdf.Pages.add-page;
 $page<MediaBox> = [0, 0, 230, 210];
 $page.gfx.ops: [

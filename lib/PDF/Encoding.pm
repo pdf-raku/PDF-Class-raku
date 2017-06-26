@@ -1,13 +1,13 @@
 use v6;
 
 use PDF::DAO::Dict;
-use PDF::Doc::Type;
+use PDF::Zen::Type;
 
 # /Type /Encoding - a node in the page tree
 # see [PDF 1.7 Section 5.5.5 Character Encoding]
 class PDF::Encoding
     is PDF::DAO::Dict
-    does PDF::Doc::Type {
+    does PDF::Zen::Type {
 
     # see [PDF 1.7 TABLE 5.11 Entries in an encoding dictionary]
     use PDF::DAO::Tie;

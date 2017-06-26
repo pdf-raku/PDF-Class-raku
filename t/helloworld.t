@@ -3,12 +3,12 @@ use Test;
 
 use PDF::Content::Util::TransformMatrix; # give rakudo a helping hand
 use PDF::Grammar::Test :is-json-equiv;
-use PDF::Doc;
+use PDF::Zen;
 
 # ensure consistant document ID generation
 srand(123456);
 
-my $pdf = PDF::Doc.new;
+my $pdf = PDF::Zen.new;
 my $page = $pdf.add-page;
 $page.MediaBox = [0, 0, 595, 842];
 
@@ -24,7 +24,7 @@ $page.graphics: -> $gfx {
 
     $page.text: -> $txt {
 	for <left center right> -> $align {
-	    $txt.text-position = [$x, 750];
+	    $txt.TextMove = [$x, 750];
 	    $txt.font = [$header-font, 18];
 	    my $header = [~] '*** ', $align, ' ***', "\n";
 	    $txt.say( $header, :$width, :$align);
@@ -40,7 +40,7 @@ $page.graphics: -> $gfx {
 	    $x += 275;
         }
 
-        $txt.text-position = [240, 600];
+        $txt.TextMove = [240, 600];
         $txt.font = [$page.core-font('ZapfDingbats'), 24];
         $txt.WordSpacing = 16;
         my $nbsp = "\c[NO-BREAK SPACE]";
@@ -98,7 +98,7 @@ $page.graphics: {
 }
 
 $page.text: {
-    .text-position = [110, 300];
+    .TextMove = [110, 300];
     .font = [$header-font, 24];
     .say('Hello, world!');
 }
@@ -113,7 +113,7 @@ ok $pdf.save-as('t/helloworld.pdf'), '.save-as';
 ok $pdf.save-as('t/helloworld-compressed.pdf', :compress, :!info), '.save-as( :compress )';
 throws-like { $pdf.wtf }, X::Method::NotFound;
 
-lives-ok {$pdf = PDF::Doc.open: 't/helloworld-compressed.pdf'}, 'pdf reload lives';
+lives-ok {$pdf = PDF::Zen.open: 't/helloworld-compressed.pdf'}, 'pdf reload lives';
 isa-ok $pdf.reader.trailer, PDF, 'trailer type';
 $page = $pdf.page: 1;
 isa-ok $page, (require ::('PDF::Page')), 'first pages';
@@ -130,6 +130,6 @@ is-deeply $contents-ast[*-1], (:ET[]), '.contents last elem';
 my $gfx = $page.gfx;
 is-json-equiv $gfx.ops[*-4 .. *], $(:Tj[{:literal("Hello, world!")}], :TL[:real(26.4)], "T*" => [], :ET[]), '$page.gfx.ops (tail)';
 
-lives-ok { PDF::Doc.new.save-as: "t/pdf/no-pages.pdf", :!info }, 'create empty PDF';
+lives-ok { PDF::Zen.new.save-as: "t/pdf/no-pages.pdf", :!info }, 'create empty PDF';
 
 done-testing;

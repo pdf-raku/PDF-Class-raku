@@ -4,8 +4,8 @@ This Perl 6 module is under construction as a general purpose PDF manipulation l
 
 ### Page Layout & Viewer Preferences
 ```
-    use PDF::Doc;
-    my $pdf = PDF::Doc.new;
+    use PDF::Zen;
+    my $pdf = PDF::Zen.new;
 
     my $doc = $pdf.Root;
     $doc.PageLayout = 'TwoColumnLeft';
@@ -20,8 +20,8 @@ This Perl 6 module is under construction as a general purpose PDF manipulation l
 ### AcroForm Fields
 
 ```
-use PDF::Doc;
-my $doc = PDF::Doc.open: "t/pdf/samples/OoPdfFormExample.pdf";
+use PDF::Zen;
+my $doc = PDF::Zen.open: "t/pdf/samples/OoPdfFormExample.pdf";
 with my $acroform = $doc.Root.AcroForm {
     my @fields = $acroform.fields;
     # display field names and values
@@ -43,8 +43,8 @@ the following example we cast the PageMode to a name, so it appears as a name
 in the out put stream `/UseToes`, rather than a string `(UseToes)`.
 
 ```
-    use PDF::Doc;
-    my $pdf = PDF::Doc.new;
+    use PDF::Zen;
+    my $pdf = PDF::Zen.new;
 
     my $doc = $pdf.Root;
     try {
@@ -58,7 +58,7 @@ in the out put stream `/UseToes`, rather than a string `(UseToes)`.
 
 ## Development Status
 
-The PDF::Doc module is under construction and not yet functionally complete.
+The PDF::Zen module is under construction and not yet functionally complete.
 
 # Bugs and Restrictions
 At this stage:

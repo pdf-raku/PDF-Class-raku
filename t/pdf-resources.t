@@ -1,12 +1,13 @@
 use v6;
 use Test;
 
-use PDF::Doc;
+use PDF::Zen;
+use PDF::Zen::Type;
 use PDF::IO::IndObj;
-use PDF::Doc::Type;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
+use PDF::Font::TrueType;
 
 plan 64;
 require ::('PDF::Catalog');
@@ -22,7 +23,7 @@ my $input = q:to"--END--";
    /FirstChar 111
    /FontDescriptor 15 0 R
    /LastChar 111
-   /Widths [ 600 ]
+%% Todo   /Widths [ 600 ]
 >> endobj
 --END--
 
@@ -36,6 +37,8 @@ my %ast = $/.ast;
 
 my $ind-obj = PDF::IO::IndObj.new( :$input, |%ast );
 my $tt-font-obj = $ind-obj.object;
+# Widths has strange type: 
+warn $tt-font-obj.entries<Widths>.tied.perl;
 isa-ok $tt-font-obj, ::('PDF::Font::TrueType');
 is $tt-font-obj.Type, 'Font', 'tt font $.Type';
 is $tt-font-obj.Subtype, 'TrueType', 'tt font $.Subtype';

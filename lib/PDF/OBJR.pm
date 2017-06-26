@@ -1,12 +1,12 @@
 use v6;
 
 use PDF::DAO::Dict;
-use PDF::Doc::Type;
+use PDF::Zen::Type;
 
 # /Type /OBJR - a node in the page tree
 class PDF::OBJR
     is PDF::DAO::Dict
-    does PDF::Doc::Type {
+    does PDF::Zen::Type {
 
     # see [PDF 1.7 TABLE 10.12 Entries in an object reference dictionary]
     use PDF::DAO::Tie;

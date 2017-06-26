@@ -2,7 +2,7 @@ use v6;
 
 use Test;
 use PDF;
-use PDF::Doc;
+use PDF::Zen;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::Grammar::Test :is-json-equiv;
@@ -42,7 +42,7 @@ my $open-text-annot = ::('PDF::Annot::Text').new(:dict{
 
 is-deeply $open-text-annot.Open, False, '.Open';
 
-my $pdf = PDF::Doc.new;
+my $pdf = PDF::Zen.new;
 my $page = $pdf.Pages.add-page;
 $page<MediaBox> = [0, 0, 350, 250];
 $page<Annots> = [ $text-annot, $open-text-annot ];

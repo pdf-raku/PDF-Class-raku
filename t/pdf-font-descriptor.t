@@ -3,7 +3,7 @@ use Test;
 
 plan 9;
 
-use PDF::Doc;
+use PDF::Zen;
 use PDF::IO::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;

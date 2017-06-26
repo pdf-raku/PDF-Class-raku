@@ -1,11 +1,11 @@
 use v6;
 
 use PDF::DAO::Tie::Hash;
-use PDF::Doc::Type;
+use PDF::Zen::Type;
 
 role PDF::Field
     does PDF::DAO::Tie::Hash
-    does PDF::Doc::Type['FT'] {
+    does PDF::Zen::Type['FT'] {
 
     use PDF::DAO::Tie;
     # see [PDF 1.7 TABLE 8.69 Entries common to all field dictionaries]

@@ -1,18 +1,18 @@
 {
     "perl"        : "6.*",
-    "name"        : "PDF::Doc",
+    "name"        : "PDF::Zen",
     "version"     : "0.0.3",
     "auth"        : "github:p6-pdf",
     "api"         : "PDF-1.7",
     "description" : "PDF Document Object Model",
     "depends"     : [ "PDF", "PDF::Grammar", "PDF::Content" ],
-    "source-url"  : "git://github.com/p6-pdf/PDF-Doc-p6.git",
+    "source-url"  : "git://github.com/p6-pdf/PDF-Zen-p6.git",
     "provides"    : {
 
 
-        "PDF::Doc" : "lib/PDF/Doc.pm",
-        "PDF::Doc::Type" : "lib/PDF/Doc/Type.pm",
-        "PDF::Doc::Delegator" : "lib/PDF/Doc/Delegator.pm",
+        "PDF::Zen" : "lib/PDF/Zen.pm",
+        "PDF::Zen::Type" : "lib/PDF/Zen/Type.pm",
+        "PDF::Zen::Delegator" : "lib/PDF/Zen/Delegator.pm",
 
         "PDF::AcroForm" : "lib/PDF/AcroForm.pm",
 

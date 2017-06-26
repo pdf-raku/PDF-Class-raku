@@ -4,7 +4,7 @@ use Test;
 plan 39;
 
 use PDF::IO::IndObj;
-use PDF::Doc;
+use PDF::Zen;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
