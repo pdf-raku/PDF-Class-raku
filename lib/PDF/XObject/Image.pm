@@ -52,16 +52,16 @@ class PDF::XObject::Image
         use PDF::Content::Image::PNG :PNG-CS;
         need PDF::ColorSpace::Indexed;
 
-        my $bit-depth = self<BitsPerComponent> || 8;
-        my UInt $width = self<Width>;
-        my UInt $height = self<Height>;
+        my $bit-depth = self.BitsPerComponent || 8;
+        my UInt $width = self.Width;
+        my UInt $height = self.Height;
         my PDF::Content::Image::PNG::Header $hdr .= new: :$width, :$height, :$bit-depth;
         my buf8 $stream;
         my buf8 $palette;
         my buf8 $trans;
-        my $decode-parms = self<DecodeParms>;
+        my $decode-parms = .[0] with self.DecodeParms;
         if $decode-parms
-            && self<Filter> ~~ 'FlateDecode'
+            && self.Filter ~~ 'FlateDecode'
             && $decode-parms<Predictor> ~~ PNGPredictor {
                 # stream is good to go
                 $stream = buf8.new: self.encoded.encode: "latin-1";
@@ -72,19 +72,19 @@ class PDF::XObject::Image
             return Nil;
         }
 
-        given self<ColorSpace> {
+        given self.ColorSpace {
             when PDF::ColorSpace::Indexed {
                 $hdr.color-type = PNG-CS::RGB-Palette;
                 my Str $data = .isa(PDF::DAO::Stream) ?? .encoded !! $_
                     with .Lookup;
                 $palette = buf8.new: .encode("latin-1") with $data;
-                with self<SMask> {
+                with self.SMask {
                     $trans = .stream
                         with self.to-dict: $_;
                 }
             }
             when 'DeviceRGB'|'DeviceGray' { 
-                $hdr.color-type = self<ColorSpace> ~~ 'DeviceRGB'
+                $hdr.color-type = $_ ~~ 'DeviceRGB'
                     ?? PNG-CS::RGB !! PNG-CS::Gray;
                 my \colors =  $hdr.color-type == RGB
                     ?? 3 !! 1;
@@ -106,7 +106,7 @@ class PDF::XObject::Image
                             $stream[$i++] = $alpha-channel[$a++]
                                 for 1 .. $na;
                         }
-                        $hdr.color-type = self<ColorSpace> ~~ 'DeviceRGB'
+                        $hdr.color-type = $hdr.color-type == PNG-CS::RGB
                             ?? PNG-CS::RGB-Alpha !! PNG-CS::Gray-Alpha;
                     }
                 }
@@ -117,10 +117,10 @@ class PDF::XObject::Image
             }
         }
 
-        my PDF::Content::Image::PNG $obj .= new: :$hdr, :$stream;
-        $obj.palette = $_ with $palette;
-        $obj.trans = $_ with $trans;
-        $obj;
+        my PDF::Content::Image::PNG $png .= new: :$hdr, :$stream;
+        $png.palette = $_ with $palette;
+        $png.trans = $_ with $trans;
+        $png;
     }
 
 }
