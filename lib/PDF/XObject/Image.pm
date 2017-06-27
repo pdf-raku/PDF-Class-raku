@@ -31,7 +31,7 @@ class PDF::XObject::Image
     has Numeric @.Decode is entry;                #| (Optional) An array of numbers describing how to map image samples into the range of values appropriate for the image’s color space
     has Bool $.Interpolate is entry;              #| (Optional) A flag indicating whether image interpolation is to be performed
     has Hash @.Alternatives is entry;             #| An array of alternate image dictionaries for this image
-    has PDF::DAO::Stream $.SMask is entry;        #| (Optional; PDF 1.4) A subsidiary image XObject defining a soft-mask image
+    has PDF::XObject::Image $.SMask is entry;        #| (Optional; PDF 1.4) A subsidiary image XObject defining a soft-mask image
     subset SMaskInInt of Int where 0|1|2;
     has SMaskInInt $.SMaskInData is entry;        #| (Optional for images that use the JPXDecode filter, meaningless otherwise; A code specifying how soft-mask information encoded with image samples should be used:
                                                   #| 0: If present, encoded soft-mask image information should be ignored.
@@ -45,5 +45,82 @@ class PDF::XObject::Image
     has Hash $.OPI is entry;                      #| Optional; PDF 1.2) An OPI version dictionary for the image. If ImageMask is true, this entry is ignored.
     has PDF::DAO::Stream $.Metadata is entry;     #| (Optional; PDF 1.4) A metadata stream containing metadata for the image
     has Hash $.OC is entry;                       #| (Optional; PDF 1.5) An optional content group or optional content membership dictionary
+
+    my subset PNGPredictor of Int where 10 .. 15;
+
+    method to-png {
+        use PDF::Content::Image::PNG :PNG-CS;
+        need PDF::ColorSpace::Indexed;
+
+        my $bit-depth = self<BitsPerComponent> || 8;
+        my UInt $width = self<Width>;
+        my UInt $height = self<Height>;
+        my PDF::Content::Image::PNG::Header $hdr .= new: :$width, :$height, :$bit-depth;
+        my buf8 $stream;
+        my buf8 $palette;
+        my buf8 $trans;
+        my $decode-parms = self<DecodeParms>;
+        if $decode-parms
+            && self<Filter> ~~ 'FlateDecode'
+            && $decode-parms<Predictor> ~~ PNGPredictor {
+                # stream is good to go
+                $stream = buf8.new: self.encoded.encode: "latin-1";
+        }
+        else {
+            # could reencode stream. use case?
+            warn "ignoring decode-params: {$decode-parms.perl}";
+            return Nil;
+        }
+
+        given self<ColorSpace> {
+            when PDF::ColorSpace::Indexed {
+                $hdr.color-type = PNG-CS::RGB-Palette;
+                my Str $data = .isa(PDF::DAO::Stream) ?? .encoded !! $_
+                    with .Lookup;
+                $palette = buf8.new: .encode("latin-1") with $data;
+                with self<SMask> {
+                    $trans = .stream
+                        with self.to-dict: $_;
+                }
+            }
+            when 'DeviceRGB'|'DeviceGray' { 
+                $hdr.color-type = self<ColorSpace> ~~ 'DeviceRGB'
+                    ?? PNG-CS::RGB !! PNG-CS::Gray;
+                my \colors =  $hdr.color-type == RGB
+                    ?? 3 !! 1;
+                if $bit-depth == 8|16  {
+                    # SMask contains alpha channel - merge it
+                    with self.SMask.?to-png {
+                        my buf8 $alpha-channel = .stream;
+                        my buf8 $color-channel = $stream;
+                        my uint $c-len = +$color-channel;
+                        my uint $na = $bit-depth div 8;
+                        my uint $nc = colors * $na;
+                        my uint $a = 0;
+                        my uint $c = 0;
+                        my uint $i = 0;
+                        $stream = buf8.allocate: ($c-len * 4) div 3;
+                        while $c < $c-len {
+                            $stream[$i++] = $color-channel[$c++]
+                                for 1 .. $nc;
+                            $stream[$i++] = $alpha-channel[$a++]
+                                for 1 .. $na;
+                        }
+                        $hdr.color-type = self<ColorSpace> ~~ 'DeviceRGB'
+                            ?? PNG-CS::RGB-Alpha !! PNG-CS::Gray-Alpha;
+                    }
+                }
+            }
+            default {
+                warn "ignoring color-space: {.perl}";
+                return Nil;
+            }
+        }
+
+        my PDF::Content::Image::PNG $obj .= new: :$hdr, :$stream;
+        $obj.palette = $_ with $palette;
+        $obj.trans = $_ with $trans;
+        $obj;
+    }
 
 }

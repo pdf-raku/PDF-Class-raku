@@ -1,10 +1,12 @@
 use v6;
 
 use PDF::DAO::Stream;
+use PDF::Content::XObject;
 use PDF::Content::Graphics;
 use PDF::Content::Resourced;
 
 role PDF::Pattern
+    does PDF::Content::XObject['Form']
     does PDF::Content::Graphics
     does PDF::Content::Resourced {
 
