@@ -18,7 +18,8 @@ class PDF::Font::Type1
 
     has UInt $.LastChar is entry;                       #| (Required except for the standard 14 fonts) The last character code defined in the font’s Widths array
 
-    has Numeric @.Widths is entry;                      #| (Required except for the standard 14 fonts; indirect reference preferred) An array of (LastChar − FirstChar + 1) widths, each element being the glyph width for the character code that equals FirstChar plus the array index.
+    ## has Numeric @.Widths; # causing errors in t/pdf-resources.t
+    has @.Widths is entry;                      #| (Required except for the standard 14 fonts; indirect reference preferred) An array of (LastChar − FirstChar + 1) widths, each element being the glyph width for the character code that equals FirstChar plus the array index.
 
     use PDF::FontDescriptor;
     has PDF::FontDescriptor $.FontDescriptor is entry(:indirect);      #| (Required except for the standard 14 fonts; must be an indirect reference) A font descriptor describing the font’s metrics other than its glyph widths
@@ -27,7 +28,6 @@ class PDF::Font::Type1
     my subset NameOrEncoding where PDF::DAO::Name | PDF::Encoding;
     has NameOrEncoding $.Encoding is entry;             #| (Optional) A specification of the font’s character encoding if different from its built-in encoding. The value of Encoding is either the name of a predefined encoding (MacRomanEncoding, MacExpertEncoding, or WinAnsiEncoding, as described in Appendix D) or an encoding dictionary that specifies differences from the font’s built-in encoding or from a specified predefined encoding
 
-    use PDF::CMap;
-    has PDF::CMap $.ToUnicode is entry;                 #| (Optional; PDF 1.2) A stream containing a CMap file that maps character codes to Unicode values
+    has PDF::DAO::Stream $.ToUnicode is entry;                 #| (Optional; PDF 1.2) A stream containing a CMap file that maps character codes to Unicode values
 
 }

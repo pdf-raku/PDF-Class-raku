@@ -66,6 +66,9 @@
 
         "PDF::FontDescriptor" : "lib/PDF/FontDescriptor.pm",
 
+        "PDF::Group" : "lib/PDF/Group.pm",
+        "PDF::Group::Transparency" : "lib/PDF/Group/Transparency.pm",
+
         "PDF::Metadata::XML" : "lib/PDF/Metadata/XML.pm",
 
         "PDF::OBJR" : "lib/PDF/OBJR.pm",
