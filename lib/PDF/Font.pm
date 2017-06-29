@@ -1,8 +1,8 @@
 use v6;
 
 use PDF::DAO::Dict;
-use PDF::Zen::Type;
 use PDF::Content::Font;
+use PDF::Zen::Type;
 
 # /Type /Font - Describes a font
 
@@ -11,6 +11,10 @@ class PDF::Font
     does PDF::Content::Font
     does PDF::Zen::Type {
 
+    use Font::Metrics::courier;
+    use PDF::Content::Util::Font :Encoded;
+    use PDF::Content::Font::AFM;
+
     use PDF::DAO::Tie;
     use PDF::DAO::Name;
     
@@ -18,5 +22,14 @@ class PDF::Font
     has Name-Font $.Type is entry(:required);
     has PDF::DAO::Name $.Subtype is entry(:required);
 
+    method font-obj {
+        ## callsame() //= self.make-font-obj ; # not working
+        callsame() // self.set-font-obj: self.make-font-obj;
+    }
+
+    method make-font-obj {
+        warn "don't know how to make font of type: {self.Type}";
+        (Font::Metrics::courier but Encoded[PDF::Content::Font::AFM]).new;
+    }
 }
 

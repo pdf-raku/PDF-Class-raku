@@ -30,4 +30,35 @@ class PDF::Font::Type1
 
     has PDF::DAO::Stream $.ToUnicode is entry;                 #| (Optional; PDF 1.2) A stream containing a CMap file that maps character codes to Unicode values
 
+    method make-font-obj {
+
+        ## Only handles core fonts at the moment ##
+        use Font::AFM;
+        use PDF::Content::Util::Font :Encoded;
+        use PDF::Content::Font::AFM;
+        use PDF::Content::Font::CMap;
+
+        my $base-font = PDF::Content::Util::Font::core-font-name(self.BaseFont)
+            // 'courier';
+
+        my $encoder = do with self.ToUnicode -> $cmap {
+            # semi stubbed
+            PDF::Content::Font::CMap.new: :$cmap;
+        }
+        else {
+            my $enc = do given self.Encoding {
+                when 'WinAnsiEncoding' { 'win' }
+                when 'MacRomanEncoding' { 'mac' }
+                default {
+                    warn "ignoring font encoding: $_" if .defined;
+                    when $base-font ~~ /^symbol/ { 'sym' }
+                    when $base-font ~~ /^zapfdingbats/ { 'zapf' }
+                    default { 'std' }
+                }
+            }
+            PDF::Content::Font::AFM.new: :$enc;
+        }
+        (Font::AFM.metrics-class( $base-font )
+         but Encoded[$encoder]).new;
+    }
 }

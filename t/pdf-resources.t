@@ -23,7 +23,7 @@ my $input = q:to"--END--";
    /FirstChar 111
    /FontDescriptor 15 0 R
    /LastChar 111
-%% Todo   /Widths [ 600 ]
+   /Widths [ 600 ]
 >> endobj
 --END--
 
