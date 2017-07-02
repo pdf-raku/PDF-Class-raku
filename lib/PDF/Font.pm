@@ -11,10 +11,6 @@ class PDF::Font
     does PDF::Content::Font
     does PDF::Zen::Type {
 
-    use Font::Metrics::courier;
-    use PDF::Content::Util::Font :Encoded;
-    use PDF::Content::Font::AFM;
-
     use PDF::DAO::Tie;
     use PDF::DAO::Name;
     
@@ -28,8 +24,13 @@ class PDF::Font
     }
 
     method make-font-obj {
+        # stub for other font types
+        use Font::Metrics::courier;
+        use PDF::Content::Util::Font :Encoded;
+        use PDF::Content::Font::Enc::Type1;
+
         warn "don't know how to make font of type: {self.Type}";
-        (Font::Metrics::courier but Encoded[PDF::Content::Font::AFM]).new;
+        (Font::Metrics::courier but Encoded[PDF::Content::Font::Enc::Type1]).new;
     }
 }
 

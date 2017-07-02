@@ -32,18 +32,17 @@ class PDF::Font::Type1
 
     method make-font-obj {
 
-        ## Only handles core fonts at the moment ##
+        # todo: handle Widths array
         use Font::AFM;
         use PDF::Content::Util::Font :Encoded;
-        use PDF::Content::Font::AFM;
-        use PDF::Content::Font::CMap;
+        use PDF::Content::Font::Enc::Type1;
+        use PDF::Content::Font::Enc::CMap;
 
         my $base-font = PDF::Content::Util::Font::core-font-name(self.BaseFont)
             // 'courier';
 
         my $encoder = do with self.ToUnicode -> $cmap {
-            # semi stubbed
-            PDF::Content::Font::CMap.new: :$cmap;
+            PDF::Content::Font::Enc::CMap.new: :$cmap;
         }
         else {
             my $enc = do given self.Encoding {
@@ -56,7 +55,7 @@ class PDF::Font::Type1
                     default { 'std' }
                 }
             }
-            PDF::Content::Font::AFM.new: :$enc;
+            PDF::Content::Font::Enc::Type1.new: :$enc;
         }
         (Font::AFM.metrics-class( $base-font )
          but Encoded[$encoder]).new;
