@@ -3,7 +3,6 @@ use Test;
 
 plan 21;
 
-use PDF::Content::Util::TransformMatrix; # give rakudo a helping hand
 use PDF::Zen;
 use PDF::Zen::Type;
 use PDF::IO::IndObj;

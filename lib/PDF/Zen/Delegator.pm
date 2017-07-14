@@ -25,9 +25,15 @@ class PDF::Zen::Delegator
         my Bool $resolved;
 
 	for self.class-paths -> $class-path {
-            $handler-class = PDF::DAO.required($class-path ~ '::' ~ $subclass);
-            $resolved = True;
-            last;
+            my $class-name = $class-path ~ '::' ~ $subclass;
+            $handler-class = PDF::DAO.required($class-name);
+            if $handler-class ~~ Failure {
+                warn "failed to load: $class-name";
+            }
+            else {
+                $resolved = True;
+                last;
+            }
             CATCH {
                 when X::CompUnit::UnsatisfiedDependency {
 		    # try loading just the parent class
