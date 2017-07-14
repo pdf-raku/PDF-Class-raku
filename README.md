@@ -1,6 +1,11 @@
-# perl6-PDF-Doc
+# PDF::Zen
 
 This Perl 6 module is under construction as a general purpose PDF manipulation library.
+
+***Experimental***
+
+Intended as base module. PDF::API6 is being built directly on PDF::Lite,
+but may eventually be refactored to use this module.
 
 ### Page Layout & Viewer Preferences
 ```

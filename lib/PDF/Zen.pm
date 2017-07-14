@@ -13,15 +13,15 @@ class PDF::Zen #:api<PDF-1.7>
     has Catalog $.Root is entry(:required,:indirect);
 
     method type { 'PDF' }
-    method version returns Version:_ {
-	my $version = self.Root.Version;
-	# reader extracts version from the PDF Header, e.g.: '%PDF-1.4'
-	$version //= .version
-	    with self.reader;
-
-	$version
-	    ?? Version.new( $version )
-	    !! Nil
+    method version {
+        Proxy.new(
+            FETCH => sub ($) {
+                Version.new: $.catalog<Version> // self.reader.?version // '1.4'
+            },
+            STORE => sub ($, Version $v) {
+                $.catalog<Version> = name => $v.Str;
+            },
+        );
     }
 
     method open(|c) {
@@ -43,7 +43,7 @@ class PDF::Zen #:api<PDF-1.7>
 		    die "This PDF contains digital signatures that will be invalidated with .save-as :!update"
 		}
 		else {
-		    # set :update to preserve digital signatures
+		    # save-as(..., :update) to preserve digital signatures
 		    $update = True;
 		}
 	    }

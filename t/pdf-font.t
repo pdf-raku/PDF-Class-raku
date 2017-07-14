@@ -10,7 +10,6 @@ use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::DAO;
 use PDF::Content::Util::Font :Encoded;
-use PDF::Content::Font::AFM;
 
 my $actions = PDF::Grammar::PDF::Actions.new;
 
