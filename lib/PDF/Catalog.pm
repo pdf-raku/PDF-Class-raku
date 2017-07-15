@@ -6,7 +6,7 @@ use PDF::Content::Resourced;
 
 # /Type /Catalog - usually the document root in a PDF
 # See [PDF 1.7 Section 3.6.1 Document Catalog]
-class PDF::Catalog
+my class Catalog
     is PDF::DAO::Dict
     does PDF::Zen::Type
     does PDF::Content::Resourced {
@@ -116,3 +116,5 @@ class PDF::Catalog
         self<Pages>.cb-finish;
     }
 }
+
+class PDF::Catalog is Catalog {} # help rakudo

@@ -7,7 +7,7 @@ use PDF::Content::PageNode;
 
 # /Type /Page - describes a single PDF page
 
-class PDF::Page
+my class Page
     is PDF::DAO::Dict
     does PDF::Zen::Type
     does PDF::Content::Page
@@ -56,3 +56,4 @@ class PDF::Page
 
 }
 
+class PDF::Page is Page {} # help rakudo

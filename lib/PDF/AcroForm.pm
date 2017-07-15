@@ -1,7 +1,5 @@
 use v6;
 
-use PDF::Zen::Type; # just to help rakudo
-use PDF::DAO::Tie;
 use PDF::DAO::Tie::Hash;
 
 # AcroForm role - see PDF::Catalog - /AcroForm entry
@@ -10,6 +8,7 @@ role PDF::AcroForm
     does PDF::DAO::Tie::Hash {
 
     # see [PDF 1.7 TABLE 8.67 Entries in the interactive form dictionary]
+    use PDF::DAO::Tie;
     use PDF::Field :coerce;
     use PDF::DAO;
 

@@ -1,6 +1,7 @@
 use v6;
 
 use Test;
+use PDF::Content::Util::Font; # give rakudo a helping hand
 use PDF;
 use PDF::Zen;
 use PDF::Grammar::PDF;
@@ -30,7 +31,7 @@ my $reader = class { has $.auto-deref = False }.new;
 
 my $ind-obj = PDF::IO::IndObj.new( :$input, |%ast, :$reader );
 my $text-annot = $ind-obj.object;
-isa-ok $text-annot, ::('PDF::Annot::Text');
+isa-ok $text-annot, (require ::('PDF::Annot::Text'));
 is-json-equiv $text-annot.Rect, [ 100, 100, 300, 200 ], '.Rect';
 is $text-annot.Contents, "This is an open annotation. You'll need acro-reader...", '.Contents';
 

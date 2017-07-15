@@ -18,7 +18,7 @@ class PDF::Font
     has Name-Font $.Type is entry(:required);
     has PDF::DAO::Name $.Subtype is entry(:required);
 
-    method font-obj {
+    method font-obj is rw {
         ## callsame() //= self.make-font-obj ; # not working
         callsame() // self.set-font-obj: self.make-font-obj;
     }

@@ -3,7 +3,7 @@ use v6;
 use PDF:ver(v0.2.1..*);
 
 #| PDF entry-point. either a trailer dict or an XRef stream
-class PDF::Zen #:api<PDF-1.7>
+class PDF::Zen:ver<0.0.1> #:api<PDF-1.7>
     is PDF {
 
     # base class declares: $.Size, $.Encrypt, $.Info, $.ID
