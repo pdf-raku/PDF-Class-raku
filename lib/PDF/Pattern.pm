@@ -25,7 +25,7 @@ my role Pattern
     method type    { 'Pattern' }
     method subtype { PatternNames[ self<PatternType> ] }
 
-    #| see also PDF::Zen::Delegator
+    #| see also PDF::Zen::Loader
     method delegate-pattern(Hash :$dict!) {
 
 	use PDF::DAO::Util :from-ast;
@@ -37,7 +37,7 @@ my role Pattern
 	}
 
 	my $subtype = PatternNames{~$type-int};
-	PDF::DAO.delegator.find-delegate( 'Pattern', $subtype );
+	PDF::DAO.loader.find-delegate( 'Pattern', $subtype );
     }
 
     method cb-init {

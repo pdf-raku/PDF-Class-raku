@@ -1,12 +1,12 @@
 use v6;
 
-use PDF::DAO::Delegator;
+use PDF::DAO::Loader;
 
-class PDF::Zen::Delegator {...}
-PDF::DAO.delegator = PDF::Zen::Delegator;
+class PDF::Zen::Loader {...}
+PDF::DAO.loader = PDF::Zen::Loader;
 
-class PDF::Zen::Delegator
-    is PDF::DAO::Delegator {
+class PDF::Zen::Loader
+    is PDF::DAO::Loader {
 
     use PDF::DAO::Util :from-ast;
     use PDF::DAO::Name;
@@ -49,23 +49,23 @@ class PDF::Zen::Delegator
         self.install-delegate( $subclass, $handler-class );
     }
 
-    multi method delegate(Hash :$dict! where {.<FunctionType>:exists}) {
+    multi method load(Hash :$dict! where {.<FunctionType>:exists}) {
 	$.find-delegate('Function').delegate-function( :$dict );
     }
 
-    multi method delegate(Hash :$dict! where {.<PatternType>:exists}) {
+    multi method load(Hash :$dict! where {.<PatternType>:exists}) {
 	$.find-delegate('Pattern').delegate-pattern( :$dict );
     }
 
-    multi method delegate(Hash :$dict! where {.<ShadingType>:exists}) {
+    multi method load(Hash :$dict! where {.<ShadingType>:exists}) {
 	$.find-delegate('Shading').delegate-shading( :$dict );
     }
 
-    multi method delegate(Hash :$dict! where {(.<Registry>:exists) && (.<Ordering>:exists)}) {
+    multi method load(Hash :$dict! where {(.<Registry>:exists) && (.<Ordering>:exists)}) {
 	$.find-delegate('CIDSystemInfo');
     }
 
-    multi method delegate( Hash :$dict! where {.<Type>:exists}, :$fallback) {
+    multi method load( Hash :$dict! where {.<Type>:exists}, :$fallback) {
         my $type = from-ast($dict<Type>);
         my $subtype = from-ast($dict<Subtype> // $dict<S>)
 	    unless $type eq 'Border';
@@ -74,7 +74,7 @@ class PDF::Zen::Delegator
     }
 
     #| Reverse lookup for classes when /Subtype is required but /Type is optional
-    multi method delegate(Hash :$dict where {.<Subtype>:exists }, :$fallback) {
+    multi method load(Hash :$dict where {.<Subtype>:exists }, :$fallback) {
 	my $subtype = from-ast $dict<Subtype>;
 
 	my $type = do given $subtype {
@@ -98,7 +98,7 @@ class PDF::Zen::Delegator
     }
 
     #| Reverse lookup for classes when /Subtype is required but /Type is optional
-    multi method delegate(Hash :$dict where {from-ast($_) ~~ 'GTS_PDFX' given .<S>},) {
+    multi method load(Hash :$dict where {from-ast($_) ~~ 'GTS_PDFX' given .<S>},) {
 	    $.find-delegate('OutputIntent', 'GTS_PDFX');
     }
 
@@ -133,12 +133,12 @@ class PDF::Zen::Delegator
 
     subset ColorSpace-Array of Array where ColorSpace-Array-CIE | ColorSpace-Array-Special;
 
-    multi method delegate(ColorSpace-Array :$array!) {
+    multi method load(ColorSpace-Array :$array!) {
 	my $color-type = from-ast $array[0];
 	$.find-delegate('ColorSpace', $color-type);
     }
 
-    multi method delegate(:$fallback!) is default {
+    multi method load(:$fallback!) is default {
 	$fallback;
     }
 

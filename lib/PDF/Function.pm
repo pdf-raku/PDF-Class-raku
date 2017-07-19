@@ -23,7 +23,7 @@ class PDF::Function
     method type {'Function'}
     method subtype { FunctionTypes[ $.FunctionType ] }
 
-    #| see also PDF::Zen::Delegator
+    #| see also PDF::Zen::Loader
     method delegate-function(Hash :$dict!) {
 
 	use PDF::DAO::Util :from-ast;
@@ -35,7 +35,7 @@ class PDF::Function
 	}
 
 	my $subtype = FunctionTypes[$function-type];
-	PDF::DAO.delegator.find-delegate( 'Function', $subtype );
+	PDF::DAO.loader.find-delegate( 'Function', $subtype );
     }
 
     method cb-init {

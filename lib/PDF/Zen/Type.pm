@@ -1,7 +1,7 @@
 use v6;
 
 use PDF::DAO;
-use PDF::Zen::Delegator;
+use PDF::Zen::Loader;
 
 # autoload from PDF::Zen::Type
 

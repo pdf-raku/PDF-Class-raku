@@ -8,9 +8,10 @@ role PDF::Field
     does PDF::Zen::Type['FT'] {
 
     use PDF::DAO::Tie;
-    # see [PDF 1.7 TABLE 8.69 Entries common to all field dictionaries]
-
     use PDF::DAO::TextString;
+    use PDF::DAO::Dict;
+
+    # see [PDF 1.7 TABLE 8.69 Entries common to all field dictionaries]
 
     my subset FieldTypeName of PDF::DAO::Name
 	where ( 'Btn' # Button
@@ -26,7 +27,7 @@ role PDF::Field
             when 'Ch'  {'Choice'}
             when 'Sig' {'Signature'}
 	};
-	PDF::DAO.delegator.find-delegate( 'Field', $field-role );
+	PDF::DAO.loader.find-delegate( 'Field', $field-role );
     }
 
     multi method field-delegate( PDF::DAO::Dict $dict)  {

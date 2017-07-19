@@ -27,7 +27,7 @@ class PDF::Shading
     method type {'Shading'}
     method subtype { ShadingTypes[ $.ShadingType - 1] }
 
-    #| see also PDF::Zen::Delegator
+    #| see also PDF::Zen::Loader
     method delegate-shading(Hash :$dict!) {
 
 	use PDF::DAO::Util :from-ast;
@@ -39,7 +39,7 @@ class PDF::Shading
 	}
 
 	my $subtype = ShadingTypes[$type-int - 1];
-	PDF::DAO.delegator.find-delegate( 'Shading', $subtype );
+	PDF::DAO.loader.find-delegate( 'Shading', $subtype );
     }
 
     method cb-init {

@@ -12,7 +12,7 @@
 
         "PDF::Zen" : "lib/PDF/Zen.pm",
         "PDF::Zen::Type" : "lib/PDF/Zen/Type.pm",
-        "PDF::Zen::Delegator" : "lib/PDF/Zen/Delegator.pm",
+        "PDF::Zen::Loader" : "lib/PDF/Zen/Loader.pm",
 
         "PDF::AcroForm" : "lib/PDF/AcroForm.pm",
 
