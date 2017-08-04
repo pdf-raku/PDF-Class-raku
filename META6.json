@@ -71,6 +71,8 @@
 
         "PDF::Metadata::XML" : "lib/PDF/Metadata/XML.pm",
 
+        "PDF::NumberTree" : "lib/PDF/NumerTree.pm",
+
         "PDF::OBJR" : "lib/PDF/OBJR.pm",
         "PDF::Outlines" : "lib/PDF/Outlines.pm",
         "PDF::OutlineItem" : "lib/PDF/OutlineItem.pm",

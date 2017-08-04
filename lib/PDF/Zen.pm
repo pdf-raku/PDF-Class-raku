@@ -1,6 +1,6 @@
 use v6;
 
-use PDF:ver(v0.2.1..*);
+use PDF:ver(v0.2.1+);
 
 #| PDF entry-point. either a trailer dict or an XRef stream
 class PDF::Zen:ver<0.0.1> #:api<PDF-1.7>
@@ -85,7 +85,7 @@ class PDF::Zen:ver<0.0.1> #:api<PDF-1.7>
     my subset Pages of PDF::Zen::Type where { .type eq 'Pages' };
     method Pages returns Pages { self.Root.Pages }
 
-    for <page add-page delete-page page-count> {
+    BEGIN for <page add-page delete-page page-count> {
         $?CLASS.^add_method($_, method (|a) { self<Root><Pages>."$_"(|a) } );
     }
 

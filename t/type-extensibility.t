@@ -1,6 +1,6 @@
 use v6;
 use Test;
-use PDF::Zen::Delegator;
+use PDF::Zen::Loader;
 
 =begin pod
 
@@ -17,13 +17,13 @@ extension classes
 
 plan 10;
 
-class MyDelegator is PDF::Zen::Delegator {
+class MyLoader is PDF::Zen::Loader {
     method class-paths {
          <t::Doc PDF PDF::DAO::Type>
     }
 }
 
-PDF::DAO.delegator = MyDelegator;
+PDF::DAO.loader = MyLoader;
 
 use t::Doc::Catalog;
 

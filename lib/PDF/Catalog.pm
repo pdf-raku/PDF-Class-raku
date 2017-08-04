@@ -31,7 +31,8 @@ my class Catalog
                                                             #| (Required; must be an indirect reference) The page tree node that is the root of the document’s page tree
 
     #tba distinct number tree objects
-    has PDF::DAO::Dict $.PageLabels is entry;            #| (Optional; PDF 1.3) A number tree defining the page labeling for the document.
+    use PDF::NumberTree;
+    has PDF::NumberTree $.PageLabels is entry;            #| (Optional; PDF 1.3) A number tree defining the page labeling for the document.
 
     has PDF::DAO::Dict $.Names is entry;                 #| (Optional; PDF 1.2) The document’s name dictionary
 

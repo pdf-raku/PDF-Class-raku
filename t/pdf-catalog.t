@@ -19,13 +19,18 @@ my $input = q:to"--END-OBJ--";
   /MarkInfo << /LetterspaceFlags 0 /Marked true >>
   /Metadata 10 0 R
   /Outlines 18 0 R
-  /PageLabels 210 0 R
   /PageLayout /OneColumn
   /Pages 212 0 R
   /PieceInfo << /MarkedPDF << /LastModified (D:20081012130709) >> >>
   /StructTreeRoot 25 0 R
   /AcroForm << /Fields [] >>
   /ViewerPreferences << /HideToolbar true /Direction /R2L >>
+  /PageLabels << /Nums [
+    0 << /S /r >>
+    4 << /S /D >>
+    7 << /S /D /P (A-) /St 8 >>
+    ]
+  >>
 >> endobj
 --END-OBJ--
 
@@ -49,7 +54,7 @@ is-json-equiv $catalog<LastModified>, 'D:20081012130709', '$catalog<LastModified
 is-json-equiv $catalog.MarkInfo, { :LetterspaceFlags(0), :Marked }, '$object.MarkInfo'; 
 is-json-equiv $catalog.Metadata, (:ind-ref[10, 0]), '$catalog.Metadata';
 is-json-equiv $catalog.Outlines, (:ind-ref[18, 0]), '$catalog.Outlines';
-is-json-equiv $catalog.PageLabels, (:ind-ref[210, 0]), '$catalog.PageLabels';
+is-json-equiv $catalog.PageLabels.Nums, [0, { :S<r> }, 4, { :S<D> }, 7, { :S<D>, :P<A->, :St(8), }, ], '$catalog.PageLabels';
 is-json-equiv $catalog.PageLayout, 'OneColumn', '$catalog.PageLayout';
 is-json-equiv $catalog.Pages, (:ind-ref[212, 0]), '$catalog.Pages';
 is-json-equiv $catalog.PieceInfo, { :MarkedPDF{ :LastModified<D:20081012130709> } }, '$catalog.PieceInfo';
