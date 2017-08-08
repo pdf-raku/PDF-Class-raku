@@ -2,10 +2,7 @@ use v6;
 
 use PDF::DAO::Loader;
 
-class PDF::Zen::Loader {...}
-PDF::DAO.loader = PDF::Zen::Loader;
-
-class PDF::Zen::Loader
+PDF::DAO.loader = class PDF::Zen::Loader
     is PDF::DAO::Loader {
 
     use PDF::DAO::Util :from-ast;
