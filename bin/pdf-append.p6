@@ -1,11 +1,11 @@
 #!/usr/bin/env perl6
 use v6;
-use PDF::Doc;
+use PDF::Zen;
 use PDF::DAO::Type::Encrypt :PermissionsFlag;
 
 sub MAIN(*@files, Str :$save-as)  {
 
-    my $pdf = PDF::Doc.open: @files.shift;
+    my $pdf = PDF::Zen.open: @files.shift;
 
     die "nothing to do"
 	unless @files;
@@ -17,7 +17,7 @@ sub MAIN(*@files, Str :$save-as)  {
     my $pages = $pdf.Root.Pages;
 
     for @files -> $in-file {
-	my $in-pdf = PDF::Doc.open: $in-file;
+	my $in-pdf = PDF::Zen.open: $in-file;
 
 	die "PDF forbids copy: $in-file"
 	    unless $in-pdf.permitted( PermissionsFlag::Copy );
