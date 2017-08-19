@@ -45,9 +45,8 @@ is $Catalog.Version, '1.3', '$Catalog.Version';
 my $viewer-preferences;
 lives-ok {$viewer-preferences = $Catalog.ViewerPreferences}, '$Catalog.ViewerPreferences';
 does-ok $viewer-preferences, (require ::('t::Doc::ViewerPreferences')), '$Catalog.ViewerPreferences';
-todo "Bool composition.", 1;
-ok try { $viewer-preferences.HideToolBar }, '$Catalog.ViewerPreferences.HideToolBar';
-is try { $viewer-preferences.some-custom-method }, 'howdy', '$Catalog.ViewerPreferences.some-custom-method';
+ok { $viewer-preferences.HideToolBar }, '$Catalog.ViewerPreferences.HideToolBar';
+is $viewer-preferences.some-custom-method, 'howdy', '$Catalog.ViewerPreferences.some-custom-method';
 
 isa-ok try { $Catalog.Pages }, (require ::('t::Doc::Pages'));
 

@@ -12,7 +12,6 @@ isa-ok PDF::Zen.loader.load( :dict{ :Type<Unknown> }, :fallback(Hash)), Hash, 'd
 isa-ok PDF::Zen.loader.load( :dict{ :FunctionType(3) }),  ::('PDF::Function::Stitching'), 'delegation by FunctionType';
 
 isa-ok PDF::Zen.loader.load( :dict{ :Subtype<Link> }),  ::('PDF::Annot::Link'), 'annot defaulted /Type - implemented';
-todo "class fallback";
 isa-ok PDF::Zen.loader.load( :dict{ :Subtype<Caret> }, ),  ::('PDF::Annot'), 'annot defaulted /Type - unimplemented';
 isa-ok PDF::Zen.loader.load( :dict{ :S<GTS_PDFX> }, ),  ::('PDF::OutputIntent'), 'output intent defaulted /Type';
 
