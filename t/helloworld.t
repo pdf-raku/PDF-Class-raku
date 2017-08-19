@@ -23,7 +23,7 @@ $page.graphics: -> $gfx {
 
     $page.text: -> $txt {
 	for <left center right> -> $align {
-	    $txt.TextMove = [$x, 750];
+	    $txt.text-position = [$x, 750];
 	    $txt.font = [$header-font, 18];
 	    my $header = [~] '*** ', $align, ' ***', "\n";
 	    $txt.say( $header, :$width, :$align);
@@ -39,7 +39,7 @@ $page.graphics: -> $gfx {
 	    $x += 275;
         }
 
-        $txt.TextMove = [240, 600];
+        $txt.text-position = [240, 600];
         $txt.font = [$page.core-font('ZapfDingbats'), 24];
         $txt.WordSpacing = 16;
         my $nbsp = "\c[NO-BREAK SPACE]";
@@ -91,13 +91,13 @@ $page.graphics: {
         .TextRender = TextMode::OutlineText;
         .LineWidth = .5;
         .text-transform( :skew[0, deg2rad(12)] );
-        .text-transform( :translate[50, 550] );
+        .text-position = [50, 550];
         .say('Outline Slanted Text @(50,550)', :width(150));
     }
 }
 
 $page.text: {
-    .TextMove = [110, 300];
+    .text-position = [110, 300];
     .font = [$header-font, 24];
     .say('Hello, world!');
 }

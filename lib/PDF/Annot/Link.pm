@@ -1,12 +1,11 @@
 use v6;
 
+use PDF::DAO::Tie;
+use PDF::DAO::Name;
 use PDF::Annot;
 
 class PDF::Annot::Link
     is PDF::Annot {
-
-    use PDF::DAO::Tie;
-    use PDF::DAO::Name;
 
     # See [PDF 1.7 TABLE 8.24 Additional entries specific to a link annotation]
     has Hash $.A is entry;             #| (Optional; PDF 1.1) An action to be performed when the link annotation is activated (see Section 8.5, “Actions”).

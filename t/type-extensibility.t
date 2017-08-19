@@ -43,9 +43,9 @@ is $Catalog.Version, '1.3', '$Catalog.Version';
 
 # view preferences is a role
 my $viewer-preferences;
-todo "rakudo compunit load issues.", 4;
 lives-ok {$viewer-preferences = $Catalog.ViewerPreferences}, '$Catalog.ViewerPreferences';
-does-ok $viewer-preferences, ::('t::Doc::ViewerPreferences'), '$Catalog.ViewerPreferences';
+does-ok $viewer-preferences, (require ::('t::Doc::ViewerPreferences')), '$Catalog.ViewerPreferences';
+todo "Bool composition.", 1;
 ok try { $viewer-preferences.HideToolBar }, '$Catalog.ViewerPreferences.HideToolBar';
 is try { $viewer-preferences.some-custom-method }, 'howdy', '$Catalog.ViewerPreferences.some-custom-method';
 

@@ -51,6 +51,7 @@ class PDF::XObject::Image
     method to-png {
         use PDF::Content::Image::PNG :PNG-CS;
         need PDF::ColorSpace::Indexed;
+        need PDF::IO::Filter;
 
         my $bit-depth = self.BitsPerComponent || 8;
         my UInt $width = self.Width;
@@ -59,18 +60,6 @@ class PDF::XObject::Image
         my buf8 $stream;
         my buf8 $palette;
         my buf8 $trans;
-        my $decode-parms = .[0] with self.DecodeParms;
-        if $decode-parms
-            && self.Filter ~~ 'FlateDecode'
-            && $decode-parms<Predictor> ~~ PNGPredictor {
-                # stream is good to go
-                $stream = buf8.new: self.encoded.encode: "latin-1";
-        }
-        else {
-            # could reencode stream. use case?
-            warn "ignoring decode-params: {$decode-parms.perl}";
-            return Nil;
-        }
 
         given self.ColorSpace {
             when PDF::ColorSpace::Indexed {
@@ -115,6 +104,30 @@ class PDF::XObject::Image
                 warn "ignoring color-space: {.perl}";
                 return Nil;
             }
+        }
+
+        my $decode-parms = .[0] with self.DecodeParms;
+        if $decode-parms
+            && self.Filter ~~ 'FlateDecode'
+            && $decode-parms<Predictor> ~~ PNGPredictor {
+                # stream is good to go
+                $stream = buf8.new: self.encoded.encode: "latin-1";
+        }
+        else {
+            my $Colors = $hdr.color-type == PNG-CS::RGB ?? 3 !! 1;
+            my %dict = %(
+                :Filter<FlateDecode>,
+                :DecodeParms{
+                    :Predictor(10),
+                    :Width($width),
+                    :Height($height),
+                    :$Colors,
+                },
+            );
+            $stream = buf8.new: PDF::IO::Filter.encode(
+                self.decoded, :%dict,
+            );
+            warn { :img(self), :$stream, :%dict }.perl;
         }
 
         my PDF::Content::Image::PNG $png .= new: :$hdr, :$stream;

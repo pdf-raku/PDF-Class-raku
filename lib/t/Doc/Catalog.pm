@@ -11,4 +11,6 @@ class t::Doc::Catalog
     has PDF::DAO::Name $.Version is entry;        #| (Optional; PDF 1.4) The version of the PDF specification to which the document conforms (for example, /1.4) 
     has Hash $.Pages is entry(:required, :indirect); #| (Required; must be an indirect reference) The page tree node
     has Hash $.Resources is entry;
+    use t::Doc::ViewerPreferences;
+    has t::Doc::ViewerPreferences $.ViewerPreferences is entry; 
 }

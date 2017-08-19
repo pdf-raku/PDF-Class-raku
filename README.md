@@ -1,6 +1,6 @@
 # PDF::Zen
 
-This Perl 6 module is under construction as a general purpose PDF manipulation library.
+This set of Perl modules is under construction as a modular library for PDF manipulation.
 
 ***Experimental***
 
