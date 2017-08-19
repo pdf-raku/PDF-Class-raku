@@ -21,6 +21,7 @@
 
         "PDF::Annot" : "lib/PDF/Annot.pm",
         "PDF::Annot::Circle" : "lib/PDF/Annot/Circle.pm",
+        "PDF::Annot::FileAttachment" : "lib/PDF/Annot/FileAttachment.pm",
         "PDF::Annot::Link" : "lib/PDF/Annot/Link.pm",
         "PDF::Annot::Square" : "lib/PDF/Annot/Square.pm",
         "PDF::Annot::Text" : "lib/PDF/Annot/Text.pm",
