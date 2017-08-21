@@ -23,7 +23,7 @@ This set of Perl modules is under construction as a modular library for PDF mani
 
 ```
 use PDF::Zen;
-my $doc = PDF::Zen.open: "t/pdf/samples/OoPdfFormExample.pdf";
+my PDF::Zen $doc .= open: "t/pdf/samples/OoPdfFormExample.pdf";
 with my $acroform = $doc.Root.AcroForm {
     my @fields = $acroform.fields;
     # display field names and values

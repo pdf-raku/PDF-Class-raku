@@ -31,20 +31,20 @@ class PDF::Zen:ver<0.0.1> #:api<PDF-1.7>
 	$doc;
     }
 
-    method save-as($spec, Bool :$update is copy, Bool :$info = True, |c) {
+    method save-as($spec, Bool :$preserve is copy, Bool :$info = True, |c) {
 
-	if !$update and self.reader and my $sig-flags = self.Root.?AcroForm.?SigFlags {
+	if !$preserve and self.reader and my $sig-flags = self.Root.?AcroForm.?SigFlags {
             constant AppendOnly = 2;
 	    if $sig-flags.flag-is-set: AppendOnly {
 		# The document contains digital signatures that may be invalidated
 		# by a full write
-		with $update {
-		    # callee has specified :!update
-		    die "This PDF contains digital signatures that will be invalidated with .save-as :!update"
+		with $preserve {
+		    # callee has specified :!preserve
+		    die "This PDF contains digital signatures that will be invalidated with .save-as :!preserve"
 		}
 		else {
-		    # save-as(..., :update) to preserve digital signatures
-		    $update = True;
+		    # save-as(..., :preserve) to preserve digital signatures
+		    $preserve = True;
 		}
 	    }
 	}
@@ -62,7 +62,7 @@ class PDF::Zen:ver<0.0.1> #:api<PDF-1.7>
                 $Info.CreationDate //= $now
             }
         }
-	nextwith($spec, :!info, :$update, |c);
+	nextwith($spec, :!info, :$preserve, |c);
     }
 
     method update(Bool :$info = True, |c) {
