@@ -2,7 +2,7 @@ use v6;
 use Test;
 plan 7;
 
-use PDF::Content:ver(v0.0.5..*);
+use PDF::Content:ver(v0.0.5+);
 use PDF::Zen;
 use PDF::Grammar::Test :is-json-equiv;
 

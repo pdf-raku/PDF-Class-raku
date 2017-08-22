@@ -18,8 +18,9 @@ for @<code> {
 	    # disable say
 	    sub say(|c) { }
 
-	    lives-ok {EVAL $snippet}, 'code sample'
-		or die "eval error: $snippet";
+            todo "Zen from an eval";
+            lives-ok {EVAL $snippet}, 'code sample'
+		or warn "eval error: $snippet";
 	}
     }
 }
