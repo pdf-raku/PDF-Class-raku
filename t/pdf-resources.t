@@ -1,5 +1,6 @@
 use v6;
 use Test;
+plan 65;
 
 use PDF::Zen;
 use PDF::Zen::Type;
@@ -9,7 +10,6 @@ use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::Font::TrueType;
 
-plan 64;
 require ::('PDF::Catalog');
 my $dict = { :Outlines(:ind-ref[2, 0]), :Type( :name<Catalog> ), :Pages{ :Type( :name<Pages> ) } };
 my $catalog-obj = ::('PDF::Catalog').new( :$dict );
@@ -37,8 +37,7 @@ my %ast = $/.ast;
 
 my $ind-obj = PDF::IO::IndObj.new( :$input, |%ast );
 my $tt-font-obj = $ind-obj.object;
-# Widths has strange type: 
-warn $tt-font-obj.entries<Widths>.tied.perl;
+is $tt-font-obj.Widths[0], '600', 'Widths';
 isa-ok $tt-font-obj, ::('PDF::Font::TrueType');
 is $tt-font-obj.Type, 'Font', 'tt font $.Type';
 is $tt-font-obj.Subtype, 'TrueType', 'tt font $.Subtype';
