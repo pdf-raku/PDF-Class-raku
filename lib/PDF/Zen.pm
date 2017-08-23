@@ -9,7 +9,7 @@ class PDF::Zen:ver<0.0.1> #:api<PDF-1.7>
     # base class declares: $.Size, $.Encrypt, $.Info, $.ID
     use PDF::DAO::Tie;
     use PDF::Zen::Type;
-    my subset Catalog of PDF::Zen::Type where { .type eq 'Catalog' };
+    my subset Catalog of PDF::Zen::Type where { .type eq 'Catalog' };  # autoloaded PDF::Catalog
     has Catalog $.Root is entry(:required,:indirect);
 
     method type { 'PDF' }
@@ -82,7 +82,7 @@ class PDF::Zen:ver<0.0.1> #:api<PDF-1.7>
         }
     }
 
-    my subset Pages of PDF::Zen::Type where { .type eq 'Pages' };
+    my subset Pages of PDF::Zen::Type where { .type eq 'Pages' }; # autoloaded PDF::Pages
     method Pages returns Pages { self.Root.Pages }
 
     BEGIN for <page add-page delete-page page-count> {

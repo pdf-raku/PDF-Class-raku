@@ -33,13 +33,13 @@ class PDF::Font::Type1
     method make-font-obj {
 
         use Font::AFM;
-        use PDF::Content::Util::Font :Encoded;
+        use PDF::Content::Util::Font :Encoded, :core-font-name;
         use PDF::Content::Font::Enc::Type1;
         use PDF::Content::Font::Enc::CMap;
 
         # todo: handle Widths array
 
-        my $base-font = PDF::Content::Util::Font::core-font-name(self.BaseFont)
+        my $base-font = core-font-name(self.BaseFont)
             // 'courier';
 
         with self.ToUnicode -> $cmap {

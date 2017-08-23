@@ -1,6 +1,19 @@
 # PDF::Zen
 
-This set of Perl modules is under construction as a modular library for PDF manipulation.
+This set of Perl modules is under construction as a PDF manipulation class library.
+
+The root PDF::Zen class understands the overall structure of a PDF and, with some help from PDF::Zen::Loader, is able to navigate and construct a class-mapped PDF structure.
+
+```
+    use PDF::Zen;
+    my $pdf = PDF::Zen.new;
+    my $catalog = $pdf.Root;
+    with $catalog.MarkInfo //= {} {
+        .Marked = True;
+        .UserProperties = False;
+        .Suspects = False;
+    }
+```
 
 ***Experimental***
 

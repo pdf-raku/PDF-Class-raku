@@ -26,7 +26,7 @@ my class Catalog
 
     has PDF::DAO::Name $.Version is entry;               #| (Optional; PDF 1.4) The version of the PDF specification to which the document conforms (for example, 1.4)
 
-    my subset Pages of PDF::Zen::Type where { .type eq 'Pages' };
+    my subset Pages of PDF::Zen::Type where { .type eq 'Pages' }; # autoloaded PDF::Pages
     has Pages $.Pages is entry(:required, :indirect);
                                                             #| (Required; must be an indirect reference) The page tree node that is the root of the document’s page tree
 
@@ -47,7 +47,7 @@ my class Catalog
     subset PageMode of PDF::DAO::Name where 'UseNone'|'UseOutlines'|'UseThumbs'|'FullScreen'|'UseOC'|'UseAttachments';
     has PageMode $.PageMode is entry;                       #| (Optional) A name object specifying how the document should be displayed when opened
 
-    my subset Outlines of PDF::Zen::Type where { .type eq 'Outlines' };
+    my subset Outlines of PDF::Zen::Type where { .type eq 'Outlines' }; # autoloaded PDF::Outlines
     has Outlines $.Outlines is entry(:indirect); #| (Optional; must be an indirect reference) The outline dictionary that is the root of the document’s outline hierarchy
 
     has PDF::DAO::Array $.Threads is entry(:indirect);        #| (Optional; PDF 1.1; must be an indirect reference) An array of thread dictionaries representing the document’s article threads
@@ -62,7 +62,8 @@ my class Catalog
     use PDF::AcroForm;
     has PDF::AcroForm $.AcroForm is entry;       #| (Optional; PDF 1.2) The document’s interactive form (AcroForm) dictionary
 
-    has PDF::DAO::Stream $.Metadata is entry(:indirect); #| (Optional; PDF 1.4; must be an indirect reference) A metadata streamcontaining metadata for the document
+    my subset XML-Metadata of PDF::Zen::Type where { .type eq 'Metadata' && .subtype ~~ 'XML'; };  # autoloaded PDF::Metadata::XML
+    has XML-Metadata $.Metadata is entry(:indirect); #| (Optional; PDF 1.4; must be an indirect reference) A metadata streamcontaining metadata for the document
 
     has PDF::DAO::Dict $.StructTreeRoot is entry;        #| (Optional; PDF 1.3) The document’s structure tree root dictionary
 
