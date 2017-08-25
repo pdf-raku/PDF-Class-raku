@@ -2,15 +2,17 @@
 use v6;
 
 use PDF::Zen;
-use PDF::Graphics;
+use PDF::Content;
 use PDF::Annot;
+use PDF::Writer;
 
 my UInt $*max-depth;
 my Bool $*contents;
 my Bool $*trace;
 my Bool $*strict = False;
+my PDF::Writer $*writer .= new;
 my Str @*exclude;
-my %seen;
+my %seen{Any};
 
 #| check a PDF against PDF class definitions
 sub MAIN(Str $infile,               #| input PDF
@@ -30,11 +32,11 @@ sub MAIN(Str $infile,               #| input PDF
 
 |# Recursively check a dictionary (array) object
 multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
-    return if %seen{$obj.id}++;
+    return if %seen{$obj}++;
     my $ref = $obj.obj-num
 	?? "{$obj.obj-num} {$obj.gen-num//0} R "
-        !! ' ';
-    $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t" ~ $ref ~ $obj.id
+        !! $*writer.write($obj.content).subst(/\s+/, ' ', :g);
+    $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t" ~ $ref
 	if $*trace;
     die "maximum depth of $*max-depth exceeded"
 	if ++$depth > $*max-depth;
@@ -42,7 +44,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     my Str @unknown-entries;
 
     check-contents($obj, :$ref)
-	if $*contents && $obj.does(PDF::Graphics);
+	if $*contents && $obj.does(PDF::Content);
 
     for $obj.keys.sort {
 
@@ -76,11 +78,11 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 
 #| Recursively check an array object
 multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
-    return if %seen{$obj.id}++;
+    return if %seen{$obj}++;
     my $ref = $obj.obj-num
 	?? "{$obj.obj-num} {$obj.gen-num//0} R "
-        !! ' ';
-    $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t" ~ $ref ~ $obj.id
+        !! $*writer.write($obj.content).subst(/\s+/, ' ', :g);
+    $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t" ~ $ref
 	if $*trace;
     die "maximum depth of $*max-depth exceeded"
 	if ++$depth > $*max-depth;
@@ -115,9 +117,8 @@ sub check-contents( $obj, Str :$ref!) {
     my $resources = $obj.Resources
 	// die "no /Resources dict found";
 
-    use PDF::Graphics::Ops;
-    my class Ops does PDF::Graphics::Ops {};
-    my $ops = Ops.new(:$*strict);
+    use PDF::Content::Ops;
+    my PDF::Content::Ops $ops .= new(:$*strict);
 
     for $ast.list {
 	$ops.op($_);
@@ -166,14 +167,13 @@ pdf-checker.p6 - Check PDF DOM structure and values
    --max-depth  max DOM navigation depth (default 100)
    --trace      trace DOM navigation
    --contents   check the contents of pages, forms and patterns
-   --strict     enble some additonakl warnings:
+   --strict     enble some additonal warnings:
                 -- unknown entries in dictionarys
                 -- additional graphics checks (when --contents is enabled)
 
 =head1 DESCRIPTION
 
-Checks a PDF against the DOM. Traverses all objects in the PDF that are accessable from the
-root, reporting any errors or warnings that were encountered. 
+Checks a PDF against the DOM. Traverses all objects in the PDF that are accessable from the root, reporting any errors or warnings that were encountered. 
 
 =head1 SEE ALSO
 
