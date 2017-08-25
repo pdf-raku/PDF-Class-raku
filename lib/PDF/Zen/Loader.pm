@@ -71,7 +71,7 @@ PDF::DAO.loader = class PDF::Zen::Loader
     }
 
     #| Reverse lookup for classes when /Subtype is required but /Type is optional
-    multi method load(Hash :$dict where {.<Subtype>:exists }, :$fallback) {
+    multi method load(Hash :$dict! where {.<Subtype>:exists }, :$fallback) {
 	my $subtype = from-ast $dict<Subtype>;
 
 	my $type = do given $subtype {
@@ -99,36 +99,23 @@ PDF::DAO.loader = class PDF::Zen::Loader
 	    $.find-delegate('OutputIntent', 'GTS_PDFX');
     }
 
-    #| PDF Spec 1.7 Section 4.5.4 CIE-Based Color Spaces
-    subset ColorSpace-Array-CIE of List where {
-	.elems == 2 && do {
-	    my $t = from-ast .[0];
-	    if $t ~~  PDF::DAO::Name {
-		my $d = from-ast .[1];
-		$d ~~ Hash && do given $t {
-		    when 'CalGray'|'CalRGB'|'Lab' { $d<WhitePoint>:exists}
-		    when 'ICCBased'               { $d<N>:exists }
-		    default {False}
-		}
-	    }
-	}
+    subset ColorSpace-Array of List where {
+        my $elems = .elems;
+        my $t = from-ast .[0]
+            if 2 <= $elems <= 5;
+	(
+         #| PDF Spec 1.7 Section 4.5.4 CIE-Based Color Spaces
+         $elems == 2
+         && $t ~~ PDF::DAO::Name
+         && $t eq 'CalGray'|'CalRGB'|'Lab'|'ICCBased';
+        )
+        || ( 
+            #| PDF Spec 1.7 Section 4.5.5 Special Color Spaces
+            3 <= $elems <= 5
+            && $t ~~ PDF::DAO::Name
+            && $t eq 'Indexed'|'Separation'|'DeviceN';
+        )
     }
-
-    #| PDF Spec 1.7 Section 4.5.5 Special Color Spaces
-    subset ColorSpace-Array-Special where {
-	my $a = $_;
-	3 <= $a.elems <= 5 && do {
-	    my $t = from-ast $a[0];
-	    $t ~~  PDF::DAO::Name && do given $t {
-		when 'Indexed'    { my $hival = from-ast($a[2]); $hival ~~ UInt }
-		when 'Separation' { from-ast($a[1]) ~~ PDF::DAO::Name }
-		when 'DeviceN'    { from-ast($a[1]) ~~ Array }
-		default {False}
-	    }
-	}
-    }
-
-    subset ColorSpace-Array of Array where ColorSpace-Array-CIE | ColorSpace-Array-Special;
 
     multi method load(ColorSpace-Array :$array!) {
 	my $color-type = from-ast $array[0];

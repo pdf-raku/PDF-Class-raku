@@ -26,9 +26,10 @@ The root PDF::Zen class understands the overall structure of a PDF and, with som
     $doc.PageLayout = 'TwoColumnLeft';
     $doc.PageMode   = 'UseThumbs';
 
-    my $viewer-prefs = $doc.ViewerPreferences //= {};
-    $viewer-prefs.Duplex = 'DuplexFlipShortEdge';
-    $viewer-prefs.NonFullScreenPageMode = 'UseOutlines';
+    given $doc.ViewerPreferences //= {} {
+        .Duplex = 'DuplexFlipShortEdge';
+        .NonFullScreenPageMode = 'UseOutlines';
+    }
     # ...etc, see PDF::ViewerPreferences
 ```
 
