@@ -76,13 +76,17 @@ PDF::DAO.loader = class PDF::Zen::Loader
 
 	my $type = do given $subtype {
 	    # See [PDF 1.7 - TABLE 8.20 Annotation types]
-	    when 'Text' | 'Link' | 'FreeText' | 'Line' | 'Square' | 'Circle'
-		| 'Polygon' | 'PolyLine' | 'Highlight' |' Underline' | 'Squiggly'
-		| 'StrikeOut' | 'Stamp' | 'Caret' | 'Ink' | 'Popup' | 'FileAttachment'
-		| 'Sound' | 'Movie' | 'Widget' | 'Screen' | 'PrinterMark' | 'TrapNet'
-		| 'Watermark' | '3D'      { 'Annot' }
-	    when 'PS' | 'Image' | 'Form'  { 'XObject' }
-	    default                       { Nil }
+	    when 'Text'|'Link'|'FreeText'|'Line'|'Square'|'Circle'
+		|'Polygon'|'PolyLine'|'Highlight' |' Underline'|'Squiggly'
+		|'StrikeOut'|'Stamp'|'Caret'|'Ink'|'Popup'|'FileAttachment'
+		|'Sound'|'Movie'|'Widget'|'Screen'|'PrinterMark'|'TrapNet'
+		|'Watermark'|'3D'    { 'Annot' }
+	    when 'PS'|'Image'|'Form' { 'XObject' }
+            when 'Type1C'|'CIDFontType0C'|'OpenType' {
+                $subtype = Nil; # not currently subclassed
+                'FontFile'
+            }
+	    default { Nil }
 	};
 
 	if $type {

@@ -58,6 +58,7 @@
         "PDF::Font::Type0" : "lib/PDF/Font/Type0.pm",
         "PDF::Font::Type1" : "lib/PDF/Font/Type1.pm",
         "PDF::Font::Type3" : "lib/PDF/Font/Type3.pm",
+        "PDF::FontFile" : "lib/PDF/FontFile.pm",
 
         "PDF::Function" : "lib/PDF/Function.pm",
         "PDF::Function::Sampled" : "lib/PDF/Function/Sampled.pm",
