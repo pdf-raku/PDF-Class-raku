@@ -7,6 +7,7 @@ class PDF::Zen:ver<0.0.1> #:api<PDF-1.7>
     is PDF {
 
     # base class declares: $.Size, $.Encrypt, $.Info, $.ID
+    use PDF::DAO;
     use PDF::DAO::Tie;
     use PDF::Zen::Type;
     my subset Catalog of PDF::Zen::Type where { .type eq 'Catalog' };  # autoloaded PDF::Catalog
@@ -19,7 +20,7 @@ class PDF::Zen:ver<0.0.1> #:api<PDF-1.7>
                 Version.new: $.catalog<Version> // self.reader.?version // '1.4'
             },
             STORE => sub ($, Version $v) {
-                $.catalog<Version> = name => $v.Str;
+                $.catalog<Version> = PDF::DAO.coerce: :name($v.Str);
             },
         );
     }
