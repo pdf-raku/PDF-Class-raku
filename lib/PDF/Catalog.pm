@@ -60,10 +60,9 @@ my class Catalog
     has PDF::DAO::Dict $.URI is entry;                   #| (Optional; PDF 1.1) A URI dictionary containing document-level information for URI
 
     use PDF::AcroForm;
-    has PDF::AcroForm $.AcroForm is entry;       #| (Optional; PDF 1.2) The document’s interactive form (AcroForm) dictionary
+    has PDF::AcroForm $.AcroForm is entry;               #| (Optional; PDF 1.2) The document’s interactive form (AcroForm) dictionary
 
-    my subset XML-Metadata of PDF::Zen::Type where { .type eq 'Metadata' && .subtype ~~ 'XML'; };  # autoloaded PDF::Metadata::XML
-    has XML-Metadata $.Metadata is entry(:indirect); #| (Optional; PDF 1.4; must be an indirect reference) A metadata streamcontaining metadata for the document
+    has PDF::DAO::Stream $.Metadata is entry(:indirect); #| (Optional; PDF 1.4; must be an indirect reference) A metadata streamcontaining metadata for the document
 
     has PDF::DAO::Dict $.StructTreeRoot is entry;        #| (Optional; PDF 1.3) The document’s structure tree root dictionary
 
