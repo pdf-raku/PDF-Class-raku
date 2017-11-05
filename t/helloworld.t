@@ -1,6 +1,5 @@
 use v6;
 use Test;
-use PDF::Content::Util::CoreFont; # give rakudo a helping hand
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Zen;
 

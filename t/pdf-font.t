@@ -9,7 +9,7 @@ use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::DAO;
-use PDF::Content::Util::CoreFont :Encoded;
+use PDF::Content::Font::CoreFont;
 
 my $actions = PDF::Grammar::PDF::Actions.new;
 
@@ -39,14 +39,14 @@ is $object.Encoding, 'MacRomanEncoding', '$.Encoding accessor';
 is-json-equiv $ind-obj.ast, %ast, 'ast regeneration';
 
 use Font::Metrics::helvetica;
-ok $object.font-obj.isa(Font::Metrics::helvetica), 'font object';
+ok $object.font-obj.metrics.isa(Font::Metrics::helvetica), 'font object';
 
 sub to-doc($font-obj) {
     my $dict = $font-obj.to-dict;
     { :$dict, :$font-obj }
 }
 
-my $hbi-afm = PDF::Content::Util::CoreFont::load-font( :family<Helvetica>, :weight<Bold>, :style<Italic> );
+my $hbi-afm = PDF::Content::Font::CoreFont.load-font( :family<Helvetica>, :weight<Bold>, :style<Italic> );
 
 my %params = to-doc($hbi-afm);
 my $font = PDF::DAO.coerce( |%params );
@@ -54,9 +54,9 @@ isa-ok $font, ::('PDF::Font::Type1');
 is $font.BaseFont, 'Helvetica-BoldOblique', '.BaseFont';
 is $font.Encoding, 'WinAnsiEncoding', '.Encoding';
 use Font::Metrics::helvetica-boldoblique;
-ok $font.font-obj.isa(Font::Metrics::helvetica-boldoblique), 'font object';
+ok $font.font-obj.metrics.isa(Font::Metrics::helvetica-boldoblique), 'font object';
 
-my $zapf = PDF::Content::Util::CoreFont::load-font( 'ZapfDingbats' );
+my $zapf = PDF::Content::Font::CoreFont.load-font( 'ZapfDingbats' );
 
 %params = to-doc($zapf);
 my $zapf-font = PDF::DAO.coerce( |%params );
@@ -64,7 +64,7 @@ isa-ok $zapf-font, ::('PDF::Font::Type1');
 is $zapf-font.BaseFont, 'ZapfDingbats', '.BaseFont';
 ok !$zapf-font.Encoding.defined, '!.Encoding';
 
-my $sym = PDF::Content::Util::CoreFont::load-font( 'Symbol' );
+my $sym = PDF::Content::Font::CoreFont.load-font( 'Symbol' );
 
 %params = to-doc($sym);
 my $sym-font = PDF::DAO.coerce( |%params );

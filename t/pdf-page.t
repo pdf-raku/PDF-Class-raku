@@ -3,7 +3,6 @@ use Test;
 
 plan 40;
 
-use PDF::Content::Util::CoreFont; # give rakudo a helping hand
 use PDF::IO::IndObj;
 use PDF::Zen;
 use PDF::Grammar::Test :is-json-equiv;
@@ -48,13 +47,13 @@ is-deeply $page.contents, '%dummy stream', '$.contents accessor';
 
 my $font = $page.core-font( 'Helvetica' );
 isa-ok $font, (require ::('PDF::Font::Type1'));
-is $font.font-obj.FontName, 'Helvetica', '.FontName';
+is $font.font-obj.font-name, 'Helvetica', '.font-name';
 my $font-again = $page.core-font( 'Helvetica' );
 is-deeply $font-again, $font, 'core font caching';
 is-deeply $font-again.WHICH, $font.WHICH, 'core font caching';
 is-deeply [$page.Resources.Font.keys.sort], [<F1 F2>], 'font resource entries';
 my $font2 = $page.core-font( :family<Helvetica>, :weight<bold> );
-is $font2.font-obj.FontName, 'Helvetica-Bold', '.FontName';
+is $font2.font-obj.font-name, 'Helvetica-Bold', '.font-name';
 is-deeply [$page.Resources.Font.keys.sort], [<F1 F2 F3>], 'font resource entries';
 
 is-json-equiv $page.MediaBox, [0, 0, 595, 842], '$.MediaBox accessor';

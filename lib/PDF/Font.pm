@@ -26,11 +26,14 @@ class PDF::Font
     method make-font-obj {
         # stub for other font types
         use Font::Metrics::courier;
-        use PDF::Content::Util::CoreFont :Encoded;
+        use PDF::Content::Font::CoreFont;
         use PDF::Content::Font::Enc::Type1;
 
         warn "don't know how to make font of type: {self.Type}";
-        (Font::Metrics::courier but Encoded[PDF::Content::Font::Enc::Type1]).new;
+        my $metrics = Font::Metrics::courier;
+        my $encoder = PDF::Content::Font::Enc::Type1.new;
+        PDF::Content::Font::CoreFont.new: :$metrics, :$encoder;
+        
     }
 }
 

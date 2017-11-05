@@ -1,7 +1,6 @@
 use v6;
 
 use Test;
-use PDF::Content::Util::CoreFont; # give rakudo a helping hand
 use PDF;
 use PDF::Zen;
 use PDF::Grammar::PDF;

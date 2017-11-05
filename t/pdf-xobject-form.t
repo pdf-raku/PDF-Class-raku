@@ -3,7 +3,6 @@ use Test;
 
 plan 9;
 
-use PDF::Content::Util::CoreFont; # give rakudo a helping hand
 use PDF::Zen;
 use PDF::IO::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
