@@ -4,7 +4,7 @@ plan 2;
 # ensure consistant document ID generation
 srand(123456);
 
-use PDF::Content::Util::Font; # give rakudo a helping hand
+use PDF::Content::Util::CoreFont; # give rakudo a helping hand
 use PDF::Zen;
 my PDF::Zen $pdf .= new;
 my $page = $pdf.add-page;

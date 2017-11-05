@@ -1,8 +1,11 @@
 # PDF::Zen
 
-This set of Perl modules is under construction as a PDF manipulation class library.
+PDF::Zen is under construction as a set of classes that implement the overall structure of a PDF.
 
-The root PDF::Zen class understands the overall structure of a PDF and, with some help from PDF::Zen::Loader, is able to navigate and construct a class-mapped PDF structure.
+With some help from PDF::Zen::Loader, it is able to navigate a PDF document and lazily load PDF objects on demand.
+
+This module currently supports a subset of the available PDF objects, and is very much under construction.
+
 
 ```
     use PDF::Zen;
@@ -77,6 +80,7 @@ in the out put stream `/UseToes`, rather than a string `(UseToes)`.
 The PDF::Zen module is under construction and not yet functionally complete.
 
 # Bugs and Restrictions
+
 At this stage:
 - Only core fonts are supported. There are a total of 14
 font variations available. Please see the Font::AFM module for details.

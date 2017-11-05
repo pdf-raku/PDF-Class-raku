@@ -4,7 +4,7 @@
     "version"     : "0.0.3",
     "auth"        : "github:p6-pdf",
     "api"         : "PDF-1.7",
-    "description" : "PDF Document Object Model",
+    "description" : "PDF Document Object Model (under construction)",
     "depends"     : [ "PDF", "PDF::Grammar", "PDF::Content" ],
     "source-url"  : "git://github.com/p6-pdf/PDF-Zen-p6.git",
     "provides"    : {

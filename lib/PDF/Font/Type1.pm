@@ -33,7 +33,7 @@ class PDF::Font::Type1
     method make-font-obj {
 
         use Font::AFM;
-        use PDF::Content::Util::Font :Encoded, :core-font-name;
+        use PDF::Content::Util::CoreFont :Encoded, :core-font-name;
         use PDF::Content::Font::Enc::Type1;
         use PDF::Content::Font::Enc::CMap;
 
@@ -58,7 +58,7 @@ class PDF::Font::Type1
                     default { 'std' }
                 }
             }
-            PDF::Content::Util::Font::core-font($base-font, :$enc);
+            PDF::Content::Util::CoreFont::load-font($base-font, :$enc);
         }
 
     }
