@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 40;
+plan 39;
 
 use PDF::IO::IndObj;
 use PDF::Zen;
@@ -89,12 +89,10 @@ $page.media-box = $page.to-landscape( PageSizes::A3 );
 is-json-equiv $page.media-box, [0,0,1190,842], 'media-box page-name setter :landscape';
 
 $page.gfx.ops(['BT', :Tj[ :literal('Hello, world!') ], 'ET']);
-$page.cb-finish;
-is-deeply [$page.Contents.decoded.lines], ['BT', '  (Hello, world!) Tj', 'ET'], 'finished Contents';
+is-deeply [$page.gfx.content-dump], ['BT', '(Hello, world!) Tj', 'ET'], 'finished Contents';
 
 my $xobject = $page.to-xobject;
 isa-ok $xobject, ::('PDF::XObject::Form');
 is-deeply $xobject.BBox, $page.trim-box, 'xobject copied trim-box';
-is-deeply [$xobject.decoded.lines], ['BT', '  (Hello, world!) Tj', 'ET' ], 'xobject decoded';
 
 
