@@ -14,7 +14,7 @@ class PDF::Encoding
     use PDF::DAO::Name;
     my subset Name-Encoding of PDF::DAO::Name where 'Encoding';
     has Name-Encoding $.Type is entry;
-    has PDF::DAO::Name $.BaseEncoding is entry; #| (Optional) The base encoding—that is, the encoding from which the Differencesentry (if present) describes differences—
-    has @.Differences is entry;              #| (Optional; not recommended with TrueType fonts) An array describing the differences from the encoding specified by BaseEncoding or, if BaseEncoding is absent, from an implicit base encoding.
+    has PDF::DAO::Name $.BaseEncoding is entry; #| (Optional) The base encoding—that is, the encoding from which the Differences entry (if present) describes differences.
+    has @.Differences is entry;                 #| (Optional; not recommended with TrueType fonts) An array describing the differences from the encoding specified by BaseEncoding or, if BaseEncoding is absent, from an implicit base encoding.
 
 }
