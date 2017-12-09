@@ -86,7 +86,7 @@ class PDF::Zen:ver<0.0.1> #:api<PDF-1.7>
     my subset Pages of PDF::Zen::Type where { .type eq 'Pages' }; # autoloaded PDF::Pages
     method Pages returns Pages { self.Root.Pages }
 
-    BEGIN for <page add-page delete-page insert-page page-count media-box crop-box bleed-box trim-box art-box core-font> {
+    BEGIN for <page add-page delete-page insert-page page-count media-box crop-box bleed-box trim-box art-box core-font use-font> {
         $?CLASS.^add_method($_, method (|a) { self<Root><Pages>."$_"(|a) } );
     }
 

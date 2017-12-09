@@ -39,30 +39,30 @@ PDF::DAO.loader = class PDF::Zen::Loader
 		}
             }
 	}
-		
+
 	note "No Doc handler class [{self.class-paths}]::{$subclass}"
 	    unless $resolved;
 
         self.install-delegate( $subclass, $handler-class );
     }
 
-    multi method load(Hash :$dict! where {.<FunctionType>:exists}) {
+    multi method load-delegate(Hash :$dict! where {.<FunctionType>:exists}) {
 	$.find-delegate('Function').delegate-function( :$dict );
     }
 
-    multi method load(Hash :$dict! where {.<PatternType>:exists}) {
+    multi method load-delegate(Hash :$dict! where {.<PatternType>:exists}) {
 	$.find-delegate('Pattern').delegate-pattern( :$dict );
     }
 
-    multi method load(Hash :$dict! where {.<ShadingType>:exists}) {
+    multi method load-delegate(Hash :$dict! where {.<ShadingType>:exists}) {
 	$.find-delegate('Shading').delegate-shading( :$dict );
     }
 
-    multi method load(Hash :$dict! where {(.<Registry>:exists) && (.<Ordering>:exists)}) {
+    multi method load-delegate(Hash :$dict! where {(.<Registry>:exists) && (.<Ordering>:exists)}) {
 	$.find-delegate('CIDSystemInfo');
     }
 
-    multi method load( Hash :$dict! where {.<Type>:exists}, :$fallback) {
+    multi method load-delegate( Hash :$dict! where {.<Type>:exists}, :$fallback) {
         my $type = from-ast($dict<Type>);
         my $subtype = from-ast($dict<Subtype> // $dict<S>)
 	    unless $type eq 'Border';
@@ -71,7 +71,7 @@ PDF::DAO.loader = class PDF::Zen::Loader
     }
 
     #| Reverse lookup for classes when /Subtype is required but /Type is optional
-    multi method load(Hash :$dict! where {.<Subtype>:exists }, :$fallback) {
+    multi method load-delegate(Hash :$dict! where {.<Subtype>:exists }, :$fallback) {
 	my $subtype = from-ast $dict<Subtype>;
 
 	my $type = do given $subtype {
@@ -99,7 +99,7 @@ PDF::DAO.loader = class PDF::Zen::Loader
     }
 
     #| Reverse lookup for classes when /Subtype is required but /Type is optional
-    multi method load(Hash :$dict where {from-ast($_) ~~ 'GTS_PDFX' given .<S>},) {
+    multi method load-delegate(Hash :$dict where {from-ast($_) ~~ 'GTS_PDFX' given .<S>},) {
 	    $.find-delegate('OutputIntent', 'GTS_PDFX');
     }
 
@@ -121,12 +121,12 @@ PDF::DAO.loader = class PDF::Zen::Loader
         )
     }
 
-    multi method load(ColorSpace-Array :$array!) {
+    multi method load-delegate(ColorSpace-Array :$array!) {
 	my $color-type = from-ast $array[0];
 	$.find-delegate('ColorSpace', $color-type);
     }
 
-    multi method load(:$fallback!) is default {
+    multi method load-delegate(:$fallback!) is default {
 	$fallback;
     }
 
