@@ -4,8 +4,8 @@ plan 2;
 # ensure consistant document ID generation
 srand(123456);
 
-use PDF::Zen;
-my PDF::Zen $pdf .= new;
+use PDF::Class;
+my PDF::Class $pdf .= new;
 my $page = $pdf.add-page;
 my $header-font = $page.core-font( :family<Helvetica>, :weight<bold> );
 

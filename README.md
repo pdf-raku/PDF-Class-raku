@@ -1,15 +1,13 @@
-# PDF::Zen
+# PDF::Class
 
-PDF::Zen is under construction as a set of classes that implement the overall structure of a PDF.
+PDF::Class is a set of classes and accessors for safe navigation and construction of PDF documents.
 
-With some help from PDF::Zen::Loader, it is able to navigate a PDF document and lazily load PDF objects on demand.
-
-This module currently supports a subset of the available PDF objects, and is very much under construction.
+This module is a work in progress. It currently maps a subset of the more commonly used PDF objects.
 
 
 ```
-    use PDF::Zen;
-    my $pdf = PDF::Zen.new;
+    use PDF::Class;
+    my $pdf = PDF::Class.new;
     my $catalog = $pdf.Root;
     with $catalog.MarkInfo //= {} {
         .Marked = True;
@@ -22,8 +20,8 @@ This module currently supports a subset of the available PDF objects, and is ver
 
 ### Page Layout & Viewer Preferences
 ```
-    use PDF::Zen;
-    my $pdf = PDF::Zen.new;
+    use PDF::Class;
+    my $pdf = PDF::Class.new;
 
     my $doc = $pdf.Root;
     $doc.PageLayout = 'TwoColumnLeft';
@@ -39,8 +37,8 @@ This module currently supports a subset of the available PDF objects, and is ver
 ### AcroForm Fields
 
 ```
-use PDF::Zen;
-my PDF::Zen $doc .= open: "t/pdf/samples/OoPdfFormExample.pdf";
+use PDF::Class;
+my PDF::Class $doc .= open: "t/pdf/samples/OoPdfFormExample.pdf";
 with my $acroform = $doc.Root.AcroForm {
     my @fields = $acroform.fields;
     # display field names and values
@@ -62,8 +60,8 @@ the following example we cast the PageMode to a name, so it appears as a name
 in the out put stream `/UseToes`, rather than a string `(UseToes)`.
 
 ```
-    use PDF::Zen;
-    my $pdf = PDF::Zen.new;
+    use PDF::Class;
+    my $pdf = PDF::Class.new;
 
     my $doc = $pdf.Root;
     try {
@@ -77,7 +75,7 @@ in the out put stream `/UseToes`, rather than a string `(UseToes)`.
 
 ## Development Status
 
-The PDF::Zen module is under construction and not yet functionally complete.
+The PDF::Class module is under construction and not yet functionally complete.
 
 # Bugs and Restrictions
 

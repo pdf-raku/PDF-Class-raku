@@ -1,7 +1,7 @@
 use v6;
 
 use PDF::DAO::Dict;
-use PDF::Zen::Type;
+use PDF::Class::Type;
 use PDF::Content::PageNode;
 use PDF::Content::PageTree;
 
@@ -9,7 +9,7 @@ use PDF::Content::PageTree;
 
 class PDF::Pages
     is PDF::DAO::Dict
-    does PDF::Zen::Type
+    does PDF::Class::Type
     does PDF::Content::PageNode
     does PDF::Content::PageTree {
 

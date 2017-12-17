@@ -3,14 +3,14 @@ use v6;
 use PDF:ver(v0.2.1+);
 
 #| PDF entry-point. either a trailer dict or an XRef stream
-class PDF::Zen:ver<0.0.1> #:api<PDF-1.7>
+class PDF::Class:ver<0.0.1> #:api<PDF-1.7>
     is PDF {
 
     # base class declares: $.Size, $.Encrypt, $.Info, $.ID
     use PDF::DAO;
     use PDF::DAO::Tie;
-    use PDF::Zen::Type;
-    my subset Catalog of PDF::Zen::Type where { .type eq 'Catalog' };  # autoloaded PDF::Catalog
+    use PDF::Class::Type;
+    my subset Catalog of PDF::Class::Type where { .type eq 'Catalog' };  # autoloaded PDF::Catalog
     has Catalog $.Root is entry(:required,:indirect);
 
     method type { 'PDF' }
@@ -53,7 +53,7 @@ class PDF::Zen:ver<0.0.1> #:api<PDF-1.7>
         if $info {
             my $now = DateTime.now;
             my $Info = self.Info //= {};
-            $Info.Producer //= "Perl 6 PDF::Zen {self.^ver}";
+            $Info.Producer //= "Perl 6 PDF::Class {self.^ver}";
             with self.reader {
                 # updating
                 $Info.ModDate = $now;
@@ -83,7 +83,7 @@ class PDF::Zen:ver<0.0.1> #:api<PDF-1.7>
         }
     }
 
-    my subset Pages of PDF::Zen::Type where { .type eq 'Pages' }; # autoloaded PDF::Pages
+    my subset Pages of PDF::Class::Type where { .type eq 'Pages' }; # autoloaded PDF::Pages
     method Pages returns Pages { self.Root.Pages }
 
     BEGIN for <page add-page delete-page insert-page page-count media-box crop-box bleed-box trim-box art-box core-font use-font> {

@@ -3,10 +3,10 @@ use Test;
 plan 7;
 
 use PDF::Content:ver(v0.0.5+);
-use PDF::Zen;
+use PDF::Class;
 use PDF::Grammar::Test :is-json-equiv;
 
-my $pdf = PDF::Zen.open: "t/helloworld.pdf";
+my $pdf = PDF::Class.open: "t/helloworld.pdf";
 my $page = $pdf.page: 1;
 
 my %seen;

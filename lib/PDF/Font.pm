@@ -2,14 +2,14 @@ use v6;
 
 use PDF::DAO::Dict;
 use PDF::Content::Font;
-use PDF::Zen::Type;
+use PDF::Class::Type;
 
 # /Type /Font - Describes a font
 
 class PDF::Font
     is PDF::DAO::Dict
     does PDF::Content::Font
-    does PDF::Zen::Type {
+    does PDF::Class::Type {
 
     use PDF::DAO::Tie;
     use PDF::DAO::Name;

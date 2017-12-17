@@ -3,7 +3,7 @@ use Test;
 
 plan 9;
 
-use PDF::Zen;
+use PDF::Class;
 use PDF::IO::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
@@ -73,7 +73,7 @@ is-deeply [$contents.lines], [
     'Q',
     ], 'finished contents';
 
-my $pdf = PDF::Zen.new;
+my $pdf = PDF::Class.new;
 $pdf.Pages.media-box = [0, 0, 220, 220];
 my $page = $pdf.add-page;
 $page.graphics: {

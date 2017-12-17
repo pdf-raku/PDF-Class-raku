@@ -2,8 +2,8 @@ use v6;
 use Test;
 plan 65;
 
-use PDF::Zen;
-use PDF::Zen::Type;
+use PDF::Class;
+use PDF::Class::Type;
 use PDF::IO::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;

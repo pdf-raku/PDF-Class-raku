@@ -1,18 +1,18 @@
 {
     "perl"        : "6.*",
-    "name"        : "PDF::Zen",
+    "name"        : "PDF::Class",
     "version"     : "0.0.3",
     "auth"        : "github:p6-pdf",
     "api"         : "PDF-1.7",
     "description" : "PDF Document Object Model (under construction)",
     "depends"     : [ "PDF", "PDF::Grammar", "PDF::Content" ],
-    "source-url"  : "git://github.com/p6-pdf/PDF-Zen-p6.git",
+    "source-url"  : "git://github.com/p6-pdf/PDF-Class-p6.git",
     "provides"    : {
 
 
-        "PDF::Zen" : "lib/PDF/Zen.pm",
-        "PDF::Zen::Type" : "lib/PDF/Zen/Type.pm",
-        "PDF::Zen::Loader" : "lib/PDF/Zen/Loader.pm",
+        "PDF::Class" : "lib/PDF/Class.pm",
+        "PDF::Class::Type" : "lib/PDF/Class/Type.pm",
+        "PDF::Class::Loader" : "lib/PDF/Class/Loader.pm",
 
         "PDF::AcroForm" : "lib/PDF/AcroForm.pm",
 

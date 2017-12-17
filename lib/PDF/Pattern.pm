@@ -25,7 +25,7 @@ my role Pattern
     method type    { 'Pattern' }
     method subtype { PatternNames[ self<PatternType> ] }
 
-    #| see also PDF::Zen::Loader
+    #| see also PDF::Class::Loader
     method delegate-pattern(Hash :$dict!) {
 
 	use PDF::DAO::Util :from-ast;

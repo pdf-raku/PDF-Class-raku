@@ -1,10 +1,10 @@
 use v6;
 
-# autoload from PDF::Zen::Type
+# autoload from PDF::Class::Type
 
-role PDF::Zen::Type[$type-entry = 'Type', $subtype-entry = 'Subtype'] {
+role PDF::Class::Type[$type-entry = 'Type', $subtype-entry = 'Subtype'] {
 
-    use PDF::Zen::Loader;
+    use PDF::Class::Loader;
     use PDF::DAO;
     #| enforce tie-ins between /Type, /Subtype & the class name. e.g.
     #| PDF::Catalog should have /Type = /Catalog

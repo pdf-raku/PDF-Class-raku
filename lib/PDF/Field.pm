@@ -1,11 +1,11 @@
 use v6;
 
 use PDF::DAO::Tie::Hash;
-use PDF::Zen::Type;
+use PDF::Class::Type;
 
 role PDF::Field
     does PDF::DAO::Tie::Hash
-    does PDF::Zen::Type['FT'] {
+    does PDF::Class::Type['FT'] {
 
     use PDF::DAO::Tie;
     use PDF::DAO::TextString;

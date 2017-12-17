@@ -1,13 +1,13 @@
 use v6;
 
 use PDF::DAO::Dict;
-use PDF::Zen::Type;
+use PDF::Class::Type;
 
 # /Type /Outlines - the Outlines dictionary
 
 class PDF::Outlines
     is PDF::DAO::Dict
-    does PDF::Zen::Type {
+    does PDF::Class::Type {
 
     use PDF::DAO::Tie;
     use PDF::DAO::Name;

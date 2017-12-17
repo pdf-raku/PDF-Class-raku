@@ -1,12 +1,12 @@
 use v6;
 use Test;
 use PDF::Grammar::Test :is-json-equiv;
-use PDF::Zen;
+use PDF::Class;
 
 # ensure consistant document ID generation
 srand(123456);
 
-my $pdf = PDF::Zen.new;
+my $pdf = PDF::Class.new;
 my $page = $pdf.add-page;
 $page.MediaBox = [0, 0, 595, 842];
 
@@ -111,7 +111,7 @@ ok $pdf.save-as('t/helloworld.pdf'), '.save-as';
 ok $pdf.save-as('t/helloworld-compressed.pdf', :compress, :!info), '.save-as( :compress )';
 throws-like { $pdf.wtf }, X::Method::NotFound;
 
-lives-ok {$pdf = PDF::Zen.open: 't/helloworld-compressed.pdf'}, 'pdf reload lives';
+lives-ok {$pdf = PDF::Class.open: 't/helloworld-compressed.pdf'}, 'pdf reload lives';
 isa-ok $pdf.reader.trailer, PDF, 'trailer type';
 $page = $pdf.page: 1;
 isa-ok $page, (require ::('PDF::Page')), 'first pages';
@@ -128,6 +128,6 @@ is-deeply $contents-ast[*-1], (:ET[]), '.contents last elem';
 my $gfx = $page.gfx;
 is-json-equiv $gfx.ops[*-4 .. *], $(:Tj[{:literal("Hello, world!")}], :TL[:real(26.4)], "T*" => [], :ET[]), '$page.gfx.ops (tail)';
 
-lives-ok { PDF::Zen.new.save-as: "t/pdf/no-pages.pdf", :!info }, 'create empty PDF';
+lives-ok { PDF::Class.new.save-as: "t/pdf/no-pages.pdf", :!info }, 'create empty PDF';
 
 done-testing;

@@ -2,13 +2,13 @@ use v6;
 
 use PDF::DAO::Dict;
 use PDF::DAO::Stream;
-use PDF::Zen::Type;
+use PDF::Class::Type;
 
 # /Type /CMap
 
 class PDF::CMap
     is PDF::DAO::Stream
-    does PDF::Zen::Type {
+    does PDF::Class::Type {
 
     # set [PDF 1.7 TABLE 5.17 Additional entries in a CMap dictionary]
     use PDF::DAO::Tie;

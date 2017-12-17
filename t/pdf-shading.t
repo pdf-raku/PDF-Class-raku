@@ -3,7 +3,7 @@ use Test;
 
 plan 8;
 
-use PDF::Zen;
+use PDF::Class;
 use PDF::IO::IndObj;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;

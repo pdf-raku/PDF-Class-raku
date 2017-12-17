@@ -1,6 +1,6 @@
 use v6;
 use Test;
-use PDF::Zen;
+use PDF::Class;
 # ensure consistant document ID generation
 srand(123456);
 
@@ -18,7 +18,7 @@ for @<code> {
 	    # disable say
 	    sub say(|c) { }
 
-            todo "Zen from an eval";
+            todo "Class from an eval";
             lives-ok {EVAL $snippet}, 'code sample'
 		or warn "eval error: $snippet";
 	}

@@ -1,14 +1,14 @@
 use v6;
 
 use PDF::DAO::Dict;
-use PDF::Zen::Type;
+use PDF::Class::Type;
 use PDF::Content::Resourced;
 
 # /Type /Catalog - usually the document root in a PDF
 # See [PDF 1.7 Section 3.6.1 Document Catalog]
 my class Catalog
     is PDF::DAO::Dict
-    does PDF::Zen::Type
+    does PDF::Class::Type
     does PDF::Content::Resourced {
 
     # see [PDF 1.7 TABLE 3.25 Entries in the catalog dictionary]
@@ -26,7 +26,7 @@ my class Catalog
 
     has PDF::DAO::Name $.Version is entry;               #| (Optional; PDF 1.4) The version of the PDF specification to which the document conforms (for example, 1.4)
 
-    my subset Pages of PDF::Zen::Type where { .type eq 'Pages' }; # autoloaded PDF::Pages
+    my subset Pages of PDF::Class::Type where { .type eq 'Pages' }; # autoloaded PDF::Pages
     has Pages $.Pages is entry(:required, :indirect);
                                                             #| (Required; must be an indirect reference) The page tree node that is the root of the document’s page tree
 
@@ -47,7 +47,7 @@ my class Catalog
     subset PageMode of PDF::DAO::Name where 'UseNone'|'UseOutlines'|'UseThumbs'|'FullScreen'|'UseOC'|'UseAttachments';
     has PageMode $.PageMode is entry;                       #| (Optional) A name object specifying how the document should be displayed when opened
 
-    my subset Outlines of PDF::Zen::Type where { .type eq 'Outlines' }; # autoloaded PDF::Outlines
+    my subset Outlines of PDF::Class::Type where { .type eq 'Outlines' }; # autoloaded PDF::Outlines
     has Outlines $.Outlines is entry(:indirect); #| (Optional; must be an indirect reference) The outline dictionary that is the root of the document’s outline hierarchy
 
     has PDF::DAO::Array $.Threads is entry(:indirect);        #| (Optional; PDF 1.1; must be an indirect reference) An array of thread dictionaries representing the document’s article threads

@@ -1,6 +1,6 @@
 use v6;
 use Test;
-use PDF::Zen::Type;
+use PDF::Class::Type;
 use PDF::XObject::Image;
 use PDF::Content::Image::PNG;
 

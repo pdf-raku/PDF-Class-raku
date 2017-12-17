@@ -1,10 +1,10 @@
 use v6;
 use Test;
-use PDF::Zen;
+use PDF::Class;
 use PDF::Grammar::Test :$is-json-equiv;
 my $pdf;
 
-lives-ok {$pdf = PDF::Zen.open("t/pdf/samples/OoPdfFormExample.pdf")}, "open form example  lives";
+lives-ok {$pdf = PDF::Class.open("t/pdf/samples/OoPdfFormExample.pdf")}, "open form example  lives";
 my $doc = $pdf.Root;
 isa-ok $doc, ::('PDF::Catalog'), 'document root';
 

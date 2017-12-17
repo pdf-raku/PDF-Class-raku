@@ -1,6 +1,6 @@
 use v6;
 use Test;
-use PDF::Zen::Loader;
+use PDF::Class::Loader;
 
 =begin pod
 
@@ -17,7 +17,7 @@ extension classes
 
 plan 10;
 
-class MyLoader is PDF::Zen::Loader {
+class MyLoader is PDF::Class::Loader {
     method class-paths {
          <t::Doc PDF PDF::DAO::Type>
     }
