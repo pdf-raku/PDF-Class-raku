@@ -1,7 +1,7 @@
 #!/usr/bin/env perl6
 use v6;
 
-use PDF::Zen;
+use PDF::Class;
 use PDF::IO::Input::Str;
 use PDF::IO::Input::IOH;
 
@@ -22,7 +22,7 @@ multi sub pretty-print(Mu $val --> Str) is default {
 
 multi sub MAIN(Bool :$version! where $_) {
     # nyi in rakudo https://rt.perl.org/Ticket/Display.html?id=125017
-    say "PDF::Zen {PDF::Zen.^version}";
+    say "PDF::Class {PDF::Class.^version}";
     say "this script was ported from the CAM::PDF PDF Manipulation library";
     say "see - https://metacpan.org/pod/CAM::PDF";
 }
@@ -39,7 +39,7 @@ multi sub MAIN(Str $infile,           #| input PDF
 	?? PDF::IO::Input::Str.new( :value($*IN.slurp-rest( :enc<latin-1> )) )
 	!! PDF::IO::Input::IOH.new( :value($infile.IO.open( :enc<latin-1> )) );
 
-    my $doc = PDF::Zen.open( $input, :$password );
+    my $doc = PDF::Class.open( $input, :$password );
 
     my UInt $size = $input.codes;
     my UInt $pages = $doc.page-count;
