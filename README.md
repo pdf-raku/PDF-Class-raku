@@ -1,6 +1,6 @@
 # PDF::Class
 
-PDF::Class is a set of classes and accessors for safe navigation and construction of PDF documents.
+PDF::Class maps the internal structure of a PDF of classes and accessors for safe navigation and construction of PDF documents.
 
 This module is a work in progress. It currently maps a subset of the more commonly used PDF objects.
 

@@ -2,16 +2,18 @@ use v6;
 use Test;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Class;
+use PDF::Page;
+use PDF::Info;
 
 # ensure consistant document ID generation
 srand(123456);
 
 my $pdf = PDF::Class.new;
-my $page = $pdf.add-page;
-$page.MediaBox = [0, 0, 595, 842];
+my PDF::Page $page = $pdf.add-page;
+$page.media-box = [0, 0, 595, 842];
 
-dies-ok { $page.MediaBox = [0, 595] }, 'MediaBox bad setter - dies';
-is-json-equiv $page.MediaBox, [0, 0, 595, 842], 'MediaBox bad setter - ignored';
+dies-ok { $page.media-box = [0, 595] }, 'media-box bad setter - dies';
+is-json-equiv $page.media-box, [0, 0, 595, 842], 'media-box bad setter - ignored';
 my $header-font = $page.core-font( :family<Helvetica>, :weight<bold> );
 my $font = $page.core-font( :family<Helvetica> );
 my $width = 150;
@@ -101,7 +103,7 @@ $page.text: {
     .say('Hello, world!');
 }
 
-my $info = $pdf.Info = {}
+my PDF::Info $info = $pdf.Info //= {}
 $info.Author = 't/helloworld.t';
 $info.Creator = 'PDF::Tools';
 $info.CreationDate = DateTime.new: :year(2015), :month(12), :day(25);

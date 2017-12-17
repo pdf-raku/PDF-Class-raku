@@ -44,6 +44,8 @@
 
         "PDF::Encoding" : "lib/PDF/Encoding.pm",
 
+        "PDF::Info" : "lib/PDF/Info.pm",
+
         "PDF::Field" : "lib/PDF/Field.pm",
         "PDF::Field::Button" : "lib/PDF/Field/Button.pm",
         "PDF::Field::Choice" : "lib/PDF/Field/Choice.pm",

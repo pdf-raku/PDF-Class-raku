@@ -6,10 +6,12 @@ use PDF:ver(v0.2.1+);
 class PDF::Class:ver<0.0.1> #:api<PDF-1.7>
     is PDF {
 
-    # base class declares: $.Size, $.Encrypt, $.Info, $.ID
+    # base class declares: $.Size, $.Encrypt, $.ID
     use PDF::DAO;
     use PDF::DAO::Tie;
     use PDF::Class::Type;
+    need PDF::Info;
+    has PDF::Info $.Info is entry(:indirect);  #| (Optional; must be an indirect reference) The document’s information dictionary
     my subset Catalog of PDF::Class::Type where { .type eq 'Catalog' };  # autoloaded PDF::Catalog
     has Catalog $.Root is entry(:required,:indirect);
 
