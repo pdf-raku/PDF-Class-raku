@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 21;
+plan 20;
 
 use PDF::Class;
 use PDF::IO::IndObj;
@@ -37,9 +37,6 @@ is $object.Name, 'F1', '$.Name accessor';
 is $object.BaseFont, 'Helvetica', '$.BaseFont accessor';
 is $object.Encoding, 'MacRomanEncoding', '$.Encoding accessor';
 is-json-equiv $ind-obj.ast, %ast, 'ast regeneration';
-
-use Font::Metrics::helvetica;
-ok $object.font-obj.metrics.isa(Font::Metrics::helvetica), 'font object';
 
 sub to-doc($font-obj) {
     my $dict = $font-obj.to-dict;

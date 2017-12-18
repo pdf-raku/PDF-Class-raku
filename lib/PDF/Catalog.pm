@@ -30,7 +30,6 @@ my class Catalog
     has Pages $.Pages is entry(:required, :indirect);
                                                             #| (Required; must be an indirect reference) The page tree node that is the root of the document’s page tree
 
-    #tba distinct number tree objects
     use PDF::NumberTree;
     has PDF::NumberTree $.PageLabels is entry;            #| (Optional; PDF 1.3) A number tree defining the page labeling for the document.
 
@@ -62,7 +61,7 @@ my class Catalog
     use PDF::AcroForm;
     has PDF::AcroForm $.AcroForm is entry;               #| (Optional; PDF 1.2) The document’s interactive form (AcroForm) dictionary
 
-    has PDF::DAO::Stream $.Metadata is entry(:indirect); #| (Optional; PDF 1.4; must be an indirect reference) A metadata streamcontaining metadata for the document
+    has PDF::DAO::Stream $.Metadata is entry(:indirect); #| (Optional; PDF 1.4; must be an indirect reference) A metadata stream containing metadata for the document
 
     has PDF::DAO::Dict $.StructTreeRoot is entry;        #| (Optional; PDF 1.3) The document’s structure tree root dictionary
 

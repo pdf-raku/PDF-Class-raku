@@ -14,19 +14,19 @@ role PDF::AcroForm
 
     has PDF::Field @.Fields is entry(:required, :&coerce);    #| (Required) An array of references to the document’s root fields (those with no ancestors in the field hierarchy).
     #| returns an inorder array of all descendant fields
-    method fields returns Seq {
+    method fields returns Array {
 	my PDF::Field @fields;
 	for $.Fields.keys {
 	    @fields.append( $.Fields[$_].fields )
 	}
-	flat @fields;
+	@fields;
     }
     #| return fields mapped to a hash. Default keys are $.T and $.TU field entries
-    method fields-hash( Array $fields-arr = [ self.fields ],
+    method fields-hash( Array $fields-arr = self.fields,
 			Bool :$T  = True,
 			Bool :$TU = True,
 			Bool :$TM = False
-			--> Seq) {
+			--> Hash) {
 	my @keys;
 	push @keys: 'T' if $T;
 	push @keys: 'TU' if $TU;
@@ -37,10 +37,10 @@ role PDF::AcroForm
 	    for @keys -> $key {
 		%fields{ $field{$key} } = $field
 		    if $field{$key}:exists;
-	    }	
+	    }
 	}
 
-	flat %fields;
+	%fields;
     }
 
     has Bool $.NeedAppearances is entry;       #| (Optional) A flag specifying whether to construct appearance streams and appearance dictionaries for all widget annotations in the document

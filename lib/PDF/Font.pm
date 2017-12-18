@@ -18,22 +18,4 @@ class PDF::Font
     has Name-Font $.Type is entry(:required);
     has PDF::DAO::Name $.Subtype is entry(:required);
 
-    method font-obj is rw {
-        ## callsame() //= self.make-font-obj ; # not working
-        callsame() // self.set-font-obj: self.make-font-obj;
-    }
-
-    method make-font-obj {
-        # stub for other font types
-        use Font::Metrics::courier;
-        use PDF::Content::Font::CoreFont;
-        use PDF::Content::Font::Enc::Type1;
-
-        warn "don't know how to make font of type: {self.Type}";
-        my $metrics = Font::Metrics::courier;
-        my $encoder = PDF::Content::Font::Enc::Type1.new;
-        PDF::Content::Font::CoreFont.new: :$metrics, :$encoder;
-        
-    }
 }
-
