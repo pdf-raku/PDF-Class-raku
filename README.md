@@ -2,13 +2,14 @@
 
 PDF::Class maps the internal structure of a PDF of classes and accessors for safe navigation and construction of PDF documents.
 
-This module is a work in progress. It currently maps a subset of the more commonly used PDF objects.
+This module is a work in progress. It currently many of the more commonly used PDF objects.
 
 
 ```
     use PDF::Class;
-    my $pdf = PDF::Class.new;
-    my $catalog = $pdf.Root;
+    use PDF::Catalog;
+    my PDF::Class $pdf .= new;
+    my PDF::Catalog $catalog = $pdf.Root;
     with $catalog.MarkInfo //= {} {
         .Marked = True;
         .UserProperties = False;
@@ -16,14 +17,14 @@ This module is a work in progress. It currently maps a subset of the more common
     }
 ```
 
-***Experimental***
 
 ### Page Layout & Viewer Preferences
 ```
     use PDF::Class;
-    my $pdf = PDF::Class.new;
+    use PDF::Catalog;
+    my PDF::Class $pdf .= new;
 
-    my $doc = $pdf.Root;
+    my PDF::Catalog $doc = $pdf.Root;
     $doc.PageLayout = 'TwoColumnLeft';
     $doc.PageMode   = 'UseThumbs';
 
@@ -38,9 +39,12 @@ This module is a work in progress. It currently maps a subset of the more common
 
 ```
 use PDF::Class;
+use PDF::AcroForm;
+use PDF::Field;
+
 my PDF::Class $doc .= open: "t/pdf/samples/OoPdfFormExample.pdf";
-with my $acroform = $doc.Root.AcroForm {
-    my @fields = $acroform.fields;
+with my PDF::AcroForm $acroform = $doc.Root.AcroForm {
+    my PDF::Field @fields = $acroform.fields;
     # display field names and values
     for @fields -> $field {
         say "{$field.T // '??'}: {$field.V // ''}";
@@ -61,7 +65,7 @@ in the out put stream `/UseToes`, rather than a string `(UseToes)`.
 
 ```
     use PDF::Class;
-    my $pdf = PDF::Class.new;
+    my PDF::Class $pdf .= new;
 
     my $doc = $pdf.Root;
     try {
@@ -80,10 +84,6 @@ The PDF::Class module is under construction and not yet functionally complete.
 # Bugs and Restrictions
 
 At this stage:
-- Only core fonts are supported. There are a total of 14
-font variations available. Please see the Font::AFM module for details.
 - The classes in the PDF::* name-space represent a common subset of
 the objects that can appear in a PDF. It is envisioned that the range of classes
-with expand over time to cover most or all types described in the PDF specification.
-- Many of the classes are skeletal at the moment and do little more that declare
-fields for validation purposes; for example, the classes in the PDF::Font::* name-space.
+will expand over time to cover most or all types described in the PDF specification.

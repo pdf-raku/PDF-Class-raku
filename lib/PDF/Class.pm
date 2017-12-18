@@ -21,8 +21,9 @@ class PDF::Class:ver<0.0.1> #:api<PDF-1.7>
             FETCH => sub ($) {
                 Version.new: $.catalog<Version> // self.reader.?version // '1.4'
             },
-            STORE => sub ($, Version $v) {
-                $.catalog<Version> = PDF::DAO.coerce: :name($v.Str);
+            STORE => sub ($, Version $_) {
+                my $name = .Str;
+                $.catalog<Version> = PDF::DAO.coerce: :$name;
             },
         );
     }
@@ -34,23 +35,15 @@ class PDF::Class:ver<0.0.1> #:api<PDF-1.7>
 	$doc;
     }
 
-    method save-as($spec, Bool :$preserve is copy, Bool :$info = True, |c) {
-
-	if !$preserve and self.reader and my $sig-flags = self.Root.?AcroForm.?SigFlags {
+    method !preservation-needed {
+        if self.reader and my $sig-flags = self.Root.?AcroForm.?SigFlags {
             constant AppendOnly = 2;
-	    if $sig-flags.flag-is-set: AppendOnly {
-		# The document contains digital signatures that may be invalidated
-		# by a full write
-		with $preserve {
-		    # callee has specified :!preserve
-		    die "This PDF contains digital signatures that will be invalidated with .save-as :!preserve"
-		}
-		else {
-		    # save-as(..., :preserve) to preserve digital signatures
-		    $preserve = True;
-		}
-	    }
-	}
+	    return $sig-flags.flag-is-set: AppendOnly
+        }
+        False;
+    }
+
+    method save-as($spec, Bool :$info = True, Bool :$preserve = self!preservation-needed, |c) {
 
         if $info {
             my $now = DateTime.now;
