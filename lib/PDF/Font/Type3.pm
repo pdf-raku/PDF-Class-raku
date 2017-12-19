@@ -17,7 +17,7 @@ class PDF::Font::Type3
     has Numeric @.FontMatrix is entry(:required, :len(6));       #| (Required) An array of six numbers specifying the font matrix, mapping glyph space to text space
     has PDF::DAO::Stream %.CharProcs is entry(:required);        #| (Required) A dictionary in which each key is a character name and the value associated with that key is a content stream that constructs and paints the glyph for that character.
 
-    use PDF::Encoding
+    use PDF::Encoding;
     my subset NameOrEncoding where PDF::DAO::Name | PDF::Encodiing;
     has NameOrEncoding $.Encoding is entry(:required); #| (Required) An encoding dictionary whose Differences array specifies the complete character encoding for this font
 
