@@ -31,7 +31,7 @@ class PDF::XObject::Image
     has Numeric @.Decode is entry;                #| (Optional) An array of numbers describing how to map image samples into the range of values appropriate for the image’s color space
     has Bool $.Interpolate is entry;              #| (Optional) A flag indicating whether image interpolation is to be performed
     has Hash @.Alternatives is entry;             #| An array of alternate image dictionaries for this image
-    has PDF::XObject::Image $.SMask is entry;        #| (Optional; PDF 1.4) A subsidiary image XObject defining a soft-mask image
+    has PDF::XObject::Image $.SMask is entry;     #| (Optional; PDF 1.4) A subsidiary image XObject defining a soft-mask image
     subset SMaskInInt of Int where 0|1|2;
     has SMaskInInt $.SMaskInData is entry;        #| (Optional for images that use the JPXDecode filter, meaningless otherwise; A code specifying how soft-mask information encoded with image samples should be used:
                                                   #| 0: If present, encoded soft-mask image information should be ignored.
@@ -42,7 +42,7 @@ class PDF::XObject::Image
                                                   #| Note: This entry is obsolescent and its use is no longer recommended. (See implementation note 53 in Appendix H.)
     has UInt $.StructParent is entry;             #| (Required if the image is a structural content item; PDF 1.3) The integer key of the image’s entry in the structural parent tree
     has Str $.ID is entry;                        #| (Optional; PDF 1.3; indirect reference preferred) The digital identifier of the image’s parent Web Capture content set
-    has Hash $.OPI is entry;                      #| Optional; PDF 1.2) An OPI version dictionary for the image. If ImageMask is true, this entry is ignored.
+    has Hash $.OPI is entry;                      #| (Optional; PDF 1.2) An OPI version dictionary for the image. If ImageMask is true, this entry is ignored.
     has PDF::DAO::Stream $.Metadata is entry;     #| (Optional; PDF 1.4) A metadata stream containing metadata for the image
     has Hash $.OC is entry;                       #| (Optional; PDF 1.5) An optional content group or optional content membership dictionary
 
@@ -79,16 +79,16 @@ class PDF::XObject::Image
                     ?? 3 !! 1;
                 if $bit-depth == 8|16  {
                     # SMask contains alpha channel - merge it
-                    with self.SMask.?to-png {
-                        my buf8 $alpha-channel = .stream;
-                        my buf8 $color-channel = $stream;
+                    with self.SMask {
+                        my Blob $alpha-channel = .decoded;
+                        my Blob $color-channel = $stream;
                         my uint $c-len = +$color-channel;
                         my uint $na = $bit-depth div 8;
                         my uint $nc = colors * $na;
                         my uint $a = 0;
                         my uint $c = 0;
                         my uint $i = 0;
-                        $stream = buf8.allocate: ($c-len * 4) div 3;
+                        $stream = buf8.allocate: ($c-len * 4 + 3) div 3;
                         while $c < $c-len {
                             $stream[$i++] = $color-channel[$c++]
                                 for 1 .. $nc;
@@ -114,6 +114,7 @@ class PDF::XObject::Image
                 $stream = buf8.new: self.encoded.encode: "latin-1";
         }
         else {
+            X::NYI.new(:feature("PNG Image Conversion")).throw;
             my $Colors = $hdr.color-type == PNG-CS::RGB ?? 3 !! 1;
             my %dict = %(
                 :Filter<FlateDecode>,
