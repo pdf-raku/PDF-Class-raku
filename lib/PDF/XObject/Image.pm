@@ -52,66 +52,69 @@ class PDF::XObject::Image
         use PDF::Content::Image::PNG :PNG-CS;
         need PDF::ColorSpace::Indexed;
         need PDF::IO::Filter;
-
         my $bit-depth = self.BitsPerComponent || 8;
         my UInt $width = self.Width;
         my UInt $height = self.Height;
         my PDF::Content::Image::PNG::Header $hdr .= new: :$width, :$height, :$bit-depth;
-        my buf8 $stream;
-        my buf8 $palette;
-        my buf8 $trans;
-
-        given self.ColorSpace {
-            when PDF::ColorSpace::Indexed {
-                $hdr.color-type = PNG-CS::RGB-Palette;
-                my Str $data = .isa(PDF::DAO::Stream) ?? .encoded !! $_
-                    with .Lookup;
-                $palette = buf8.new: .encode("latin-1") with $data;
-                with self.SMask {
-                    $trans = .stream
-                        with self.to-dict: $_;
-                }
-            }
-            when 'DeviceRGB'|'DeviceGray' { 
-                $hdr.color-type = $_ ~~ 'DeviceRGB'
-                    ?? PNG-CS::RGB !! PNG-CS::Gray;
-                my \colors =  $hdr.color-type == RGB
-                    ?? 3 !! 1;
-                if $bit-depth == 8|16  {
-                    # SMask contains alpha channel - merge it
-                    with self.SMask {
-                        my Blob $alpha-channel = .decoded;
-                        my Blob $color-channel = $stream;
-                        my uint $c-len = +$color-channel;
-                        my uint $na = $bit-depth div 8;
-                        my uint $nc = colors * $na;
-                        my uint $a = 0;
-                        my uint $c = 0;
-                        my uint $i = 0;
-                        $stream = buf8.allocate: ($c-len * 4 + 3) div 3;
-                        while $c < $c-len {
-                            $stream[$i++] = $color-channel[$c++]
-                                for 1 .. $nc;
-                            $stream[$i++] = $alpha-channel[$a++]
-                                for 1 .. $na;
-                        }
-                        $hdr.color-type = $hdr.color-type == PNG-CS::RGB
-                            ?? PNG-CS::RGB-Alpha !! PNG-CS::Gray-Alpha;
-                    }
-                }
-            }
-            default {
-                warn "ignoring color-space: {.perl}";
-                return Nil;
-            }
-        }
+        my Blob $stream;
+        my Blob $palette;
+        my Blob $trans;
 
         my $decode-parms = .[0] with self.DecodeParms;
         if $decode-parms
             && self.Filter ~~ 'FlateDecode'
             && $decode-parms<Predictor> ~~ PNGPredictor {
-                # stream is good to go
-                $stream = buf8.new: self.encoded.encode: "latin-1";
+            # looks like a PNG image
+
+            given self.ColorSpace {
+                when PDF::ColorSpace::Indexed {
+                    $hdr.color-type = PNG-CS::RGB-Palette;
+                    my Str $data = .isa(PDF::DAO::Stream) ?? .encoded !! $_
+                        with .Lookup;
+                    $palette = buf8.new: .encode("latin-1") with $data;
+                    with self.SMask {
+                        $trans = .stream
+                            with self.to-dict: $_;
+                    }
+                }
+                when 'DeviceRGB'|'DeviceGray' {
+                    $hdr.color-type = $_ ~~ 'DeviceRGB'
+                        ?? PNG-CS::RGB !! PNG-CS::Gray;
+                    my \colors =  $hdr.color-type == RGB
+                        ?? 3 !! 1;
+                    if $bit-depth == 8|16  {
+                        # SMask contains alpha channel - merge it
+                        with self.SMask {
+                            my Blob $alpha-channel = .decoded;
+                            my Blob $color-channel = self.decoded;
+                            my uint $na = $bit-depth div 8;
+                            my uint $nc = colors * $na;
+                            my uint $len = +$alpha-channel;;
+                            my uint $a = 0;
+                            my uint $c = 0;
+                            my $i = 0;
+                            my $decoded = buf8.allocate: $len * (colors + 1);
+                            while $a < $len {
+                                $decoded[$i++] = $color-channel[$c++]
+                                    for 1 .. $nc;
+                                $decoded[$i++] = $alpha-channel[$a++]
+                                    for 1 .. $na;
+                            }
+                            $hdr.color-type = $hdr.color-type == PNG-CS::RGB
+                                ?? PNG-CS::RGB-Alpha !! PNG-CS::Gray-Alpha;
+                            my %dict = %(self.list);
+                            %dict<DecodeParms> = %(self<DecodeParms>.list);
+                            %dict<DecodeParms><Colors>++;
+                            $stream = buf8.new: PDF::IO::Filter.encode( $decoded, :%dict );
+                        }
+                    }
+                }
+                default {
+                     X::NYI.new(:feature("PNG Image with color-space: {.perl}")).throw;
+                }
+            }
+
+            $stream //= self.encoded.encode: "latin-1";
         }
         else {
             X::NYI.new(:feature("PNG Image Conversion")).throw;
@@ -123,6 +126,7 @@ class PDF::XObject::Image
                     :Width($width),
                     :Height($height),
                     :$Colors,
+                    :BitsPerComponent($bit-depth),
                 },
             );
             $stream = buf8.new: PDF::IO::Filter.encode(
