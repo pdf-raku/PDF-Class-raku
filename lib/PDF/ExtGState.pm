@@ -39,7 +39,7 @@ class PDF::ExtGState
     has Bool $.OP is entry;                #| (Optional) A flag specifying whether to apply overprint
     has Bool $.op is entry;                #| (Optional; PDF 1.3) A flag specifying whether to apply overprint for painting operations other than stroking
     has Int $.OPM is entry;                #| (Optional; PDF 1.3) The overprint mode
-    has Array @.Font is entry(:len(2));               #| (Optional; PDF 1.3) An array of the form [ font size ], where font is an indirect reference to a font dictionary and size is a number expressed in text space units.
+    has @.Font is entry(:len(2));          #| (Optional; PDF 1.3) An array of the form [ font size ], where font is an indirect reference to a font dictionary and size is a number expressed in text space units.
 
     has $.BG is entry;                     #| (Optional) The black-generation function, which maps the interval [ 0.0 1.0 ] to the interval [ 0.0 1.0 ]
     has $.BG2 is entry;                    #| (Optional; PDF 1.3) Same as BG except that the value may also be the name Default, denoting the black-generation function that was in effect at the start of the page
