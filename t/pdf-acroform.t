@@ -32,8 +32,6 @@ is-json-equiv @fields[0].Rect, [165.7, 453.7, 315.7, 467.9], '.Rect';
 is @fields[0].T, 'Given Name Text Box', '.T';
 is @fields[0].TU, 'First name', '.TU';
 is @fields[0].V, '', '.V';
-todo "Needs PDF >= v0.2.7", 2
-    unless PDF.^ver >= v0.2.7;
 is (try @fields[0].key), 'Given Name Text Box', '.key';
 is (try @fields[0].value), '', '.value';
 is @fields[0].DV, '', '.DV';
