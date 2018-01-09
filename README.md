@@ -1,12 +1,41 @@
 # PDF::Class
 
-This module provides a set of classes and accessors that map to the internal structure of PDF documents as described int the PDF 1.7 Reference Guide.
+This module provides a set of classes and accessors for structured access to PDF documents as described int the PDF 1.7 Reference Guide.
+
+It understands the internal structure of PDF documents and gradualy types classes and objects as they are dereferenced.
+
+As well as structural and type validation; PDF::Class also understands the sometimes finicky serialization rules regarding PDF construction into indirect objects. These details are automatically handled to ensure the `save-as` method correctl serializes the PDF.
+
+The top level of a PDF document is of type `PDF::Class`. It contains the `PDF::Catalog` in its root entry. Other classes in the document are accessible from the Catalog.
+
+As an example, the following PDF::Lite code:
+
+    use PDF::Lite;
+    my PDF::Lite $pdf .= open: "t/helloworld.pdf";
+    my $catalog = $pdf<Root>;
+    my $page = $catalog.page(1);
+
+Can be written in PDF::Class as:
+```
+    use PDF::Class;
+    use PDF::Catalog;
+    use PDF::Page;
+    my PDF::Class $pdf .= open: "t/helloword.pdf";
+    my PDF::Catalog $catalog = $pdf.Root;
+    my PDF::Page $page = $catalog.page(1);
+```
+Things to note:
+
+- as well as `PDF::Class`and `PDF::Catalog`. This module contains class definitions for many other PDF internal objects, including streams, dictionaries(hashs), arrays and others. 
+- There is generally a one-to-one correspondance between raw dictionary entries and accessors, e.g. `$pdf<Root><AA>` versus `$pdf.Root.AA`.
+- There are often accessor aliases, to aide clarity. E.g. `$pdf.Root.AA` can also be written as `$pdf.catalog.additional-actions`.
+- The classes often contain additional accessor and helper methods. For example `$pdf.page(10)` - references page 10, without the need to navigate the catalog and page tree.
 
 This module is a work in progress. It currently many of the more commonly used PDF objects.
 
-The top level of a PDF document is of type `PDF::Class`. It contains the `PDF::Catalog` in its root entry. Other classess in the document are accessable from the Catalog.
+## More examples:
 
-
+### Set Marked Info options
 ```
     use PDF::Class;
     use PDF::Catalog;
@@ -20,7 +49,7 @@ The top level of a PDF document is of type `PDF::Class`. It contains the `PDF::C
 ```
 
 
-### Page Layout & Viewer Preferences
+### Set Page Layout & Viewer Preferences
 ```
     use PDF::Class;
     use PDF::Catalog;
@@ -37,7 +66,7 @@ The top level of a PDF document is of type `PDF::Class`. It contains the `PDF::C
     # ...etc, see PDF::ViewerPreferences
 ```
 
-### AcroForm Fields
+### List AcroForm Fields
 
 ```
 use PDF::Class;
@@ -49,7 +78,7 @@ with my PDF::AcroForm $acroform = $doc.Root.AcroForm {
     my PDF::Field @fields = $acroform.fields;
     # display field names and values
     for @fields -> $field {
-        say "{$field.T // '??'}: {$field.V // ''}";
+        say "{$field.key}: {$field.value}";
     }
 }
 
@@ -59,7 +88,7 @@ with my PDF::AcroForm $acroform = $doc.Root.AcroForm {
 
 In general, PDF provides accessors for safe access and update of PDF objects.
 
-However you may choose to bypass these accessors and dereference hashes and arrays directly, giving raw untyped access to internal data structures:
+However you may choose to bypass these accessors and dereference hashes and arrays directly, giving raw un-typed access to internal data structures:
 
 This will also bypass type coercements, so you may need to be more explicit. In
 the following example we cast the PageMode to a name, so it appears as a name
@@ -88,16 +117,16 @@ The PDF::Class module is under construction and not yet functionally complete.
 
 Class | Types | Accessors | Methods | Description
 ------|-------|-----------|---------|------------
-PDF::Class | dict | Encrypt, ID, Info, Root, Size | Pages, ast, crypt, encrypt, open, permitted, save-as, update, version | PDF entry-point. either a trailer dict or an XRef stream
+PDF::Class | dict | Encrypt, ID, Info, Root(catalog), Size | Pages, ast, crypt, encrypt, open, permitted, save-as, update, version | PDF entry-point. either a trailer dict or an XRef stream
 PDF::Catalog | dict | AA(additional-actions), AcroForm, Collection, Dests, Lang, Legal, MarkInfo, Metadata, Names, NeedsRendering, OCProperties, OpenAction, Outlines, OutputIntents, PageLabels, PageLayout, PageMode, Pages, Perms, PieceInfo, Requirements, Resources, SpiderInfo, StructTreeRoot, Threads, Type, URI, Version, ViewerPreferences | core-font, find-resource, images, resource-entry, resource-key, use-font, use-resource | /Type /Catalog - usually the document root in a PDF See [PDF 1.7 Section 3.6.1 Document Catalog]
-PDF::AcroForm | dict | CO(calcuation-order), DA, DR(default-resources), Fields, NeedAppearances, Q, SigFlags, XFA | fields, fields-hash | 
+PDF::AcroForm | dict | CO(calculation-order), DA, DR(default-resources), Fields, NeedAppearances, Q, SigFlags, XFA | fields, fields-hash | 
 PDF::Action::GoTo | dict | D |  | 
 PDF::Annot::Circle | dict | AP(appearance), AS(appearance-state), BE(border-effect), BS(border-style), Border, C(color), Contents, DR(default-resources), F(flags), IC(interior-color), M(mod-time), NM(name), OC(optional-content), P(page), RD, Rect, StructParent, Subtype, Type |  | 
 PDF::Annot::FileAttachment | dict | AP(appearance), AS(appearance-state), Border, C(color), Contents, DR(default-resources), F(flags), FS, M(mod-time), NM(name), Name(icon-name), OC(optional-content), P(page), Rect, StructParent, Subtype, Type |  | 
 PDF::Annot::Link | dict | A(action), AP(appearance), AS(appearance-state), Border, C(color), Contents, DR(default-resources), Dest, F(flags), H(highlight-mode), M(mod-time), NM(name), OC(optional-content), P(page), PA(uri-action), QuadPoints, Rect, StructParent, Subtype, Type |  | 
 PDF::Annot::Square | dict | AP(appearance), AS(appearance-state), BE(border-effect), BS(border-style), Border, C(color), Contents, DR(default-resources), F(flags), IC(interior-color), M(mod-time), NM(name), OC(optional-content), P(page), RD, Rect, StructParent, Subtype, Type |  | 
 PDF::Annot::Text | dict | AP(appearance), AS(appearance-state), Border, C(color), Contents, DR(default-resources), F(flags), M(mod-time), NM(name), Name(icon-name), OC(optional-content), Open, P(page), Rect, State, StateModel, StructParent, Subtype, Type |  | /Type Annot - Annonation subtypes See [PDF 1.7 Section 8.4 Annotations]
-PDF::Annot::Widget | dict | A(action), AA(addtional-actions), AP(appearance), AS(appearance-state), BS(border-style), Border, C(color), Contents, DR(default-resources), F(flags), H(highlight-mode), M(mod-time), MK, NM(name), OC(optional-content), P(page), Rect, StructParent, Subtype, Type |  | 
+PDF::Annot::Widget | dict | A(action), AA(additional-actions), AP(appearance), AS(appearance-state), BS(border-style), Border, C(color), Contents, DR(default-resources), F(flags), H(highlight-mode), M(mod-time), MK, NM(name), OC(optional-content), P(page), Rect, StructParent, Subtype, Type |  | 
 PDF::Appearance | dict | D(down), N(normal), R(rollover) |  | 
 PDF::Border | dict | D(dash-pattern), S(style), Type, W(width) |  | 
 PDF::CIDSystemInfo | dict | Ordering, Registry, Supplement |  | 
@@ -108,7 +137,7 @@ PDF::ColorSpace::Indexed | array | Base, Hival, Lookup, Subtype |  |
 PDF::ColorSpace::Lab | array | Subtype, dict | BlackPoint, Range, WhitePoint | 
 PDF::ColorSpace::Separation | array | AlternateSpace, Name, Subtype, TintTransform |  | 
 PDF::Encoding | dict | BaseEncoding, Differences, Type |  | /Type /Encoding see [PDF 1.7 Section 5.5.5 Character Encoding]
-PDF::ExtGState | dict | AIS(alpha-source-flag), BG(black-generation-old), BG2(black-generation), BM(blend-mode), CA(stroke-alpha), D(dash-pattern), FL(flatness-tolerance), Font, HT(halftone), LC(line-cap), LJ(line-join), LW(line-width), ML(miter-limit), OP(overprint-paint), OPM(overprint-mode), RI(rendering-intent), SA(stroke-adjustment), SM(smoothness-tolerance), SMask(soft-mask), TK(text-knockout), TR(transfer-function-old), TR2(transfer-function), Type, UCR(undercolor-removal-old), UCR2(underconver-removal), ca(fill-alpha), op(overprint-stroke) | transparency | /Type /ExtGState
+PDF::ExtGState | dict | AIS(alpha-source-flag), BG(black-generation-old), BG2(black-generation), BM(blend-mode), CA(stroke-alpha), D(dash-pattern), FL(flatness-tolerance), Font, HT(halftone), LC(line-cap), LJ(line-join), LW(line-width), ML(miter-limit), OP(overprint-paint), OPM(overprint-mode), RI(rendering-intent), SA(stroke-adjustment), SM(smoothness-tolerance), SMask(soft-mask), TK(text-knockout), TR(transfer-function-old), TR2(transfer-function), Type, UCR(under-color-removal-old), UCR2(under-color-removal), ca(fill-alpha), op(overprint-stroke) | transparency | /Type /ExtGState
 PDF::Field::Button | dict | DV(default-value), Opt, V(value) |  | 
 PDF::Field::Choice | dict | DV(default-value), I(indices), Opt, TI(top-index), V(value) |  | 
 PDF::Field::Signature | dict | Lock, SV |  | 

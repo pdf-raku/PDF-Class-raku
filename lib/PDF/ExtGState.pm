@@ -30,8 +30,8 @@ class PDF::ExtGState
     has $.BG2 is entry(:alias<black-generation>);                #| (Optional; PDF 1.3) Same as BG except that the value may also be the name Default, denoting the black-generation function that was in effect at the start of the page
     #| If both BG and BG2 are present in the same graphics state parameter dictionary, BG2 takes precedence.
 
-    has $.UCR is entry(:alias<undercolor-removal-old>);          #| (Optional) The undercolor-removal function, which maps the interval [ 0.0 1.0 ] to the interval [ −1.0 1.0 ]
-    has $.UCR2 is entry(:alias<underconver-removal>);            #| (Optional; PDF 1.3) Same as UCR except that the value may also be the name Default, denoting the undercolor-removal function that was in effect at the start of the page.
+    has $.UCR is entry(:alias<under-color-removal-old>);          #| (Optional) The undercolor-removal function, which maps the interval [ 0.0 1.0 ] to the interval [ −1.0 1.0 ]
+    has $.UCR2 is entry(:alias<under-color-removal>);            #| (Optional; PDF 1.3) Same as UCR except that the value may also be the name Default, denoting the undercolor-removal function that was in effect at the start of the page.
 
     has $.TR is entry(:alias<transfer-function-old>);            #| (Optional) The transfer function, which maps the interval [ 0.0 1.0 ] to the interval [ 0.0 1.0 ]
     has $.TR2 is entry(:alias<transfer-function>);               #| (Optional; PDF 1.3) Same as TR except that the value may also be the name Default, denoting the transfer function that was in effect at the start of the page.
