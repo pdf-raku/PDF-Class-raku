@@ -55,9 +55,9 @@ role PDF::AcroForm
 
     has Hash $.DR is entry(:alias<default-resources>);                    #| (Optional) A resource dictionary containing default resources (such as fonts, patterns, or color spaces) to be used by form field appearance streams. At a minimum, this dictionary must contain a Font entry specifying the resource name and font dictionary of the default font for displaying text.
 
-    has Str $.DA is entry;                     #| (Optional) A document-wide default value for the DA attribute of variable text fields
+    has Str $.DA is entry(:alias<default-appearance>);                     #| (Optional) A document-wide default value for the DA attribute of variable text fields
 
-    has UInt $.Q is entry;                     #| (Optional) A document-wide default value for the Q attribute of variable text fields
+    has UInt $.Q is entry(:alias<quadding>);                     #| (Optional) A document-wide default value for the Q attribute of variable text fields
 
     use PDF::DAO::Stream;
     my subset StreamOrArray where PDF::DAO::Stream | Array;
