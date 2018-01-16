@@ -4,7 +4,7 @@ This module provides a set of classes and accessors for structured access to PDF
 
 It understands the internal structure of PDF documents and gradualy types classes and objects as they are dereferenced.
 
-As well as structural and type validation; PDF::Class also understands the sometimes finicky serialization rules regarding PDF construction into indirect objects. These details are automatically handled to ensure the `save-as` method correctl serializes the PDF.
+As well as structural and type validation; PDF::Class also understands inheritance (via Parent entries) and the sometimes finicky serialization rules regarding PDF construction into indirect objects. These details are automatically handled to ensure the `save-as` method correctl serializes the PDF.
 
 The top level of a PDF document is of type `PDF::Class`. It contains the `PDF::Catalog` in its root entry. Other classes in the document are accessible from the Catalog.
 
@@ -12,21 +12,18 @@ As an example, the following PDF::Lite code:
 
     use PDF::Lite;
     my PDF::Lite $pdf .= open: "t/helloworld.pdf";
-    my $catalog = $pdf<Root>;
-    my $page = $catalog.page(1);
+    my $page = $pdf.page(1);
 
 Can be written in PDF::Class as:
 ```
     use PDF::Class;
-    use PDF::Catalog;
     use PDF::Page;
-    my PDF::Class $pdf .= open: "t/helloword.pdf";
-    my PDF::Catalog $catalog = $pdf.Root;
-    my PDF::Page $page = $catalog.page(1);
+    my PDF::Class $pdf .= open: "t/helloworld.pdf";
+    my PDF::Page $page = $pdf.page(1);
 ```
 Things to note:
 
-- as well as `PDF::Class`and `PDF::Catalog`. This module contains class definitions for many other PDF internal objects, including streams, dictionaries(hashs), arrays and others. 
+- as well as `PDF::Class`and `PDF::Page`. This module contains definitions for many other PDF internal objects, including streams, dictionaries(hashs), arrays and others, as listed below.
 - There is generally a one-to-one correspondance between raw dictionary entries and accessors, e.g. `$pdf<Root><AA>` versus `$pdf.Root.AA`.
 - There are often accessor aliases, to aide clarity. E.g. `$pdf.Root.AA` can also be written as `$pdf.catalog.additional-actions`.
 - The classes often contain additional accessor and helper methods. For example `$pdf.page(10)` - references page 10, without the need to navigate the catalog and page tree.
@@ -99,7 +96,7 @@ in the out put stream `/UseToes`, rather than a string `(UseToes)`.
     use PDF::Catalog;
     my PDF::Class $pdf .= new;
 
-    my PDF::Catalog $doc = $pdf.Root;
+    my PDF::Catalog $doc = $pdf.catalog;
     try {
         $doc.PageMode   = 'UseToes';
         CATCH { default { say "err, that didn't work: $_" } }
@@ -159,7 +156,7 @@ PDF::OBJR | dict | Obj, Pg, Type |  | /Type /OBJR - a node in the page tree
 PDF::OutlineItem | dict | A(action), C(color), Count, Dest, F(flags), First, Last, Next, Parent, Prev, SE(structure-element), Title |  | 
 PDF::Outlines | dict | Count, First, Last, Type |  | /Type /Outlines - the Outlines dictionary
 PDF::OutputIntent::GTS_PDFX | dict | DestOutputProfile, Info, OutputCondition, OutputConditionIdentifier, RegistryName, S, Type |  | 
-PDF::Page | dict | AA(additional-actions), Annots, ArtBox, B(beads), BleedBox, BoxColorInfo, Contents, CropBox, Dur, Group, ID, LastModified, MediaBox, Metadata, PZ(preferred-zoom), Parent, PieceInfo, PressSteps, Resources, Rotate, SeparationInfo, StructParents, Tabs, TemplateInstantiated, Thumb, Trans, TrimBox, Type, UserUnit, VP(view-ports) | art-box, bbox, bleed-box, canvas, content-streams, contents, contents-parse, core-font, crop-box, find-resource, finish, gfx, graphics, has-pre-gfx, height, images, media-box, new-gfx, pre-gfx, pre-graphics, render, resource-entry, resource-key, text, tiling-pattern, to-landscape, to-xobject, trim-box, use-font, use-resource, width, xobject-form | /Type /Page - describes a single PDF page
+PDF::Page | dict | AA(additional-actions), Annots, ArtBox, B(beads), BleedBox, BoxColorInfo, Contents, CropBox, Dur(display-duration), Group, ID, LastModified, MediaBox, Metadata, PZ(preferred-zoom), Parent, PieceInfo, PressSteps, Resources, Rotate, SeparationInfo, StructParents, Tabs, TemplateInstantiated, Thumb, Trans(transition-effect), TrimBox, Type, UserUnit, VP(view-ports) | art-box, bbox, bleed-box, canvas, content-streams, contents, contents-parse, core-font, crop-box, find-resource, finish, gfx, graphics, has-pre-gfx, height, images, media-box, new-gfx, pre-gfx, pre-graphics, render, resource-entry, resource-key, text, tiling-pattern, to-landscape, to-xobject, trim-box, use-font, use-resource, width, xobject-form | /Type /Page - describes a single PDF page
 PDF::Pages | dict | Count, CropBox, Kids, MediaBox, Parent, Resources, Type | add-page, add-pages, art-box, bbox, bleed-box, core-font, crop-box, find-resource, height, images, media-box, page-count, resource-entry, resource-key, to-landscape, trim-box, use-font, use-resource, width | /Type /Pages - a node in the page tree
 PDF::Pattern::Shading | stream | ExtGState, Matrix, PatternType, Shading, Type | canvas, contents, contents-parse, core-font, delegate-pattern, find-resource, finish, gfx, graphics, has-pre-gfx, height, images, new-gfx, pre-gfx, pre-graphics, render, resource-entry, resource-key, text, tiling-pattern, use-font, use-resource, width, xobject-form | /ShadingType 2 - Axial
 PDF::Pattern::Tiling | stream | BBox, Matrix, PaintType, PatternType, Resources, TilingType, Type, XStep, YStep | canvas, contents, contents-parse, core-font, delegate-pattern, find-resource, finish, gfx, graphics, has-pre-gfx, height, images, new-gfx, pre-gfx, pre-graphics, render, resource-entry, resource-key, text, tiling-pattern, use-font, use-resource, width, xobject-form | /ShadingType 1 - Tiling
@@ -172,9 +169,8 @@ PDF::Shading::Lattice | dict | AntiAlias, BBox, Background, BitsPerComponent, Bi
 PDF::Shading::Radial | dict | AntiAlias, BBox, Background, ColorSpace, Coords, Domain, Extend, Function, ShadingType |  | /ShadingType 3 - Radial
 PDF::Shading::Tensor | dict | AntiAlias, BBox, Background, BitsPerComponent, BitsPerCoordinate, BitsPerFlag, ColorSpace, Decode, Function, ShadingType |  | /ShadingType 7 - Tensor
 PDF::ViewerPreferences | dict | CenterWindow, Direction, Duplex, FitWindow, HideMenuBar, HideToolbar, HideWindowUI, NonFullScreenPageMode, NumCopies, PickTrayByPDFSize, PrintArea, PrintPageRange, PrintScaling, ViewArea, ViewClip |  | 
-PDF::XObject::Form | stream | BBox, FormType, Group, LastModified, Matrix, Metadata, OC(optional-content-group), OPI, PieceInfo, Ref, Resources, StructParent, StructParents, Subtype, Type | canvas, contents, contents-parse, core-font, find-resource, finish, gfx, graphics, has-pre-gfx, height, images, new-gfx, pre-gfx, pre-graphics, render, resource-entry, resource-key, text, tiling-pattern, use-font, use-resource, width, xobject-form | XObject Forms - /Type /Xobject /Subtype Form See [PDF Spec 1.7 4.9 Form XObjects]
+PDF::XObject::Form | stream | BBox, FormType, Group, LastModified, Matrix, Metadata, OC(optional-content-group), OPI, PieceInfo, Ref, Resources, StructParent, StructParents, Subtype, Type | canvas, contents, contents-parse, core-font, find-resource, finish, gfx, graphics, has-pre-gfx, height, images, new-gfx, pre-gfx, pre-graphics, render, resource-entry, resource-key, text, tiling-pattern, use-font, use-resource, width, xobject-form | XObject Forms - /Type /XObject /Subtype Form See [PDF Spec 1.7 4.9 Form XObjects]
 PDF::XObject::Image | stream | Alternatives, BitsPerComponent, ColorSpace, Decode, Height, ID, ImageMask, Intent, Interpolate, Mask, Metadata, Name, OC, OPI, SMask, SMaskInData, StructParent, Subtype, Type, Width | data-uri, height, image-obj, image-type, inline-content, inline-to-xobject, load-image, source, to-png, width | XObjects /Type XObject /Subtype /Image See [PDF 1.7 Section 4.8 - Images ]
 PDF::XObject::PS | stream | Level1, Subtype, Type |  | Postscript XObjects /Type XObject /Subtype PS See [PDF 1.7 Section 4.7.1 PostScript XObjects]
 
 *(generated by `etc/make-quick-ref.pl`)*
-

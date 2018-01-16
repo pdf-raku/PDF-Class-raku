@@ -40,10 +40,10 @@ for %classes.keys.sort({ when 'PDF::Class' {'A'}; when 'PDF::Catalog' {'B'}; def
     my $class = %classes{$name};
     my $type = do given $class {
         when PDF::DAO::Array|PDF::DAO::Tie::Array  {'array'}
-        when PDF::DAO::Stream|PDF::Content::XObject['Form'] {'stream'}
+        when PDF::DAO::Stream|PDF::Content::XObject {'stream'}
         when PDF::DAO::Dict|PDF::DAO::Tie::Hash   {'dict'}
         default {
-            warn "ignoring class: $name";
+            warn "ignoring class: $name ({$type.perl})";
             next;
         }
     };

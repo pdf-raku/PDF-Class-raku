@@ -20,25 +20,25 @@ role PDF::Field
 	      | 'Sig' # Signature
 	      );
 
-    multi method field-delegate( PDF::DAO::Dict $dict where { .<FT>:exists && .<FT> ~~ FieldTypeName }) {
-	my $field-role = do given $dict<FT> {
+    method field-delegate( PDF::DAO::Dict $dict) {
+        my $field-role = do with $dict<FT> {
 	    when 'Btn' {'Button'}
             when 'Tx'  {'Text'}
             when 'Ch'  {'Choice'}
             when 'Sig' {'Signature'}
-	};
-	PDF::DAO.loader.find-delegate( 'Field', $field-role );
-    }
+            default { warn "ignoring Field /FT entry: $_"; Nil }
+        }
+        else {
+            warn "terminal Field lacks /FT entry"
+                unless $dict<Kids>:exists
+        }
 
-    multi method field-delegate( PDF::DAO::Dict $dict)  {
-	if $dict<FT> {
-	    warn "ignoring Field /FT entry: $dict<FT>"
-	}
-	else {
-	    warn "terminal Field lacks /FT entry"
-		unless $dict<Kids>:exists
-	}
-	PDF::Field;
+        with $field-role {
+            PDF::DAO.loader.find-delegate( 'Field', $field-role );
+        }
+        else {
+            PDF::Field
+        }
     }
 
     #| pure annotation or field/annotation union
@@ -118,7 +118,7 @@ role PDF::Field
 
     has PDF::DAO::TextString $.TM is entry(:alias<tag>);     #| (Optional; PDF 1.3) The mapping name to be used when exporting interactive form field data from the document.
 
-    has UInt $.Ff is entry(:inherit);           #| Optional; inheritable) A set of flags specifying various characteristics of the field
+    has UInt $.Ff is entry(:inherit, :alias<flags>);           #| Optional; inheritable) A set of flags specifying various characteristics of the field
 
 ## type specific - see individual field definitions
 ##    has Any $.V is entry(:inherit);           #| (Optional; inheritable) The field’s value, whose format varies depending on the field type
