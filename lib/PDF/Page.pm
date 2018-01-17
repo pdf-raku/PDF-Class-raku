@@ -60,5 +60,23 @@ class PDF::Page
     has Numeric $.UserUnit is entry;             #| (Optional; PDF 1.6) A positive number giving the size of default user space units, in multiples of 1 ⁄ 72 inch
     has Hash @.VP is entry(:alias<view-ports>);  #| Optional; PDF 1.6) An array of viewport dictionaries
 
+    method fields {
+        my $annots = self.Annots;
+        $annots.keys.map({$annots[$_]}).grep({$_ ~~ PDF::Field})
+    }
+
+   method fields-hash( Array $fields-arr = self.fields,
+                       :$key where 'T'|'TU'|'TR' = 'T'
+			--> Hash) {
+	my %fields;
+
+	for $fields-arr.list -> $field {
+            %fields{ $_ } = $field
+		    with $field{$key};
+	}
+
+	%fields;
+    }
+
 }
 

@@ -12,6 +12,8 @@ my $annots = $pdf.page(1).Annots;
 isa-ok $annots[0], PDF::Annot::Widget, 'page annots';
 does-ok $annots[0], PDF::Field, 'page annots';
 
+does-ok $pdf.page(1).fields[0], PDF::Field, 'page fields accessor';
+
 my $doc = $pdf.Root;
 isa-ok $doc, PDF::Catalog, 'document root';
 
@@ -64,9 +66,8 @@ does-ok $appearance, (require ::('PDF::Appearance')), '.AP';
 isa-ok $appearance.N.Yes, ::('PDF::XObject::Form'), '.AP.N.Yes';
 
 my %fields = $acroform.fields-hash;
-is +%fields, 25, 'fields hash key count';
+is +%fields, 17, 'fields hash key count';
 ok %fields{'Given Name Text Box'} == @fields[0], 'field hash lookup by .T';
-ok %fields{'First name'} == @fields[0], 'field hash lookup by .TU';
 
 # check meta-data
 use PDF::Reader;
