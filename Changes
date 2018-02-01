@@ -1,3 +1,6 @@
+Release 0.0.7
+- Add PDF::Function::PostScript.calc method. For
+  evaluating Postscript functions
 Release 0.0.6
 - Fix PDF::Page.Annots accessor. Now coerces fields to PDF::Field
 Release 0.0.5
