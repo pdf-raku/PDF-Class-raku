@@ -50,11 +50,11 @@ class PDF::Function::PostScript
         my Routine %Ops = BEGIN %(
             # Arithmetic
             add      => method { self.pop + self.pop },
-            sub      => method { my $n2 = self.pop; self.pop - $n2 },
+            sub      => method { self.pop - $_ given self.pop },
             mul      => method { self.pop * self.pop },
-            div      => method { my $n2 = self.pop; self.pop / $n2 },
-            idiv     => method { my $n2 = self.pop; self.pop div $n2 },
-            mod      => method { my $n2 = self.pop; self.pop % $n2 },
+            div      => method { self.pop / $_ given self.pop },
+            idiv     => method { self.pop(Int) div $_ given self.pop(Int) },
+            mod      => method { self.pop(Int) % $_ given self.pop(Int) },
             neg      => method { -self.pop },
             abs      => method { self.pop.abs },
             ceiling  => method { self.pop.ceiling },
@@ -62,19 +62,20 @@ class PDF::Function::PostScript
             round    => method { self.pop.round },
             truncate => method { self.pop.Int },
             sqrt     => method { self.pop.sqrt },
-            sin      => method { sin(self.pop * pi / 180); },
-            cos      => method { cos(self.pop * pi / 180); },
-            atan     => method { my $den = self.pop;
-                                 my $num = self.pop;
-                                 $den = 0 if $den =~= 0;
-                                 my $angle = $den
-                                     ?? atan($num / $den) * 180 / pi
-                                     !! ($num =~= 0 ?? die "undefined result" !! 90);
-                                 $angle -= 180 if $den < 0;
-                                 $angle += 360 if $angle < 0;
-                                 $angle;
-                             },
-            exp      => method { my $n2 = self.pop; self.pop ** $n2 },
+            sin      => method { sin(self.pop * pi / 180) },
+            cos      => method { cos(self.pop * pi / 180) },
+            atan     => method {
+                            my $den = self.pop;
+                            my $num = self.pop;
+                            $den = 0 if $den =~= 0;
+                            my $angle = $den
+                                ?? atan($num / $den) * 180 / pi
+                                !! ($num =~= 0 ?? die "undefined result" !! 90);
+                            $angle -= 180 if $den < 0;
+                            $angle += 360 if $angle < 0;
+                            $angle;
+                        },
+            exp      => method { self.pop ** $_ given self.pop },
             ln       => method { log self.pop; },
             log      => method { log10 self.pop; },
             cvr      => method { self.pop.Num },
@@ -83,10 +84,10 @@ class PDF::Function::PostScript
             # Relational, Boolean and Bitwise Operators
             eq      => method { self.pop == self.pop },
             ne      => method { self.pop != self.pop },
-            gt      => method { self.pop >  $_ with self.pop },
-            ge      => method { self.pop >= $_ with self.pop },
-            lt      => method { self.pop <  $_ with self.pop },
-            le      => method { self.pop <= $_ with self.pop },
+            gt      => method { self.pop >  $_ given self.pop },
+            ge      => method { self.pop >= $_ given self.pop },
+            lt      => method { self.pop <  $_ given self.pop },
+            le      => method { self.pop <= $_ given self.pop },
             and     => method { self.pop(Int) +& self.pop(Int) },
             or      => method { self.pop(Int) +| self.pop(Int) },
             xor     => method { self.pop(Int) +^ self.pop(Int) },
@@ -95,20 +96,20 @@ class PDF::Function::PostScript
                                $_ ~~ Bool ?? not $_  !! ($_ * -1) -1
                            }
                        },
-            bitshift => method { my $b = self.pop(Int); self.pop(Int) +< $b },
+            bitshift => method { self.pop(Int) +< $_ given self.pop(Int) },
+            true    => method { True },
+            false   => method { False },
+
             # Stack Operators
             pop     => method {
                 self.pop(Any);
                 [];
             },
             exch     => method {
-                my $a = self.pop(Any);
-                my $b = self.pop(Any);
-                [$a, $b];
+                [$_, self.pop(Any)] given self.pop(Any);
             },
             dup     => method {
-                my $a = self.pop(Any);
-                [$a, $a];
+                [$_, $_] given self.pop(Any);
             },
             copy    => method {
                 my UInt $n = self.pop(Int);
@@ -129,8 +130,6 @@ class PDF::Function::PostScript
                     unless @!stack >= $n;
                 @!stack.splice(* - $n).rotate($j);
             },
-            true    => method { True },
-            false   => method { False },
            );
         multi method run(Str :$op! ) {
             with %Ops{$op} {
