@@ -57,7 +57,7 @@ sub calc(Str $expr, @stack) {
     my $input = "\{$expr\}";
     PDF::Grammar::Function.parse($input, :$actions)
         // die "function parse failed: $input";
-    my PDF::Function::PostScript::Interpreter $ps .= new: :@stack;
+    my PDF::Function::PostScript::Interpreter $ps .= new: :@stack, :domain(-Inf..Inf), :range(-Inf..Inf);
     $ps.run(|$/.ast);
     $ps.stack;
 }
@@ -127,6 +127,6 @@ todo "typecheck Bool vs Numeric";
 dies-ok {calc('add', [2, True])}, 'typecheck';
 dies-ok {calc('add', [2])}, 'stack underflow';
 
-is-approx $function-obj.calc([-.5, -.5], :$ast)[0], 0, 'function calc';
-is-approx $function-obj.calc([.1, .1], :$ast)[0], 0.587785, 'function calc';
+is-approx $function-obj.calc([-.5, -.5])[0], 0, 'function calc';
+is-approx $function-obj.calc([.1, .1])[0], 0.587785, 'function calc';
 

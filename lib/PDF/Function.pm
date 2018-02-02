@@ -38,6 +38,16 @@ class PDF::Function
 	PDF::DAO.loader.find-delegate( 'Function', $subtype );
     }
 
+    class Interpreter {
+        has Range @.domain is required;
+        has Range @.range is required;
+
+        method clip(Numeric $v, Range $r) {
+            min($r.max, max($r.min, $v));
+        }
+
+    }
+
     method cb-init {
         for self.^mro {
             my Str $class-name = .^name;

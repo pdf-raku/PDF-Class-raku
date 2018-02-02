@@ -23,4 +23,30 @@ class PDF::Function::Sampled
     has Numeric @.Decode is entry;        #| (Optional) An array of 2 × n numbers specifying the linear mapping of sample values into the range appropriate for the function’s output values. Default value: same as the value of Range.
 
     # (Optional) Other attributes of the stream that provides the sample values, as appropriate
+
+    use PDF::IO::Util :pack;
+    class Interpreter
+        is PDF::Function::Interpreter {
+        has UInt @.size is required;
+        has Blob $.samples is required;
+
+        method calc(List $in) {
+            my Numeric @vals = ($in.list Z @.domain).map: { self.clip(.[0], .[1]) };
+            my $out = 0 xx +@.range; #stub
+            [($out.list Z @.range).map: { self.clip(.[0], .[1]) }];
+        }
+    }
+    method interpreter {
+        my Range @domain = @.Domain.map: -> $a, $b { Range.new($a, $b) };
+        my Range @range = @.Range.map: -> $a, $b { Range.new($a, $b) };
+        my @size = @.Size;
+        my $bpc = $.BitsPerSample;
+        my Blob $samples = unpack($.decoded, $bpc);
+
+        Interpreter.new: :@domain, :@range, :@size, :$samples;
+    }
+    #| run the calculator function
+    method calc(List $in) {
+        $.interpreter.calc($in);
+    }
 }

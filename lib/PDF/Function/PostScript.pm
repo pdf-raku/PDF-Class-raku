@@ -18,7 +18,9 @@ class PDF::Function::PostScript
         min($r.max, max($r.min, $v));
     }
 
-    class Interpreter {
+    class Interpreter
+        is PDF::Function::Interpreter {
+        has $.ast;
         has @.stack;
         method pop($type = Numeric) {
             my $v = @!stack
@@ -145,17 +147,23 @@ class PDF::Function::PostScript
                 !! $cond<else>;
             $.run(|$_) with $branch;
         }
+
+        method calc(List $in) {
+            @!stack = ($in.list Z @.domain).map: { self.clip(.[0], .[1]) };
+            $.run( |$!ast );
+            (@!stack Z @.range).map: { self.clip(.[0], .[1]) };
+        }
     }
 
-    #| run the calculator function
-    method calc(List $in, :$ast = self.parse) {
+    method interpreter {
+        my $ast = self.parse;
         my Range @domain = $.Domain.map: -> $a, $b { Range.new($a, $b) };
         my Range @range = $.Range.map: -> $a, $b { Range.new($a, $b) };
-        my Numeric @stack = ($in.list Z @domain).map: { self!clip(.[0], .[1]) };
-        my $interpreter = Interpreter.new: :@stack;
-        $interpreter.run: |$ast;
-        my $out = $interpreter.stack;
-        ($out.list Z @range).map: { self!clip(.[0], .[1]) };
+        Interpreter.new: :@domain, :@range, :$ast;
+    }
+    #| run the calculator function
+    method calc(List $in) {
+        $.interpreter.calc($in);
     }
 
 }
