@@ -27,23 +27,78 @@ class PDF::Function::Sampled
     use PDF::IO::Util :pack;
     class Interpreter
         is PDF::Function::Interpreter {
+        has UInt $.bpc is required;
         has UInt @.size is required;
+        has Range @.encode = @!size.map: { 0..$_ };
+        has Range @.decode = self.range;
         has Blob $.samples is required;
+        has UInt $!m;
+        has UInt $!n;
+
+        submethod TWEAK {
+            $!m = self.domain.elems;
+            $!n = self.range.elems;
+            die "size/domain lengths differ" unless +@!size == $!m;
+            die "encode/domain lengths differ" unless +@!encode == $!m;
+            die "decode/range lengths differ" unless +@!decode == $!n;
+        }
+
+        method !input-mul($_) {
+            (@!encode[$_].max - @!encode[$_].min)
+                / (self.domain[$_].max - self.domain[$_].min);
+        }
+
+        method !sample(\x, \y) {
+            # stub
+            my \r = $!n * $!m;
+            my \s0 = x + y;
+            my \s1 = x + y + r;
+            $!samples[s0] .. $!samples[s1];
+        }
+
+        method !interpolate($in, \x, \y) {
+            my \X = @.domain[x];
+            my \Y = @.range[y];
+            my \R = 2 ** $!bpc - 1;
+            my \S = self!sample(x, y);
+            my \y0 = S.min / R;
+            my \dy = (S.max - S.min) / R;
+            y0 + dy * (Y.min + ($in - X.min) * (Y.max - Y.min) / (X.max - X.min))
+        }
 
         method calc(List $in) {
-            my Numeric @vals = ($in.list Z @.domain).map: { self.clip(.[0], .[1]) };
-            my $out = 0 xx +@.range; #stub
-            [($out.list Z @.range).map: { self.clip(.[0], .[1]) }];
+            my Numeric @in = ($in.list Z @.domain).map: { self.clip(.[0], .[1]) };
+            my @out;
+
+            for 0 ..^ $!m -> \x {
+               for 0 ..^ $!n -> \y {
+                   @out.push: self!interpolate(@in[x], x, y);
+               }
+            }
+            # map input values into sample array
+            [(@out Z @.range).map: { self.clip(.[0], .[1]) }];
         }
     }
     method interpreter {
         my Range @domain = @.Domain.map: -> $a, $b { Range.new($a, $b) };
         my Range @range = @.Range.map: -> $a, $b { Range.new($a, $b) };
         my @size = @.Size;
+        my Range @encode = do with $.Encode {
+            .keys.map: -> $k { 0 .. .[$k] }
+        }
+        else {
+            @size.map: { 0 .. ($_-1) };
+        }
+        my Range @decode = do with $.Decode {
+            .keys.map: -> $k { 0 .. .[$k] }
+        }
+        else {
+            @range;
+        }
         my $bpc = $.BitsPerSample;
         my Blob $samples = unpack($.decoded, $bpc);
 
-        Interpreter.new: :@domain, :@range, :@size, :$samples;
+        Interpreter.new: :@domain, :@range, :@size, :@encode, :@decode, :$samples, :$bpc;
     }
     #| run the calculator function
     method calc(List $in) {

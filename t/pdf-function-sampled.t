@@ -18,11 +18,11 @@ my $input = q:to"--END-OBJ--";
   /BitsPerSample 8
   /Domain [ 0 1 ]
   /Filter /ASCIIHexDecode
-  /Range [ 0 1 0 0.66667 0 0.6 0 0.33333 ]
+  /Range [ 0 1 0 1 0 1 0 1 ]
   /Size [ 2 ]
   /Length 17
 >> stream
-00000000FFFFFFFF>
+00112130FFFFFFA0>
 endstream
 endobj
 --END-OBJ--
@@ -41,21 +41,21 @@ is $function-obj.FunctionType, 0, '$.FunctionType accessor';
 is $function-obj.type, 'Function', '$.type accessor';
 is $function-obj.subtype, 'Sampled', '$.subtype accessor';
 is-json-equiv $function-obj.Domain, [0, 1], '$.Domain accessor';
-is-json-equiv $function-obj.Length, 17, '$.Length accessor (corrected)';
+is-json-equiv $function-obj.Length, 17, '$.Length accessor';
 
 sub is-calc($a, $b, $test = 'calc') {
     my $ok = $a.elems == $b.elems
         && !$a.keys.first({($a[$_] - $b[$_]).abs >= 0.01 }).defined;
     ok $ok, $test;
-    diag "expected {$a.perl}, got {$b.perl}"
+    diag "expected {$b.perl}, got {$a.perl}"
         unless $ok;
     $ok
 }
 
-is-calc $function-obj.calc([0]), [0, 0, 0, 0];
-todo "unstub sampled function", 3;
-is-calc $function-obj.calc([1]), [1, 0.666, 0.6, 0.333];
-is-calc $function-obj.calc([.5]), [0.5, 0.333, 0.30, 0.167];
-is-calc $function-obj.calc([.3]), [0.3, 0.2, 0.18, 0.1];
+is-calc $function-obj.calc([0]), [0, 17/255, 33/255, 48/255];
+is-calc $function-obj.calc([1]), [1, 1, 1, 160/255];
+is-calc $function-obj.calc([.5]), [1/2, 136/255, 144/255, 104/255];
+is-calc $function-obj.calc([.25]), [1/4, 3/10, 88.5/255, 76/255];
+
 
 
