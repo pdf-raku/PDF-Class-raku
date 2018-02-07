@@ -43,9 +43,8 @@ class PDF::Function::Sampled
             die "decode/range lengths differ" unless +@!decode == $!n;
         }
 
-        method !input-map($_, $in) {
-            ($in - $.domain[$_].min) * (@!encode[$_].max - @!encode[$_].min)
-                / (self.domain[$_].max - self.domain[$_].min) + $.encode[$_].min;
+        sub interpolate($x, Range \X, Range \Y) {
+            Y.min + ($x - X.min) * (Y.max - Y.min) / (X.max - X.min);
         }
 
         method !sample(\x, \y) {
@@ -56,26 +55,17 @@ class PDF::Function::Sampled
             $!samples[s0] .. $!samples[s1];
         }
 
-        method !interpolate($in, \x, \y) {
-            my \X = @.domain[x];
-            my \Y = @.range[y];
-            my \res = 2 ** $!bpc - 1;
-            my \S = self!sample(x, y);
-            my \y0 = S.min / res;
-            my \dy = (S.max - S.min) / res;
-            my $out = y0 + dy * ($in - X.min) / (X.max - X.min);
-            $out * (Y.max - Y.min) + Y.min;
-        }
-
         method calc(List $in) {
-            my $i = 0;
-            my Numeric @in = ($in.list Z @.domain).map: { self.clip(self!input-map($i, .[0]), .[1]) };
+            my @x = ($in.list Z @.domain).map: { self.clip(.[0], .[1]) };
+            my Numeric @e = (@x Z @.domain Z @!encode).map: { interpolate(.[0], .[1], .[2]) };
+            @e = (@e Z @!size).map: { self.clip(.[0], 0 .. (.[1]-1)) }
             my @out;
 
             for 0 ..^ $!m -> \x {
-               for 0 ..^ $!n -> \y {
-                   @out.push: self!interpolate(@in[x], x, y);
-               }
+                for 0 ..^ $!n -> \y {
+                    my $out = interpolate(@e[x], @.domain[x], self!sample(x, y));
+                    @out.push: interpolate($out, 0 .. 2 ** $!bpc - 1, @!decode[y]);
+                }
             }
             # map input values into sample array
             [(@out Z @.range).map: { self.clip(.[0], .[1]) }];
