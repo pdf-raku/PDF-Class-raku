@@ -43,9 +43,9 @@ class PDF::Function::Sampled
             die "decode/range lengths differ" unless +@!decode == $!n;
         }
 
-        method !input-mul($_) {
-            (@!encode[$_].max - @!encode[$_].min)
-                / (self.domain[$_].max - self.domain[$_].min);
+        method !input-map($_, $in) {
+            ($in - $.domain[$_].min) * (@!encode[$_].max - @!encode[$_].min)
+                / (self.domain[$_].max - self.domain[$_].min) + $.encode[$_].min;
         }
 
         method !sample(\x, \y) {
@@ -59,15 +59,17 @@ class PDF::Function::Sampled
         method !interpolate($in, \x, \y) {
             my \X = @.domain[x];
             my \Y = @.range[y];
-            my \R = 2 ** $!bpc - 1;
+            my \res = 2 ** $!bpc - 1;
             my \S = self!sample(x, y);
-            my \y0 = S.min / R;
-            my \dy = (S.max - S.min) / R;
-            y0 + dy * (Y.min + ($in - X.min) * (Y.max - Y.min) / (X.max - X.min))
+            my \y0 = S.min / res;
+            my \dy = (S.max - S.min) / res;
+            my $out = y0 + dy * ($in - X.min) / (X.max - X.min);
+            $out * (Y.max - Y.min) + Y.min;
         }
 
         method calc(List $in) {
-            my Numeric @in = ($in.list Z @.domain).map: { self.clip(.[0], .[1]) };
+            my $i = 0;
+            my Numeric @in = ($in.list Z @.domain).map: { self.clip(self!input-map($i, .[0]), .[1]) };
             my @out;
 
             for 0 ..^ $!m -> \x {
@@ -84,13 +86,13 @@ class PDF::Function::Sampled
         my Range @range = @.Range.map: -> $a, $b { Range.new($a, $b) };
         my @size = @.Size;
         my Range @encode = do with $.Encode {
-            .keys.map: -> $k { 0 .. .[$k] }
+            .keys.map: -> $k1, $k2 { .[$k1] .. .[$k2] }
         }
         else {
             @size.map: { 0 .. ($_-1) };
         }
         my Range @decode = do with $.Decode {
-            .keys.map: -> $k { 0 .. .[$k] }
+            .keys.map: -> $k1, $k2 { .[$k1] .. .[$k2] }
         }
         else {
             @range;
