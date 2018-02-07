@@ -63,8 +63,9 @@ class PDF::Function::Sampled
 
             for 0 ..^ $!m -> \x {
                 for 0 ..^ $!n -> \y {
-                    my $out = interpolate(@e[x], @.domain[x], self!sample(x, y));
-                    @out.push: interpolate($out, 0 .. 2 ** $!bpc - 1, @!decode[y]);
+                    given interpolate(@e[x], @.domain[x], self!sample(x, y)) {
+                        @out.push: interpolate($_, 0 .. 2 ** $!bpc - 1, @!decode[y]);
+                    }
                 }
             }
             # map input values into sample array
