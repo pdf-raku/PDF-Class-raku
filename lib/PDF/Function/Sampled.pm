@@ -55,8 +55,8 @@ class PDF::Function::Sampled
             $!samples[s0] .. $!samples[s1];
         }
 
-        method calc(List $in) {
-            my @x = ($in.list Z @.domain).map: { self.clip(.[0], .[1]) };
+        method calc(@in where .elems == $!m) {
+            my Numeric @x = (@in.list Z @.domain).map: { self.clip(.[0], .[1]) };
             my Numeric @e = (@x Z @.domain Z @!encode).map: { interpolate(.[0], .[1], .[2]) };
             @e = (@e Z @!size).map: { self.clip(.[0], 0 .. (.[1]-1)) }
             my @out;
@@ -100,7 +100,7 @@ class PDF::Function::Sampled
         Interpreter.new: :@domain, :@range, :@size, :@encode, :@decode, :$samples, :$bpc;
     }
     #| run the calculator function
-    method calc(List $in) {
-        $.interpreter.calc($in);
+    method calc(@in) {
+        $.interpreter.calc(@in);
     }
 }
