@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 28;
+plan 35;
 
 use PDF::Class;
 use PDF::Function::Sampled;
@@ -95,7 +95,12 @@ given  $function-obj.interpreter {
 
 $function-obj.Range  = [0, 1, 0, 1, 0, 1, 0, 1];
 $function-obj.Decode = [0, 1, 0, 1, 0, 1, 0, 1];
-$function-obj.encoded = '00112130A1A2A3A4FFFFFFA0>';
+$function-obj.encoded = q:to<END-SAMPLE>;
+00 11 21 30
+A1 A2 A3 A4
+FF FF FF A0>
+END-SAMPLE
+
 $function-obj.Size = 3;
 
 given  $function-obj.interpreter {
@@ -103,6 +108,65 @@ given  $function-obj.interpreter {
     is-result .calc([1]), [161/255, 162/255, 163/255, 164/255];
     is-result .calc([.5]), [80.5/255, 89.5/255, 98/255, 106/255];
     is-result .calc([.25]), [.157843, 0.208824, 0.256863, 0.301961,];
+
 }
 
+# mag-yel(c1,c2): simple function to map [M, Y] => [C, M, 2/3.Y, K]
+# samples:
+# f(0, 0) = 00 00 00 00
+# f(1, 0) = 00 ff 00 00
+# f(0, 1) = 00 00 aa 00
+# f(1, 1) = 00 ff aa 00
+$input = q:to"--END-OBJ--";
+22 0 obj << /BitsPerSample 8 /Domain [ 0 1 0 1 ] /Filter [ /ASCIIHexDecode ] /FunctionType 0 /Length 25 0 R /Range [ 0 1 0 1 0 1 0 1 ] /Size [ 2 2 ] >> stream
+00 00 00 00
+00 ff 00 00
+00 00 aa 00
+00 ff aa 00>
+endstream endobj
+--END-OBJ--
 
+$ind-obj = parse-ind-obj($input);
+$function-obj = $ind-obj.object;
+
+given $function-obj.interpreter {
+    is-result .calc([0, 0]), [0, 0, 0, 0], 'mag-yel(0,0)';
+    is-result .calc([1, 1]), [0, 1, 2/3, 0], 'mag-yel(1,1)';
+    is-result .calc([1, .5]), [0, 1, 1/3, 0], 'mag-yel(1,.5)';
+    is-result .calc([.5, .25]), [0, 1/2, 1/6, 0], 'mag-yel(.5,.25)';
+}
+
+# cyan-mag-yel(c1,c2,c3): simple function to map [C, M, Y] => [1/3.C, M, 2/3.Y, K]
+# samples:
+# f(0,0,0) = 00 00 00 00
+# f(1,0,0) = 55 00 00 00
+# f(0,1,0) = 00 ff 00 00
+# f(1,1,0) = 55 ff 00 00
+# f(0,0,1) = 00 00 aa 00
+# f(1,0,1) = 55 00 aa 00
+# f(0,1,1) = 00 ff aa 00
+# f(1,1,1) = 55 ff aa 00
+
+$input = q:to"--END-OBJ--";
+26 0 obj << /BitsPerSample 8 /Domain [ 0 1 0 1 0 1 ] /Filter [ /ASCIIHexDecode ] /FunctionType 0 /Length 28 0 R /Order 3 /Range [ 0 1 0 1 0 1 0 1 ] /Size [ 2 2 2 ] >>
+stream
+00 00 00 00
+55 00 00 00
+00 ff 00 00
+55 ff 00 00
+00 00 aa 00
+55 00 aa 00
+00 ff aa 00
+55 ff aa 00>
+endstream endobj
+--END-OBJ--
+
+    $ind-obj = parse-ind-obj($input);
+$function-obj = $ind-obj.object;
+
+given $function-obj.interpreter {
+    is-result .calc([0, 0, 0]), [0, 0, 0, 0], 'cyan-mag-yel(0,0,0)';
+    is-result .calc([1, 1, 1]), [1/3, 1, 2/3, 0], 'cyan, mag-yel(1,1,1)';
+    is-result .calc([1, 1/3, .5]), [1/3, 1/3, 1/3, 0], 'cyan, mag-yel(1,1/3,.5)';
+
+}
