@@ -43,10 +43,6 @@ class PDF::Function::Sampled
             die "decode/range lengths differ" unless +@!decode == $!n;
         }
 
-        sub interpolate($x, Range \X, Range \Y) {
-            Y.min + ($x - X.min) * (Y.max - Y.min) / (X.max - X.min);
-        }
-
         method !sample(\x, \y) {
             # stub
             my \r = $!n * $!m;
@@ -56,9 +52,9 @@ class PDF::Function::Sampled
         }
 
         method calc(@in where .elems == $!m) {
-            my Numeric @x = (@in.list Z @.domain).map: { self.clip(.[0], .[1]) };
-            my Numeric @e = (@x Z @.domain Z @!encode).map: { interpolate(.[0], .[1], .[2]) };
-            @e = (@e Z @!size).map: { self.clip(.[0], 0 .. (.[1]-1)) }
+            my Numeric @x = (@in.list Z @.domain).map: { $.clip(.[0], .[1]) };
+            my Numeric @e = (@x Z @.domain Z @!encode).map: { $.interpolate(.[0], .[1], .[2]) };
+            @e = (@e Z @!size).map: { $.clip(.[0], 0 .. (.[1]-1)) }
             my @out;
             my $fun0 = $!samples[0 ..^ $!n];
             # todo: proper m-linear interpolation
@@ -69,13 +65,13 @@ class PDF::Function::Sampled
                 my $s1 = $s0 + $!n;
                 my $fun = $!samples[$s0 ..^ $s1];
                 for 0 ..^ $!n -> \y {
-                    given interpolate(@e[x], @.domain[x], $fun0[y] .. $fun[y]) {
-                        @out[y] += interpolate($_, 0 .. 2 ** $!bpc - 1, @!decode[y]);
+                    given $.interpolate(@e[x], @.domain[x], $fun0[y] .. $fun[y]) {
+                        @out[y] += $.interpolate($_, 0 .. 2 ** $!bpc - 1, @!decode[y]);
                     }
                 }
             }
             # map input values into sample array
-            [(@out Z @.range).map: { self.clip(.[0], .[1]) }];
+            [(@out Z @.range).map: { $.clip(.[0], .[1]) }];
         }
     }
     method interpreter {

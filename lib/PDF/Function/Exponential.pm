@@ -21,12 +21,12 @@ class PDF::Function::Exponential
         has UInt $!n;
 
         submethod TWEAK {
-            die "domain should be of length 1"
+            die "domain function should have one input"
                 unless self.domain.elems == 1;
-            $!n = self.range.elems;
-            die "C0 has incorrect size: {@!C0.elems} != $!n"
+            $!n = self.range.elems ||  @!C0.elems;
+            die "C0 size does not match output: {@!C0.elems} != $!n"
                 unless @!C0.elems == $!n;
-            die "C1 has incorrect size: {@!C1.elems} != $!n"
+            die "C1 size does not match output: {@!C1.elems} != $!n"
                 unless @!C1.elems == $!n;
         }
 
@@ -35,12 +35,16 @@ class PDF::Function::Exponential
             my @out = (0 ..^ $!n).map: -> \j {
                 @!C0[j]  +  ($x ** $!N) * (@!C1[j] - @!C0[j]);
             }
-            [(@out Z @.range).map: { self.clip(.[0], .[1]) }];
+            @out = [(@out Z @.range).map: { self.clip(.[0], .[1]) }]
+                if @.range;
+            @out;
         }
     }
     method interpreter {
         my Range @domain = @.Domain.map: -> $a, $b { Range.new($a, $b) };
-        my Range @range = @.Range.map: -> $a, $b { Range.new($a, $b) };
+        my Range @range = do with $.Range {
+            .map: -> $a, $b { Range.new($a, $b) }
+        }
         Interpreter.new: :@domain, :@range, :@.C0, :@.C1, :$.N;
     }
     #| run the calculator function

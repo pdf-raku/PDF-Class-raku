@@ -14,10 +14,6 @@ class PDF::Function::PostScript
 	$/.ast
     }
 
-    method !clip(Numeric $v, Range $r) {
-        min($r.max, max($r.min, $v));
-    }
-
     class Interpreter
         is PDF::Function::Interpreter {
         has $.ast;
@@ -148,10 +144,10 @@ class PDF::Function::PostScript
             $.run(|$_) with $branch;
         }
 
-        method calc(List $in) {
-            @!stack = ($in.list Z @.domain).map: { self.clip(.[0], .[1]) };
+        method calc(@in where .elems = @.domain.elems) {
+            @!stack = (@in Z @.domain).map: { $.clip(.[0], .[1]) };
             $.run( |$!ast );
-            (@!stack Z @.range).map: { self.clip(.[0], .[1]) };
+            (@!stack Z @.range).map: { $.clip(.[0], .[1]) };
         }
     }
 
@@ -162,8 +158,8 @@ class PDF::Function::PostScript
         Interpreter.new: :@domain, :@range, :$ast;
     }
     #| run the calculator function
-    method calc(List $in) {
-        $.interpreter.calc($in);
+    method calc(@in) {
+        $.interpreter.calc(@in);
     }
 
 }
