@@ -13,8 +13,8 @@ class PDF::Function::Exponential
     has Numeric @.C1 is entry;          #| (Optional) An array of n numbers defining the function result when x = 1.0. Default value: [ 1.0 ].
     has Numeric $N is entry(:required); #| (Required) The interpolation exponent. Each input value x will return n values, given by yj = C0j + xN × (C1j − C0j ), for 0 ≤ j < n.
 
-    class Calculator
-        is PDF::Function::Calculator {
+    class Transform
+        is PDF::Function::Transform {
         has Numeric @.C0 is required;
         has Numeric @.C1 is required;
         has Numeric $.N is required;
@@ -30,7 +30,7 @@ class PDF::Function::Exponential
                 unless @!C1.elems == $!n;
         }
 
-        method evaluate(@in where .elems == 1) {
+        method calc(@in where .elems == 1) {
             my Numeric $x = self.clip(@in[0], @.domain[0]);
             my @out = (0 ..^ $!n).map: -> \j {
                 @!C0[j]  +  ($x ** $!N) * (@!C1[j] - @!C0[j]);
@@ -45,10 +45,10 @@ class PDF::Function::Exponential
         my Range @range = do with $.Range {
             .map: -> $a, $b { Range.new($a, $b) }
         }
-        Calculator.new: :@domain, :@range, :@.C0, :@.C1, :$.N;
+        Transform.new: :@domain, :@range, :@.C0, :@.C1, :$.N;
     }
     #| run the calculator function
-    method evaluate(@in) {
-        $.calculator.evaluate(@in);
+    method calc(@in) {
+        $.calculator.calc(@in);
     }
  }

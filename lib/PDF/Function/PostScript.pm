@@ -3,7 +3,7 @@ use v6;
 use PDF::Function;
 
 #| /FunctionType 4 - PostScript
-#| see [PDF 1.7 Section 3.9.4 Type 4 (PostScript Calculator) Functions]
+#| see [PDF 1.7 Section 3.9.4 Type 4 (PostScript Transform) Functions]
 class PDF::Function::PostScript
     is PDF::Function {
 
@@ -14,8 +14,8 @@ class PDF::Function::PostScript
 	$/.ast
     }
 
-    class Calculator
-        is PDF::Function::Calculator {
+    class Transform
+        is PDF::Function::Transform {
         has $.ast;
         has @.stack;
         method pop($type = Numeric) {
@@ -144,7 +144,7 @@ class PDF::Function::PostScript
             $.run(|$_) with $branch;
         }
 
-        method evaluate(@in where .elems = @.domain.elems) {
+        method calc(@in where .elems = @.domain.elems) {
             @!stack = (@in Z @.domain).map: { $.clip(.[0], .[1]) };
             $.run( |$!ast );
             (@!stack Z @.range).map: { $.clip(.[0], .[1]) };
@@ -155,11 +155,11 @@ class PDF::Function::PostScript
         my $ast = self.parse;
         my Range @domain = $.Domain.map: -> $a, $b { Range.new($a, $b) };
         my Range @range = $.Range.map: -> $a, $b { Range.new($a, $b) };
-        Calculator.new: :@domain, :@range, :$ast;
+        Transform.new: :@domain, :@range, :$ast;
     }
     #| run the calculator function
-    method evaluate(@in) {
-        $.calculator.evaluate(@in);
+    method calc(@in) {
+        $.calculator.calc(@in);
     }
 
 }

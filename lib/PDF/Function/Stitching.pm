@@ -14,11 +14,11 @@ class PDF::Function::Stitching
     has Numeric @.Bounds is entry(:required);   #| (Required) An array of k − 1 numbers that, in combination with Domain, define the intervals to which each function from the Functions array applies. Bounds elements must be in order of increasing value, and each value must be within the domain defined by Domain.
     has Numeric @.Encode is entry(:required);  #| (Required) An array of 2 × k numbers that, taken in pairs, map each subset of the domain defined by Domain and the Bounds array to the domain of the corresponding function.
 
-    class Calculator
-        is PDF::Function::Calculator {
+    class Transform
+        is PDF::Function::Transform {
         has Range @.bounds is required;
         has Range @.encode is required;
-        has PDF::Function::Calculator @.functions is required;
+        has PDF::Function::Transform @.functions is required;
         has UInt $!k;
 
         submethod TWEAK {
@@ -31,11 +31,11 @@ class PDF::Function::Stitching
                 unless @!bounds.elems == $!k;
         }
 
-        method evaluate(@in where .elems == 1) {
+        method calc(@in where .elems == 1) {
             my Numeric $x = self.clip(@in[0], @.domain[0]);
             my $i = @!bounds.pairs.first({.value.min <= $x <= .value.max}).key;
             my Numeric $e = $.interpolate($x, @.bounds[$i], @.encode[$i]);
-            my @out = @!functions[$i].evaluate([$e]);
+            my @out = @!functions[$i].calc([$e]);
             @out = [(@out Z @.range).map: { self.clip(.[0], .[1]) }]
                 if @.range;
             @out;
@@ -51,7 +51,7 @@ class PDF::Function::Stitching
             .keys.map: -> $k1, $k2 { .[$k1] .. .[$k2] }
         }
         my Range @bounds;
-        my PDF::Function::Calculator @functions = @.Functions.map: { .calculator };
+        my PDF::Function::Transform @functions = @.Functions.map: { .calculator };
         my $k = @functions.elems;
         my @Bounds = @.Bounds;
         die "Bounds array length error: {@Bounds.elems} != {$k-1}"
@@ -61,6 +61,6 @@ class PDF::Function::Stitching
             @bounds[$_] = @Bounds[$_-1] .. @Bounds[$_];
         }
         @bounds[$k-1] = @Bounds[$k-2] .. @domain[0].max;
-        Calculator.new: :@domain, :@range, :@encode, :@functions, :@bounds;
+        Transform.new: :@domain, :@range, :@encode, :@functions, :@bounds;
     }
 }

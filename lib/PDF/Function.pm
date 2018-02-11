@@ -38,7 +38,7 @@ class PDF::Function
 	PDF::DAO.loader.find-delegate( 'Function', $subtype );
     }
 
-    class Calculator {
+    class Transform {
         has Range @.domain is required;
         has Range @.range is required;
 
