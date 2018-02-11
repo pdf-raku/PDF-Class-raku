@@ -56,7 +56,7 @@ sub parse-ind-obj($input) {
     PDF::IO::IndObj.new( :$input, |%ast);
 }
 
-sub is-result($a, $b, $test = 'calc') {
+sub is-result($a, $b, $test = 'evaluate') {
     my $ok = $a.elems == $b.elems
         && !$a.keys.first({($a[$_] - $b[$_]).abs >= 0.01 }).defined;
     ok $ok, $test;
@@ -68,8 +68,8 @@ sub is-result($a, $b, $test = 'calc') {
 my $ind-obj = parse-ind-obj($input);
 my $sub-function-obj = $ind-obj.object<Shading><Function><Functions>[0];
 
-given $sub-function-obj.interpreter {
-    is-result .calc([0.793951]), [0.828753, 0.955557, 0.784310], 'subfunction calc';
+given $sub-function-obj.calculator {
+    is-result .evaluate([0.793951]), [0.828753, 0.955557, 0.784310], 'subfunction calc';
 }
 
 my $function-obj = $ind-obj.object<Shading><Function>;
@@ -81,9 +81,9 @@ is-json-equiv $function-obj.Domain, [0, 1], '$.Domain accessor';
 is-json-equiv $function-obj.Encode, [0, 1, 0, 1], '$.Encode accessor';
 is-json-equiv $function-obj.Bounds, [0.5], '$.Range accessor';
 
-given $function-obj.interpreter {
-    is-result .calc([0]), [1, 0.78431, 0.78431];
-    is-result .calc([0.396975]), [0.828753, 0.955557, 0.784310];
-    is-result .calc([0.563327]), [0.78431,  0.972682, 0.811628];
-    is-result .calc([1]), [0.78431, 0.78431, 1];
+given $function-obj.calculator {
+    is-result .evaluate([0]), [1, 0.78431, 0.78431];
+    is-result .evaluate([0.396975]), [0.828753, 0.955557, 0.784310];
+    is-result .evaluate([0.563327]), [0.78431,  0.972682, 0.811628];
+    is-result .evaluate([1]), [0.78431, 0.78431, 1];
 }

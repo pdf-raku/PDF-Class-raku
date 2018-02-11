@@ -14,8 +14,8 @@ class PDF::Function::PostScript
 	$/.ast
     }
 
-    class Interpreter
-        is PDF::Function::Interpreter {
+    class Calculator
+        is PDF::Function::Calculator {
         has $.ast;
         has @.stack;
         method pop($type = Numeric) {
@@ -144,22 +144,22 @@ class PDF::Function::PostScript
             $.run(|$_) with $branch;
         }
 
-        method calc(@in where .elems = @.domain.elems) {
+        method evaluate(@in where .elems = @.domain.elems) {
             @!stack = (@in Z @.domain).map: { $.clip(.[0], .[1]) };
             $.run( |$!ast );
             (@!stack Z @.range).map: { $.clip(.[0], .[1]) };
         }
     }
 
-    method interpreter {
+    method calculator {
         my $ast = self.parse;
         my Range @domain = $.Domain.map: -> $a, $b { Range.new($a, $b) };
         my Range @range = $.Range.map: -> $a, $b { Range.new($a, $b) };
-        Interpreter.new: :@domain, :@range, :$ast;
+        Calculator.new: :@domain, :@range, :$ast;
     }
     #| run the calculator function
-    method calc(@in) {
-        $.interpreter.calc(@in);
+    method evaluate(@in) {
+        $.calculator.evaluate(@in);
     }
 
 }

@@ -41,7 +41,7 @@ is $function-obj.N, 1, '$.N accessor';
 is-json-equiv $function-obj.Domain, [0, 1], '$.Domain accessor';
 is-json-equiv $function-obj.Range, [0, 100, -128, 127, -128, 127], '$.Range accessor';
 
-sub is-result($a, $b, $test = 'calc') {
+sub is-result($a, $b, $test = 'evaluate') {
     my $ok = $a.elems == $b.elems
         && !$a.keys.first({($a[$_] - $b[$_]).abs >= 0.01 }).defined;
     ok $ok, $test;
@@ -50,16 +50,16 @@ sub is-result($a, $b, $test = 'calc') {
     $ok
 }
 
-given $function-obj.interpreter {
-    is-result .calc([0]), [100, 0, 0];
-    is-result .calc([1]), [50, -30, -40];
-    is-result .calc([.5]), [75, -15, -20];
+given $function-obj.calculator {
+    is-result .evaluate([0]), [100, 0, 0];
+    is-result .evaluate([1]), [50, -30, -40];
+    is-result .evaluate([.5]), [75, -15, -20];
 }
 
 $function-obj.N = 1.1;
-given $function-obj.interpreter {
-    is-result .calc([0]), [100, 0, 0];
-    is-result .calc([1]), [50, -30, -40];
-    is-result .calc([.5]), [76.674, -13.995, -18.661];
+given $function-obj.calculator {
+    is-result .evaluate([0]), [100, 0, 0];
+    is-result .evaluate([1]), [50, -30, -40];
+    is-result .evaluate([.5]), [76.674, -13.995, -18.661];
 }
 

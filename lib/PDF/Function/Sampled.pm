@@ -25,8 +25,8 @@ class PDF::Function::Sampled
     # (Optional) Other attributes of the stream that provides the sample values, as appropriate
 
     use PDF::IO::Util :pack;
-    class Interpreter
-        is PDF::Function::Interpreter {
+    class Calculator
+        is PDF::Function::Calculator {
         has UInt $.bpc is required;
         has UInt @.size is required;
         has Range @.encode = @!size.map: { 0..$_ };
@@ -51,7 +51,7 @@ class PDF::Function::Sampled
             $!samples[s0] .. $!samples[s1];
         }
 
-        method calc(@in where .elems == $!m) {
+        method evaluate(@in where .elems == $!m) {
             my Numeric @x = (@in.list Z @.domain).map: { $.clip(.[0], .[1]) };
             my Numeric @e = (@x Z @.domain Z @!encode).map: { $.interpolate(.[0], .[1], .[2]) };
             @e = (@e Z @!size).map: { $.clip(.[0], 0 .. (.[1]-1)) }
@@ -74,7 +74,7 @@ class PDF::Function::Sampled
             [(@out Z @.range).map: { $.clip(.[0], .[1]) }];
         }
     }
-    method interpreter {
+    method calculator {
         my Range @domain = @.Domain.map: -> $a, $b { Range.new($a, $b) };
         my Range @range = @.Range.map: -> $a, $b { Range.new($a, $b) };
         my @size = @.Size;
@@ -93,10 +93,10 @@ class PDF::Function::Sampled
         my $bpc = $.BitsPerSample;
         my Blob $samples = unpack($.decoded, $bpc);
 
-        Interpreter.new: :@domain, :@range, :@size, :@encode, :@decode, :$samples, :$bpc;
+        Calculator.new: :@domain, :@range, :@size, :@encode, :@decode, :$samples, :$bpc;
     }
     #| run the calculator function
-    method calc(@in) {
-        $.interpreter.calc(@in);
+    method evaluate(@in) {
+        $.calculator.evaluate(@in);
     }
 }

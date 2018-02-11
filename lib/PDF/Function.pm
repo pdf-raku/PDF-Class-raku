@@ -38,7 +38,7 @@ class PDF::Function
 	PDF::DAO.loader.find-delegate( 'Function', $subtype );
     }
 
-    class Interpreter {
+    class Calculator {
         has Range @.domain is required;
         has Range @.range is required;
 
