@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 11;
+plan 12;
 
 use PDF::Class;
 use PDF::Function::Stitching;
@@ -56,16 +56,6 @@ sub parse-ind-obj($input) {
     PDF::IO::IndObj.new( :$input, |%ast);
 }
 
-my $ind-obj = parse-ind-obj($input);
-my $function-obj = $ind-obj.object<Shading><Function>;
-isa-ok $function-obj, PDF::Function::Stitching;
-is $function-obj.FunctionType, 3, '$.FunctionType accessor';
-is $function-obj.type, 'Function', '$.type accessor';
-is $function-obj.subtype, 'Stitching', '$.subtype accessor';
-is-json-equiv $function-obj.Domain, [0, 1], '$.Domain accessor';
-is-json-equiv $function-obj.Encode, [0, 1, 0, 1], '$.Encode accessor';
-is-json-equiv $function-obj.Bounds, [0.5], '$.Range accessor';
-
 sub is-result($a, $b, $test = 'calc') {
     my $ok = $a.elems == $b.elems
         && !$a.keys.first({($a[$_] - $b[$_]).abs >= 0.01 }).defined;
@@ -75,9 +65,24 @@ sub is-result($a, $b, $test = 'calc') {
     $ok
 }
 
+my $ind-obj = parse-ind-obj($input);
+my $sub-function-obj = $ind-obj.object<Shading><Function><Functions>[0];
+
+given $sub-function-obj.interpreter {
+    is-result .calc([0.793951]), [0.828753, 0.955557, 0.784310], 'subfunction calc';
+}
+
+my $function-obj = $ind-obj.object<Shading><Function>;
+isa-ok $function-obj, PDF::Function::Stitching;
+is $function-obj.FunctionType, 3, '$.FunctionType accessor';
+is $function-obj.type, 'Function', '$.type accessor';
+is $function-obj.subtype, 'Stitching', '$.subtype accessor';
+is-json-equiv $function-obj.Domain, [0, 1], '$.Domain accessor';
+is-json-equiv $function-obj.Encode, [0, 1, 0, 1], '$.Encode accessor';
+is-json-equiv $function-obj.Bounds, [0.5], '$.Range accessor';
+
 given $function-obj.interpreter {
     is-result .calc([0]), [1, 0.78431, 0.78431];
-    todo "exponential stitching", 2;
     is-result .calc([0.396975]), [0.828753, 0.955557, 0.784310];
     is-result .calc([0.563327]), [0.78431,  0.972682, 0.811628];
     is-result .calc([1]), [0.78431, 0.78431, 1];

@@ -35,7 +35,7 @@ class PDF::Function::Stitching
             my Numeric $x = self.clip(@in[0], @.domain[0]);
             my $i = @!bounds.pairs.first({.value.min <= $x <= .value.max}).key;
             my Numeric $e = $.interpolate($x, @.bounds[$i], @.encode[$i]);
-            my @out = @!functions[$i].calc([$x]);
+            my @out = @!functions[$i].calc([$e]);
             @out = [(@out Z @.range).map: { self.clip(.[0], .[1]) }]
                 if @.range;
             @out;
