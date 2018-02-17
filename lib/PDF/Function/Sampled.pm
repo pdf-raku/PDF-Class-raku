@@ -53,23 +53,20 @@ class PDF::Function::Sampled
             $index;
         }
 
-        #| simple first order approximation
         method !approximate(@e) {
             my \index = self!base-index(@e);
             my \n-samples = $!samples.elems;
-            my @samples = (0 ..^ $!n).map: -> \y { $!samples[index + y] }
-            my @last = @samples.list;
+            my @base = (0 ..^ $!n).map: -> \y { $!samples[index + y] }
+            my @samples = @base.list;
             my $offset = $!n;
-            my $index-hi = index;
             for 0 ..^ $!m -> \x {
                 my \weight = @e[x] - @e[x].floor;
                 unless weight =~= 0 {
-                    $index-hi += $offset;
-                    last if $index-hi >= n-samples;
+                    my \neighbour = index + $offset;
+                    last if neighbour >= n-samples;
                     for 0 ..^ $!n -> \y {
-                        my \this = $!samples[$index-hi + y];
-                        @samples[y] += (this - @last[y]) * weight;
-                        @last[y] = this;
+                        my \this = $!samples[neighbour + y];
+                        @samples[y] += (this - @base[y]) * weight;
                     }
                 }
                 $offset *= @!size[x];
