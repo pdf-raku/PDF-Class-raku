@@ -1,13 +1,9 @@
 use v6;
 
-use PDF::Content::XObject;
-use PDF::Content::Graphics;
-use PDF::Content::Resourced;
+use PDF::DAO::Tie::Hash;
 
 role PDF::Pattern
-    does PDF::Content::XObject['Form']
-    does PDF::Content::Graphics
-    does PDF::Content::Resourced {
+    does PDF::DAO::Tie::Hash {
 
     use PDF::DAO;
     use PDF::DAO::Tie;

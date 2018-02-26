@@ -2,12 +2,18 @@ use v6;
 
 use PDF::DAO::Stream;
 use PDF::Pattern;
+use PDF::Content::XObject;
+use PDF::Content::Graphics;
+use PDF::Content::Resourced;
 
 #| /ShadingType 1 - Tiling
 
 class PDF::Pattern::Tiling
     is PDF::DAO::Stream
-    does PDF::Pattern {
+    does PDF::Pattern
+    does PDF::Content::XObject['Form']
+    does PDF::Content::Graphics
+    does PDF::Content::Resourced {
 
     use PDF::DAO::Tie;
 
