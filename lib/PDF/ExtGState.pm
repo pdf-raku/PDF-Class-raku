@@ -5,7 +5,7 @@ use PDF::Class::Type;
 
 #| /Type /ExtGState
 
-class PDF::ExtGState
+role PDF::ExtGState
     is PDF::DAO::Dict
     does PDF::Class::Type {
 
@@ -41,8 +41,9 @@ class PDF::ExtGState
     has Numeric $.SM is entry(:alias<smoothness-tolerance>);             #| (Optional; PDF 1.3) The smoothness tolerance
     has Bool $.SA is entry(:alias<stroke-adjustment>);           #| (Optional) A flag specifying whether to apply automatic stroke adjustment
     has $.BM is entry(:alias<blend-mode>);                       #| (Optional; PDF 1.4) The current blend mode to be used in the transparent imaging model
-    has $.SMask is entry(:alias<soft-mask>);                     #| (Optional; PDF 1.4) The current soft mask, specifying the mask shape or mask opacity values to be used in the transparent imaging mode
-    subset Alpha of Numeric where 0.0 .. 1.0;
+    use PDF::Mask;
+    has PDF::Mask $.SMask is entry(:alias<soft-mask>);           #| (Optional; PDF 1.4) The current soft mask, specifying the mask shape or mask opacity values to be used in the transparent imaging mode
+    my subset Alpha of Numeric where 0.0 .. 1.0;
     has Alpha $.CA is entry(:alias<stroke-alpha>);               #| (Optional; PDF 1.4) The current stroking alpha constant, specifying the constant shape or constant opacity value to be used for stroking operations in the transparent imaging model
     has Alpha $.ca is entry(:alias<fill-alpha>);                 #| (Optional; PDF 1.4) Same as CA, but for nonstroking operations
     has Bool $.AIS is entry(:alias<alpha-source-flag>);          #| (Optional; PDF 1.4) The alpha source flag (“alpha is shape”), specifying whether the current soft mask and alpha constant are to be interpreted as shape values (true) or opacity values (false).

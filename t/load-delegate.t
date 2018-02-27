@@ -8,7 +8,7 @@ isa-ok PDF::Class.loader.load-delegate( :dict{ :Type<Page> }), ::('PDF::Page'), 
 isa-ok PDF::Class.loader.load-delegate( :dict{ :Type<XObject>, :Subtype<Image> }), ::('PDF::XObject::Image'), 'delegation to subclass';
 isa-ok PDF::Class.loader.load-delegate( :dict{ :ShadingType(7) }),  ::('PDF::Shading::Tensor'), 'delegation by ShadingType';
 isa-ok PDF::Class.loader.load-delegate( :dict{ :ShadingType(42) }),  ::('PDF::Shading'), 'delegation by ShadingType (unknown)';
-isa-ok PDF::Class.loader.load-delegate( :dict{ :Type<Unknown> }, :fallback(Hash)), Hash, 'delegation fallback';
+isa-ok PDF::Class.loader.load-delegate( :dict{ :Type<Unknown> }, :base-class(Hash)), Hash, 'delegation base-class';
 isa-ok PDF::Class.loader.load-delegate( :dict{ :FunctionType(3) }),  ::('PDF::Function::Stitching'), 'delegation by FunctionType';
 
 isa-ok PDF::Class.loader.load-delegate( :dict{ :Subtype<Link> }),  ::('PDF::Annot::Link'), 'annot defaulted /Type - implemented';

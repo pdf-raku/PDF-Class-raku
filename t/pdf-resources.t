@@ -1,6 +1,6 @@
 use v6;
 use Test;
-plan 66;
+plan 69;
 
 use PDF::Class;
 use PDF::Class::Type;
@@ -126,6 +126,11 @@ $input = q:to"--END--";
   /Type /ExtGState
   /OP false
   /TR 36 0 R
+  /SMask <<
+    /Type /Mask
+    /S /Alpha
+    /G 72 0 R
+  >>
 >> endobj
 --END--
 
@@ -135,7 +140,7 @@ $grammar.parse($input, :$actions, :rule<ind-obj>)
 
 $ind-obj = PDF::IO::IndObj.new( :$input, |%ast, :$reader );
 my $gs-obj = $ind-obj.object;
-isa-ok $gs-obj, ::('PDF::ExtGState');
+does-ok $gs-obj, (require ::('PDF::ExtGState'));
 is $gs-obj.Type, 'ExtGState', 'ExtGState Type';
 is-deeply $gs-obj.OP, False, 'ExtGState.OP';
 quietly {
@@ -150,6 +155,10 @@ $gs-obj<OP> = False;
 lives-ok {$gs-obj<OP> = True}, 'Valid property assignment';
 is-deeply $gs-obj.OP, True, 'ExtGState.OP after assignment';
 is $gs-obj.TR, (:ind-ref[36, 0]), 'ExtGState TR';
+
+does-ok $gs-obj.SMask, (require ::('PDF::Mask')), 'ExtGState.SMask';
+is $gs-obj<SMask><S>, 'Alpha', 'ExtGState<SMask><S>';
+is $gs-obj.SMask.S, 'Alpha', 'ExtGState.SMask.S';
 
 $gs-obj.transparency = .5;
 is $gs-obj.CA, 0.5, 'transparency setter';
