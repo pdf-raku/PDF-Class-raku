@@ -1,11 +1,13 @@
 use v6;
 
+use PDF::DAO::Dict;
 use PDF::Shading;
 
 #| /ShadingType 2 - Axial
 
 class PDF::Shading::Axial
-    is PDF::Shading {
+    is PDF::DAO::Dict
+    does PDF::Shading {
 
     # see [PDF 1.7 TABLE 4.30 Additional entries specific to a type 2 shading dictionary]
     use PDF::DAO::Tie;

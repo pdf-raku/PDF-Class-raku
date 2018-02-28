@@ -1,11 +1,13 @@
 use v6;
 
+use PDF::DAO::Dict;
 use PDF::Shading;
 
 #| /ShadingType 1 - Functional
 
 class PDF::Shading::Functional
-    is PDF::Shading {
+    is PDF::DAO::Dict
+    does PDF::Shading {
 
      # see [PDF 1.7 TABLE 4.29 Additional entries specific to a type 1 shading dictionary]
      use PDF::DAO::Tie;

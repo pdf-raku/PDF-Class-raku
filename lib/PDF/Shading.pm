@@ -1,16 +1,16 @@
 use v6;
 
-use PDF::DAO::Dict;
+use PDF::DAO::Tie::Hash;
 
 #| /ShadingType 1..7 - the Shading dictionary delegates
 
-class PDF::Shading
-    is PDF::DAO::Dict {
+role PDF::Shading
+    does PDF::DAO::Tie::Hash {
 
     use PDF::DAO::Tie;
     use PDF::DAO::Array;
     use PDF::DAO::Name;
-    subset ShadingTypeInt of Int where 1..7;
+    my subset ShadingTypeInt of Int where 1..7;
     has ShadingTypeInt $.ShadingType is entry(:required);
 
     # see [PDF 1.7 TABLE 4.28 Entries common to all shading dictionaries]
@@ -22,8 +22,8 @@ class PDF::Shading
     has Bool $.AntiAlias is entry;                    #| (Optional) A flag indicating whether to filter the shading function to prevent aliasing artifacts.
 
     # from PDF Spec 1.7 table 4.28
-    constant ShadingTypes = <Function Axial Radial FreeForm Lattice Coons Tensor>;
-    constant ShadingNames = %( ShadingTypes.pairs.invert );
+    my constant ShadingTypes = <Function Axial Radial FreeForm Lattice Coons Tensor>;
+    my constant ShadingNames = %( ShadingTypes.pairs.invert );
     method type {'Shading'}
     method subtype { ShadingTypes[ $.ShadingType - 1] }
 

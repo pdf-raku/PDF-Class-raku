@@ -1,11 +1,13 @@
 use v6;
 
+use PDF::DAO::Stream;
 use PDF::Shading;
 
 #| /ShadingType 4 - FreeForm
 
 class PDF::Shading::FreeForm
-    is PDF::Shading {
+    is PDF::DAO::Stream
+    does PDF::Shading {
     # see [PDF 1.7 TABLE 4.32 Additional entries specific to a type 4 shading dictionary]
     use PDF::DAO::Tie;
 
