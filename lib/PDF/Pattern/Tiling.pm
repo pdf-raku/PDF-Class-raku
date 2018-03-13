@@ -1,6 +1,6 @@
 use v6;
 
-use PDF::DAO::Stream;
+use PDF::COS::Stream;
 use PDF::Pattern;
 use PDF::Content::XObject;
 use PDF::Content::Graphics;
@@ -9,13 +9,13 @@ use PDF::Content::Resourced;
 #| /ShadingType 1 - Tiling
 
 class PDF::Pattern::Tiling
-    is PDF::DAO::Stream
+    is PDF::COS::Stream
     does PDF::Pattern
     does PDF::Content::XObject['Form']
     does PDF::Content::Graphics
     does PDF::Content::Resourced {
 
-    use PDF::DAO::Tie;
+    use PDF::COS::Tie;
 
     # see [PDF 1.7 TABLE 4.25 Additional entries specific to a type 1 pattern dictionary]
     subset PaintCode of Int where 1|2;

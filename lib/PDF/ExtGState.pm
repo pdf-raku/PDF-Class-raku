@@ -1,26 +1,26 @@
 use v6;
 
-use PDF::DAO::Dict;
+use PDF::COS::Dict;
 use PDF::Class::Type;
 
 #| /Type /ExtGState
 
 role PDF::ExtGState
-    is PDF::DAO::Dict
+    is PDF::COS::Dict
     does PDF::Class::Type {
 
-    use PDF::DAO::Tie;
-    use PDF::DAO::Name;
+    use PDF::COS::Tie;
+    use PDF::COS::Name;
 
     # see [PDF .1.7 TABLE 4.8 Entries in a graphics state parameter dictionary]
-    my subset Name-ExtGState of PDF::DAO::Name where 'ExtGState';
+    my subset Name-ExtGState of PDF::COS::Name where 'ExtGState';
     has Name-ExtGState $.Type is entry;
     has Numeric $.LW is entry(:alias<line-width>);               #| (Optional; PDF 1.3) The line width
     has UInt $.LC is entry(:alias<line-cap>);                    #| (Optional; PDF 1.3) The line cap style
     has UInt $.LJ is entry(:alias<line-join>);                   #| (Optional; PDF 1.3) The line join style
     has Numeric $.ML is entry(:alias<miter-limit>);              #| (Optional; PDF 1.3) The miter limit
     has UInt @.D is entry(:alias<dash-pattern>);                 #| (Optional; PDF 1.3) The line dash pattern, expressed as an array of the form [ dashArray dashPhase ], where dashArray is itself an array and dashPhase is an integer
-    has PDF::DAO::Name $.RI is entry(:alias<rendering-intent>);  #| (Optional; PDF 1.3) The name of the rendering intent
+    has PDF::COS::Name $.RI is entry(:alias<rendering-intent>);  #| (Optional; PDF 1.3) The name of the rendering intent
     has Bool $.OP is entry(:alias<overprint-paint>);             #| (Optional) A flag specifying whether to apply overprint
     has Bool $.op is entry(:alias<overprint-stroke>);            #| (Optional; PDF 1.3) A flag specifying whether to apply overprint for painting operations other than stroking
     has Int $.OPM is entry(:alias<overprint-mode>);              #| (Optional; PDF 1.3) The overprint mode

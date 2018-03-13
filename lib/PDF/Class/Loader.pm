@@ -1,14 +1,14 @@
 use v6;
 
-use PDF::DAO::Loader;
+use PDF::COS::Loader;
 
-PDF::DAO.loader = class PDF::Class::Loader
-    is PDF::DAO::Loader {
+PDF::COS.loader = class PDF::Class::Loader
+    is PDF::COS::Loader {
 
-    use PDF::DAO::Util :from-ast;
-    use PDF::DAO::Name;
+    use PDF::COS::Util :from-ast;
+    use PDF::COS::Name;
 
-    method class-paths {<PDF PDF::DAO::Type>}
+    method class-paths {<PDF PDF::COS::Type>}
 
     method find-delegate( Str $type!, $subtype?, :$base-class) is default {
 
@@ -24,7 +24,7 @@ PDF::DAO.loader = class PDF::Class::Loader
 
 	for self.class-paths -> $class-path {
             my $class-name = $class-path ~ '::' ~ $subclass;
-            $handler-class = PDF::DAO.required($class-name);
+            $handler-class = PDF::COS.required($class-name);
             if $handler-class ~~ Failure {
                 warn "failed to load: $class-name: {$handler-class.exception.message}";
             }
@@ -113,13 +113,13 @@ PDF::DAO.loader = class PDF::Class::Loader
 	(
          #| PDF Spec 1.7 Section 4.5.4 CIE-Based Color Spaces
          $elems == 2
-         && $t ~~ PDF::DAO::Name
+         && $t ~~ PDF::COS::Name
          && $t eq 'CalGray'|'CalRGB'|'Lab'|'ICCBased';
         )
         || (
             #| PDF Spec 1.7 Section 4.5.5 Special Color Spaces
             3 <= $elems <= 5
-            && $t ~~ PDF::DAO::Name
+            && $t ~~ PDF::COS::Name
             && $t eq 'Indexed'|'Separation'|'DeviceN';
         )
     }

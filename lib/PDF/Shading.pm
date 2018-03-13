@@ -1,21 +1,21 @@
 use v6;
 
-use PDF::DAO::Tie::Hash;
+use PDF::COS::Tie::Hash;
 
 #| /ShadingType 1..7 - the Shading dictionary delegates
 
 role PDF::Shading
-    does PDF::DAO::Tie::Hash {
+    does PDF::COS::Tie::Hash {
 
-    use PDF::DAO::Tie;
-    use PDF::DAO::Array;
-    use PDF::DAO::Name;
+    use PDF::COS::Tie;
+    use PDF::COS::Array;
+    use PDF::COS::Name;
     my subset ShadingTypeInt of Int where 1..7;
     has ShadingTypeInt $.ShadingType is entry(:required);
 
     # see [PDF 1.7 TABLE 4.28 Entries common to all shading dictionaries]
     use PDF::ColorSpace;
-    my subset NameOrColorSpace of PDF::DAO where PDF::DAO::Name | PDF::ColorSpace;
+    my subset NameOrColorSpace of PDF::COS where PDF::COS::Name | PDF::ColorSpace;
     has NameOrColorSpace $.ColorSpace is entry(:required); #| (Required) The color space in which color values are expressed.
     has @.Background is entry;                        #| (Optional) An array of color components appropriate to the color space, specifying a single background color value.
     has Numeric @.BBox is entry(:len(4));             #| (Optional) An array of four numbers giving the left, bottom, right, and top coordinates, respectively, of the shading’s bounding box
@@ -30,7 +30,7 @@ role PDF::Shading
     #| see also PDF::Class::Loader
     method delegate-shading(Hash :$dict!) {
 
-	use PDF::DAO::Util :from-ast;
+	use PDF::COS::Util :from-ast;
 	my UInt $type-int = from-ast $dict<ShadingType>;
 
 	unless $type-int ~~ ShadingTypeInt {
@@ -39,7 +39,7 @@ role PDF::Shading
 	}
 
 	my $subtype = ShadingTypes[$type-int - 1];
-	PDF::DAO.loader.find-delegate( 'Shading', $subtype );
+	PDF::COS.loader.find-delegate( 'Shading', $subtype );
     }
 
     method cb-init {

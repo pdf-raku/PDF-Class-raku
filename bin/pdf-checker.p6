@@ -150,7 +150,7 @@ sub check-contents( $obj, Str :$ref!) {
 
     CATCH {
 	default {
-	    $*ERR.say: "unable to parse {$ref}contents: $_"; 
+	    $*ERR.say: "unable to process {$ref}contents: $_"; 
 	}
     }
 }
