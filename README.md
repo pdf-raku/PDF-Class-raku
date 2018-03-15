@@ -148,7 +148,7 @@ PDF::FontFile | stream | Subtype |  |
 PDF::Function::Exponential | stream | C0, C1, Domain, FunctionType, N, Range | calc, calculator | /FunctionType 2 - Exponential see [PDF 1.7 Section 3.9.2 Type 2 (Exponential Interpolation) Functions]
 PDF::Function::PostScript | stream | Domain, FunctionType, Range | calc, calculator, parse | /FunctionType 4 - PostScript see [PDF 1.7 Section 3.9.4 Type 4 (PostScript Transform) Functions]
 PDF::Function::Sampled | stream | BitsPerSample, Decode, Domain, Encode, FunctionType, Order, Range, Size | calc, calculator | /FunctionType 0 - Sampled see [PDF 1.7 Section 3.9.1 Type 0 (Sampled) Functions]
-PDF::Function::Stitching | stream | Bounds, Domain, Encode, FunctionType, Functions, Range | calculator | /FunctionType 3 - Stitching see [PDF 1.7 Section 3.9.3 Type 3 (Stitching) Functions]
+PDF::Function::Stitching | stream | Bounds, Domain, Encode, FunctionType, Functions, Range | calc, calculator | /FunctionType 3 - Stitching see [PDF 1.7 Section 3.9.3 Type 3 (Stitching) Functions]
 PDF::Group::Transparency | dict | CS(color-space), I(isolated), K(knockout), S, Type |  | 
 PDF::Mask | dict | BC(backdrop-color), G(transparency-group), S(subtype), TR(transfer-function), Type |  | 
 PDF::Metadata::XML | stream | Subtype, Type |  | 
