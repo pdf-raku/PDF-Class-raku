@@ -70,7 +70,7 @@
     "PDF::Metadata::XML" : "lib/PDF/Metadata/XML.pm",
     "PDF::NumberTree" : "lib/PDF/NumberTree.pm",
     "PDF::OBJR" : "lib/PDF/OBJR.pm",
-    "PDF::OutlineItem" : "lib/PDF/OutlineItem.pm",
+    "PDF::Outline" : "lib/PDF/Outline.pm",
     "PDF::Outlines" : "lib/PDF/Outlines.pm",
     "PDF::OutputIntent" : "lib/PDF/OutputIntent.pm",
     "PDF::OutputIntent::GTS_PDFX" : "lib/PDF/OutputIntent/GTS_PDFX.pm",
@@ -104,5 +104,5 @@
     "pdf"
   ],
   "test-depends" : [ ],
-  "version" : "0.1.0"
+  "version" : "0.1.1"
 }

@@ -1,3 +1,5 @@
+Release 0.1.1
+- Renamed role PDF::OutlineItem -> PDF::Outline
 Release 0.1.0
 - Adjust to latest PDF. PDF::DAO classes have been renamed
   to PDF::COS (Carousel Object System)
