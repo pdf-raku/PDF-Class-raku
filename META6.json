@@ -41,6 +41,7 @@
     "PDF::ColorSpace::Indexed" : "lib/PDF/ColorSpace/Indexed.pm",
     "PDF::ColorSpace::Lab" : "lib/PDF/ColorSpace/Lab.pm",
     "PDF::ColorSpace::Separation" : "lib/PDF/ColorSpace/Separation.pm",
+    "PDF::Destination" : "lib/PDF/Destination.pm",
     "PDF::Encoding" : "lib/PDF/Encoding.pm",
     "PDF::ExtGState" : "lib/PDF/ExtGState.pm",
     "PDF::Field" : "lib/PDF/Field.pm",

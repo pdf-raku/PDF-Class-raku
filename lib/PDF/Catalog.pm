@@ -50,8 +50,16 @@ class PDF::Catalog
 
     has PDF::COS::Dict @.Threads is entry(:indirect);        #| (Optional; PDF 1.1; must be an indirect reference) An array of thread dictionaries representing the document’s article threads
 
-    use PDF::Action :coerce;
-    has PDF::Action::Destination $.OpenAction is entry(:&coerce);               #| (Optional; PDF 1.1) A value specifying a destination to be displayed or an action to be performed when the document is opened.
+    use PDF::Action;
+    use PDF::Destination;
+    my subset ActionOrDestination where PDF::Action|PDF::Destination;
+    multi sub coerce(Hash $_, ActionOrDestination) {
+        PDF::COS.coerce( $_, PDF::Action.delegate-action($_) );
+    }
+    multi sub coerce(Array $_, ActionOrDestination) {
+        PDF::COS.coerce( $_, PDF::Destination.delegate-destination($_) );
+    }
+    has ActionOrDestination $.OpenAction is entry(:&coerce);               #| (Optional; PDF 1.1) A value specifying a destination to be displayed or an action to be performed when the document is opened.
 
     has PDF::COS::Dict $.AA is entry(:alias<additional-actions>);                    #| (Optional; PDF 1.4) An additional-actions dictionary defining the actions to be taken in response to various trigger events affecting the document as a whole
 

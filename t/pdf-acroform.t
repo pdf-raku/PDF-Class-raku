@@ -21,7 +21,7 @@ my $acroform = $doc.AcroForm;
 does-ok $doc.AcroForm, ::('PDF::AcroForm');
 
 lives-ok {$doc.OpenAction}, '$doc.OpenAction';
-does-ok $doc.OpenAction, ::('PDF::Action::Destination');
+does-ok $doc.OpenAction, (require ::('PDF::Destination'));
 
 my @fields = $acroform.fields;
 isa-ok @fields, Array, '.Fields';
