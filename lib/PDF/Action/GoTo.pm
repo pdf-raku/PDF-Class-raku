@@ -2,7 +2,7 @@ use v6;
 
 use PDF::Action;
 
-#| /Action Type - GoTo
+#| /Action Subtype - GoTo
 
 role PDF::Action::GoTo
     does PDF::Action {

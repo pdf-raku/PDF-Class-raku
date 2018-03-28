@@ -1,6 +1,5 @@
 use v6;
 
-use PDF::COS::Dict;
 use PDF::COS::Stream;
 use PDF::Class::Type;
 
