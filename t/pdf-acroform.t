@@ -22,7 +22,7 @@ does-ok $doc.AcroForm, ::('PDF::AcroForm');
 
 lives-ok {$doc.OpenAction}, '$doc.OpenAction';
 does-ok $doc.OpenAction, (require ::('PDF::Destination'));
-is $doc.OpenAction.type, 'XYZ', 'OpenAction.XYZ';
+is $doc.OpenAction.fit, 'XYZ', 'OpenAction.fit';
 ok !$doc.OpenAction.left.defined, 'OpenAction.left';
 is $doc.OpenAction.zoom, 0, 'OpenAction.zoom';
 
