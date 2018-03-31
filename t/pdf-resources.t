@@ -1,6 +1,6 @@
 use v6;
 use Test;
-plan 69;
+plan 74;
 
 use PDF::Class;
 use PDF::Class::Type;
@@ -95,7 +95,7 @@ PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed: $input";
 %ast = $/.ast;
 
-$ind-obj = PDF::IO::IndObj.new( :$input, |%ast );
+$ind-obj = PDF::IO::IndObj.new( :$input, |%ast, :$reader );
 my $oi-font-obj = $ind-obj.object;
 isa-ok $oi-font-obj, ::('PDF::OutputIntent');
 is $oi-font-obj.S, 'GTS_PDFX', 'OutputIntent S';
