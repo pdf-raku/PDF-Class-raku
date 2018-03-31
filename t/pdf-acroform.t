@@ -19,6 +19,7 @@ isa-ok $doc, PDF::Catalog, 'document root';
 
 my $acroform = $doc.AcroForm;
 does-ok $doc.AcroForm, ::('PDF::AcroForm');
+lives-ok {$acroform.check}, '$acroform.check lives';
 
 lives-ok {$doc.OpenAction}, '$doc.OpenAction';
 does-ok $doc.OpenAction, (require ::('PDF::Destination'));

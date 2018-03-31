@@ -36,10 +36,10 @@ role PDF::Destination does PDF::COS::Tie::Array {
         PDF::Destination[ .[1] ];
     }
 
-    method !dest(List $dest) { PDF::COS.coerce( PDF::COS.coerce($dest), $.delegate-destination($dest) ) }
+    method !dest(List $dest) { PDF::COS.coerce( $dest, $.delegate-destination($dest) ) }
 
     #| constructs a new PDF::Destination array object
-    sub fit(Fit $f) { PDF::COS::Name.coerce($f.value) }
+    sub fit(Fit $f) { $f.value }
     multi method construct(FitWindow,  PDF::Page :$page!, )                { self!dest: [$page, fit(FitWindow), ] }
     multi method construct(FitHoriz,   PDF::Page :$page!, Numeric :$top )  { self!dest: [$page, fit(FitHoriz),    $top ] }
     multi method construct(FitVert,    PDF::Page :$page!, Numeric :$left ) { self!dest: [$page, fit(FitVert),     $left ] }

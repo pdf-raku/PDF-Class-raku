@@ -7,6 +7,7 @@ use PDF::COS::Name;
 
 multi sub is-destination(PDF::Destination $dest, $expected, $reason = 'destination') {
     use PDF::Grammar::Test :is-json-equiv;
+    $dest.check;
     is-json-equiv($dest, $expected, $reason);
 }
 multi sub is-destination($_, $, $reason) is default {
@@ -25,6 +26,7 @@ is-destination $d=PDF::Destination.construct(FitWindow, :$page), [$page, FitWind
 is-deeply $d.page, $page, 'page accessor';
 is $d.fit, 'Fit', 'fit accessor';
 does-ok $d.fit, PDF::COS::Name, 'fit accessor';
+is-deeply $d.content, (:array($[:dict{:Type(:name<Page>)}, :name<Fit>])), 'destination content';
 
 is-destination $d=PDF::Destination.construct(FitXYZoom, :$page, :left(42), :top(99), :zoom(1.5)), [$page, FitXYZoom, 42, 99, 1.5], 'FitXYZoom destination';
 is $d.left, 42, 'left accessor';
