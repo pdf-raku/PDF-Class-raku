@@ -36,17 +36,17 @@ PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
 my %ast = $/.ast;
 my $reader = class { has $.auto-deref = False }.new;
-my $ind-obj = PDF::IO::IndObj.new( |%ast, :$reader);
+my $ind-obj = PDF::IO::IndObj.new( |%ast, :$input, :$reader);
 my $object = $ind-obj.object;
 is $ind-obj.obj-num, 7, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 isa-ok $object, (require ::('PDF::Font::CIDFontType2'));
 is $object.Type, 'Font', '$.Type accessor';
 is $object.Subtype, 'CIDFontType2', '$.Subype accessor';
+$object.reader = $reader;
 lives-ok {$object.check}, '$object.check lives';
 
 # this test doesn't work unless PDF::Class has been installed
-todo 'Issue #12';
 lives-ok { $object.CIDSystemInfo }, 'CIDSystemInfo accessor';
 
 sub to-doc($font-obj) {
