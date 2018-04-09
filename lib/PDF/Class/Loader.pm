@@ -37,8 +37,8 @@ PDF::COS.loader = class PDF::Class::Loader
             CATCH {
                 when X::CompUnit::UnsatisfiedDependency {
 		    # try loading just the parent class
-		    $handler-class = $.find-delegate($_, :$base-class)
-			with $type;
+		    $handler-class = $.find-delegate($type, :$base-class)
+			if $subtype;
 		}
             }
 	}
