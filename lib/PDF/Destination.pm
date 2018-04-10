@@ -1,5 +1,4 @@
 use v6;
-use PDF::COS;
 use PDF::COS::Tie;
 use PDF::COS::Tie::Array;
 
