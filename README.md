@@ -1,8 +1,8 @@
 # PDF::Class
 
-This module provides a set of classes and accessors for structured access to PDF documents as described int the PDF 1.7 Reference Guide.
+This is a support module for [PDF::API6](https://github.com/p6-pdf/PDF-API6).
 
-It understands the internal structure of PDF documents and gradually types classes and objects as they are dereferenced.
+PDF::Class provides a set of classes and accessors for structured access to PDF documents as described int the PDF 1.7 Reference Guide.
 
 As well as structural and type validation; PDF::Class also understands inheritance (via Parent entries) and the sometimes finicky serialization rules regarding PDF construction into indirect objects. These details are automatically handled to ensure the `save-as` method correctly serializes the PDF.
 
@@ -23,7 +23,7 @@ Can be written in PDF::Class as:
 ```
 Things to note:
 
-- as well as `PDF::Class`and `PDF::Page`. This module contains definitions for many other PDF internal objects, including streams, dictionaries(hashes), arrays and others, as listed below.
+- As well as `PDF::Class`and `PDF::Page`. This module contains definitions for many other PDF internal objects, including streams, dictionaries(hashes), arrays and others, as listed below.
 - There is generally a one-to-one correspondence between raw dictionary entries and accessors, e.g. `$pdf<Root><AA>` versus `$pdf.Root.AA`.
 - There are often accessor aliases, to aide clarity. E.g. `$pdf.Root.AA` can also be written as `$pdf.catalog.additional-actions`.
 - The classes often contain additional accessor and helper methods. For example `$pdf.page(10)` - references page 10, without the need to navigate the catalog and page tree.

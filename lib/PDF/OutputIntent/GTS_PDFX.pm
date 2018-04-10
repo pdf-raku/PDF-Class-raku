@@ -1,9 +1,11 @@
 use v6;
 
+use PDF::COS::Dict;
 use PDF::OutputIntent;
 
 class PDF::OutputIntent::GTS_PDFX
-    is PDF::OutputIntent {
+    is PDF::COS::Dict
+    does PDF::OutputIntent {
 
     use PDF::COS::Tie;
     use PDF::COS::Stream;
