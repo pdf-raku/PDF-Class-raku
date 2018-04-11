@@ -5,7 +5,9 @@ Improvements from field testing of pdf-checker.p6:
   -- Allow negative /Count values, as per spec
 - PDF::Destination: allow trailing optional array elements to be omitted
 - PDF::ColorSpace::Pattern: added as a new colorspace type
-- PDF::Font: fix coercement of Encoding entry
+- PDF::Font:
+  -- fix coercement of type1 & 3 Encoding entry
+  -- coerce type3 CharProcs as a PDF::Content::Graphics content stream
 Release 0.1.4
 - Altered composition of some classes to avoid 'version skew' compilation
   errors (Issue #11)

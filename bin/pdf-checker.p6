@@ -108,14 +108,13 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 
 multi sub check($obj) is default {}
 
-#| check contents of a Page, XObject Form or Pattern
+#| check contents of a Page, XObject Form, Pattern or CharProcs
 sub check-contents( $obj, Str :$ref!) {
 
     my Array $ast = $obj.contents-parse;
 
     # cross check with the resources directory
-    my $resources = $obj.Resources
-	// die "no /Resources dict found";
+    my $resources = $obj.?Resources // {};
 
     use PDF::Content::Ops;
     my PDF::Content::Ops $ops .= new(:$*strict);
