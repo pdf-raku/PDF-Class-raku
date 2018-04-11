@@ -41,6 +41,7 @@
     "PDF::ColorSpace::ICCBased" : "lib/PDF/ColorSpace/ICCBased.pm",
     "PDF::ColorSpace::Indexed" : "lib/PDF/ColorSpace/Indexed.pm",
     "PDF::ColorSpace::Lab" : "lib/PDF/ColorSpace/Lab.pm",
+    "PDF::ColorSpace::Pattern" : "lib/PDF/ColorSpace/Pattern.pm",
     "PDF::ColorSpace::Separation" : "lib/PDF/ColorSpace/Separation.pm",
     "PDF::Destination" : "lib/PDF/Destination.pm",
     "PDF::Encoding" : "lib/PDF/Encoding.pm",
@@ -109,5 +110,5 @@
     "pdf"
   ],
   "test-depends" : [ ],
-  "version" : "0.1.4"
+  "version" : "0.1.5"
 }

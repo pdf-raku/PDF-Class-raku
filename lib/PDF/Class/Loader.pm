@@ -127,7 +127,7 @@ PDF::COS.loader = class PDF::Class::Loader
          #| PDF Spec 1.7 Section 4.5.4 CIE-Based Color Spaces
          $elems == 2
          && $t ~~ PDF::COS::Name
-         && $t eq 'CalGray'|'CalRGB'|'Lab'|'ICCBased';
+         && $t eq 'CalGray'|'CalRGB'|'Lab'|'ICCBased'|'Pattern';
         )
         || (
             #| PDF Spec 1.7 Section 4.5.5 Special Color Spaces

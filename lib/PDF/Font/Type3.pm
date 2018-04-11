@@ -6,6 +6,7 @@ class PDF::Font::Type3
     is PDF::Font
     does PDF::Content::Resourced {
 
+    use PDF::COS;
     use PDF::COS::Tie;
     use PDF::COS::Dict;
     use PDF::COS::Name;
@@ -19,7 +20,10 @@ class PDF::Font::Type3
 
     use PDF::Encoding;
     my subset NameOrEncoding where PDF::COS::Name | PDF::Encoding;
-    has NameOrEncoding $.Encoding is entry(:required); #| (Required) An encoding dictionary whose Differences array specifies the complete character encoding for this font
+    multi sub coerce(Hash $dict, NameOrEncoding) {
+        PDF::COS.coerce($dict, PDF::Encoding);
+    }
+    has NameOrEncoding $.Encoding is entry(:required, :&coerce); #| (Required) An encoding dictionary whose Differences array specifies the complete character encoding for this font
 
     has UInt $.FirstChar is entry(:required);          #| (Required) The first character code defined in the font’s Widths array
 
