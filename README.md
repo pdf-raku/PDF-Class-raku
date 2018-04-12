@@ -1,8 +1,8 @@
 # PDF::Class
 
-This is primarily a support module for [PDF::API6](https://github.com/p6-pdf/PDF-API6).
-
 PDF::Class provides a set of classes and accessors for structured access to PDF documents as described int the PDF 1.7 Reference Guide.
+
+PDF::Class is the base class for [PDF::API6](https://github.com/p6-pdf/PDF-API6).
 
 As well as structural and type validation; PDF::Class also understands inheritance (via Parent entries) and the sometimes finicky serialization rules regarding PDF construction into indirect objects. These details are automatically handled to ensure the `save-as` method correctly serializes the PDF.
 

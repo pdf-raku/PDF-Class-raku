@@ -1,3 +1,5 @@
+Release 0.1.6
+- Added PDF::StructTreeRoot, PDF::NameTree
 Release 0.1.5
 Improvements from field testing of pdf-checker.p6:
 - PDF::Outline, PDF::Outlines:
