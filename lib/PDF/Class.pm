@@ -7,7 +7,6 @@ class PDF::Class:ver<0.1.6> #:api<PDF-1.7>
     is PDF {
 
     # base class declares: $.Size, $.Encrypt, $.ID
-    use PDF::COS;
     use PDF::COS::Tie;
     use PDF::Class::Type;
     need PDF::Info;
