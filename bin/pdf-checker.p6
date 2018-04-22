@@ -2,6 +2,7 @@
 use v6;
 
 use PDF::Class;
+use PDF::Content;
 use PDF::Content::Graphics;
 use PDF::Annot;
 use PDF::Writer;
@@ -18,7 +19,7 @@ my %seen{Any};
 sub MAIN(Str $infile,               #= input PDF
          Str  :$password = '',      #= password for the input PDF, if encrypted
          Bool :$*trace,             #= show progress
-         Bool :$*contents,          #= validate/check contents of pages, etc
+         Bool :$*render,          #= validate/check contents of pages, etc
          Bool :$*strict,            #= perform additional checks
          UInt :$*max-depth = 100,   #= maximum recursion depth
 	 Str  :$exclude,            #= excluded entries: Entry1,Entry2,
@@ -45,7 +46,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     my Str @unknown-entries;
 
     check-contents($obj, :$ref)
-	if $*contents && $obj.does(PDF::Content::Graphics);
+	if $*render && $obj.does(PDF::Content::Graphics);
 
      my %missing = $entries.pairs.grep(*.value.tied.is-required);
 
@@ -117,45 +118,40 @@ multi sub check($obj) is default {}
 #| check contents of a Page, XObject Form, Pattern or CharProcs
 sub check-contents( $obj, Str :$ref!) {
 
-    my Array $ast = $obj.contents-parse;
-
     # cross check with the resources directory
     my $resources = $obj.?Resources // {};
 
-    use PDF::Content::Ops;
-    my PDF::Content::Ops $ops .= new(:$*strict);
-
-    for $ast.list -> $op {
-	$ops.op($op);
-	my $entry;
-	my UInt $name-idx = 0;
-
-	my Str $type = do given $op.key {
-	    when 'BDC' | 'DP' { $name-idx = 1; 'Properties'}
-	    when 'Do'         { 'XObject' }
-	    when 'Tf'         { 'Font' }
-	    when 'gs'         { 'ExtGState' }
-	    when ($_ ~~ 'scn'|'SCN')
-            && $op.value.tail.key ~~ 'name' {
+    my &callback = sub ($op, *@args) {
+        my UInt $name-idx = 0;
+        my Str $type = do given $op {
+            when 'BDC' | 'DP' { $name-idx = 1; 'Properties'}
+            when 'Do'         { 'XObject' }
+            when 'Tf'         { 'Font' }
+            when 'gs'         { 'ExtGState' }
+            when ($_ ~~ 'scn'|'SCN')
+            && @args.tail ~~ Str {
                 $name-idx = $op.value.elems - 1;
                 'Pattern'
             }
-	    when 'sh'         { 'Shading' }
-	    default {''}
+            when 'sh'         { 'Shading' }
+            default {Nil}
         };
 
-	if $type && $op.value[$name-idx].key eq 'name' {
-	    my Str $name = $op.value[$name-idx].value;
-	    warn "no resources /$type /$name entry for '{$op.key}' operator"
-	        unless $resources{$type}:exists && ($resources{$type}{$name}:exists);
-	}
+        with $type {
+            if @args[$name-idx] ~~ Str {
+                my Str $name = @args[$name-idx];
+                warn "No resources /$_ /$name entry for '$op' operator"
+                    unless $resources{$_}:exists && ($resources{$_}{$name}:exists);
+            }
+        }
     }
 
-    $ops.finish;
+    my $gfx = $obj.render: :$*strict, :&callback;
+    $gfx.finish;
 
     CATCH {
 	default {
-	    $*ERR.say: "unable to process {$ref}contents: $_"; 
+	    $*ERR.say: "unable to render {$ref}contents: $_"; 
 	}
     }
 }

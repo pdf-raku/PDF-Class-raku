@@ -20,21 +20,6 @@ role PDF::Pattern
     method type    { 'Pattern' }
     method subtype { PatternNames[ self<PatternType> ] }
 
-    #| see also PDF::Class::Loader
-    method delegate-pattern(Hash :$dict!) {
-
-	use PDF::COS::Util :from-ast;
-	my Int $type-int = from-ast $dict<PatternType>;
-
-	unless $type-int ~~ PatternTypeInt {
-	    note "unknown /PatternType $dict<PatternType> - supported range is 1..7";
-	    return self.WHAT;
-	}
-
-	my $subtype = PatternNames{~$type-int};
-	PDF::COS.loader.find-delegate( 'Pattern', $subtype );
-    }
-
     method cb-init {
 
         for self.^mro {

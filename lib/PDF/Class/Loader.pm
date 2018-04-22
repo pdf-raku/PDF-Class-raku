@@ -10,7 +10,7 @@ PDF::COS.loader = class PDF::Class::Loader
 
     method class-paths {<PDF PDF::COS::Type>}
 
-    method find-delegate( Str $type!, $subtype?, :$base-class) is default {
+    method find-delegate( Str $type!, $subtype?, :$base-class) {
 
 	my Str $subclass = $type;
 	$subclass ~= '::' ~ $_
@@ -54,7 +54,10 @@ PDF::COS.loader = class PDF::Class::Loader
     }
 
     multi method load-delegate(Hash :$dict! where {.<PatternType>:exists}) {
-	$.find-delegate('Pattern').delegate-pattern( :$dict );
+        my Int $pt = from-ast $dict<PatternType>;
+        my $sub-type = [Mu, 'Tiling', 'Shading'][$pt];
+        note "Unknown /PatternType $pt" without $sub-type;
+	$.find-delegate('Pattern', $sub-type);
     }
 
     multi method load-delegate(Hash :$dict! where {.<ShadingType>:exists}) {
@@ -67,9 +70,10 @@ PDF::COS.loader = class PDF::Class::Loader
 
     multi method load-delegate( Hash :$dict! where {.<Type>:exists}, :$base-class) {
         my $type = from-ast($dict<Type>);
-        my $subtype = from-ast($dict<Subtype> // $dict<S>)
-	    unless $type eq 'Border';
-        $.find-delegate( $type, $subtype, :$base-class );
+        my $subtype = from-ast($dict<Subtype> // $dict<S>);
+        $type eq 'Border'|'Encoding' # classess with optional /type & unhandled subtype
+            ?? $base-class
+            !! $.find-delegate( $type, $subtype, :$base-class );
     }
 
     #| Reverse lookup for classes when /Subtype is required but optional /Type is absent
