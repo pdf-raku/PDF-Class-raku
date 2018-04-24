@@ -71,7 +71,8 @@ class PDF::Catalog
     my subset Metadata of PDF::COS::Stream where { .type eq 'Metadata' && .subtype eq 'XML' }; # autoloaded PDF::Metadata::XML
     has Metadata $.Metadata is entry(:indirect);         #| (Optional; PDF 1.4; must be an indirect reference) A metadata stream containing metadata for the document
 
-    has PDF::COS::Dict $.StructTreeRoot is entry;        #| (Optional; PDF 1.3) The document’s structure tree root dictionary
+    use PDF::StructTreeRoot;
+    has PDF::StructTreeRoot $.StructTreeRoot is entry;        #| (Optional; PDF 1.3) The document’s structure tree root dictionary
 
     role MarkInfoDict
 	does PDF::COS::Tie::Hash {
