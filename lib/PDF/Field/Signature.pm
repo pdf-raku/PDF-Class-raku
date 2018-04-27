@@ -24,11 +24,11 @@ role PDF::Field::Signature
     my role SeedValueDict
 	does PDF::COS::Tie::Hash {
 ##	    # See [PDF 1.7 TABLE 8.83 Entries in a signature field seed value dictionary]
-	    my subset TypeName of PDF::COS::Name where {$_ eq 'SV'};
+	    my subset TypeName of PDF::COS::Name where 'SV';
 	    has TypeName $.Type is entry;                 #| (Optional) The type of PDF object that this dictionary describes; if present, must be SV for a seed value dictionary.
 	    has PDF::COS::Name $.Filter is entry;         #| (Optional) The signature handler to be used to sign the signature field. Beginning with PDF 1.7, if Filter is specified and the Ff entry indicates this entry is a required constraint, then the signature handler specified by this entry must be used when signing; otherwise, signing must not take place. If Ff indicates that this is an optional constraint, this handler should be used if it is available. If it is not available, a different handler can be used instead.
 	    has PDF::COS::Name @.SubFilter is entry;      #| first name in the array that matches an encoding supported by the signature handler should be the encoding that is actually used for signing. If SubFilter is specified and the Ff entry indicates that this entry is a required constraint, then the first matching encodings must be used when signing; otherwise, signing must not take place. If Ff indicates that this is an optional constraint, then the first matching encoding should be used if it is available. If it is not available, a different encoding can be used.
-            my subset DigestMethodName of PDF::COS::Name where {$_ eq 'SHA1' | 'SHA256' | 'SHA384' | 'SHA512' | 'RIPEMD160'};
+            my subset DigestMethodName of PDF::COS::Name where 'SHA1'|'SHA256'|'SHA384'|'SHA512'|'RIPEMD160';
 	    has  DigestMethodName $.DigestMethod is entry; #| (Optional; PDF 1.7) An array of names indicating acceptable digest algorithms to use while signing. The valid values are SHA1, SHA256, SHA384, SHA512 and RIPEMD160. The default value is implementation-specific.
 	    #| Note: This property is only applicable if the digital credential signing contains RSA public/private keys. If it contains DSA public/ private key, the digest algorithm is always SHA1 and this attribute is ignored.
 

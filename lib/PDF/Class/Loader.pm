@@ -43,7 +43,7 @@ PDF::COS.loader = class PDF::Class::Loader
             }
 	}
 
-	note "No Doc handler class [{self.class-paths}]::{$subclass}"
+	note "No PDF handler class [{self.class-paths}]::{$subclass}"
 	    unless $resolved;
 
         self.install-delegate( $subclass, $handler-class );
@@ -71,7 +71,7 @@ PDF::COS.loader = class PDF::Class::Loader
     multi method load-delegate( Hash :$dict! where {.<Type>:exists}, :$base-class) {
         my $type = from-ast($dict<Type>);
         my $subtype = from-ast($dict<Subtype> // $dict<S>);
-        $type eq 'Border'|'Encoding' # classess with optional /type & unhandled subtype
+        $type ~~ 'Border'|'Encoding' # classess with optional /type & unhandled subtype
             ?? $base-class
             !! $.find-delegate( $type, $subtype, :$base-class );
     }
@@ -99,8 +99,8 @@ PDF::COS.loader = class PDF::Class::Loader
 	    $.find-delegate($_, $subtype);
 	}
 	else {
-	    note "unhandled subtype: PDF::*::{$subtype}"
-                unless $subtype eq 'DeviceN'|'NChannel'; # handled by DeviceN color coercements
+	    note "Unhandled PDF subtype: PDF::*::{$subtype}"
+                unless $subtype ~~ 'DeviceN'|'NChannel'; # handled by DeviceN color coercements
 	    $base-class;
 	}
     }
@@ -131,13 +131,13 @@ PDF::COS.loader = class PDF::Class::Loader
          #| PDF Spec 1.7 Section 4.5.4 CIE-Based Color Spaces
          $elems == 2
          && $t ~~ PDF::COS::Name
-         && $t eq 'CalGray'|'CalRGB'|'Lab'|'ICCBased'|'Pattern';
+         && $t ~~ 'CalGray'|'CalRGB'|'Lab'|'ICCBased'|'Pattern';
         )
         || (
             #| PDF Spec 1.7 Section 4.5.5 Special Color Spaces
             3 <= $elems <= 5
             && $t ~~ PDF::COS::Name
-            && $t eq 'Indexed'|'Separation'|'DeviceN';
+            && $t ~~ 'Indexed'|'Separation'|'DeviceN';
         )
     }
 
