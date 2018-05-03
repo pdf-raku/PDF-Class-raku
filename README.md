@@ -1,10 +1,10 @@
 # PDF::Class
 
-PDF::Class provides a set of classes and accessors for structured access to PDF documents as described int the PDF 1.7 Reference Guide.
+PDF::Class provides a set of classes and accessors that map to the internal structure of PDF documents as described int the PDF 1.7 Reference Guide, allowing both navigation and validation of PDF files.
+
+PDF::Class also understands inheritance (via Parent entries) and the sometimes finicky serialization rules regarding PDF construction into indirect objects. These details are automatically handled to ensure the `save-as` method correctly serializes the PDF.
 
 PDF::Class is the base class for [PDF::API6](https://github.com/p6-pdf/PDF-API6).
-
-As well as structural and type validation; PDF::Class also understands inheritance (via Parent entries) and the sometimes finicky serialization rules regarding PDF construction into indirect objects. These details are automatically handled to ensure the `save-as` method correctly serializes the PDF.
 
 The top level of a PDF document is of type `PDF::Class`. It contains the `PDF::Catalog` in its root entry. Other classes in the document are accessible from the Catalog.
 
@@ -28,7 +28,7 @@ Things to note:
 - There are often accessor aliases, to aide clarity. E.g. `$pdf.Root.AA` can also be written as `$pdf.catalog.additional-actions`.
 - The classes often contain additional accessor and helper methods. For example `$pdf.page(10)` - references page 10, without the need to navigate the catalog and page tree.
 
-This module is a work in progress. It currently many of the more commonly used PDF objects.
+This module is a work in progress. It currently maps many of the more commonly used PDF objects.
 
 ## More examples:
 
@@ -118,7 +118,7 @@ bursts a multi-page PDF into single page PDF files
 
 #### `pdf-checker.p6`
 
-validates class and role mappings to the internal structure of a PDF.
+validates the internal structure of a PDF.
 
 #### `pdf-info.p6`
 

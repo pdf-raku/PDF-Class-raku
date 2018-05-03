@@ -71,7 +71,9 @@ PDF::COS.loader = class PDF::Class::Loader
     multi method load-delegate( Hash :$dict! where {.<Type>:exists}, :$base-class) {
         my $type = from-ast($dict<Type>);
         my $subtype = from-ast($dict<Subtype> // $dict<S>);
-        $type ~~ 'Border'|'Encoding' # classess with optional /type & unhandled subtype
+        $type ~~
+            'Border'|'Encoding' # classess with optional /type & unhandled subtype
+            |'Ind'|'Ttl'|'Org'  # handled by PDF::OCG User attribute
             ?? $base-class
             !! $.find-delegate( $type, $subtype, :$base-class );
     }
@@ -99,8 +101,6 @@ PDF::COS.loader = class PDF::Class::Loader
 	    $.find-delegate($_, $subtype);
 	}
 	else {
-	    note "Unhandled PDF subtype: PDF::*::{$subtype}"
-                unless $subtype ~~ 'DeviceN'|'NChannel'; # handled by DeviceN color coercements
 	    $base-class;
 	}
     }
@@ -125,20 +125,17 @@ PDF::COS.loader = class PDF::Class::Loader
 
     subset ColorSpace-Array of List where {
         my $elems = .elems;
-        my $t = from-ast .[0]
-            if 2 <= $elems <= 5;
-	(
-         #| PDF Spec 1.7 Section 4.5.4 CIE-Based Color Spaces
-         $elems == 2
-         && $t ~~ PDF::COS::Name
-         && $t ~~ 'CalGray'|'CalRGB'|'Lab'|'ICCBased'|'Pattern';
-        )
-        || (
-            #| PDF Spec 1.7 Section 4.5.5 Special Color Spaces
-            3 <= $elems <= 5
-            && $t ~~ PDF::COS::Name
-            && $t ~~ 'Indexed'|'Separation'|'DeviceN';
-        )
+
+        if 2 <= $elems <= 5
+            && ((my $t = from-ast .[0]) ~~ PDF::COS::Name) {
+            ;
+            $elems == 2
+                ?? $t ~~ 'CalGray'|'CalRGB'|'Lab'|'ICCBased'|'Pattern' #| PDF Spec 1.7 Section 4.5.4 CIE-Based Color Spaces
+                !! $t ~~ 'Indexed'|'Separation'|'DeviceN'; #| PDF Spec 1.7 Section 4.5.5 Special Color Spaces
+        }
+        else {
+            False
+        }
     }
 
     multi method load-delegate(ColorSpace-Array :$array!) {

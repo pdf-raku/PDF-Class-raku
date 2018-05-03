@@ -77,6 +77,7 @@
     "PDF::NameTree" : "lib/PDF/NameTree.pm",
     "PDF::NumberTree" : "lib/PDF/NumberTree.pm",
     "PDF::OBJR" : "lib/PDF/OBJR.pm",
+    "PDF::OCG" : "lib/PDF/OCG.pm",
     "PDF::Outline" : "lib/PDF/Outline.pm",
     "PDF::Outlines" : "lib/PDF/Outlines.pm",
     "PDF::OutputIntent" : "lib/PDF/OutputIntent.pm",
