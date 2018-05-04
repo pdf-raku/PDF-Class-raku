@@ -32,6 +32,28 @@ my $input = q:to"--END-OBJ--";
     7 << /S /D /P (A-) /St 8 >>
     ]
   >>
+    /OCProperties <<
+    /D <<
+      /AS [ <<
+          /Category [ /View ]
+          /Event /View
+          /OCGs [ 40 0 R ]
+        >> <<
+          /Category [ /Print ]
+          /Event /Print
+          /OCGs [ 40 0 R ]
+        >> <<
+          /Category [ /Export ]
+          /Event /Export
+          /OCGs [ 40 0 R ]
+        >> ]
+      /ON [ 40 0 R ]
+      /Order [  ]
+      /RBGroups [  ]
+    >>
+    /OCGs [ 40 0 R ]
+  >>
+
 >> endobj
 --END-OBJ--
 
@@ -65,6 +87,9 @@ is-json-equiv $ind-obj.ast, %ast, 'ast regeneration';
 my $acroform = $catalog.AcroForm;
 does-ok $acroform, ::('PDF::AcroForm'), '$.AcroForm role';
 is-json-equiv $acroform.Fields, [], '$.AcroForm.Fields';
+
+my $oc_properties = $catalog.OCProperties;
+
 
 my $viewer-preferences = $catalog.ViewerPreferences;
 does-ok $viewer-preferences, ::('PDF::ViewerPreferences'), '$.ViewerPreferences role';

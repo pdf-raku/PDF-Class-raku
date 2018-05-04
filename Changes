@@ -1,5 +1,5 @@
 Release 0.1.8
-- Add PDF::OCG (OptionalContentGroups)
+- Add PDF::OCG (OptionalContentGroups) and PDF::OCMD 
 Release 0.1.7
 - Adjust t/helloworld.t and t/pdf-xobject-form.t for PDF::Content 0.2.2
 Release 0.1.6
