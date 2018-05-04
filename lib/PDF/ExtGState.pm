@@ -12,8 +12,7 @@ role PDF::ExtGState
     use PDF::COS::Name;
 
     # see [PDF .1.7 TABLE 4.8 Entries in a graphics state parameter dictionary]
-    my subset Name-ExtGState of PDF::COS::Name where 'ExtGState';
-    has Name-ExtGState $.Type is entry;
+    has PDF::COS::Name $.Type is entry where 'ExtGState';
     has Numeric $.LW is entry(:alias<line-width>);               #| (Optional; PDF 1.3) The line width
     has UInt $.LC is entry(:alias<line-cap>);                    #| (Optional; PDF 1.3) The line cap style
     has UInt $.LJ is entry(:alias<line-join>);                   #| (Optional; PDF 1.3) The line join style

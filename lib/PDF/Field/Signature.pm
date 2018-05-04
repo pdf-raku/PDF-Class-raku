@@ -11,9 +11,8 @@ role PDF::Field::Signature
     my role LockDict
 	does PDF::COS::Tie::Hash {
 	    # See [PDF 1.7 TABLE 8.82 Entries in a signature field lock dictionary]
-	    my subset TypeName of PDF::COS::Name where 'SigFieldLock';
-	    has TypeName $.Type is entry;                   #| (Optional) The type of PDF object that this dictionary describes; if present, must be SigFieldLock for a signature field lock dictionary
-	    my subset ActionName of PDF::COS::Name where 'All' | 'Include' | 'Exclude';
+	    has PDF::COS::Name $.Type is entry where 'SigFieldLock';     #| (Optional) The type of PDF object that this dictionary describes; if present, must be SigFieldLock for a signature field lock dictionary
+	    my subset ActionName of PDF::COS::Name where 'All'|'Include'|'Exclude';
 	    has ActionName $.Actions is entry(:required);   #| (Required) A name which, in conjunction with Fields, indicates the set of fields that should be locked
 	    has Str @.Fields is entry;                      #| (Required if the value of Action is Include or Exclude) An array of text strings containing field names.
     }
@@ -24,8 +23,7 @@ role PDF::Field::Signature
     my role SeedValueDict
 	does PDF::COS::Tie::Hash {
 ##	    # See [PDF 1.7 TABLE 8.83 Entries in a signature field seed value dictionary]
-	    my subset TypeName of PDF::COS::Name where 'SV';
-	    has TypeName $.Type is entry;                 #| (Optional) The type of PDF object that this dictionary describes; if present, must be SV for a seed value dictionary.
+	    has PDF::COS::Name $.Type is entry where 'SV';                 #| (Optional) The type of PDF object that this dictionary describes; if present, must be SV for a seed value dictionary.
 	    has PDF::COS::Name $.Filter is entry;         #| (Optional) The signature handler to be used to sign the signature field. Beginning with PDF 1.7, if Filter is specified and the Ff entry indicates this entry is a required constraint, then the signature handler specified by this entry must be used when signing; otherwise, signing must not take place. If Ff indicates that this is an optional constraint, this handler should be used if it is available. If it is not available, a different handler can be used instead.
 	    has PDF::COS::Name @.SubFilter is entry;      #| first name in the array that matches an encoding supported by the signature handler should be the encoding that is actually used for signing. If SubFilter is specified and the Ff entry indicates that this entry is a required constraint, then the first matching encodings must be used when signing; otherwise, signing must not take place. If Ff indicates that this is an optional constraint, then the first matching encoding should be used if it is available. If it is not available, a different encoding can be used.
             my subset DigestMethodName of PDF::COS::Name where 'SHA1'|'SHA256'|'SHA384'|'SHA512'|'RIPEMD160';

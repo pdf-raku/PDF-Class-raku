@@ -8,8 +8,7 @@ role PDF::Pattern
     use PDF::COS::Tie;
     use PDF::COS::Name;
     #| /Type entry is optional, but should be /Pattern when present
-    my subset Name-Pattern of PDF::COS::Name where 'Pattern';
-    has Name-Pattern $.Type is entry;
+    has PDF::COS::Name $.Type is entry where 'Pattern';
     my subset PatternTypeInt of Int where 1|2;
     has PatternTypeInt $.PatternType is entry(:required);  #| (Required) A code identifying the type of pattern that this dictionary describes; must be 1 for a tiling pattern, or 2 for a shading pattern.
     has Numeric @.Matrix is entry(:len(6));                #| (Optional) An array of six numbers specifying the pattern matrix (see Section 4.6.1, “General Properties of Patterns”). Default value: the identity matrix [ 1 0 0 1 0 0 ].

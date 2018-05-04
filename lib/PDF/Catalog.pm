@@ -19,8 +19,7 @@ class PDF::Catalog
     use PDF::COS::Stream;
     use PDF::COS::TextString;
 
-    my subset Name-Catalog of PDF::COS::Name where 'Catalog';
-    has Name-Catalog $.Type is entry(:required);
+    has PDF::COS::Name $.Type is entry(:required) where 'Catalog';
 
     has PDF::COS::Name $.Version is entry;               #| (Optional; PDF 1.4) The version of the PDF specification to which the document conforms (for example, 1.4)
 

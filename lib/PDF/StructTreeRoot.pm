@@ -12,8 +12,7 @@ class PDF::StructTreeRoot
     use PDF::COS::Tie;
     use PDF::COS::Dict;
     use PDF::COS::Name;
-    my subset Name-StructTreeRoot of PDF::COS::Name where 'StructTreeRoot';
-    has Name-StructTreeRoot $.Type is entry(:required);
+    has PDF::Content::Name $.Type is entry(:required) where 'StructTreeRoot';
     my subset DictOrArray where PDF::COS::Dict|Array;
     has DictOrArray $.K is entry;                 #| The immediate child or children of the structure tree root in the structure hierarchy. The value may be either a dictionary representing a single structure element or an array of such dictionaries.
     use PDF::NameTree;
