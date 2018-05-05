@@ -14,22 +14,37 @@ my Bool $*strict = False;
 my PDF::Writer $*writer .= new;
 my Str @*exclude;
 my %seen{Any};
+my Int $warnings = 0;
+my Int $errors = 0;
+
+sub error($msg) {
+    $*ERR.say: $msg;
+    $errors++;
+}
 
 #| check a PDF against PDF class definitions
 sub MAIN(Str $infile,               #= input PDF
          Str  :$password = '',      #= password for the input PDF, if encrypted
          Bool :$*trace,             #= show progress
-         Bool :$*render,          #= validate/check contents of pages, etc
+         Bool :$*render,            #= validate/check contents of pages, etc
          Bool :$*strict,            #= perform additional checks
-         UInt :$*max-depth = 100,   #= maximum recursion depth
+         UInt :$*max-depth = 200,   #= maximum recursion depth
 	 Str  :$exclude,            #= excluded entries: Entry1,Entry2,
          Bool :$repair = False      #= repair PDF before checking
          ) {
 
+    CONTROL {
+        when CX::Warn {
+            note "warning: $_";
+            $warnings++;
+            .resume
+        }
+    }
     my $doc = PDF::Class.open( $infile, :$password, :$repair );
     @*exclude = $exclude.split(/:s ',' /)
     	      if $exclude;
     check( $doc, :ent<xref> );
+    say "checking of $infile completed with $warnings warnings and $errors errors";
 }
 
 |# Recursively check a dictionary (array) object
@@ -65,7 +80,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 
 	    CATCH {
 		default {
-		    $*ERR.say: "error in $ref /$k entry: $_";
+		    error("error in $ref /$k entry: $_");
 		}
 	    }
 	}
@@ -76,10 +91,10 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 	    if $*strict && +$entries && !($entries{$k}:exists);
     }
 
-    $*ERR.say: "error in $ref {$obj.WHAT.^name}, missing required field(s): {%missing.keys.sort.join(', ')}"
+    error("error in $ref {$obj.WHAT.^name}, missing required field(s): {%missing.keys.sort.join(', ')}")
         if %missing;
 
-    $*ERR.say: "unknown entries in $ref{$obj.WHAT} struct: @unknown-entries[]"
+    error("unknown entries in $ref{$obj.WHAT} struct: @unknown-entries[]")
         if @unknown-entries && $obj.WHAT.gist ~~ /'PDF::' .*? '::Type'/;
 }
 
@@ -105,7 +120,7 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 
 	    CATCH {
 		default {
-		    $*ERR.say: "error in $ref $ent: $_";
+		    error("error in $ref $ent: $_");
 		}
 	    }
 	}
@@ -151,7 +166,7 @@ sub check-contents( $obj, Str :$ref!) {
 
     CATCH {
 	default {
-	    $*ERR.say: "unable to render {$ref}contents: $_"; 
+	    error("unable to render {$ref}contents: $_"); 
 	}
     }
 }
