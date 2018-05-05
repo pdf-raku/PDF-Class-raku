@@ -103,11 +103,7 @@
     "PDF::XObject" : "lib/PDF/XObject.pm",
     "PDF::XObject::Form" : "lib/PDF/XObject/Form.pm",
     "PDF::XObject::Image" : "lib/PDF/XObject/Image.pm",
-    "PDF::XObject::PS" : "lib/PDF/XObject/PS.pm",
-    "t::Doc::Catalog" : "lib/t/Doc/Catalog.pm",
-    "t::Doc::Page" : "lib/t/Doc/Page.pm",
-    "t::Doc::Pages" : "lib/t/Doc/Pages.pm",
-    "t::Doc::ViewerPreferences" : "lib/t/Doc/ViewerPreferences.pm"
+    "PDF::XObject::PS" : "lib/PDF/XObject/PS.pm"
   },
   "resources" : [ ],
   "source-url" : "git://github.com/p6-pdf/PDF-Class-p6.git",
