@@ -1,6 +1,8 @@
 Release 0.1.8
-- Add classess PDF::OCG (Optional Content Groups) and PDF::OCMD (Optional
-  Content Membership Dictionary)
+- Add classess:
+  -- PDF::OCG (Optional Content Groups)
+  -- PDF::OCMD (Optional   Content Membership Dictionary)
+  -- PDF::MCR (Marked Content Reference)
 - Remove some trivial single-use subsets. Replace with 'where' clauses on
   entry attributes.
 Release 0.1.7

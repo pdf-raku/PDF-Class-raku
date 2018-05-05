@@ -159,7 +159,7 @@ PDF::ColorSpace::Pattern | array | Colorspace, Subtype |  |
 PDF::ColorSpace::Separation | array | AlternateSpace, Name, Subtype, TintTransform |  | 
 PDF::Destination | array | fit, page | delegate-destination | 
 PDF::Encoding | dict | BaseEncoding, Differences, Type |  | 
-DF::ExtGState | dict | AIS(alpha-source-flag), BG(black-generation-old), BG2(black-generation), BM(blend-mode), CA(stroke-alpha), D(dash-pattern), FL(flatness-tolerance), Font, HT(halftone), LC(line-cap), LJ(line-join), LW(line-width), ML(miter-limit), OP(overprint-paint), OPM(overprint-mode), RI(rendering-intent), SA(stroke-adjustment), SM(smoothness-tolerance), SMask(soft-mask), TK(text-knockout), TR(transfer-function-old), TR2(transfer-function), Type, UCR(under-color-removal-old), UCR2(under-color-removal), ca(fill-alpha), op(overprint-stroke) | transparency | /Type /ExtGState
+PDF::ExtGState | dict | AIS(alpha-source-flag), BG(black-generation-old), BG2(black-generation), BM(blend-mode), CA(stroke-alpha), D(dash-pattern), FL(flatness-tolerance), Font, HT(halftone), LC(line-cap), LJ(line-join), LW(line-width), ML(miter-limit), OP(overprint-paint), OPM(overprint-mode), RI(rendering-intent), SA(stroke-adjustment), SM(smoothness-tolerance), SMask(soft-mask), TK(text-knockout), TR(transfer-function-old), TR2(transfer-function), Type, UCR(under-color-removal-old), UCR2(under-color-removal), ca(fill-alpha), op(overprint-stroke) | transparency | /Type /ExtGState
 PDF::Field::Button | dict | DV(default-value), Opt, V(value) |  | 
 PDF::Field::Choice | dict | DV(default-value), I(indices), Opt, TI(top-index), V(value) |  | 
 PDF::Field::Signature | dict | Lock, SV(seed-value) |  | 
@@ -176,12 +176,13 @@ PDF::Function::PostScript | stream | Domain, FunctionType, Range | calc, calcula
 PDF::Function::Sampled | stream | BitsPerSample, Decode, Domain, Encode, FunctionType, Order, Range, Size | calc, calculator | /FunctionType 0 - Sampled see [PDF 1.7 Section 3.9.1 Type 0 (Sampled) Functions]
 PDF::Function::Stitching | stream | Bounds, Domain, Encode, FunctionType, Functions, Range | calc, calculator | /FunctionType 3 - Stitching see [PDF 1.7 Section 3.9.3 Type 3 (Stitching) Functions]
 PDF::Group::Transparency | dict | CS(color-space), I(isolated), K(knockout), S, Type |  | 
+PDF::MCR | dict | MCID, Pg(page), Stm, StmOwn, Type |  | 
 PDF::Mask::Alpha | dict | BC(backdrop-color), G(transparency-group), S(subtype), TR(transfer-function), Type |  | 
 PDF::Mask::Luminosity | dict | BC(backdrop-color), G(transparency-group), S(subtype), TR(transfer-function), Type |  | 
 PDF::Metadata::XML | stream | Subtype, Type |  | 
 PDF::NameTree | dict | Kids, Limits, Names |  | 
 PDF::NumberTree | dict | Kids, Limits, Nums |  | 
-PDF::OBJR | dict | Obj, Pg, Type |  | /Type /OBJR - a node in the page tree
+PDF::OBJR | dict | Obj, Pg(page), Type |  | /Type /OBJR - a node in the page tree
 PDF::OCG | dict | Intent, Name, Type, Usage |  | 
 PDF::OCMD | dict | OCGs, P, Type, VE |  | 
 PDF::Outline | dict | A(action), C(color), Count, Dest, F(flags), First, Last, Next, Parent, Prev, SE(structure-element), Title |  | 
@@ -199,7 +200,7 @@ PDF::Shading::Functional | dict | AntiAlias, BBox, Background, ColorSpace, Domai
 PDF::Shading::Lattice | stream | AntiAlias, BBox, Background, BitsPerComponent, BitsPerCoordinate, ColorSpace, Decode, Function, ShadingType, VerticesPerRow |  | /ShadingType 5 - Lattice
 PDF::Shading::Radial | dict | AntiAlias, BBox, Background, ColorSpace, Coords, Domain, Extend, Function, ShadingType |  | /ShadingType 3 - Radial
 PDF::Shading::Tensor | stream | AntiAlias, BBox, Background, BitsPerComponent, BitsPerCoordinate, BitsPerFlag, ColorSpace, Decode, Function, ShadingType |  | /ShadingType 7 - Tensor
-PDF::StructTreeRoot | dict | ClassMap, IDTree, K, ParentTree, ParentTreeNext, RoleMap, Type |  | 
+PDF::StructTreeRoot | dict | ClassMap, IDTree, K, ParentTree, ParentTreeNextKey, RoleMap, Type |  | 
 PDF::XObject::Form | stream | BBox, FormType, Group, LastModified, Matrix, Metadata, OC(optional-content-group), OPI, PieceInfo, Ref, Resources, StructParent, StructParents, Subtype, Type | canvas, contents, contents-parse, core-font, find-resource, finish, gfx, graphics, has-pre-gfx, height, images, new-gfx, pre-gfx, pre-graphics, render, resource-entry, resource-key, save-as-image, text, tiling-pattern, use-font, use-resource, width, xobject-form | XObject Forms - /Type /XObject /Subtype Form See [PDF Spec 1.7 4.9 Form XObjects]
 PDF::XObject::Image | stream | Alternatives, BitsPerComponent, ColorSpace, Decode, Height, ID, ImageMask, Intent, Interpolate, Mask, Metadata, Name, OC, OPI, SMask, SMaskInData, StructParent, Subtype, Type, Width | data-uri, height, image-obj, image-type, inline-content, inline-to-xobject, load-image, source, to-png, width | XObjects /Type XObject /Subtype /Image See [PDF 1.7 Section 4.8 - Images ]
 PDF::XObject::PS | stream | Level1, Subtype, Type |  | Postscript XObjects /Type XObject /Subtype PS See [PDF 1.7 Section 4.7.1 PostScript XObjects]

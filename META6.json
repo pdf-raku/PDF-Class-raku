@@ -70,6 +70,7 @@
     "PDF::Group" : "lib/PDF/Group.pm",
     "PDF::Group::Transparency" : "lib/PDF/Group/Transparency.pm",
     "PDF::Info" : "lib/PDF/Info.pm",
+    "PDF::MCR" : "lib/PDF/MCR.pm",
     "PDF::Mask" : "lib/PDF/Mask.pm",
     "PDF::Mask::Alpha" : "lib/PDF/Mask/Alpha.pm",
     "PDF::Mask::Luminosity" : "lib/PDF/Mask/Luminosity.pm",
