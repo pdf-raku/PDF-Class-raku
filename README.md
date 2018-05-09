@@ -21,9 +21,7 @@ Can be written in PDF::Class as:
     my PDF::Class $pdf .= open: "t/helloworld.pdf";
     my PDF::Page $page = $pdf.page(1);
 ```
-Things to note:
-
-- As well as `PDF::Class`and `PDF::Page`. This module contains definitions for many other PDF internal objects, including streams, dictionaries(hashes), arrays and others, as listed below.
+- This module contains definitions for many other PDF internal objects, including streams, dictionaries(hashes), arrays and others, as listed below.
 - There is generally a one-to-one correspondence between raw dictionary entries and accessors, e.g. `$pdf<Root><AA>` versus `$pdf.Root.AA`.
 - There are often accessor aliases, to aide clarity. E.g. `$pdf.Root.AA` can also be written as `$pdf.catalog.additional-actions`.
 - The classes often contain additional accessor and helper methods. For example `$pdf.page(10)` - references page 10, without the need to navigate the catalog and page tree.
@@ -83,7 +81,7 @@ with my PDF::AcroForm $acroform = $doc.Root.AcroForm {
 
 ## Raw Data Access
 
-In general, PDF provides accessors for safe access and update of PDF objects.
+In general, PDF::Class provides accessors for safe access and update of PDF objects.
 
 However you may choose to bypass these accessors and dereference hashes and arrays directly, giving raw un-typed access to internal data structures:
 

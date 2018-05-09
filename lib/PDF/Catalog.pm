@@ -29,7 +29,8 @@ class PDF::Catalog
     use PDF::NumberTree;
     has PDF::NumberTree $.PageLabels is entry;           #| (Optional; PDF 1.3) A number tree defining the page labeling for the document.
 
-    has PDF::COS::Dict $.Names is entry;                 #| (Optional; PDF 1.2) The document’s name dictionary
+    use PDF::NameTree;
+    has PDF::NameTree $.Names is entry;                 #| (Optional; PDF 1.2) The document’s name dictionary
 
     has PDF::COS::Dict $.Dests is entry(:indirect);      #| (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
 
@@ -88,7 +89,7 @@ class PDF::Catalog
     has PDF::COS::Dict $.SpiderInfo is entry;            #| (Optional; PDF 1.3) A Web Capture information dictionary containing state information used by the Acrobat Web Capture (AcroSpider) plug-in extension
 
     use PDF::OutputIntent;
-    has PDF::OutputIntent @.OutputIntents is entry;         #| (Optional; PDF 1.4) An array of output intent dictionaries describing the color characteristics of output devices on which the document might be rendered
+    has PDF::OutputIntent @.OutputIntents is entry;      #| (Optional; PDF 1.4) An array of output intent dictionaries describing the color characteristics of output devices on which the document might be rendered
 
     has PDF::COS::Dict $.PieceInfo is entry;             #| (Optional; PDF 1.4) A page-piece dictionary associated with the document
 
@@ -105,7 +106,7 @@ class PDF::Catalog
         has @.AS is entry; #| (Optional) An array of usage application dictionaries.
         has @.Order is entry; #| array (Optional) An array specifying the order for presentation of optional content groups in a conforming reader’s user interface.
         my subset ListMode of PDF::COS::Name where 'AllPages'|'VisiblePages';
-        has PDF::COS::Name $.ListMode is entry; #| (Optional) A name specifying which optional content groups in the Order array shall be displayed to the user.
+        has ListMode $.ListMode is entry; #| (Optional) A name specifying which optional content groups in the Order array shall be displayed to the user.
         has @.RBGroups is entry; #| (Optional) An array consisting of one or more arrays, each of which represents a collection of optional content groups whose states shall be intended to follow a radio button paradigm. That is, the state of at most one optional content group in each array shall be ON at a time. If one group is turned ON, all others shall be turned OFF.
        has @.Locked is entry; #| (Optional; PDF 1.6) An array of optional content groups that shall be locked when this configuration is applied.
 }
@@ -117,17 +118,17 @@ class PDF::Catalog
         has PDF::COS::Dict $.D is entry(:required, :alias<viewing-config>); #| (Required) The default viewing optional content configuration dictionary (see 8.11.4.3, "Optional Content Configuration Dictionaries").
         has OCConfig @.Configs is entry;    #| (Optional) An array of alternate optional content configuration dictionaries (see 8.11.4.3, "Optional Content Configuration Dictionaries").
     }
-    has OCProperties $.OCProperties is entry;          #| (Optional; PDF 1.5; required if a document contains optional content) The document’s optional content properties dictionary
+    has OCProperties $.OCProperties is entry;   #| (Optional; PDF 1.5; required if a document contains optional content) The document’s optional content properties dictionary
 
-    has PDF::COS::Dict $.Perms is entry;                 #| (Optional; PDF 1.5) A permissions dictionary that specifies user access permissions for the document.
+    has PDF::COS::Dict $.Perms is entry;        #| (Optional; PDF 1.5) A permissions dictionary that specifies user access permissions for the document.
 
-    has PDF::COS::Dict $.Legal is entry;                 #| (Optional; PDF 1.5) A dictionary containing attestations regarding the content of a PDF document, as it relates to the legality of digital signatures
+    has PDF::COS::Dict $.Legal is entry;        #| (Optional; PDF 1.5) A dictionary containing attestations regarding the content of a PDF document, as it relates to the legality of digital signatures
 
-    has PDF::COS::Dict @.Requirements is entry;          #| (Optional; PDF 1.7) An array of requirement dictionaries representing requirements for the document.
+    has PDF::COS::Dict @.Requirements is entry; #| (Optional; PDF 1.7) An array of requirement dictionaries representing requirements for the document.
 
-    has PDF::COS::Dict $.Collection is entry;            #| (Optional; PDF 1.7) A collection dictionary that a PDF consumer uses to enhance the presentation of file attachments stored in the PDF document.
+    has PDF::COS::Dict $.Collection is entry;   #| (Optional; PDF 1.7) A collection dictionary that a PDF consumer uses to enhance the presentation of file attachments stored in the PDF document.
 
-    has Bool $.NeedsRendering is entry;        #| (Optional; PDF 1.7) A flag used to expedite the display of PDF documents containing XFA forms. It specifies whether the document must be regenerated when the document is first opened.
+    has Bool $.NeedsRendering is entry;         #| (Optional; PDF 1.7) A flag used to expedite the display of PDF documents containing XFA forms. It specifies whether the document must be regenerated when the document is first opened.
 
     use PDF::Resources;
     has PDF::Resources $.Resources is entry;

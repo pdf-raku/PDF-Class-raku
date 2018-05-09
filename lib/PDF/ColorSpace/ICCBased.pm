@@ -19,7 +19,8 @@ class PDF::ColorSpace::ICCBased
 
 	has Numeric @.Range is entry;              #| (Optional) An array of 2 × N numbers [ min0 max0 min1 max1 … ] specifying the minimum and maximum valid values of the corresponding color components. These values must match the information in the ICC profile. Default value: [ 0.0 1.0 0.0 1.0 … ].
 
-        has PDF::COS::Stream $.Metadata is entry;  #| (Optional; PDF 1.4) A metadata stream containing metadata for the color space
+        use PDF::Metadata::XML;
+        has PDF::Metadata::XML $.Metadata is entry;  #| (Optional; PDF 1.4) A metadata stream containing metadata for the color space
     }
 
     has ICCDict $.dict is index(1);
