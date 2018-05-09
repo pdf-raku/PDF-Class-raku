@@ -16,8 +16,8 @@ my $actions = PDF::Grammar::PDF::Actions.new;
 my $input = q:to"--END-OBJ--";
 20 0 obj <<
    /Kids [ 10 0 R ]
-   /Names [ (1.1)  /Xxx  (1.2)  42 ]
-   /Limits [10 20]
+   /Names [ (1.1)  /Xxx  (1.2)  42 (1.3) 3.14 ]
+   /Limits [(1.1) (1.3)]
 >>
 endobj
 --END-OBJ--
@@ -32,8 +32,8 @@ is $ind-obj.gen-num, 0, '$.gen-num';
 my $nametree-obj = PDF::COS.coerce($ind-obj.object, PDF::NameTree);
 does-ok $nametree-obj, PDF::NameTree;
 is-json-equiv $nametree-obj.Kids, [:ind-ref[10, 0]], '$obj.First';
-is-json-equiv $nametree-obj.Names, [ '1.1', 'Xxx', '1.2', 42 ], '$obj.Names';
-is-json-equiv $nametree-obj.names.List, ( '1.1' => 'Xxx', '1.2' => 42 ), '$obj.names';
-is-json-equiv $nametree-obj.Limits, [10, 20], '$obj.Limits';
+is-json-equiv $nametree-obj.Names, [ '1.1', 'Xxx', '1.2', 42, '1.3', 3.14 ], '$obj.Names';
+is-json-equiv $nametree-obj.names.List, ( '1.1' => 'Xxx', '1.2' => 42 , '1.3' => 3.14), '$obj.names';
+is-json-equiv $nametree-obj.Limits, ['1.1', '1.3'], '$obj.Limits';
 lives-ok {$nametree-obj.check}, '$nametree-obj.check lives';
 

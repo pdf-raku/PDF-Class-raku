@@ -11,17 +11,9 @@ role PDF::NumberTree
                          #| [ key 1 value 1 key 2 value 2 ... key n value n ]
                          #| where each key i is an integer and the corresponding value i shall be the object associated with that key. The keys are sorted in numerical order
     method nums {
-        Proxy.new(
-            FETCH => sub ($) {
-                with self<Nums> -> $nums {
-                    (1, 3 ... $nums.elems).map: { $nums[$_-1] => $nums[$_] }
-                }
-            },
-            STORE => sub ($, %nums) {
-                my @nums = flat %nums.sort(*.key.Int).map: {.key.Int, .value}
-                self<Nums> = @nums;
-            }
-        )
+        with self<Nums> -> $nums {
+            (1, 3 ... $nums.elems).map: { $nums[$_-1] => $nums[$_] }
+        }
     }
     has Numeric @.Limits is entry(:len(2)); #| (Shall be present in Intermediate and leaf nodes only) Shall be an array of two integers, that shall specify the (numerically) least and greatest keys included in the Nums array of a leaf node or in the Nums arrays of any leaf nodes that are descendants of an intermediate node.
 }
