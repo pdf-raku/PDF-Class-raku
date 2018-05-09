@@ -53,7 +53,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     my $ref = $obj.obj-num
 	?? "{$obj.obj-num} {$obj.gen-num//0} R "
         !! $*writer.write($obj.content).subst(/\s+/, ' ', :g);
-    $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t" ~ $ref
+    $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t$ref ({$obj.WHAT.^name})"
 	if $*trace;
     die "maximum depth of $*max-depth exceeded $ent: $ref"
 	if ++$depth > $*max-depth;
@@ -80,7 +80,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 
 	    CATCH {
 		default {
-		    error("error in $ref /$k entry: $_");
+		    error("error in $ref ({$obj.WHAT.^name}) /$k entry: $_");
 		}
 	    }
 	}
@@ -91,10 +91,10 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 	    if $*strict && +$entries && !($entries{$k}:exists);
     }
 
-    error("error in $ref {$obj.WHAT.^name}, missing required field(s): {%missing.keys.sort.join(', ')}")
+    error("error in $ref ({$obj.WHAT.^name}), missing required field(s): {%missing.keys.sort.join(', ')}")
         if %missing;
 
-    error("unknown entries in $ref{$obj.WHAT} struct: @unknown-entries[]")
+    error("unknown entries in $ref ({$obj.WHAT.^name}) struct: @unknown-entries[]")
         if @unknown-entries && $obj.WHAT.gist ~~ /'PDF::' .*? '::Type'/;
 }
 
@@ -104,7 +104,7 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     my $ref = $obj.obj-num
 	?? "{$obj.obj-num} {$obj.gen-num//0} R "
         !! $*writer.write($obj.content).subst(/\s+/, ' ', :g);
-    $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t" ~ $ref
+    $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t$ref ({$obj.WHAT.^name})"
 	if $*trace;
     die "maximum depth of $*max-depth exceeded $ent: $ref"
 	if ++$depth > $*max-depth;
@@ -120,7 +120,7 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 
 	    CATCH {
 		default {
-		    error("error in $ref $ent: $_");
+		    error("error in $ref ({$obj.WHAT.^name}) $ent: $_");
 		}
 	    }
 	}
@@ -166,7 +166,7 @@ sub check-contents( $obj, Str :$ref!) {
 
     CATCH {
 	default {
-	    error("unable to render {$ref}contents: $_"); 
+	    error("unable to render {$ref} contents: $_"); 
 	}
     }
 }
