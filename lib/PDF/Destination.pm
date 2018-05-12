@@ -53,6 +53,15 @@ role PDF::Destination does PDF::COS::Tie::Array {
                            Numeric :$left!,   Numeric :$bottom!,
                            Numeric :$right!,  Numeric :$top!, )  { self!dest: [$page, fit(FitRect),   $left,
                                                                                                       $bottom, $right, $top] }
+
+
+    # Coercions for explicit and named destinations
+    # a named destination may be either a byte-string or name object
+    my subset DestSpec is export(:DestSpec) where PDF::Destination|Str;
+    sub coerce-dest(Array $_, DestSpec) is export(:coerce-dest) {
+        PDF::COS.coerce( $_, $?ROLE.delegate-destination($_) );
+    }
+
 }
 
 role PDF::Destination['XYZ']

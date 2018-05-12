@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 45;
+plan 46;
 
 use PDF::Class;
 use PDF::IO::IndObj;
@@ -133,6 +133,9 @@ lives-ok {$catalog.check}, '$catalog.check lives';
 $catalog<Dests> = { :Foo[$page, 'FitH', $null] };
 $catalog.cb-finish;
 ok $catalog.Dests.obj-num, 'entry indirect';
+
+$catalog.Dests<Foo> = 'Bar';
+is $catalog.Dests<Foo>, 'Bar', 'Named destination';
 
 # crosschecks on /Type
 my $dict = { :Type( :name<Catalog> ) };

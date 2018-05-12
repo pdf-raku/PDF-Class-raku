@@ -30,10 +30,10 @@ class PDF::Catalog
     has PDF::NumberTree $.PageLabels is entry;           #| (Optional; PDF 1.3) A number tree defining the page labeling for the document.
 
     use PDF::NameTree;
-    has PDF::NameTree $.Names is entry;                 #| (Optional; PDF 1.2) The document’s name dictionary
+    has PDF::NameTree $.Names is entry;                  #| (Optional; PDF 1.2) The document’s name dictionary
 
-    use PDF::Destination;
-    has PDF::Destination %.Dests is entry;              #| (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
+    use PDF::Destination :DestSpec, :coerce-dest;
+    has DestSpec %.Dests is entry(:coerce(&coerce-dest));              #| (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
 
     use PDF::ViewerPreferences;
     has PDF::ViewerPreferences $.ViewerPreferences is entry;  #| (Optional; PDF 1.2) A viewer preferences dictionary specifying the way the document is to be displayed on the screen.
@@ -50,15 +50,14 @@ class PDF::Catalog
     has PDF::COS::Dict @.Threads is entry(:indirect);         #| (Optional; PDF 1.1; must be an indirect reference) An array of thread dictionaries representing the document’s article threads
 
     use PDF::Action;
-    use PDF::Destination;
-    my subset ActionOrDestination where PDF::Action|PDF::Destination;
-    multi sub coerce(Hash $_, ActionOrDestination) {
+    my subset ActionOrDestSpec where PDF::Action|DestSpec;
+    multi sub coerce(Hash $_, ActionOrDestSpec) {
         PDF::COS.coerce( $_, PDF::Action.delegate-action($_) );
     }
-    multi sub coerce(Array $_, ActionOrDestination) {
-        PDF::COS.coerce( $_, PDF::Destination.delegate-destination($_) );
+    multi sub coerce($_ is rw, ActionOrDestSpec) is default {
+        coerce-dest($_, DestSpec);
     }
-    has ActionOrDestination $.OpenAction is entry(:&coerce);               #| (Optional; PDF 1.1) A value specifying a destination to be displayed or an action to be performed when the document is opened.
+    has ActionOrDestSpec $.OpenAction is entry(:&coerce);               #| (Optional; PDF 1.1) A value specifying a destination to be displayed or an action to be performed when the document is opened.
 
     has PDF::COS::Dict $.AA is entry(:alias<additional-actions>);                    #| (Optional; PDF 1.4) An additional-actions dictionary defining the actions to be taken in response to various trigger events affecting the document as a whole
 
