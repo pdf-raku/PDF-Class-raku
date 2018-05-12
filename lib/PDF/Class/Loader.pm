@@ -72,7 +72,7 @@ PDF::COS.loader = class PDF::Class::Loader
         my $type = from-ast($dict<Type>);
         my $subtype = from-ast($dict<Subtype> // $dict<S>);
         $type ~~
-            'Border'|'Encoding' # classess with optional /type & unhandled subtype
+            'Border'|'Encoding'|'StructElem' # classess with optional /type & unhandled subtype
             |'Ind'|'Ttl'|'Org'  # handled by PDF::OCG User attribute
             ?? $base-class
             !! $.find-delegate( $type, $subtype, :$base-class );

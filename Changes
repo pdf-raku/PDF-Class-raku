@@ -1,3 +1,5 @@
+Release 0.1.9
+- Development of PDF::NameTree, PDF::NumberTree and PDF::FontFile
 Release 0.1.8
 - Add classess:
   -- PDF::OCG (Optional Content Groups)

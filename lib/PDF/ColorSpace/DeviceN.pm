@@ -10,11 +10,11 @@ class PDF::ColorSpace::DeviceN
     use PDF::COS::Name;
 
     # see [PDF 1.7 Section 4.5 DeviceN Color Spaces
+    my subset NameOrColorSpace where PDF::COS::Name|PDF::ColorSpace;
 
     has PDF::COS::Name @.Names is index(1, :required);
 
-    subset ArrayOrName where Array | PDF::COS::Name;
-    has ArrayOrName $.AlternateSpace is index(2, :required);
+    has NameOrColorSpace $.AlternateSpace is index(2, :required);
 
     use PDF::Function;
     has PDF::Function $.TintTransform is index(3, :required);
@@ -27,7 +27,7 @@ class PDF::ColorSpace::DeviceN
     my role DeviceNProcessDict
 	# see [PDF 1.7 TABLE 4.22 Entries in a DeviceN process dictionary]
 	does PDF::COS::Tie::Hash {
-	has $.ColorSpace is entry(:required); #| (Required) A name or array identifying the process color space, which may be any device or CIE-based color space. If an ICCBased color space is specified, it must provide calibration information appropriate for the process color components specified in the names array of the DeviceN color space.
+	has NameOrColorSpace $.ColorSpace is entry(:required); #| (Required) A name or array identifying the process color space, which may be any device or CIE-based color space. If an ICCBased color space is specified, it must provide calibration information appropriate for the process color components specified in the names array of the DeviceN color space.
         has PDF::COS::Name @.Components is entry(:required); #| (Required) An array of component names that correspond, in order, to the components of the process color space specified in ColorSpace. For example, an RGB color space must have three names corresponding to red, green, and blue. The names may be arbitrary (that is, not the same as the standard names for the color space components) and must match those specified in the names array of the DeviceN color space, even if all components are not present in the names array.
     }
 

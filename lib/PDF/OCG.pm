@@ -17,8 +17,8 @@ class PDF::OCG
 
     has PDF::COS::Name $.Type is entry(:required) where 'OCG';
 
-    has PDF::COS::TextString $.Name is entry(:required); #| (Required) The name of the optional content group, suitable for presentation in a reader’s user interface.
-    has PDF::COS::Name @.Intent is entry;                #| (Optional) A single intent name or an array containing any combination of names. PDF defines two names, View and Design, that may indicate the intended use of the graphics in the group. A conforming reader may choose to use only groups that have a specific intent and ignore others.
+    has PDF::COS::TextString $.Name is entry(:required);  #| (Required) The name of the optional content group, suitable for presentation in a reader’s user interface.
+    has PDF::COS::Name @.Intent is entry(:array-or-item); #| (Optional) A single intent name or an array containing any combination of names. PDF defines two names, View and Design, that may indicate the intended use of the graphics in the group. A conforming reader may choose to use only groups that have a specific intent and ignore others.
     #| Default value: View.
 
     role Usage

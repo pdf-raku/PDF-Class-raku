@@ -13,8 +13,8 @@ class PDF::StructTreeRoot
     use PDF::COS::Dict;
     use PDF::COS::Name;
     has PDF::COS::Name $.Type is entry(:required) where 'StructTreeRoot';
-    my subset DictOrArray where PDF::COS::Dict|Array;
-    has DictOrArray $.K is entry;                 #| The immediate child or children of the structure tree root in the structure hierarchy. The value may be either a dictionary representing a single structure element or an array of such dictionaries.
+    use PDF::StructElem;
+    has PDF::StructElem @.K is entry( :alias<children>, :array-or-item );  #| The immediate child or children of the structure tree root in the structure hierarchy. The value may be either a dictionary representing a single structure element or an array of such dictionaries.
     use PDF::NameTree;
     has PDF::NameTree $.IDTree is entry;          #| (Required if any structure elements have element identifiers) A name tree that maps element identifiers (see Table 323) to the structure elements they denote.
     use PDF::NumberTree;

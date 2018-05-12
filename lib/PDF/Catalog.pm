@@ -32,7 +32,8 @@ class PDF::Catalog
     use PDF::NameTree;
     has PDF::NameTree $.Names is entry;                 #| (Optional; PDF 1.2) The document’s name dictionary
 
-    has PDF::COS::Dict $.Dests is entry(:indirect);      #| (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
+    use PDF::Destination;
+    has PDF::Destination %.Dests is entry;              #| (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
 
     use PDF::ViewerPreferences;
     has PDF::ViewerPreferences $.ViewerPreferences is entry;  #| (Optional; PDF 1.2) A viewer preferences dictionary specifying the way the document is to be displayed on the screen.
@@ -100,9 +101,11 @@ class PDF::Catalog
         has PDF::COS::TextString $.Creator is entry; #| (Optional) Name of the application or feature that created thisconfiguration dictionary.
         my subset BaseState of PDF::COS::Name where 'ON'|'OFF'|'Unchanged';
         has BaseState $.BaseState is entry; #| (Optional) Used to initialize the states of all the optional content groups in a document when this configuration is applied. The value of this entry shall be one of the following names:
-        has @.ON is entry;  #| (Optional) An array of optional content groups whose state shall be set to ON when this configuration is applied. If the BaseState entry is ON, this entry is redundant.
-        has @.OFF is entry; #| (Optional) An array of optional content groups whose state shall be set to OFF when this configuration is applied. If the BaseState entry is OFF, this entry is redundant.
-        has $.Intent is entry; #| name or array (Optional) A single intent name or an array containing any combination of names.
+        my subset OCG of PDF::Class::Type where { .type eq 'OCG' }; # autoloaded PDF::OCG (Optional Content Group)
+
+        has OCG @.ON is entry;  #| (Optional) An array of optional content groups whose state shall be set to ON when this configuration is applied. If the BaseState entry is ON, this entry is redundant.
+        has OCG @.OFF is entry; #| (Optional) An array of optional content groups whose state shall be set to OFF when this configuration is applied. If the BaseState entry is OFF, this entry is redundant.
+        has PDF::COS::Name @.Intent is entry(:array-or-item); #| name or array (Optional) A single intent name or an array containing any combination of names.
         has @.AS is entry; #| (Optional) An array of usage application dictionaries.
         has @.Order is entry; #| array (Optional) An array specifying the order for presentation of optional content groups in a conforming reader’s user interface.
         my subset ListMode of PDF::COS::Name where 'AllPages'|'VisiblePages';
@@ -147,7 +150,8 @@ class PDF::Catalog
     }
 
     method cb-finish {
-        self<Pages>.cb-finish;
+        .is-indirect ||= True with self<Dests>;
+        self<Pages>.?cb-finish;
     }
 }
 

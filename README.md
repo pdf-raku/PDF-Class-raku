@@ -1,8 +1,8 @@
 # PDF::Class
 
-PDF::Class provides a set of classes and accessors that map to the internal structure of PDF documents as described int the PDF 1.7 Reference Guide, allowing both navigation and validation of PDF files.
+PDF::Class provides a comprehensive set of classes that map the internal structure of a PDF document; the aim being to make it easier to read, write, validate and, in general, grok PDF files.
 
-PDF::Class also understands inheritance (via Parent entries) and the sometimes finicky serialization rules regarding PDF construction into indirect objects. These details are automatically handled to ensure the `save-as` method correctly serializes the PDF.
+PDF::Class understands inheritance (via Parent entries) and the sometimes finicky serialization rules regarding PDF construction into indirect objects. These details are automatically handled to ensure the `save-as` method correctly serializes the PDF.
 
 PDF::Class is the base class for [PDF::API6](https://github.com/p6-pdf/PDF-API6).
 

@@ -3,7 +3,7 @@ use v6;
 use PDF::COS::Dict;
 use PDF::Class::Type;
 
-#| /Type /OBJR - a node in the page tree
+#| /Type /OBJR - Object Reference dictionary
 class PDF::OBJR
     is PDF::COS::Dict
     does PDF::Class::Type {

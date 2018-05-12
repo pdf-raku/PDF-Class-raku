@@ -10,6 +10,9 @@ role PDF::Field::Choice
     use PDF::COS::Tie;
     use PDF::COS::TextString;
 
+    has PDF::COS::TextString @.V is entry(:inherit, :array-or-item, :alias<value>);
+    has PDF::COS::TextString @.DV is entry(:inherit, :array-or-item, :alias<default-value>);
+
     my subset ArrayOfTextStrings of Array where { [&&] .map( *.isa(PDF::COS::TextString) ) }
     my subset FieldOption where ArrayOfTextStrings | PDF::COS::TextString;
     multi sub coerce(Str $s is rw, FieldOption) {
@@ -20,9 +23,6 @@ role PDF::Field::Choice
 	    PDF::COS.coerce( $a[$_],  PDF::COS::TextString)
 	}
     }
-
-    has FieldOption $.V is entry(:&coerce, :inherit, :alias<value>);
-    has FieldOption $.DV is entry(:&coerce, :inherit, :alias<default-value>);
 
     has FieldOption @.Opt is entry(:&coerce);    #| (Optional) An array of options to be presented to the user. Each element of the array is either a text string representing one of the available options or an array consisting of two text strings: the option’s export value and the text to be displayed as the name of the option
 

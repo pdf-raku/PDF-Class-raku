@@ -130,8 +130,9 @@ is-json-equiv $catalog.Resources, {:Font{
 }, '$.Resources accessor';
 lives-ok {$catalog.check}, '$catalog.check lives';
 
-$catalog<Dests> = { :Foo(:name<Bar>) };
-ok $catalog.Dests.obj-num, 'entry(:indirect)';
+$catalog<Dests> = { :Foo[$page, 'FitH', $null] };
+$catalog.cb-finish;
+ok $catalog.Dests.obj-num, 'entry indirect';
 
 # crosschecks on /Type
 my $dict = { :Type( :name<Catalog> ) };

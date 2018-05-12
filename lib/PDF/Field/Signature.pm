@@ -18,7 +18,7 @@ role PDF::Field::Signature
     }
 
     # [PDF 1.7 TABLE 8.81 Additional entries specific to a signature field]
-    has LockDict $.Lock is entry;   #| (Optional; must be an indirect reference; PDF 1.5) A signature field lock dictionary that specifies a set of form fields to be locked when this signature field is signed. Table 8.82lists the entries in this dictionary.
+    has LockDict $.Lock is entry(:indirect);   #| (Optional; must be an indirect reference; PDF 1.5) A signature field lock dictionary that specifies a set of form fields to be locked when this signature field is signed. Table 8.82lists the entries in this dictionary.
 ##
     my role SeedValueDict
 	does PDF::COS::Tie::Hash {
@@ -27,7 +27,7 @@ role PDF::Field::Signature
 	    has PDF::COS::Name $.Filter is entry;         #| (Optional) The signature handler to be used to sign the signature field. Beginning with PDF 1.7, if Filter is specified and the Ff entry indicates this entry is a required constraint, then the signature handler specified by this entry must be used when signing; otherwise, signing must not take place. If Ff indicates that this is an optional constraint, this handler should be used if it is available. If it is not available, a different handler can be used instead.
 	    has PDF::COS::Name @.SubFilter is entry;      #| first name in the array that matches an encoding supported by the signature handler should be the encoding that is actually used for signing. If SubFilter is specified and the Ff entry indicates that this entry is a required constraint, then the first matching encodings must be used when signing; otherwise, signing must not take place. If Ff indicates that this is an optional constraint, then the first matching encoding should be used if it is available. If it is not available, a different encoding can be used.
             my subset DigestMethodName of PDF::COS::Name where 'SHA1'|'SHA256'|'SHA384'|'SHA512'|'RIPEMD160';
-	    has  DigestMethodName $.DigestMethod is entry; #| (Optional; PDF 1.7) An array of names indicating acceptable digest algorithms to use while signing. The valid values are SHA1, SHA256, SHA384, SHA512 and RIPEMD160. The default value is implementation-specific.
+	    has DigestMethodName @.DigestMethod is entry(:array-or-item); #| (Optional; PDF 1.7) An array of names indicating acceptable digest algorithms to use while signing. The valid values are SHA1, SHA256, SHA384, SHA512 and RIPEMD160. The default value is implementation-specific.
 	    #| Note: This property is only applicable if the digital credential signing contains RSA public/private keys. If it contains DSA public/ private key, the digest algorithm is always SHA1 and this attribute is ignored.
 
 	    has  Numeric $.V is entry(:alias<value>);       #| (Optional) The minimum required capability of the signature field seed value dictionary parser. A value of 1 specifies that the parser must be able to recognize all seed value dictionary entries specified in PDF 1.5. A value of 2 specifies that it must be able to recognize all seed value dictionary entries specified in PDF 1.7 and earlier.
