@@ -1,10 +1,8 @@
 #!/usr/bin/env perl6
 use v6;
 
-use PDF::Class;
 use PDF::Content;
 use PDF::Content::Graphics;
-use PDF::Annot;
 use PDF::Writer;
 
 my UInt $*max-depth;
@@ -13,24 +11,33 @@ my Bool $*trace;
 my Bool $*strict = False;
 my PDF::Writer $*writer .= new;
 my Str @*exclude;
-my %seen{Any};
+my %indobj-seen;
 my Int $warnings = 0;
 my Int $errors = 0;
+
+my subset Annot of Hash where .<Type> ~~ 'Annot';
 
 sub error($msg) {
     $*ERR.say: $msg;
     $errors++;
 }
 
+sub ref($obj) {
+    $obj.obj-num
+	?? "{$obj.obj-num} {$obj.gen-num//0} R "
+        !! $*writer.write($obj.content).subst(/\s+/, ' ', :g);
+}
+
 #| check a PDF against PDF class definitions
-sub MAIN(Str $infile,               #= input PDF
-         Str  :$password = '',      #= password for the input PDF, if encrypted
-         Bool :$*trace,             #= show progress
-         Bool :$*render,            #= validate/check contents of pages, etc
-         Bool :$*strict,            #= perform additional checks
-         UInt :$*max-depth = 200,   #= maximum recursion depth
-	 Str  :$exclude,            #= excluded entries: Entry1,Entry2,
-         Bool :$repair = False      #= repair PDF before checking
+sub MAIN(Str $infile,                 #= input PDF
+         Str  :$password = '',        #= password for the input PDF, if encrypted
+         Str  :$class = 'PDF::Class', #= open with this class (default PDF::Class)
+         Bool :$*trace,               #= show progress
+         Bool :$*render,              #= validate/check contents of pages, etc
+         Bool :$*strict,              #= perform additional checks
+         UInt :$*max-depth = 200,     #= maximum recursion depth
+	 Str  :$exclude,              #= excluded entries: Entry1,Entry2,
+         Bool :$repair = False        #= repair PDF before checking
          ) {
 
     CONTROL {
@@ -40,7 +47,7 @@ sub MAIN(Str $infile,               #= input PDF
             .resume
         }
     }
-    my $doc = PDF::Class.open( $infile, :$password, :$repair );
+    my $doc = (require ::($class)).open( $infile, :$password, :$repair );
     @*exclude = $exclude.split(/:s ',' /)
     	      if $exclude;
     check( $doc, :ent<xref> );
@@ -49,18 +56,17 @@ sub MAIN(Str $infile,               #= input PDF
 
 |# Recursively check a dictionary (array) object
 multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
-    return if %seen{$obj}++;
-    my $ref = $obj.obj-num
-	?? "{$obj.obj-num} {$obj.gen-num//0} R "
-        !! $*writer.write($obj.content).subst(/\s+/, ' ', :g);
-    $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t$ref ({$obj.WHAT.^name})"
+        with $obj.obj-num {
+            return if $_ && %indobj-seen{"$_ {$obj.gen-num}"}++;
+        }
+    $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t{ref($obj)} ({$obj.WHAT.^name})"
 	if $*trace;
-    die "maximum depth of $*max-depth exceeded $ent: $ref"
+    die "maximum depth of $*max-depth exceeded $ent: {ref($obj)}"
 	if ++$depth > $*max-depth;
     my Hash $entries = $obj.entries;
     my Str @unknown-entries;
 
-    check-contents($obj, :$ref)
+    check-contents($obj)
 	if $*render && $obj.does(PDF::Content::Graphics);
 
      my %missing = $entries.pairs.grep(*.value.tied.is-required);
@@ -69,7 +75,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 
         %missing{$k}:delete;
         # Avoid following /P back to page then back here via page /Annots
-        next if $k eq 'P' && $obj.isa(PDF::Annot);
+        next if $k eq 'P' && $obj.isa(Annot);
 	next if @*exclude.grep: $k;
 	my $kid;
 
@@ -80,7 +86,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 
 	    CATCH {
 		default {
-		    error("error in $ref ({$obj.WHAT.^name}) /$k entry: $_");
+		    error("error in {ref($obj)} ({$obj.WHAT.^name}) /$k entry: $_");
 		}
 	    }
 	}
@@ -91,22 +97,22 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 	    if $*strict && +$entries && !($entries{$k}:exists);
     }
 
-    error("error in $ref ({$obj.WHAT.^name}), missing required field(s): {%missing.keys.sort.join(', ')}")
+    error("error in {ref($obj)} ({$obj.WHAT.^name}), missing required field(s): {%missing.keys.sort.join(', ')}")
         if %missing;
 
-    error("unknown entries in $ref ({$obj.WHAT.^name}) struct: @unknown-entries[]")
+    error("unknown entries {ref($obj)} ({$obj.WHAT.^name}) struct: @unknown-entries[]")
         if @unknown-entries && $obj.WHAT.gist ~~ /'PDF::' .*? '::Type'/;
 }
 
 #| Recursively check an array object
 multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
-    return if %seen{$obj}++;
-    my $ref = $obj.obj-num
-	?? "{$obj.obj-num} {$obj.gen-num//0} R "
-        !! $*writer.write($obj.content).subst(/\s+/, ' ', :g);
-    $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t$ref ({$obj.WHAT.^name})"
+    with $obj.obj-num {
+        return if $_ && %indobj-seen{"$_ {$obj.gen-num}"}++;
+    }
+
+    $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t{ref($obj)} ({$obj.WHAT.^name})"
 	if $*trace;
-    die "maximum depth of $*max-depth exceeded $ent: $ref"
+    die "maximum depth of $*max-depth exceeded $ent: {ref($obj)}"
 	if ++$depth > $*max-depth;
     my Array $index = $obj.index;
     for $obj.keys.sort {
@@ -120,7 +126,7 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 
 	    CATCH {
 		default {
-		    error("error in $ref ({$obj.WHAT.^name}) $ent: $_");
+		    error("error in {ref($obj)} ({$obj.WHAT.^name}) $ent: $_");
 		}
 	    }
 	}
@@ -131,7 +137,7 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 multi sub check($obj) is default {}
 
 #| check contents of a Page, XObject Form, Pattern or CharProcs
-sub check-contents( $obj, Str :$ref!) {
+sub check-contents( $obj ) {
 
     # cross check with the resources directory
     my $resources = $obj.?Resources // {};
@@ -166,7 +172,7 @@ sub check-contents( $obj, Str :$ref!) {
 
     CATCH {
 	default {
-	    error("unable to render {$ref} contents: $_"); 
+	    error("unable to render {ref($obj)} contents: $_"); 
 	}
     }
 }
@@ -175,20 +181,22 @@ sub check-contents( $obj, Str :$ref!) {
 
 =head1 NAME
 
-pdf-checker.p6 - Check PDF DOM structure and values
+pdf-checker.p6 - Check PDF structure and values
 
 =head1 SYNOPSIS
 
  pdf-checker.p6 [options] file.pdf
 
  Options:
-   --password   password for an encrypted PDF
-   --max-depth  max navigation depth (default 100)
-   --trace      trace PDF navigation
-   --contents   check the contents of pages, forms, patterns and type3 fonts
-   --strict     enble some additonal warnings:
-                -- unknown entries in dictionarys
-                -- additional graphics checks (when --contents is enabled)
+   --password          password for an encrypted PDF
+   --max-depth         max navigation depth (default 200)
+   --trace             trace PDF navigation
+   --render            check the contents streams of pages, forms, patterns and type3 fonts
+   --strict            enable some additional warnings:
+                       -- unknown entries in dictionarys
+                       -- additional graphics checks (when --contents is enabled)
+   --class <name>      checking class (default PDF::Class)
+   --exclude <key>,..  restrict checking
 
 =head1 DESCRIPTION
 
