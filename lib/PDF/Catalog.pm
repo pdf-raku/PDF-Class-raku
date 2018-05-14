@@ -93,6 +93,8 @@ class PDF::Catalog
 
     has PDF::COS::Dict $.PieceInfo is entry;             #| (Optional; PDF 1.4) A page-piece dictionary associated with the document
 
+    my subset OCG of PDF::Class::Type where { .type eq 'OCG' }; # autoloaded PDF::OCG (Optional Content Group)
+
     role OCConfig
 	does PDF::COS::Tie::Hash {
         #| Table Table 101 – Entries in an Optional Content Configuration Dictionary
@@ -100,8 +102,6 @@ class PDF::Catalog
         has PDF::COS::TextString $.Creator is entry; #| (Optional) Name of the application or feature that created thisconfiguration dictionary.
         my subset BaseState of PDF::COS::Name where 'ON'|'OFF'|'Unchanged';
         has BaseState $.BaseState is entry; #| (Optional) Used to initialize the states of all the optional content groups in a document when this configuration is applied. The value of this entry shall be one of the following names:
-        my subset OCG of PDF::Class::Type where { .type eq 'OCG' }; # autoloaded PDF::OCG (Optional Content Group)
-
         has OCG @.ON is entry;  #| (Optional) An array of optional content groups whose state shall be set to ON when this configuration is applied. If the BaseState entry is ON, this entry is redundant.
         has OCG @.OFF is entry; #| (Optional) An array of optional content groups whose state shall be set to OFF when this configuration is applied. If the BaseState entry is OFF, this entry is redundant.
         has PDF::COS::Name @.Intent is entry(:array-or-item); #| name or array (Optional) A single intent name or an array containing any combination of names.
@@ -116,7 +116,7 @@ class PDF::Catalog
     role OCProperties
 	does PDF::COS::Tie::Hash {
         #| Table 100 – Entries in the Optional Content Properties Dictionary
-        has @.OCGs is entry(:indirect, :required, :alias<optional-content-groups>); #| (Required) An array of indirect references to all the optional content groups in the document (see 8.11.2, "Optional Content Groups"), in any order. Every optional content group shall be included in this array
+        has OCG @.OCGs is entry(:indirect, :required, :alias<optional-content-groups>); #| (Required) An array of indirect references to all the optional content groups in the document (see 8.11.2, "Optional Content Groups"), in any order. Every optional content group shall be included in this array
         has PDF::COS::Dict $.D is entry(:required, :alias<viewing-config>); #| (Required) The default viewing optional content configuration dictionary (see 8.11.4.3, "Optional Content Configuration Dictionaries").
         has OCConfig @.Configs is entry;    #| (Optional) An array of alternate optional content configuration dictionaries (see 8.11.4.3, "Optional Content Configuration Dictionaries").
     }

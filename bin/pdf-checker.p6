@@ -22,6 +22,11 @@ sub error($msg) {
     $errors++;
 }
 
+sub warning($msg) {
+    $*ERR.say: $msg;
+    $warnings++;
+}
+
 sub ref($obj) {
     $obj.obj-num
 	?? "{$obj.obj-num} {$obj.gen-num//0} R "
@@ -56,9 +61,8 @@ sub MAIN(Str $infile,                 #= input PDF
 
 |# Recursively check a dictionary (array) object
 multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
-        with $obj.obj-num {
-            return if $_ && %indobj-seen{"$_ {$obj.gen-num}"}++;
-        }
+    my $obj-num = $obj.obj-num;
+    return if $obj-num && %indobj-seen{"$obj-num {$obj.gen-num}"}++;
     $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t{ref($obj)} ({$obj.WHAT.^name})"
 	if $*trace;
     die "maximum depth of $*max-depth exceeded $ent: {ref($obj)}"
@@ -69,11 +73,11 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     check-contents($obj)
 	if $*render && $obj.does(PDF::Content::Graphics);
 
-     my %missing = $entries.pairs.grep(*.value.tied.is-required);
+     my %required = $entries.pairs.grep(*.value.tied.is-required);
 
     for $obj.keys.sort -> $k {
 
-        %missing{$k}:delete;
+        %required{$k}:delete;
         # Avoid following /P back to page then back here via page /Annots
         next if $k eq 'P' && $obj.isa(Annot);
 	next if @*exclude.grep: $k;
@@ -97,18 +101,17 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 	    if $*strict && +$entries && !($entries{$k}:exists);
     }
 
-    error("error in {ref($obj)} ({$obj.WHAT.^name}), missing required field(s): {%missing.keys.sort.join(', ')}")
-        if %missing;
+    error("error in {ref($obj)} ({$obj.WHAT.^name}), missing required field(s): {%required.keys.sort.join(', ')}")
+        if %required;
 
-    error("unknown entries {ref($obj)} ({$obj.WHAT.^name}) struct: @unknown-entries[]")
-        if @unknown-entries && $obj.WHAT.gist ~~ /'PDF::' .*? '::Type'/;
+    warning("unknown entries {ref($obj)} ({$obj.WHAT.^name}) struct: @unknown-entries[]")
+        if @unknown-entries;
 }
 
 #| Recursively check an array object
 multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
-    with $obj.obj-num {
-        return if $_ && %indobj-seen{"$_ {$obj.gen-num}"}++;
-    }
+    my $obj-num = $obj.obj-num;
+    return if $obj-num && %indobj-seen{"$obj-num {$obj.gen-num}"}++;
 
     $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t{ref($obj)} ({$obj.WHAT.^name})"
 	if $*trace;

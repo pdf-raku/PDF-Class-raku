@@ -19,6 +19,6 @@ role PDF::Font::CIDFont
     has Numeric @.W2 is entry;                                #| (Optional; applies only to CIDFonts used for vertical writing) A description of the metrics for vertical writing for the glyphs in the CIDFont
     my subset Identity of PDF::COS::Name where 'Identity';
     my subset StreamOrIdentity where PDF::COS::Stream | Identity;
-    has StreamOrIdentity $.CIDToGIDMap                        #| to glyph indices. If the value is a stream, the bytes in the stream contain the mapping from CIDs to glyph indices: the glyph index for a particular CID value c is a 2-byte value stored in bytes 2 × c and 2 × c + 1, where the first byte is the high-order byte. If the value of CIDToGIDMap is a name, it must be Identity, indicating that the mapping between CIDs and glyph indices is the identity mapping
+    has StreamOrIdentity $.CIDToGIDMap is entry;              #| to glyph indices. If the value is a stream, the bytes in the stream contain the mapping from CIDs to glyph indices: the glyph index for a particular CID value c is a 2-byte value stored in bytes 2 × c and 2 × c + 1, where the first byte is the high-order byte. If the value of CIDToGIDMap is a name, it must be Identity, indicating that the mapping between CIDs and glyph indices is the identity mapping
 
 }

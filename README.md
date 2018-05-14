@@ -149,6 +149,8 @@ PDF::Appearance | dict | D(down), N(normal), R(rollover) |  |
 PDF::Border | dict | D(dash-pattern), S(style), Type, W(width) |  | 
 PDF::CIDSystemInfo | dict | Ordering, Registry, Supplement |  | 
 PDF::CMap | stream | CIDSystemInfo, CMapName, Type, UseCMap, WMode |  | /Type /CMap
+PDF::ColorSpace::CalGray | array | Subtype, dict | BlackPoint, Gamma, WhitePoint | 
+PDF::ColorSpace::CalRGB | array | Subtype, dict | BlackPoint, Gamma, Matrix, WhitePoint | 
 PDF::ColorSpace::DeviceN | array | AlternateSpace, Attributes, Names, Subtype, TintTransform |  | 
 PDF::ColorSpace::ICCBased | array | Subtype, dict | Alternate, Metadata, N, Range | 
 PDF::ColorSpace::Indexed | array | Base, Hival, Lookup, Subtype |  | 
@@ -162,13 +164,14 @@ PDF::Field::Button | dict | DV(default-value), Opt, V(value) |  |
 PDF::Field::Choice | dict | DV(default-value), I(indices), Opt, TI(top-index), V(value) |  | 
 PDF::Field::Signature | dict | Lock, SV(seed-value) |  | 
 PDF::Field::Text | dict | DV(default-value), MaxLen, V(value) |  | 
-PDF::Font::CIDFont | dict | BaseFont, CIDSystemInfo, DW, DW2, FontDescriptor, W, W2 |  | 
-PDF::Font::CIDFontType0 | dict | BaseFont, CIDSystemInfo, DW, DW2, FontDescriptor, Subtype, Type, W, W2 | CIDToGIDMap, font-obj, make-font, set-font-obj | 
-PDF::Font::CIDFontType2 | dict | BaseFont, CIDSystemInfo, DW, DW2, FontDescriptor, Subtype, Type, W, W2 | CIDToGIDMap, font-obj, make-font, set-font-obj | 
+PDF::Font::CIDFont | dict | BaseFont, CIDSystemInfo, CIDToGIDMap, DW, DW2, FontDescriptor, W, W2 |  | 
+PDF::Font::CIDFontType0 | dict | BaseFont, CIDSystemInfo, CIDToGIDMap, DW, DW2, FontDescriptor, Subtype, Type, W, W2 | font-obj, make-font, set-font-obj | 
+PDF::Font::CIDFontType2 | dict | BaseFont, CIDSystemInfo, CIDToGIDMap, DW, DW2, FontDescriptor, Subtype, Type, W, W2 | font-obj, make-font, set-font-obj | 
 PDF::Font::MMType1 | dict | BaseFont, Encoding, FirstChar, FontDescriptor, LastChar, Name, Subtype, ToUnicode, Type, Widths | font-obj, make-font, set-font-obj | 
 PDF::Font::TrueType | dict | BaseFont, Encoding, FirstChar, FontDescriptor, LastChar, Name, Subtype, ToUnicode, Type, Widths | font-obj, make-font, set-font-obj | TrueType fonts - /Type /Font /Subtype TrueType see [PDF 1.7 Section 5.5.2 TrueType Fonts]
 PDF::FontDescriptor | dict | Ascent, AvgWidth, CapHeight, CharSet, Descent, Flags, FontBBox, FontFamily, FontFile, FontFile2, FontFile3, FontName, FontStretch, FontWeight, ItalicAngle, Leading, MaxWidth, MissingWidth, StemH, StemV, Type, XHeight |  | /Type /FontDescriptor - the FontDescriptor dictionary
-PDF::FontFile | stream | Subtype |  | 
+PDF::FontFile | stream | Length1, Length2, Length3, Metadata, Subtype |  | 
+PDF::FontStream | dict | Length1, Length2, Length3, Metadata |  | 
 PDF::Function::Exponential | stream | C0, C1, Domain, FunctionType, N, Range | calc, calculator | /FunctionType 2 - Exponential see [PDF 1.7 Section 3.9.2 Type 2 (Exponential Interpolation) Functions]
 PDF::Function::PostScript | stream | Domain, FunctionType, Range | calc, calculator, parse | /FunctionType 4 - PostScript see [PDF 1.7 Section 3.9.4 Type 4 (PostScript Transform) Functions]
 PDF::Function::Sampled | stream | BitsPerSample, Decode, Domain, Encode, FunctionType, Order, Range, Size | calc, calculator | /FunctionType 0 - Sampled see [PDF 1.7 Section 3.9.1 Type 0 (Sampled) Functions]
@@ -180,7 +183,7 @@ PDF::Mask::Luminosity | dict | BC(backdrop-color), G(transparency-group), S(subt
 PDF::Metadata::XML | stream | Subtype, Type |  | 
 PDF::NameTree | dict | Kids, Limits, Names |  | 
 PDF::NumberTree | dict | Kids, Limits, Nums |  | 
-PDF::OBJR | dict | Obj, Pg(page), Type |  | /Type /OBJR - a node in the page tree
+PDF::OBJR | dict | Obj, Pg(page), Type |  | /Type /OBJR - Object Reference dictionary
 PDF::OCG | dict | Intent, Name, Type, Usage |  | 
 PDF::OCMD | dict | OCGs, P, Type, VE |  | 
 PDF::Outline | dict | A(action), C(color), Count, Dest, F(flags), First, Last, Next, Parent, Prev, SE(structure-element), Title |  | 
@@ -198,7 +201,8 @@ PDF::Shading::Functional | dict | AntiAlias, BBox, Background, ColorSpace, Domai
 PDF::Shading::Lattice | stream | AntiAlias, BBox, Background, BitsPerComponent, BitsPerCoordinate, ColorSpace, Decode, Function, ShadingType, VerticesPerRow |  | /ShadingType 5 - Lattice
 PDF::Shading::Radial | dict | AntiAlias, BBox, Background, ColorSpace, Coords, Domain, Extend, Function, ShadingType |  | /ShadingType 3 - Radial
 PDF::Shading::Tensor | stream | AntiAlias, BBox, Background, BitsPerComponent, BitsPerCoordinate, BitsPerFlag, ColorSpace, Decode, Function, ShadingType |  | /ShadingType 7 - Tensor
-PDF::StructTreeRoot | dict | ClassMap, IDTree, K, ParentTree, ParentTreeNextKey, RoleMap, Type |  | 
+PDF::StructElem | dict | A(attributes), ActualText, Alt(alternative-description), C, E(expanded-form), ID, K(children), Lang, P(parent), Pg(page), R(revision), S(structure-type), T(title), Type |  | 
+PDF::StructTreeRoot | dict | ClassMap, IDTree, K(children), ParentTree, ParentTreeNextKey, RoleMap, Type |  | 
 PDF::XObject::Form | stream | BBox, FormType, Group, LastModified, Matrix, Metadata, OC(optional-content-group), OPI, PieceInfo, Ref, Resources, StructParent, StructParents, Subtype, Type | canvas, contents, contents-parse, core-font, find-resource, finish, gfx, graphics, has-pre-gfx, height, images, new-gfx, pre-gfx, pre-graphics, render, resource-entry, resource-key, save-as-image, text, tiling-pattern, use-font, use-resource, width, xobject-form | XObject Forms - /Type /XObject /Subtype Form See [PDF Spec 1.7 4.9 Form XObjects]
 PDF::XObject::Image | stream | Alternatives, BitsPerComponent, ColorSpace, Decode, Height, ID, ImageMask, Intent, Interpolate, Mask, Metadata, Name, OC, OPI, SMask, SMaskInData, StructParent, Subtype, Type, Width | data-uri, height, image-obj, image-type, inline-content, inline-to-xobject, load-image, source, to-png, width | XObjects /Type XObject /Subtype /Image See [PDF 1.7 Section 4.8 - Images ]
 PDF::XObject::PS | stream | Level1, Subtype, Type |  | Postscript XObjects /Type XObject /Subtype PS See [PDF 1.7 Section 4.7.1 PostScript XObjects]

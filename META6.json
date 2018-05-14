@@ -62,6 +62,7 @@
     "PDF::Font::Type3" : "lib/PDF/Font/Type3.pm",
     "PDF::FontDescriptor" : "lib/PDF/FontDescriptor.pm",
     "PDF::FontFile" : "lib/PDF/FontFile.pm",
+    "PDF::FontStream" : "lib/PDF/FontStream.pm",
     "PDF::Function" : "lib/PDF/Function.pm",
     "PDF::Function::Exponential" : "lib/PDF/Function/Exponential.pm",
     "PDF::Function::PostScript" : "lib/PDF/Function/PostScript.pm",

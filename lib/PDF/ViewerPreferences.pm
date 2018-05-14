@@ -21,7 +21,6 @@ role PDF::ViewerPreferences
 
     has Bool $.CenterWindow is entry;           #| (Optional; PDF 1.4) A flag specifying whether the window’s title bar should display the document title taken from the Title entry of the document information dictionary (see Section 10.2.1, “Document Information Dictionary”). If false, the title bar should instead display the name of the PDF file containing the document. Default value: false.
 
-    use PDF::COS::Name;
     my subset PageModes of PDF::COS::Name where 'UseNone' | 'UseOutlines' | 'UseThumbs' | 'UseOC' | 'UseAttachments';
     has PageModes $.NonFullScreenPageMode is entry; #| (Optional) The document’s page mode, specifying how to display the document on exiting full-screen mode:
                                                 #|  - UseNone        : Neither document outline nor thumbnail images visible
@@ -36,7 +35,6 @@ role PDF::ViewerPreferences
                                                 #|  - L2R: Left to right
                                                 #|  - R2L: Right to left (including vertical writing systems, such as Chinese, Japanese, and Korean)
                                                 #| This entry has no direct effect on the document’s contents or page numbering but can be used to determine the relative positioning of pages when displayed side by side or printed n-up. Default value: L2R.
-
 
     has PDF::COS::Name $.ViewArea is entry;  #| (Optional; PDF 1.4) The name of the page boundary representing the area of a page to be displayed when viewing the document on the screen. The value is the key designating the relevant page boundary in the page object (see “Page Objects” on page 144 and Section 10.10.1, “Page Boundaries”). If the specified page boundary is not defined in the page object, its default value is used, as specified in Table 3.27 on page 145. Default value: CropBox.
                                                 #|Note: This entry is intended primarily for use by prepress applications that interpret or manipulate the page boundaries as described in Section 10.10.1, “Page Boundaries.” Most PDF consumer applications disregard it.

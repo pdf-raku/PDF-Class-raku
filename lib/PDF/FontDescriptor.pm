@@ -46,8 +46,9 @@ class PDF::FontDescriptor
     has Numeric $.AvgWidth is entry;                   #| (Optional) The average width of glyphs in the font
     has Numeric $.MaxWidth is entry;                   #| (Optional) The maximum width of glyphs in the font
     has Numeric $.MissingWidth is entry;               #| (Optional) The width to use for character codes whose widths are not specified in a font dictionary’s Widths array.
-    has PDF::COS::Stream $.FontFile is entry;          #| (Optional) A stream containing a Type 1 font program
-    has PDF::COS::Stream $.FontFile2 is entry;         #| (Optional; PDF 1.1) A stream containing a TrueType font program
+    use PDF::FontStream;
+    has PDF::FontStream $.FontFile is entry;          #| (Optional) A stream containing a Type 1 font program
+    has PDF::FontStream $.FontFile2 is entry;         #| (Optional; PDF 1.1) A stream containing a TrueType font program
     use PDF::FontFile;
     has PDF::FontFile $.FontFile3 is entry;           #| (Optional; PDF 1.2) A stream containing a font program whose format is specified by the Subtype entry in the stream dictionary. type1C for Type 1 compact fonts, CIDFontType0C for Type 0 compact CIDFonts, or OpenType for OpenType fonts.
     has Str $.CharSet is entry;                        #| Optional; meaningful only in Type 1 fonts; PDF 1.1) A string listing the character names defined in a font subset

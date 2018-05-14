@@ -13,6 +13,7 @@ class PDF::XObject::Image
     does PDF::Content::XObject['Image'] {
 
     use PDF::COS::Tie;
+    use PDF::COS::Tie::Hash;
     use PDF::COS::Stream;
     use PDF::COS::Array;
     use PDF::COS::Name;
@@ -31,7 +32,11 @@ class PDF::XObject::Image
     has Numeric @.Decode is entry;                #| (Optional) An array of numbers describing how to map image samples into the range of values appropriate for the image’s color space
     has Bool $.Interpolate is entry;              #| (Optional) A flag indicating whether image interpolation is to be performed
     has Hash @.Alternatives is entry;             #| An array of alternate image dictionaries for this image
-    has PDF::XObject::Image $.SMask is entry;     #| (Optional; PDF 1.4) A subsidiary image XObject defining a soft-mask image
+    my role SoftMask does PDF::COS::Tie::Hash {
+        has Numeric @.Matte is entry; #| (Optional; PDF 1.4) An array of component values specifying the matte colour with which the image data in the parent image shall have been preblended. The array shall consist of n numbers, where n is the number of components in the colour space specified by the ColorSpace entry in the parent image’s image dictionary; the numbers shall be valid colour components in that colour space. If this entry is absent, the image data shall not be preblended.
+    }
+
+    has SoftMask $.SMask is entry;                #| (Optional; PDF 1.4) A subsidiary image XObject defining a soft-mask image
     subset SMaskInInt of Int where 0|1|2;
     has SMaskInInt $.SMaskInData is entry;        #| (Optional for images that use the JPXDecode filter, meaningless otherwise; A code specifying how soft-mask information encoded with image samples should be used:
                                                   #| 0: If present, encoded soft-mask image information should be ignored.

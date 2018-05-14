@@ -1,7 +1,6 @@
 use v6;
 
 use PDF::COS::Tie::Hash;
-use PDF::Class::Type;
 
 #| /Type /Outlines - the Outlines dictionary
 
