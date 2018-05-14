@@ -30,34 +30,43 @@ class PDF::Catalog
     has PDF::NumberTree $.PageLabels is entry;           #| (Optional; PDF 1.3) A number tree defining the page labeling for the document.
 
     use PDF::NameTree;
-    has PDF::NameTree $.Names is entry;                  #| (Optional; PDF 1.2) The document’s name dictionary
+    my role Names does PDF::COS::Tie::Hash {
+        has PDF::NameTree $.Dests is entry;                  #| (Optional; PDF 1.2) A name tree mapping name strings to destinations.
+        has PDF::NameTree $.AP is entry;                     #| (Optional; PDF 1.3) A name tree mapping name strings to annotation appearance streams.
+        has PDF::NameTree $.JavaScript is entry;             #| (Optional; PDF 1.3) A name tree mapping name strings to document-level JavaScript actions.
+        has PDF::NameTree $.Pages is entry;                  #| (Optional; PDF 1.3) A name tree mapping name strings to visible pages for use in interactive forms.
+        has PDF::NameTree $.Templates is entry;              #| (Optional; PDF 1.3) A name tree mapping name strings to invisible (template) pages for use in interactive forms.
+        has PDF::NameTree $.IDS is entry;                    #| (Optional; PDF 1.3) A name tree mapping digital identifiers to Web Capture content sets.
+        has PDF::NameTree $.URLS is entry;                   #| (Optional; PDF 1.3) A name tree mapping uniform resource locators (URLs) to Web Capture content sets10.4, "Content Sets").
+        has PDF::NameTree $.EmbeddedFiles is entry;          #| (Optional; PDF 1.4) A name tree mapping name strings to file specifications for embedded file streams.
+        has PDF::NameTree $.AlternatePresentations is entry; #| (Optional; PDF 1.4) A name tree mapping name strings to alternate presentations.
+        has PDF::NameTree $.Renditions is entry;             #| (Optional; PDF 1.5) A name tree mapping name strings (which shall have Unicode encoding) to rendition objects.
+    }
+    has Names $.Names is entry;                  #| (Optional; PDF 1.2) The document’s name dictionary
 
     use PDF::Destination :DestSpec, :coerce-dest;
-    has DestSpec %.Dests is entry(:coerce(&coerce-dest));              #| (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
+    has DestSpec %.Dests is entry(:coerce(&coerce-dest));    #| (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
 
     use PDF::ViewerPreferences;
-    has PDF::ViewerPreferences $.ViewerPreferences is entry;  #| (Optional; PDF 1.2) A viewer preferences dictionary specifying the way the document is to be displayed on the screen.
+    has PDF::ViewerPreferences $.ViewerPreferences is entry; #| (Optional; PDF 1.2) A viewer preferences dictionary specifying the way the document is to be displayed on the screen.
 
     subset PageLayout of PDF::COS::Name where 'SinglePage'|'OneColumn'|'TwoColumnLeft'|'TwoColumnRight'|'TwoPageLeft'|'TwoPageRight';
-    has PageLayout $.PageLayout is entry;                     #| (Optional) A name object specifying the page layout to be used when the document is opened
+    has PageLayout $.PageLayout is entry;                    #| (Optional) A name object specifying the page layout to be used when the document is opened
 
     subset PageMode of PDF::COS::Name where 'UseNone'|'UseOutlines'|'UseThumbs'|'FullScreen'|'UseOC'|'UseAttachments';
-    has PageMode $.PageMode is entry;                         #| (Optional) A name object specifying how the document should be displayed when opened
+    has PageMode $.PageMode is entry;                        #| (Optional) A name object specifying how the document should be displayed when opened
 
     use PDF::Outlines;
     has PDF::Outlines $.Outlines is entry(:indirect); #| (Optional; must be an indirect reference) The outline dictionary that is the root of the document’s outline hierarchy
 
-    has PDF::COS::Dict @.Threads is entry(:indirect);         #| (Optional; PDF 1.1; must be an indirect reference) An array of thread dictionaries representing the document’s article threads
+    has PDF::COS::Dict @.Threads is entry(:indirect);        #| (Optional; PDF 1.1; must be an indirect reference) An array of thread dictionaries representing the document’s article threads
 
     use PDF::Action;
     my subset ActionOrDestSpec where PDF::Action|DestSpec;
-    multi sub coerce(Hash $_, ActionOrDestSpec) {
-        PDF::COS.coerce( $_, PDF::Action.delegate-action($_) );
-    }
-    multi sub coerce($_ is rw, ActionOrDestSpec) is default {
+    multi sub coerce(List $_ is rw, ActionOrDestSpec) is default {
         coerce-dest($_, DestSpec);
     }
-    has ActionOrDestSpec $.OpenAction is entry(:&coerce);               #| (Optional; PDF 1.1) A value specifying a destination to be displayed or an action to be performed when the document is opened.
+    has ActionOrDestSpec $.OpenAction is entry(:&coerce);    #| (Optional; PDF 1.1) A value specifying a destination to be displayed or an action to be performed when the document is opened.
 
     has PDF::COS::Dict $.AA is entry(:alias<additional-actions>);                    #| (Optional; PDF 1.4) An additional-actions dictionary defining the actions to be taken in response to various trigger events affecting the document as a whole
 

@@ -112,6 +112,7 @@ PDF::COS.loader = class PDF::Class::Loader
 	my $type = do given $subtype {
             when 'Alpha'|'Luminosity' { 'Mask' }
             when 'GTS_PDFX' { 'OutputIntent' }
+            when 'GoTo'|'GoToE'|'Launch'|'Thread'|'URI'|'Sound'|'Movie'|'Hide'|'Named'|'SubmitForm'|'ResetForm'|'ImportData'|'JavaScript'|'SetOCGState'|'Rendition'|'Trans'|'GoTo3DView' { 'Action' }
             default { Nil }
 	};
 

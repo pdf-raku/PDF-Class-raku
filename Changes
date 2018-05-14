@@ -1,7 +1,8 @@
 Release 0.1.9
 - Development of PDF::NameTree, PDF::NumberTree, PDF::StructElem and PDF::FontFile
-- Further development and use of PDF::Destination. Handle
-  both explicit and named destinations.
+- Further development of PDF::Destination. Both explicit and named destinations.
+- Added PDF::Catalog.Dests coercements
+- Fixed PDF::Action coercements
 Release 0.1.8
 - Add classess:
   -- PDF::OCG (Optional Content Groups)

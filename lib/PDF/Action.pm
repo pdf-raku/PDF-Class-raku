@@ -12,7 +12,7 @@ role PDF::Action
 
     has PDF::COS::Name $.Type is entry where 'Action';
 
-    my subset ActionSubtype of PDF::COS::Name where
+    my subset Subtype of PDF::COS::Name where
 	'GoTo'         #| Go to a destination in the current document.
 	|'GoToR'       #| (“Go-to remote”) Go to a destination in another document.
 	|'GoToE'       #| (“Go-to embedded”; PDF 1.6) Go to a destination in an embedded file.
@@ -33,31 +33,7 @@ role PDF::Action
 	|'GoTo3DView'  #| (PDF 1.6) Set the current view of a 3D annotation
 	;
 
-    has ActionSubtype $.S is entry(:required);
+    has Subtype $.S is entry(:required);
 
-    multi method delegate-action(Hash $dict where { .<S> ~~ ActionSubtype }) {
-	PDF::COS.loader.find-delegate( 'Action', $dict<S> );
-    }
-
-    multi method delegate-action(Hash $dict) is default {
-	warn "unknown action subtype: $dict<S>"
-	    if $dict<S>:exists;
-	PDF::Action;
-    }
-
-    my subset NextActionArray of Array where { [&&] .map( *.isa(PDF::Action) ) }
-    my subset NextAction where PDF::Action | NextActionArray;
-
-    multi sub coerce(Hash $actions, NextAction) {
-      PDF::COS.coerce( $_, PDF::Action )
-    }
-    multi sub coerce(Array $actions, NextAction) {
-      PDF::COS.coerce( $actions[$_], PDF::Action )
-	  for $actions.keys;
-    }
-
-    has NextAction $.Next is entry(:&coerce);
-
-    # todo remaining fields, TABLE 8.49 thru 8.51 etc
-
+    has PDF::Action @.Next is entry(:array-or-item);
 }

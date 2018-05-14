@@ -9,6 +9,7 @@ use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Page;
+use PDF::Catalog;
 
 my $actions = PDF::Grammar::PDF::Actions.new;
 
@@ -71,7 +72,7 @@ my $ind-obj = PDF::IO::IndObj.new( |%ast, :$reader);
 is $ind-obj.obj-num, 215, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $catalog = $ind-obj.object;
-isa-ok $catalog, ::('PDF')::('Catalog');
+isa-ok $catalog, PDF::Catalog;
 is $catalog<PageLayout>, 'OneColumn', 'dict lookup';
 is-json-equiv $catalog.Lang, 'EN-US', '$catalog.Lang';
 # last modified is not listed as a property in [ PDF 1.7 TABLE 3.25 Entries in the catalog dictionary]
@@ -89,11 +90,11 @@ is-json-equiv $catalog.PieceInfo, { :MarkedPDF{ :LastModified<D:20081012130709> 
 is-json-equiv $ind-obj.ast, %ast, 'ast regeneration';
 
 my $acroform = $catalog.AcroForm;
-does-ok $acroform, ::('PDF::AcroForm'), '$.AcroForm role';
+does-ok $acroform, (require ::('PDF::AcroForm')), '$.AcroForm role';
 is-json-equiv $acroform.Fields, [], '$.AcroForm.Fields';
 
 my $struct-tree-root = $catalog.StructTreeRoot;
-isa-ok $struct-tree-root, ::('PDF::StructTreeRoot'), '$.StructTreeRootClass';
+isa-ok $struct-tree-root, (require ::('PDF::StructTreeRoot')), '$.StructTreeRootClass';
 is $struct-tree-root.ParentTreeNextKey, 4, 'structTreeRoot.ParentTreeNextKey';
 lives-ok {$struct-tree-root.check}, 'StructTreeRoot.check'; 
 
@@ -116,11 +117,11 @@ is-json-equiv $catalog.OpenAction, [$page, 'FitH', Mu ], '$catalog.OpenAction as
 
 lives-ok { $catalog.OpenAction = { :S( :name<GoTo> ), :D[$page, :name<Fit>] } }, '$catalog.OpenAction assignment - destination dict';
 is-json-equiv $catalog.OpenAction, { :S<GoTo>, :D[$page, 'Fit'] }, '$catalog.OpenAction - destination dict';
-does-ok $catalog.OpenAction, ::('PDF')::('Action::GoTo');
+isa-ok $catalog.OpenAction, ::('PDF')::('Action::GoTo');
 
 lives-ok { $catalog.URI = { :S( :name<URI> ), :URI("http://example.com") } }, '$catalog.URI assignment - destination dict';
 is-json-equiv $catalog.URI, { :S<URI>, :URI("http://example.com") }, '$catalog.URI - destination dict';
-does-ok $catalog.URI, ::('PDF')::('Action::URI');
+isa-ok $catalog.URI, ::('PDF')::('Action::URI');
 
 lives-ok {$catalog.core-font('Helvetica')}, 'can add resource (core-font) to catalog';
 is-json-equiv $catalog.Resources, {:Font{
@@ -139,13 +140,13 @@ is $catalog.Dests<Foo>, 'Bar', 'Named destination';
 
 # crosschecks on /Type
 my $dict = { :Type( :name<Catalog> ) };
-lives-ok {$catalog = ::('PDF::Catalog').new( :$dict )}, 'catalog .new with valid /Type - lives';
+lives-ok {$catalog = PDF::Catalog.new( :$dict )}, 'catalog .new with valid /Type - lives';
 $dict<Type>:delete;
 
-lives-ok {$catalog = ::('PDF::Catalog').new( :$dict )}, 'catalog .new default /Type - lives';
+lives-ok {$catalog = PDF::Catalog.new( :$dict )}, 'catalog .new default /Type - lives';
 isa-ok $catalog.Type, Str, 'catalog $.Type';
 is $catalog.Type, 'Catalog', 'catalog $.Type';
 
 $dict<Type> = :name<Wtf>;
 todo "type-check on new";
-dies-ok {::('PDF::Catalog').new( :$dict )}, 'catalog .new with invalid /Type - dies';
+dies-ok {PDF::Catalog.new( :$dict )}, 'catalog .new with invalid /Type - dies';

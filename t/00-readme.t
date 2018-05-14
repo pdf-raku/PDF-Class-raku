@@ -20,9 +20,8 @@ for @<code> {
 	    # disable say
 	    sub say(|c) { }
 
-            if ++$n == 5 {
-                skip "Class from an eval";
-                next;
+            if ++$n == 4|5 {
+                todo "Class from an eval";
             }
             lives-ok {EVAL $snippet}, 'code sample'
 		or warn "eval error: $snippet";
