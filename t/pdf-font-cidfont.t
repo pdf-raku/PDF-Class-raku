@@ -1,15 +1,15 @@
 use v6;
 use Test;
 
-plan 8;
+plan 9;
 
 use PDF::Class;
 use PDF::IO::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
-use PDF::COS;
-use PDF::Content::Font::CoreFont;
+use PDF::CIDSystemInfo;
+use PDF::Font::CIDFontType2;
 
 my $actions = PDF::Grammar::PDF::Actions.new;
 
@@ -40,14 +40,15 @@ my $ind-obj = PDF::IO::IndObj.new( |%ast, :$input, :$reader);
 my $object = $ind-obj.object;
 is $ind-obj.obj-num, 7, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
-isa-ok $object, (require ::('PDF::Font::CIDFontType2'));
+isa-ok $object, PDF::Font::CIDFontType2;
 is $object.Type, 'Font', '$.Type accessor';
 is $object.Subtype, 'CIDFontType2', '$.Subype accessor';
 $object.reader = $reader;
 lives-ok {$object.check}, '$object.check lives';
 
-# this test doesn't work unless PDF::Class has been installed
 lives-ok { $object.CIDSystemInfo }, 'CIDSystemInfo accessor';
+todo "fix PDF::CIDFontType2.CIDSystemInfo accessor";
+does-ok $object.CIDSystemInfo, PDF::CIDSystemInfo;
 
 sub to-doc($font-obj) {
     my $dict = $font-obj.to-dict;
@@ -55,6 +56,7 @@ sub to-doc($font-obj) {
 }
 
 skip 'CID Font Development';
+##use PDF::COS;
 ##my %params = to-doc($object.font-obj);
 ##my $font = PDF::COS.coerce( |%params );
 ##isa-ok $font, (require ::('PDF::Font::CIDFontType2'));

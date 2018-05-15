@@ -14,7 +14,8 @@ class PDF::CMap
     use PDF::COS::Name;
     has PDF::COS::Name $.Type is entry(:required) where 'CMap';
     has PDF::COS::Name $.CMapName is entry(:required); #| (Required) The PostScript name of the CMap. It should be the same as the value of CMapName in the CMap file.
-    has Hash $.CIDSystemInfo is entry(:required);         #| (Required) A dictionary containing entries that define the character collection for the CIDFont or CIDFonts associated with the CMap
+    use PDF::CIDSystemInfo;
+    has PDF::CIDSystemInfo $.CIDSystemInfo is entry(:required);         #| (Required) A dictionary containing entries that define the character collection for the CIDFont or CIDFonts associated with the CMap
     my subset ZeroOrOne of UInt where 0|1;
     has ZeroOrOne $.WMode is entry;                       #| (Optional) A code that determines the writing mode for any CIDFont with which this CMap is combined. The possible values are 0 for horizontal and 1 for vertical
     my subset NameOrCMap where PDF::COS::Name | PDF::COS::Stream;

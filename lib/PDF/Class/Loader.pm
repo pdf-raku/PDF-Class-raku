@@ -64,16 +64,10 @@ PDF::COS.loader = class PDF::Class::Loader
 	$.find-delegate('Shading').delegate-shading( :$dict );
     }
 
-    multi method load-delegate(Hash :$dict! where {(.<Registry>:exists) && (.<Ordering>:exists)}) {
-	$.find-delegate('CIDSystemInfo');
-    }
-
     multi method load-delegate( Hash :$dict! where {.<Type>:exists}, :$base-class) {
         my $type = from-ast($dict<Type>);
         my $subtype = from-ast($dict<Subtype> // $dict<S>);
-        $type ~~
-            'Border'|'Encoding'|'StructElem' # classess with optional /type & unhandled subtype
-            |'Ind'|'Ttl'|'Org'  # handled by PDF::OCG User attribute
+        $type ~~ 'Ind'|'Ttl'|'Org'  # handled by PDF::OCG User attribute
             ?? $base-class
             !! $.find-delegate( $type, $subtype, :$base-class );
     }
@@ -127,16 +121,11 @@ PDF::COS.loader = class PDF::Class::Loader
     subset ColorSpace-Array of List where {
         my $elems = .elems;
 
-        if 2 <= $elems <= 5
-            && ((my $t = from-ast .[0]) ~~ PDF::COS::Name) {
-            ;
-            $elems == 2
+        2 <= $elems <= 5
+            && ((my $t = from-ast .[0]) ~~ PDF::COS::Name)
+            && ($elems == 2
                 ?? $t ~~ 'CalGray'|'CalRGB'|'Lab'|'ICCBased'|'Pattern' #| PDF Spec 1.7 Section 4.5.4 CIE-Based Color Spaces
-                !! $t ~~ 'Indexed'|'Separation'|'DeviceN'; #| PDF Spec 1.7 Section 4.5.5 Special Color Spaces
-        }
-        else {
-            False
-        }
+                !! $t ~~ 'Indexed'|'Separation'|'DeviceN'); #| PDF Spec 1.7 Section 4.5.5 Special Color Spaces
     }
 
     multi method load-delegate(ColorSpace-Array :$array!) {

@@ -36,7 +36,7 @@ is $cmap-obj.CMapName, '90ms-RKSJ-H', 'CMapName';
 is $cmap-obj.WMode, 0, 'WMode';
 lives-ok {$cmap-obj.WMode = 1}, '$cmap.WMode setter - lives';
 is $cmap-obj.WMode, 1, 'WMode';
-isa-ok $cmap-obj.CIDSystemInfo, ::('PDF::CIDSystemInfo');
+does-ok $cmap-obj.CIDSystemInfo, ::('PDF::CIDSystemInfo');
 like $cmap-obj.decoded, rx/^'%!PS-Adobe-3.0 Resource-CMap'/, 'CMap stream content';
 lives-ok {$cmap-obj.check}, '$cmap-obj.check lives';
 

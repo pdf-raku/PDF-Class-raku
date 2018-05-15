@@ -5,7 +5,6 @@ use PDF::COS::Tie::Hash;
 #| AcroForm role - see PDF::Catalog - /AcroForm entry
 role PDF::AcroForm
     does PDF::COS::Tie::Hash {
-
     # see [PDF 1.7 TABLE 8.67 Entries in the interactive form dictionary]
     use PDF::COS::Tie;
     use PDF::Field :coerce;
