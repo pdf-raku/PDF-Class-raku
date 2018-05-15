@@ -2,13 +2,12 @@ use v6;
 use Test;
 use PDF::Class;
 
-# ensure consistant document ID generation
-srand(123456);
-
 't/helloworld.pdf'.IO.copy('t/update.pdf');
 my $pdf = PDF::Class.open('t/update.pdf');
 my $new-page = $pdf.Pages.add-page;
 $new-page.gfx.say( 'New Last Page!!' );
+# ensure consistant document ID generation
+srand(123456);
 ok $pdf.update(:!info), 'update';
 
 $pdf = PDF::Class.open('t/update.pdf');

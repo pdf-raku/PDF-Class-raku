@@ -10,9 +10,6 @@ use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 
-# ensure consistant document ID generation
-srand(123456);
-
 my $actions = PDF::Grammar::PDF::Actions.new;
 
 my $input = q:to"--END-OBJ--";
@@ -94,4 +91,6 @@ for <top center bottom> -> $valign {
     $x += 60;
 }
 
+# ensure consistant document ID generation
+srand(123456);
 $pdf.save-as('t/pdf-xobject-image.pdf', :!info);

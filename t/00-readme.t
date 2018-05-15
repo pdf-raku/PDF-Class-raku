@@ -1,8 +1,6 @@
 use v6;
 use Test;
 use PDF::Class;
-# ensure consistant document ID generation
-srand(123456);
 
 my $read-me = "README.md".IO.slurp;
 
@@ -23,6 +21,8 @@ for @<code> {
             if ++$n == 4|5 {
                 todo "Class from an eval";
             }
+            # ensure consistant document ID generation
+            srand(123456);
             lives-ok {EVAL $snippet}, 'code sample'
 		or warn "eval error: $snippet";
 	}
