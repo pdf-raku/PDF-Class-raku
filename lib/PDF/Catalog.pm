@@ -119,7 +119,7 @@ class PDF::Catalog
         my subset ListMode of PDF::COS::Name where 'AllPages'|'VisiblePages';
         has ListMode $.ListMode is entry; #| (Optional) A name specifying which optional content groups in the Order array shall be displayed to the user.
         has @.RBGroups is entry; #| (Optional) An array consisting of one or more arrays, each of which represents a collection of optional content groups whose states shall be intended to follow a radio button paradigm. That is, the state of at most one optional content group in each array shall be ON at a time. If one group is turned ON, all others shall be turned OFF.
-       has @.Locked is entry; #| (Optional; PDF 1.6) An array of optional content groups that shall be locked when this configuration is applied.
+       has OCG @.Locked is entry; #| (Optional; PDF 1.6) An array of optional content groups that shall be locked when this configuration is applied.
 }
 
     role OCProperties
