@@ -13,13 +13,15 @@ role PDF::ViewerPreferences
     # see [PDF 1.7 TABLE 8.1 Entries in a viewer preferences dictionary]
     has Bool $.HideToolbar is entry;            #| (Optional) A flag specifying whether to hide the viewer application’s tool bars when the document is active. Default value: false.
 
-    has Bool $.HideMenuBar is entry;            #| (Optional) A flag specifying whether to hide the viewer application’s menu bar when the document is active. Default value: false.
+    has Bool $.HideMenubar is entry;            #| (Optional) A flag specifying whether to hide the viewer application’s menu bar when the document is active. Default value: false.
 
     has Bool $.HideWindowUI is entry;           #| (Optional) A flag specifying whether to hide user interface elements in the document’s window (such as scroll bars and navigation controls), leaving only the document’s contents displayed. Default value: false.
 
     has Bool $.FitWindow is entry;              #| (Optional) A flag specifying whether to resize the document’s window to fit the size of the first displayed page. Default value: false
 
     has Bool $.CenterWindow is entry;           #| (Optional; PDF 1.4) A flag specifying whether the window’s title bar should display the document title taken from the Title entry of the document information dictionary (see Section 10.2.1, “Document Information Dictionary”). If false, the title bar should instead display the name of the PDF file containing the document. Default value: false.
+
+    has Bool $.DisplayDocTitle is entry;        #| (Optional; PDF 1.4) A flag specifying whether the window’s title bar should display the document title taken from the Title entry of the document information dictionary. If false, the title bar should instead display the name of the PDF file containing the document. Default value: false.
 
     my subset PageModes of PDF::COS::Name where 'UseNone' | 'UseOutlines' | 'UseThumbs' | 'UseOC' | 'UseAttachments';
     has PageModes $.NonFullScreenPageMode is entry; #| (Optional) The document’s page mode, specifying how to display the document on exiting full-screen mode:

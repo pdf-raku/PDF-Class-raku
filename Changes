@@ -1,3 +1,11 @@
+Release 0.2.0
+- Simplifications to PDF::Class::Loader. Made PDF::CISSystemInfo a role.
+- Corrections, mostly based on pdf-checker --strict feedback, to:
+  PDF::Font::CIDFont, PDF::Metadata::XML, PDF::Pages,
+  PDF::ViewerPreferences, PDF::Field::Signature,
+  PDF::OutputIntent::GTS_PDFX, PDF::Catalog, PDF::Encoding,
+  PDF::Catalog
+  
 Release 0.1.9
 - Development of PDF::NameTree, PDF::NumberTree, PDF::StructElem and PDF::FontFile
 - Further development of PDF::Destination. Both explicit and named destinations.
