@@ -78,8 +78,8 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     for $obj.keys.sort -> $k {
 
         %required{$k}:delete;
-        # Avoid following /P back to page then back here via page /Annots
-        next if $k eq 'P' && $obj.isa(Annot);
+        # Avoid following /P back to page then back here via page /Annots, which tends to be deeply recursive and difficult to follow
+        next if $k eq 'P' && $obj ~~ Annot;
 	next if @*exclude.grep: $k;
 	my $kid;
 
