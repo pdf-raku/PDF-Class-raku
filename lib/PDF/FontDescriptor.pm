@@ -1,13 +1,11 @@
 use v6;
 
-use PDF::COS::Dict;
-use PDF::Class::Type;
+use PDF::COS::Tie::Hash;
 
 #| /Type /FontDescriptor - the FontDescriptor dictionary
 
-class PDF::FontDescriptor
-    is PDF::COS::Dict
-    does PDF::Class::Type {
+role PDF::FontDescriptor
+    does PDF::COS::Tie::Hash {
 
     use PDF::COS::Tie;
     use PDF::COS::Name;
@@ -17,11 +15,11 @@ class PDF::FontDescriptor
     has PDF::COS::Name $.Type is entry(:required) where 'FontDescriptor';
     has PDF::COS::Name $.FontName is entry(:required); #| (Required) The PostScript name of the font.
     has Str $.FontFamily is entry;                     #| (Optional; PDF 1.5; strongly recommended for Type 3 fonts in Tagged PDF documents) A byte string specifying the preferred font family name
-    subset FontStretchName of PDF::COS::Name where 'ExtraCondensed'|'Condensed'|'SemiCondensed'|'Normal'|'SemiExpanded'|'Expanded'|'ExtraExpanded'|'UltraExpanded';
+    my subset FontStretchName of PDF::COS::Name is export(:FontStretchName) where 'ExtraCondensed'|'Condensed'|'SemiCondensed'|'Normal'|'SemiExpanded'|'Expanded'|'Ext<raExpanded'|'UltraExpanded';
     has FontStretchName $.FontStretch is entry;        #| (Optional; PDF 1.5; strongly recommended for Type 3 fonts in Tagged PDF documents) The font stretch value
-    subset FontWeightValue of Int where 100|200|300|400|500|600|700|800|900;
+    my subset FontWeightValue of Int is export(:FontWeightValue) where 100|200|300|400|500|600|700|800|900;
     has FontWeightValue $.FontWeight is entry;         #| Optional; PDF 1.5; strongly recommended for Type 3 fonts in Tagged PDF documents) The weight (thickness) component of the fully-qualified font name or font specifier.
-    subset FontFlags of Int where 0 ..^ (2 +< 18);
+    my subset FontFlags of Int is export(:FontFlags) where 0 ..^ (2 +< 18);
 	#| See [PDF 1.7 TABLE 5.20 Font flags]
 	#|     BIT POSITION: NAME - MEANING
 	#|     1: FixedPitch - All glyphs have the same width (as opposed to proportional or variable-pitch fonts, which have different widths).
@@ -36,7 +34,7 @@ class PDF::FontDescriptor
     has FontFlags $.Flags is entry;                    #| (Required) A collection of flags defining various characteristics of the font
     has Numeric @.FontBBox is entry(:len(4));          #| (Required, except for Type 3 fonts) A rectangle, expressed in the glyph coordinate system, specifying the font bounding box.
     has Numeric $.ItalicAngle is entry;                #| (Required) The angle, expressed in degrees counterclockwise from the vertical, of the dominant vertical strokes of the font. (
-    has Numeric $.Ascent is entry;                     #| (Required, except for Type 3 fonts) The maximum height above the baseline reached by glyphs in this font, excluding the height of glyphs for accented characters.
+    has Numeric $.Ascent is entry;                     #| (Required, except for Type 3 fonts) The maximum height above the baseline reached by glyphs in this font<, excluding the height of glyphs for accented characters.
     has Numeric $.Descent is entry;                    #| (Required, except for Type 3 fonts) The maximum depth below the baseline reached by glyphs in this font. The value is a negative number.
     has Numeric $.Leading is entry;                    #| (Optional) The spacing between baselines of consecutive lines of text
     has Numeric $.CapHeight is entry;                  #| (Required for fonts that have Latin characters, except for Type 3 fonts) The vertical coordinate of the top of flat capital letters, measured from the baseline
