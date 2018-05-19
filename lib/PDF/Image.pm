@@ -1,5 +1,6 @@
 use v6;
 
+use PDF::Content:ver(v0.2.3+);
 use PDF::Content::XObject;
 use PDF::COS::Tie::Hash;
 
