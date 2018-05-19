@@ -60,7 +60,7 @@ $input = q:to"--END--";
   /Subtype /Link
   /Rect [ 71 717 190 734 ]
   /Border [ 16 16 1 ]
-  /Dest [ 3 0 R /FitR -4 399 199 533 ]
+  /Dest [ << /Type /Page >> /FitR -4 399 199 533 ]
 >> endobj
 --END--
 
@@ -73,7 +73,7 @@ my $link-annot = $ind-obj.object;
 isa-ok $link-annot, (require ::('PDF::Annot::Link'));
 is $link-annot.Type, 'Annot', 'Annot with /Type defaulted';
 is-json-equiv $link-annot.Border, [ 16, 16, 1 ], '.Border';
-is-json-equiv $link-annot.Dest, [ :ind-ref[3, 0], 'FitR', -4, 399, 199, 533], '.Dest';
+is-json-equiv $link-annot.Dest, [ { :Type<Page> }, 'FitR', -4, 399, 199, 533], '.Dest';
 lives-ok {$link-annot.check}, '$link-annot.check lives';
 
 $input = q:to"--END--";

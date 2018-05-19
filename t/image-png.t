@@ -19,7 +19,7 @@ my $png1 = PDF::Content::Image::PNG.new.read: "t/images/basn0g08.png".IO.open(:r
 
 check-png($png1);
 
-my $dict = $png1.to-dict;
+my $dict = $png1.to-dict(:xobject);
 isa-ok $dict, PDF::XObject::Image;
 is $dict<Width>, 32, 'dict width';
 is $dict<Height>, 32, 'dict height';

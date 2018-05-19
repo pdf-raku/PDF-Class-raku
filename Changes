@@ -1,5 +1,8 @@
+Release 0.2.1
+- Added PDF::Action::GoToR - goto remote
+- Added PDF::Image. Utilize in PDF::Page.Thumb(thumbnail-image)
 Release 0.2.0
-- Simplifications to PDF::Class::Loader. Made PDF::CISSystemInfo a role.
+- Simplifications to PDF::Class::Loader. Made PDF::CIDSystemInfo a role.
 - Corrections, mostly based on pdf-checker --strict feedback, to:
   PDF::Font::CIDFont, PDF::Metadata::XML, PDF::Pages,
   PDF::ViewerPreferences, PDF::Field::Signature,

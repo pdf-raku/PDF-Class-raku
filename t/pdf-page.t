@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 40;
+plan 42;
 
 use PDF::IO::IndObj;
 use PDF::Class;
@@ -9,6 +9,7 @@ use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::COS::Stream;
+use PDF::Image;
 
 my $actions = PDF::Grammar::PDF::Actions.new;
 
@@ -44,6 +45,9 @@ $page.Contents = $dummy-stream;
 is-deeply $page.Contents, ($dummy-stream), '$.Contents accessor';
 is-deeply $page.content-streams, [$dummy-stream], '$.contents accessor';
 is-deeply $page.contents, '%dummy stream', '$.contents accessor';
+
+lives-ok {$page.Thumb = PDF::Image.open: "t/images/dna.small.gif"}, '$page.Thumb = $image - lives';
+lives-ok {$page.Thumb.data-uri}, '$page.Thumb.data-uri - lives';
 
 my $font = $page.core-font( 'Helvetica' );
 isa-ok $font, (require ::('PDF::Font::Type1'));

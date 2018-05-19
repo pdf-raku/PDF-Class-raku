@@ -13,7 +13,8 @@ role PDF::Destination does PDF::COS::Tie::Array {
         »;
     use PDF::Page;
     use PDF::COS::Name;
-    has PDF::Page $.page is index(0);
+    my subset PageRef where PDF::Page|UInt;
+    has PageRef $.page is index(0);
     has PDF::COS::Name $.fit is index(1);
     # See [PDF 1.7 TABLE 8.2 Destination syntax]
     multi sub is-destination($page, 'XYZ', NumNull $left?,
@@ -39,17 +40,17 @@ role PDF::Destination does PDF::COS::Tie::Array {
 
     #| constructs a new PDF::Destination array object
     sub fit(Fit $f) { $f.value }
-    multi method construct(FitWindow,  PDF::Page :$page!, )                { self!dest: [$page, fit(FitWindow), ] }
-    multi method construct(FitHoriz,   PDF::Page :$page!, Numeric :$top )  { self!dest: [$page, fit(FitHoriz),    $top ] }
-    multi method construct(FitVert,    PDF::Page :$page!, Numeric :$left ) { self!dest: [$page, fit(FitVert),     $left ] }
-    multi method construct(FitBox,     PDF::Page :$page!, )                { self!dest: [$page, fit(FitBox),      ] }
-    multi method construct(FitBoxHoriz,PDF::Page :$page!, Numeric :$top )  { self!dest: [$page, fit(FitBoxHoriz), $top] }
-    multi method construct(FitBoxVert, PDF::Page :$page!, Numeric :$left ) { self!dest: [$page, fit(FitBoxVert),  $left] }
+    multi method construct(FitWindow,  :$page!, )                { self!dest: [$page, fit(FitWindow), ] }
+    multi method construct(FitHoriz,   :$page!, Numeric :$top )  { self!dest: [$page, fit(FitHoriz),    $top ] }
+    multi method construct(FitVert,    :$page!, Numeric :$left ) { self!dest: [$page, fit(FitVert),     $left ] }
+    multi method construct(FitBox,     :$page!, )                { self!dest: [$page, fit(FitBox),      ] }
+    multi method construct(FitBoxHoriz,:$page!, Numeric :$top )  { self!dest: [$page, fit(FitBoxHoriz), $top] }
+    multi method construct(FitBoxVert, :$page!, Numeric :$left ) { self!dest: [$page, fit(FitBoxVert),  $left] }
 
-    multi method construct(FitXYZoom,   PDF::Page :$page!, Numeric :$left,
+    multi method construct(FitXYZoom,   :$page!, Numeric :$left,
                            Numeric :$top, Numeric :$zoom )       { self!dest: [$page, fit(FitXYZoom), $left, $top, $zoom ] }
 
-    multi method construct(FitRect,    PDF::Page :$page!,
+    multi method construct(FitRect,    :$page!,
                            Numeric :$left!,   Numeric :$bottom!,
                            Numeric :$right!,  Numeric :$top!, )  { self!dest: [$page, fit(FitRect),   $left,
                                                                                                       $bottom, $right, $top] }
@@ -58,7 +59,15 @@ role PDF::Destination does PDF::COS::Tie::Array {
     # Coercions for explicit and named destinations
     # a named destination may be either a byte-string or name object
     my subset DestSpec is export(:DestSpec) where PDF::Destination|Str;
-    sub coerce-dest(Array $_, DestSpec) is export(:coerce-dest) {
+    my subset DestPageRef of Array where .[0] ~~ PDF::Page;
+    proto sub coerce-dest($,$) is export(:coerce-dest) {*};
+    multi sub coerce-dest(DestPageRef $_, DestSpec) {
+        PDF::COS.coerce( $_, $?ROLE.delegate-destination($_) );
+    }
+
+    my subset DestSpecRemote is export(:DestSpecRemote) where PDF::Destination|Str;
+    my subset DestPageNum of Array where .[0] ~~ UInt;
+    multi sub coerce-dest(DestPageNum $_, DestSpecRemote) {
         PDF::COS.coerce( $_, $?ROLE.delegate-destination($_) );
     }
 

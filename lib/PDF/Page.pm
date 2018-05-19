@@ -16,6 +16,7 @@ class PDF::Page
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::COS::Stream;
+    use PDF::Image;
 
     # see [PDF 1.7 TABLE 3.27 Entries in a page object]
     has PDF::COS::Name $.Type is entry(:required) where 'Page';
@@ -33,7 +34,7 @@ class PDF::Page
     subset NinetyDegreeAngle of Int where { $_ %% 90}
     has NinetyDegreeAngle $.Rotate is entry(:inherit);     #| (Optional; inheritable) The number of degrees by which the page should be rotated clockwise when displayed or printed
     has Hash $.Group is entry;                   #| (Optional; PDF 1.4) A group attributes dictionary specifying the attributes of the page’s page group for use in the transparent imaging model
-    has PDF::COS::Stream $.Thumb is entry;       #| (Optional) A stream object defining the page’s thumbnail image
+    has PDF::Image $.Thumb is entry(:alias<thumbnail-image>);       #| (Optional) A stream object defining the page’s thumbnail image
     has @.B is entry(:indirect, :alias<beads>);                 #| (Optional; PDF 1.1; recommended if the page contains article beads) An array of indirect references to article beads appearing on the page
     has Numeric $.Dur is entry(:alias<display-duration>);       #| (Optional; PDF 1.1) The page’s display duration (also called its advance timing): the maximum length of time, in seconds, that the page is displayed during presentations before the viewer application automatically advances to the next page
     has Hash $.Trans is entry(:alias<transition-effect>);       #| (Optional; PDF 1.1) A transition dictionary describing the transition effect to be used when displaying the page during presentations
