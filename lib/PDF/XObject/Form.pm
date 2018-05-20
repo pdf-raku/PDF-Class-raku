@@ -32,4 +32,6 @@ class PDF::XObject::Form
     has Hash $.OPI is entry;                #| (Optional; PDF 1.2) An OPI version dictionary for the form XObject
     has Hash $.OC is entry(:alias<optional-content-group>);                 #| (Optional; PDF 1.5) An optional content group or optional content membership dictionary
 
+    use PDF::COS::Name;
+    has PDF::COS::Name $.Name is entry; #| (Required in PDF 1.0; optional otherwise) The name by which this form XObject is referenced in the XObject subdictionary of the current resource dictionary.
 }

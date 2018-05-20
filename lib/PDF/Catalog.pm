@@ -23,7 +23,7 @@ class PDF::Catalog
 
     has PDF::COS::Name $.Version is entry;               #| (Optional; PDF 1.4) The version of the PDF specification to which the document conforms (for example, 1.4)
 
-    my subset Pages of PDF::Class::Type where { .type eq 'Pages' }; # autoloaded PDF::Pages
+    my subset Pages of PDF::Class::Type where { .<Type> ~~ 'Pages' }; # autoloaded PDF::Pages
     has Pages $.Pages is entry(:required, :indirect);    #| (Required; must be an indirect reference) The page tree node that is the root of the document’s page tree
 
     use PDF::NumberTree;
@@ -76,10 +76,10 @@ class PDF::Catalog
     use PDF::AcroForm;
     has PDF::AcroForm $.AcroForm is entry;               #| (Optional; PDF 1.2) The document’s interactive form (AcroForm) dictionary
 
-    my subset Metadata of PDF::COS::Stream where { .type eq 'Metadata' && .subtype eq 'XML' }; # autoloaded PDF::Metadata::XML
+    my subset Metadata of PDF::COS::Stream where { .<Type> ~~ 'Metadata' && .<Subtype> ~~ 'XML' }; # autoloaded PDF::Metadata::XML
     has Metadata $.Metadata is entry(:indirect);         #| (Optional; PDF 1.4; must be an indirect reference) A metadata stream containing metadata for the document
 
-    my subset StructTreeRoot of PDF::Class::Type where { .type eq 'StructTreeRoot' }; # autoloaded PDF::StructTreeRoot
+    my subset StructTreeRoot of PDF::Class::Type where { .<Type> ~~ 'StructTreeRoot' }; # autoloaded PDF::StructTreeRoot
     has StructTreeRoot $.StructTreeRoot is entry;        #| (Optional; PDF 1.3) The document’s structure tree root dictionary
 
     role MarkInfoDict
@@ -102,7 +102,7 @@ class PDF::Catalog
 
     has PDF::COS::Dict $.PieceInfo is entry;             #| (Optional; PDF 1.4) A page-piece dictionary associated with the document
 
-    my subset OCG of PDF::Class::Type where { .type eq 'OCG' }; # autoloaded PDF::OCG (Optional Content Group)
+    my subset OCG of PDF::Class::Type where { .<Type> ~~ 'OCG' }; # autoloaded PDF::OCG (Optional Content Group)
 
     role OCConfig
 	does PDF::COS::Tie::Hash {
