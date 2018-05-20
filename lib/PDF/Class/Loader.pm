@@ -68,6 +68,7 @@ PDF::COS.loader = class PDF::Class::Loader
         my $type = from-ast($dict<Type>);
         my $subtype = from-ast($dict<Subtype> // $dict<S>);
         $type ~~ 'Ind'|'Ttl'|'Org'  # handled by PDF::OCG User attribute
+            |'OutputIntent' # no specific subclasses
             ?? $base-class
             !! $.find-delegate( $type, $subtype, :$base-class );
     }
@@ -99,13 +100,16 @@ PDF::COS.loader = class PDF::Class::Loader
 	}
     }
 
-    #| Reverse lookup for classes when /S (subtype) is required, but optional /Type is absent
+    #| Reverse lookup for classes when /S (subtype) is required, but /Type is optional
     multi method load-delegate(Hash :$dict! where {.<S>:exists }, :$base-class) {
 	my $subtype = from-ast $dict<S>;
 
 	my $type = do given $subtype {
             when 'Alpha'|'Luminosity' { 'Mask' }
-            when 'GTS_PDFX' { 'OutputIntent' }
+            when 'GTS_PDFX'|'GTS_PDFA1'|'ISO_PDFE1' {
+                    $subtype = Nil;
+                    'OutputIntent';
+                 }
             when 'GoTo'|'GoToR'|'GoToE'|'Launch'|'Thread'|'URI'|'Sound'|'Movie'|'Hide'|'Named'|'SubmitForm'|'ResetForm'|'ImportData'|'JavaScript'|'SetOCGState'|'Rendition'|'Trans'|'GoTo3DView' { 'Action' }
             default { Nil }
 	};

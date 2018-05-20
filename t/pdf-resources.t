@@ -10,6 +10,7 @@ use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::Font::TrueType;
 use PDF::Font::Type0;
+use PDF::OutputIntent;
 
 require ::('PDF::Catalog');
 my $dict = { :Outlines(:ind-ref[2, 0]), :Type( :name<Catalog> ), :Pages{ :Type( :name<Pages> ) } };
@@ -94,12 +95,12 @@ PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
 %ast = $/.ast;
 
 $ind-obj = PDF::IO::IndObj.new( :$input, |%ast, :$reader );
-my $oi-font-obj = $ind-obj.object;
-isa-ok $oi-font-obj, ::('PDF::OutputIntent::GTS_PDFX');
-is $oi-font-obj.S, 'GTS_PDFX', 'OutputIntent S';
-is $oi-font-obj.OutputCondition, 'CGATS TR 001 (SWOP)', 'OutputIntent OutputCondition';
-is $oi-font-obj.RegistryName, 'http://www.color.org', 'OutputIntent RegistryName';
-lives-ok {$oi-font-obj.check}, '$io-font-obj.check lives';
+my $oi-obj = PDF::COS.coerce($ind-obj.object, PDF::OutputIntent);
+does-ok $oi-obj, PDF::OutputIntent;
+is $oi-obj.S, 'GTS_PDFX', 'OutputIntent S';
+is $oi-obj.OutputCondition, 'CGATS TR 001 (SWOP)', 'OutputIntent OutputCondition';
+is $oi-obj.RegistryName, 'http://www.color.org', 'OutputIntent RegistryName';
+lives-ok {$oi-obj.check}, '$io-obj.check lives';
 
 use PDF::Page;
 use PDF::XObject::Form;
