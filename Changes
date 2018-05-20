@@ -5,6 +5,7 @@ Release 0.2.1
 - Changed PDF::FontDescriptor from a class to a role
 - Removed subcass PDF::OutputIntent::GTS_PDFX
 - Fixed setup of Resources ProcSet array
+- Improved page navigation in pdf-checker.p6
 
 Release 0.2.0
 - Simplifications to PDF::Class::Loader. Made PDF::CIDSystemInfo a role.

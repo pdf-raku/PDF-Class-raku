@@ -40,7 +40,7 @@ sub MAIN(Str $infile,                 #= input PDF
          Bool :$*trace,               #= show progress
          Bool :$*render,              #= validate/check contents of pages, etc
          Bool :$*strict,              #= perform additional checks
-         UInt :$*max-depth = 200,     #= maximum recursion depth
+         UInt :$*max-depth = 100,     #= maximum recursion depth
 	 Str  :$exclude,              #= excluded entries: Entry1,Entry2,
          Bool :$repair = False        #= repair PDF before checking
          ) {
@@ -56,7 +56,7 @@ sub MAIN(Str $infile,                 #= input PDF
     @*exclude = $exclude.split(/:s ',' /)
     	      if $exclude;
     check( $doc, :ent<xref> );
-    say "checking of $infile completed with $warnings warnings and $errors errors";
+    say "Checking of $infile completed with $warnings warnings and $errors errors";
 }
 
 |# Recursively check a dictionary (array) object
@@ -90,7 +90,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 
 	    CATCH {
 		default {
-		    error("error in {ref($obj)} ({$obj.WHAT.^name}) /$k entry: $_");
+		    error("Error in {ref($obj)} ({$obj.WHAT.^name}) /$k entry: $_");
 		}
 	    }
 	}
@@ -101,10 +101,10 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 	    if $*strict && +$entries && !($entries{$k}:exists);
     }
 
-    error("error in {ref($obj)} ({$obj.WHAT.^name}), missing required field(s): {%required.keys.sort.join(', ')}")
+    error("Error in {ref($obj)} ({$obj.WHAT.^name}), missing required field(s): {%required.keys.sort.join(', ')}")
         if %required;
 
-    warning("unknown entries {ref($obj)} ({$obj.WHAT.^name}) struct: @unknown-entries[]")
+    warning("Unknown entries {ref($obj)} ({$obj.WHAT.^name}) struct: @unknown-entries[]")
         if @unknown-entries;
 }
 
@@ -133,7 +133,8 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 		}
 	    }
 	}
-	check($kid, :ent("\[$_\]"), :$depth)  if $kid ~~ Array | Hash;
+	check($kid, :ent("\[$_\]"), :$depth)  if $kid ~~ Array | Hash
+            && !($_ == 0 && $accessor ~~ 'page'); # avoid recursing to page destinations
     }
 }
 
@@ -175,7 +176,7 @@ sub check-contents( $obj ) {
 
     CATCH {
 	default {
-	    error("unable to render {ref($obj)} contents: $_"); 
+	    error("Unable to render {ref($obj)} contents: $_"); 
 	}
     }
 }
