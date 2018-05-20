@@ -151,7 +151,7 @@ class PDF::Catalog
         self<Pages> //= PDF::COS.coerce(
             :dict{
                 :Type( :name<Pages> ),
-                :Resources{ :Procset[ :name<PDF>, :name<Text> ] },
+                :Resources{ :ProcSet[ :name<PDF>, :name<Text> ] },
                 :Count(0),
                 :Kids[],
 	    });

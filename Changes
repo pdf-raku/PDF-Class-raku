@@ -3,6 +3,7 @@ Release 0.2.1
 - Added PDF::Image. Use for PDF::Page.Thumb(thumbnail-image) attribute
 - Changed PDF::FontDescriptor from a class to a role
 - Removed subcass PDF::OutputIntent::GTS_PDFX
+- Fixed setup of Resources ProcSet array
 Release 0.2.0
 - Simplifications to PDF::Class::Loader. Made PDF::CIDSystemInfo a role.
 - Corrections, mostly based on pdf-checker --strict feedback, to:
