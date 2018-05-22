@@ -21,6 +21,7 @@ role PDF::OutputIntent
     has Str $.OutputConditionIdentifier is entry(:required);  #| (Required) An ASCII string identifying the intended output device or production condition in human- or machine-readable form.
     has Str $.RegistryName is entry;                          #| (Optional) An ASCII string (conventionally a uniform resource identifier, or URI) identifying the registry in which the condition designated by OutputConditionIdentifier is defined
     has PDF::COS::TextString $.Info is entry;                 #| (Required if OutputConditionIdentifier does not specify a standard production condition; optional otherwise) A human-readable text string containing additional information or comments about the intended target device or production condition
-    has PDF::COS::Stream $.DestOutputProfile is entry;        #| (Required if OutputConditionIdentifier does not specify a standard production condition; optional otherwise) An ICC profile stream defining the transformation from the PDF document’s source colors to output device colorants.
+    use PDF::ICCProfile;
+    has PDF::ICCProfile $.DestOutputProfile is entry;        #| (Required if OutputConditionIdentifier does not specify a standard production condition; optional otherwise) An ICC profile stream defining the transformation from the PDF document’s source colors to output device colorants.
 
 }

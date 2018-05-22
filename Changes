@@ -1,5 +1,6 @@
 Release 0.2.2
 - Fix PDF::Shading::Function
+- Added PDF::ICCProfile, PDF::Annot::Caret
 
 Release 0.2.1
 - Added PDF::Action::GoToR - goto remote
