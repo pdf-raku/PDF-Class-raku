@@ -1,9 +1,12 @@
+Release 0.2.2
+- Fix PDF::Shading::Function
+
 Release 0.2.1
 - Added PDF::Action::GoToR - goto remote
 - Added PDF::Action::Named - named action
 - Added PDF::Image. Use for PDF::Page.Thumb(thumbnail-image) attribute
 - Changed PDF::FontDescriptor from a class to a role
-- Removed subcass PDF::OutputIntent::GTS_PDFX
+- Removed subclass PDF::OutputIntent::GTS_PDFX
 - Fixed setup of Resources ProcSet array
 - Improved page navigation in pdf-checker.p6
 

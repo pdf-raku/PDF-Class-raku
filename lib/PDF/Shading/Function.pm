@@ -5,7 +5,7 @@ use PDF::Shading;
 
 #| /ShadingType 1 - Functional
 
-class PDF::Shading::Functional
+class PDF::Shading::Function
     is PDF::COS::Dict
     does PDF::Shading {
 
