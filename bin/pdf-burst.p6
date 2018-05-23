@@ -25,10 +25,10 @@ sub MAIN(Str $infile,            #| input PDF
         ?? $*IN
 	!! $infile;
 
-    my $doc = PDF::Class.open( $input, :$password);
-    my $catalog = $doc<Root>;
+    my PDF::Class $pdf .= open( $input, :$password);
+    my $catalog = $pdf.catalog;
 
-    my UInt $pages = $doc.page-count;
+    my UInt $pages = $pdf.page-count;
 
     for 1 .. $pages -> UInt $page-num {
 
@@ -36,7 +36,7 @@ sub MAIN(Str $infile,            #| input PDF
 	die "invalid 'sprintf' output page format: $save-as"
 	    if $save-page-as eq $save-as;
 
-	my $page = $doc.page($page-num);
+	my $page = $pdf.page($page-num);
 
         with $catalog.Pages {
             # pretend this is the only page in the document
@@ -45,7 +45,7 @@ sub MAIN(Str $infile,            #| input PDF
             temp $page.Parent = $catalog;
 
 	    warn "saving page: $save-page-as";
-	    $doc.save-as( $save-page-as, :rebuild );
+	    $pdf.save-as( $save-page-as, :rebuild );
         }
     }
 

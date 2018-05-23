@@ -12,31 +12,31 @@ sub MAIN(Str $infile,              #| input PDF
         ?? $*IN
 	!! $infile;
 
-    my $doc = PDF::Class.open( $input, :$password);
+    my PDF::Class $pdf .= open( $input, :$password);
 
-    my UInt $revs = + $doc.reader.xrefs;
+    my UInt $revs = + $pdf.reader.xrefs;
 
     if $count {
 	say $revs;
     }
     elsif $revs < 1 {
-	die "Error: this does not seem to be a PDF document\n";
+	die "Error: this does not seem to be an indexed PDF document\n";
     }
     elsif $revs == 1 {
 	die "Error: there is only one revision in this PDF document.  It cannot be reverted.\n";
     }
     else {
         constant EOF-MARKER = '%%EOF';
-        my UInt $prev = $doc.reader.xrefs[*-2];
-	my Str $body = $doc.reader.input.substr(0, $prev);
-	my Str $tail = $doc.reader.input.substr($prev);
+        my UInt $prev = $pdf.reader.xrefs[*-2];
+	my Str $body = $pdf.reader.input.substr(0, $prev);
+	my Str $tail = $pdf.reader.input.substr($prev);
         my UInt $eof-index = $tail.index(EOF-MARKER)
             // die "Cannot find the end-of-file marker\n";
-        my Str $xref = $tail.substr(0, $eof-index + EOF-MARKER.chars);
+        my Str $xref = $tail.substr(0, $eof-index + EOF-MARKER.ords);
 
 	my $fh = $save-as eq q{-}
 	   ?? $*OUT
-	   !! $outfile.IO.open( :w, :enc<latin-1> );
+	   !! $save-as.IO.open( :w, :enc<latin-1> );
 
 	$fh.print: $body;
 	$fh.print: $xref;
@@ -56,7 +56,7 @@ pdf-revert.p6 - Remove the last edits to a PDF document
  pdf-revert.p6 [options] --save-as=outfile.pdf infile.pdf
 
  Options:
-   -c --count          just print the number of revisions and exits
+   --count          just print the number of revisions and exits
 
 =head1 DESCRIPTION
 
@@ -75,7 +75,7 @@ has endured and applies no changes.
 =head1 SEE ALSO
 
 CAM::PDF (Perl 5)
-PDF (Perl 6)
+PDF::Class (Perl 6)
 
 =head1 AUTHOR
 

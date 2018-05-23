@@ -2,8 +2,8 @@
 use v6;
 
 use PDF::Class;
-use PDF::IO::Input::Str;
-use PDF::IO::Input::IOH;
+use PDF::IO::Str;
+use PDF::IO::Handle;
 
 multi sub pretty-print(DateTime $dt --> Str) {
     sprintf('%s %s %02d %02d:%02d:%02d %04d',
@@ -36,21 +36,21 @@ multi sub MAIN(Str $infile,           #| input PDF
     ) {
 
     my $input = $infile eq '-'
-	?? PDF::IO::Input::Str.new( :value($*IN.slurp-rest( :enc<latin-1> )) )
-	!! PDF::IO::Input::IOH.new( :value($infile.IO.open( :enc<latin-1> )) );
+	?? PDF::IO::Str.new( :value($*IN.slurp-rest( :enc<latin-1> )) )
+	!! PDF::IO::Handle.new( :value($infile.IO.open( :enc<latin-1> )) );
 
-    my $doc = PDF::Class.open( $input, :$password );
+    my PDF::Class $pdf .= open( $input, :$password );
 
     my UInt $size = $input.codes;
-    my UInt $pages = $doc.page-count;
-    my Version $pdf-version = $doc.version;
-    my $pdf-info = $doc.Info;
-    my $box = $doc.Pages.MediaBox;
-    my $encrypt = $doc.Encrypt;
-    my $catalog = $doc.Root;
+    my UInt $pages = $pdf.page-count;
+    my Version $pdf-version = $pdf.version;
+    my $pdf-info = $pdf.Info;
+    my $box = $pdf.Pages.MediaBox;
+    my $encrypt = $pdf.Encrypt;
+    my $catalog = $pdf.Root;
     my $tagged  = $catalog.?MarkInfo.?Marked   // False;
     my $partial = $catalog.?MarkInfo.?Suspects // False;
-    my UInt $revisions = + $doc.reader.xrefs;
+    my UInt $revisions = + $pdf.reader.xrefs;
 
     my UInt @page-size = $box
 	?? ($box[2] - $box[0],  $box[3] - $box[1])
@@ -68,24 +68,24 @@ multi sub MAIN(Str $infile,           #| input PDF
     }
     say 'Tagged:       ' ~ yes-no($tagged) ~ ($partial ?? ' (partial)' !! '');
     say 'Page Size:    ' ~ (@page-size[0] ?? "@page-size[0] x @page-size[1] pts" !! 'variable');
-##	say 'Optimized:    '.($doc->isLinearized()?'yes':'no');
+##	say 'Optimized:    '.($pdf->isLinearized()?'yes':'no');
 	say "PDF version:  $pdf-version";
 	say "Revisions:    $revisions";
-        use PDF::DAO::Type::Encrypt :PermissionsFlag;
+        use PDF::COS::Type::Encrypt :PermissionsFlag;
 
 	print 'Encryption:   ';
-	if my $enc = $doc.Encrypt and $enc.O {
+	if my $enc = $pdf.Encrypt and $enc.O {
             my $V = $enc.V // 0;
             my $Length = $enc.Length // 40;
 	    print "yes (";
 
 	    # show user, not owner, permissions
-	    temp $doc.reader.crypt.is-owner = False
-	        if $doc.reader.?crypt;
+##	    temp $pdf.reader.crypt.is-owner = False
+##	        if $pdf.reader.?crypt;
 
             for :print(PermissionsFlag::Print), :copy(PermissionsFlag::Copy),
                 :change(PermissionsFlag::Modify), :addNotes(PermissionsFlag::Add) {
-	        print "{.key}:{yes-no( $doc.permitted: .value)} ";
+	        print "{.key}:{yes-no( $pdf.permitted: .value)} ";
             }
             say "algorithm:RC4 {$V}.{$enc.R}, $Length bits)";
 	}

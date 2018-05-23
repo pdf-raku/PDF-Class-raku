@@ -28,7 +28,8 @@ sub warning($msg) {
 }
 
 sub ref($obj) {
-    $obj.obj-num
+    my $obj-num = $obj.obj-num;
+    $obj-num && $obj-num > 0
 	?? "{$obj.obj-num} {$obj.gen-num//0} R "
         !! $*writer.write($obj.content).subst(/\s+/, ' ', :g);
 }
@@ -52,17 +53,19 @@ sub MAIN(Str $infile,                 #= input PDF
             .resume
         }
     }
-    my $doc = (require ::($class)).open( $infile, :$password, :$repair );
+    my $pdf = (require ::($class)).open( $infile, :$password, :$repair );
     @*exclude = $exclude.split(/:s ',' /)
     	      if $exclude;
-    check( $doc, :ent<xref> );
+    check( $pdf, :ent<xref> );
     say "Checking of $infile completed with $warnings warnings and $errors errors";
 }
 
 |# Recursively check a dictionary (array) object
 multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     my $obj-num = $obj.obj-num;
-    return if $obj-num && %indobj-seen{"$obj-num {$obj.gen-num}"}++;
+    return
+        if $obj-num && $obj-num > 0
+           && %indobj-seen{"$obj-num {$obj.gen-num}"}++;
     $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t{ref($obj)} ({$obj.WHAT.^name})"
 	if $*trace;
     die "maximum depth of $*max-depth exceeded $ent: {ref($obj)}"
@@ -76,7 +79,6 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
      my %required = $entries.pairs.grep(*.value.tied.is-required);
 
     for $obj.keys.sort -> $k {
-
         %required{$k}:delete;
         # Avoid following /P back to page then back here via page /Annots, which tends to be deeply recursive and difficult to follow
         next if $k eq 'P' && $obj ~~ Annot;
@@ -111,7 +113,9 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 #| Recursively check an array object
 multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     my $obj-num = $obj.obj-num;
-    return if $obj-num && %indobj-seen{"$obj-num {$obj.gen-num}"}++;
+    return
+        if $obj-num && $obj-num > 0
+           && %indobj-seen{"$obj-num {$obj.gen-num}"}++;
 
     $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t{ref($obj)} ({$obj.WHAT.^name})"
 	if $*trace;

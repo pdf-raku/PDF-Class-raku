@@ -1,7 +1,7 @@
 #!/usr/bin/env perl6
 use v6;
 use PDF::Class;
-use PDF::DAO::Type::Encrypt :PermissionsFlag;
+use PDF::COS::Type::Encrypt :PermissionsFlag;
 
 sub MAIN(*@files, Str :$save-as)  {
 
