@@ -45,7 +45,18 @@ class PDF::Catalog
     has Names $.Names is entry;                  #| (Optional; PDF 1.2) The document’s name dictionary
 
     use PDF::Destination :DestSpec, :coerce-dest;
-    has DestSpec %.Dests is entry(:coerce(&coerce-dest));    #| (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
+    my role DestDict does PDF::COS::Tie::Hash {
+        # Intermediate Dictionary with a <D> entry
+        has DestSpec $.D is entry(:required, :alias<destination>, :coerce(&coerce-dest));
+    }
+    my subset Dest where DestSpec|DestDict;
+    multi sub coerce(Hash $dict, Dest) {
+        PDF::COS.coerce($dict, DestDict);
+    }
+    multi sub coerce($dest, Dest) is default {
+        PDF::COS.coerce($dest, DestSpec);
+    }
+    has Dest %.Dests is entry(:&coerce);    #| (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
 
     use PDF::ViewerPreferences;
     has PDF::ViewerPreferences $.ViewerPreferences is entry; #| (Optional; PDF 1.2) A viewer preferences dictionary specifying the way the document is to be displayed on the screen.
