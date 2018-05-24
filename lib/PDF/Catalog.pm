@@ -18,6 +18,16 @@ class PDF::Catalog
     use PDF::COS::Null;
     use PDF::COS::Stream;
     use PDF::COS::TextString;
+    use PDF::NumberTree;
+    use PDF::NameTree;
+    use PDF::Destination :DestSpec, :coerce-dest;
+    use PDF::ViewerPreferences;
+    use PDF::Outlines;
+    use PDF::Action;
+    use PDF::Action::URI;
+    use PDF::AcroForm;
+    use PDF::OutputIntent;
+    use PDF::Resources;
 
     has PDF::COS::Name $.Type is entry(:required) where 'Catalog';
 
@@ -26,10 +36,8 @@ class PDF::Catalog
     my subset Pages of PDF::Class::Type where { .<Type> ~~ 'Pages' }; # autoloaded PDF::Pages
     has Pages $.Pages is entry(:required, :indirect);    #| (Required; must be an indirect reference) The page tree node that is the root of the document’s page tree
 
-    use PDF::NumberTree;
     has PDF::NumberTree $.PageLabels is entry;           #| (Optional; PDF 1.3) A number tree defining the page labeling for the document.
 
-    use PDF::NameTree;
     my role Names does PDF::COS::Tie::Hash {
         has PDF::NameTree $.Dests is entry;                  #| (Optional; PDF 1.2) A name tree mapping name strings to destinations.
         has PDF::NameTree $.AP is entry;                     #| (Optional; PDF 1.3) A name tree mapping name strings to annotation appearance streams.
@@ -44,7 +52,6 @@ class PDF::Catalog
     }
     has Names $.Names is entry;                  #| (Optional; PDF 1.2) The document’s name dictionary
 
-    use PDF::Destination :DestSpec, :coerce-dest;
     my role DestDict does PDF::COS::Tie::Hash {
         # Intermediate Dictionary with a <D> entry
         has DestSpec $.D is entry(:required, :alias<destination>, :coerce(&coerce-dest));
@@ -58,7 +65,6 @@ class PDF::Catalog
     }
     has Dest %.Dests is entry(:&coerce);    #| (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
 
-    use PDF::ViewerPreferences;
     has PDF::ViewerPreferences $.ViewerPreferences is entry; #| (Optional; PDF 1.2) A viewer preferences dictionary specifying the way the document is to be displayed on the screen.
 
     subset PageLayout of PDF::COS::Name where 'SinglePage'|'OneColumn'|'TwoColumnLeft'|'TwoColumnRight'|'TwoPageLeft'|'TwoPageRight';
@@ -67,12 +73,10 @@ class PDF::Catalog
     subset PageMode of PDF::COS::Name where 'UseNone'|'UseOutlines'|'UseThumbs'|'FullScreen'|'UseOC'|'UseAttachments';
     has PageMode $.PageMode is entry;                        #| (Optional) A name object specifying how the document should be displayed when opened
 
-    use PDF::Outlines;
     has PDF::Outlines $.Outlines is entry(:indirect); #| (Optional; must be an indirect reference) The outline dictionary that is the root of the document’s outline hierarchy
 
     has PDF::COS::Dict @.Threads is entry(:indirect);        #| (Optional; PDF 1.1; must be an indirect reference) An array of thread dictionaries representing the document’s article threads
 
-    use PDF::Action;
     my subset ActionOrDestSpec where PDF::Action|DestSpec;
     multi sub coerce(List $_ is rw, ActionOrDestSpec) is default {
         coerce-dest($_, DestSpec);
@@ -81,10 +85,8 @@ class PDF::Catalog
 
     has PDF::COS::Dict $.AA is entry(:alias<additional-actions>);                    #| (Optional; PDF 1.4) An additional-actions dictionary defining the actions to be taken in response to various trigger events affecting the document as a whole
 
-    use PDF::Action::URI;
     has PDF::Action::URI $.URI is entry;                 #| (Optional; PDF 1.1) A URI dictionary containing document-level information for URI
 
-    use PDF::AcroForm;
     has PDF::AcroForm $.AcroForm is entry;               #| (Optional; PDF 1.2) The document’s interactive form (AcroForm) dictionary
 
     my subset Metadata of PDF::COS::Stream where { .<Type> ~~ 'Metadata' && .<Subtype> ~~ 'XML' }; # autoloaded PDF::Metadata::XML
@@ -108,7 +110,6 @@ class PDF::Catalog
 
     has PDF::COS::Dict $.SpiderInfo is entry;            #| (Optional; PDF 1.3) A Web Capture information dictionary containing state information used by the Acrobat Web Capture (AcroSpider) plug-in extension
 
-    use PDF::OutputIntent;
     has PDF::OutputIntent @.OutputIntents is entry;      #| (Optional; PDF 1.4) An array of output intent dictionaries describing the color characteristics of output devices on which the document might be rendered
 
     has PDF::COS::Dict $.PieceInfo is entry;             #| (Optional; PDF 1.4) A page-piece dictionary associated with the document
@@ -152,7 +153,6 @@ class PDF::Catalog
 
     has Bool $.NeedsRendering is entry;         #| (Optional; PDF 1.7) A flag used to expedite the display of PDF documents containing XFA forms. It specifies whether the document must be regenerated when the document is first opened.
 
-    use PDF::Resources;
     has PDF::Resources $.Resources is entry;
 
     method cb-init {

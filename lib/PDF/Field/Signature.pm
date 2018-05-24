@@ -9,6 +9,9 @@ role PDF::Field::Signature
     use PDF::COS::Name;
     use PDF::COS::TextString;
 
+    use PDF::Signature;
+    has PDF::Signature $.V is entry;
+
     my role LockDict
 	does PDF::COS::Tie::Hash {
 	    # See [PDF 1.7 TABLE 8.82 Entries in a signature field lock dictionary]

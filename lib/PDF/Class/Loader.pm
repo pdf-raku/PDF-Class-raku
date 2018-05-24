@@ -69,6 +69,7 @@ PDF::COS.loader = class PDF::Class::Loader
         my $subtype = from-ast($dict<Subtype> // $dict<S>);
         $type ~~ 'Ind'|'Ttl'|'Org'  # handled by PDF::OCG User attribute
             |'OutputIntent' # no specific subclasses
+            |'Sig' # ref PDF::Signature
             ?? $base-class
             !! $.find-delegate( $type, $subtype, :$base-class );
     }

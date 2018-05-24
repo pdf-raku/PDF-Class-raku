@@ -95,6 +95,7 @@
     "PDF::Pattern::Shading" : "lib/PDF/Pattern/Shading.pm",
     "PDF::Pattern::Tiling" : "lib/PDF/Pattern/Tiling.pm",
     "PDF::Resources" : "lib/PDF/Resources.pm",
+    "PDF::Signature" : "lib/PDF/Signature.pm",
     "PDF::Shading" : "lib/PDF/Shading.pm",
     "PDF::Shading::Axial" : "lib/PDF/Shading/Axial.pm",
     "PDF::Shading::Coons" : "lib/PDF/Shading/Coons.pm",
