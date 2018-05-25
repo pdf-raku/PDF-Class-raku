@@ -59,16 +59,20 @@ role PDF::Destination does PDF::COS::Tie::Array {
     # Coercions for explicit and named destinations
     # a named destination may be either a byte-string or name object
     my subset DestSpec is export(:DestSpec) where PDF::Destination|Str;
-    my subset DestPageRef of Array where .[0] ~~ PDF::Page;
+    my subset DestPageRef of DestinationArray where .[0] ~~ PDF::Page;
     proto sub coerce-dest($,$) is export(:coerce-dest) {*};
     multi sub coerce-dest(DestPageRef $_, DestSpec) {
         PDF::COS.coerce( $_, $?ROLE.delegate-destination($_) );
     }
 
     my subset DestSpecRemote is export(:DestSpecRemote) where PDF::Destination|Str;
-    my subset DestPageNum of Array where .[0] ~~ UInt;
+    my subset DestPageNum of DestinationArray where .[0] ~~ UInt;
     multi sub coerce-dest(DestPageNum $_, DestSpecRemote) {
         PDF::COS.coerce( $_, $?ROLE.delegate-destination($_) );
+    }
+
+    multi sub coerce-dest($_, $) is default {
+        fail "Unable to handle destination: {.perl}";
     }
 
 }
