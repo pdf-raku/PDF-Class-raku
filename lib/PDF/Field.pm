@@ -10,6 +10,7 @@ role PDF::Field
     use PDF::COS::Tie;
     use PDF::COS::TextString;
     use PDF::COS::Dict;
+    use PDF::COS::Name;
 
     # see [PDF 1.7 TABLE 8.69 Entries common to all field dictionaries]
 
