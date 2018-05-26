@@ -8,7 +8,7 @@ PDF::COS.loader = class PDF::Class::Loader
     use PDF::COS::Util :from-ast;
     use PDF::COS::Name;
 
-    method class-paths {<PDF PDF::COS::Type>}
+    method class-paths {<PDF::COS::Type PDF>}
 
     method find-delegate( Str $type!, $subtype?, :$base-class) {
 
