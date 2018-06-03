@@ -1,6 +1,5 @@
 #!/usr/bin/env perl6
 use v6;
-
 use PDF::Content;
 use PDF::Content::Graphics;
 use PDF::Writer;
@@ -48,7 +47,7 @@ sub MAIN(Str $infile,                 #= input PDF
 
     CONTROL {
         when CX::Warn {
-            note "warning: $_";
+            note "Warning: $_";
             $warnings++;
             .resume
         }
@@ -122,23 +121,23 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     die "maximum depth of $*max-depth exceeded $ent: {ref($obj)}"
 	if ++$depth > $*max-depth;
     my Array $index = $obj.index;
-    for $obj.keys.sort {
-	my Str $accessor = $index[$_].tied.accessor-name
-	    if $index[$_]:exists;
+    for $obj.keys.sort -> $i {
+	my Str $accessor = .tied.accessor-name
+	    with $index[$i];
 	my $kid;
 	do {
 	    $kid = $accessor
 		?? $obj."$accessor"()  # array element has an accessor. use it
-		!! $obj[$_];           # dereference array element
+		!! $obj[$i];           # dereference array element
 
 	    CATCH {
 		default {
-		    error("error in {ref($obj)} ({$obj.WHAT.^name}) $ent: $_");
+		    error("error in {ref($obj)}\[$i\] ({$obj.WHAT.^name}) $ent: $_");
 		}
 	    }
 	}
-	check($kid, :ent("\[$_\]"), :$depth)  if $kid ~~ Array | Hash
-            && !($_ == 0 && $accessor ~~ 'page'); # avoid recursing to page destinations
+	check($kid, :ent("\[$i\]"), :$depth)  if $kid ~~ Array | Hash
+            && !($i == 0 && $accessor ~~ 'page'); # avoid recursing to page destinations
     }
 }
 
@@ -153,16 +152,18 @@ sub check-contents( $obj ) {
     my &callback = sub ($op, *@args) {
         my UInt $name-idx = 0;
         my Str $type = do given $op {
-            when 'BDC' | 'DP' { $name-idx = 1; 'Properties'}
-            when 'Do'         { 'XObject' }
-            when 'Tf'         { 'Font' }
-            when 'gs'         { 'ExtGState' }
-            when ($_ ~~ 'scn'|'SCN')
-            && @args.tail ~~ Str {
-                $name-idx = $op.value.elems - 1;
-                'Pattern'
+            when 'BDC'|'DP'  { $name-idx = 1; 'Properties'}
+            when 'Do'        { 'XObject' }
+            when 'Tf'        { 'Font' }
+            when 'gs'        { 'ExtGState' }
+            when 'scn'|'SCN' {
+                if @args.tail ~~ Str {
+                    $name-idx = @args.elems - 1;
+                    'Pattern'
+                }
+                else { Nil }
             }
-            when 'sh'         { 'Shading' }
+            when 'sh'        { 'Shading' }
             default {Nil}
         };
 
@@ -170,7 +171,7 @@ sub check-contents( $obj ) {
             if @args[$name-idx] ~~ Str {
                 my Str $name = @args[$name-idx];
                 warn "No resources /$_ /$name entry for '$op' operator"
-                    unless $resources{$_}:exists && ($resources{$_}{$name}:exists);
+                    without ($resources{$_} // {}){$name};
             }
         }
     }
@@ -180,7 +181,7 @@ sub check-contents( $obj ) {
 
     CATCH {
 	default {
-	    error("Unable to render {ref($obj)} contents: $_"); 
+	    error("Unable to render {ref($obj)} contents: $_");
 	}
     }
 }
