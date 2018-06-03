@@ -19,6 +19,7 @@
     "PDF::Action" : "lib/PDF/Action.pm",
     "PDF::Action::GoTo" : "lib/PDF/Action/GoTo.pm",
     "PDF::Action::GoToR" : "lib/PDF/Action/GoToR.pm",
+    "PDF::Action::JavaScript" : "lib/PDF/Action/JavaScript.pm",
     "PDF::Action::Named" : "lib/PDF/Action/Named.pm",
     "PDF::Action::URI" : "lib/PDF/Action/URI.pm",
     "PDF::Annot" : "lib/PDF/Annot.pm",
