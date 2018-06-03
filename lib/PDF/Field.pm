@@ -35,7 +35,7 @@ role PDF::Field
         }
 
         with $field-role {
-            PDF::COS.loader.find-delegate( 'Field', $field-role );
+            PDF::COS.loader.find-delegate( 'Field', $field-role, :base-class(PDF::Field) );
         }
         else {
             PDF::Field

@@ -1,6 +1,6 @@
 use v6;
 
-use PDF:ver(v0.3.1+);
+use PDF:ver(v0.3.2+);
 
 #| PDF entry-point. either a trailer dict or an XRef stream
 class PDF::Class:ver<0.2.2> #:api<PDF-1.7>

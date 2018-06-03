@@ -25,6 +25,7 @@ my PDF::Destination $d;
 is-destination $d=PDF::Destination.construct(FitWindow, :$page), [$page, FitWindow], 'FitWindow destination';
 is-deeply $d.page, $page, 'page accessor';
 is $d.fit, 'Fit', 'fit accessor';
+is $d.is-page-ref, False, 'destination is page ref';
 does-ok $d.fit, PDF::COS::Name, 'fit accessor';
 is-deeply $d.content, (:array($[:dict{:Type(:name<Page>)}, :name<Fit>])), 'destination content';
 
@@ -46,6 +47,11 @@ is $d.bottom, 10, 'bottom accessor';
 is $d.right, 100, 'right accessor';
 
 is-destination $d=PDF::Destination.construct(FitBox, :$page), [$page, FitBox], 'FitBox destination';
+is $d.fit, FitBox, 'fit accessor';
+
+is-destination $d=PDF::Destination.construct(FitBox, :page(42)), [42, FitBox], 'FitBox destination';
+is $d.is-page-ref, False, 'destination is not a page ref';
+is $d.page, 42, 'destination page';
 is $d.fit, FitBox, 'fit accessor';
 
 done-testing;

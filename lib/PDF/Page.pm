@@ -35,14 +35,17 @@ class PDF::Page
     has NinetyDegreeAngle $.Rotate is entry(:inherit);     #| (Optional; inheritable) The number of degrees by which the page should be rotated clockwise when displayed or printed
     has Hash $.Group is entry;                   #| (Optional; PDF 1.4) A group attributes dictionary specifying the attributes of the page’s page group for use in the transparent imaging model
     has PDF::Image $.Thumb is entry(:alias<thumbnail-image>);       #| (Optional) A stream object defining the page’s thumbnail image
-    has @.B is entry(:indirect, :alias<beads>);                 #| (Optional; PDF 1.1; recommended if the page contains article beads) An array of indirect references to article beads appearing on the page
+    has Hash @.B is entry(:indirect, :alias<beads>);                 #| (Optional; PDF 1.1; recommended if the page contains article beads) An array of indirect references to article beads appearing on the page
     has Numeric $.Dur is entry(:alias<display-duration>);       #| (Optional; PDF 1.1) The page’s display duration (also called its advance timing): the maximum length of time, in seconds, that the page is displayed during presentations before the viewer application automatically advances to the next page
     has Hash $.Trans is entry(:alias<transition-effect>);       #| (Optional; PDF 1.1) A transition dictionary describing the transition effect to be used when displaying the page during presentations
     use PDF::Field;
     my subset Annot of Hash where { .<Type> ~~ 'Annot' && (! .<FT> || $_ ~~ PDF::Field) }
-    multi sub coerce($annot is rw, $_) {
-        PDF::COS.coerce($annot, PDF::Field.field-delegate($annot))
-            if $annot<FT>:exists;
+    multi sub coerce(Hash $annot is rw where {.<FT>:exists}, Annot) {
+        my PDF::Field $delegate .= field-delegate($annot);
+        PDF::COS.coerce($annot, $delegate)
+    }
+    multi sub coerce($_, Annot) is default {
+        fail "unable to coerce: {.perl} ({.WHAT.^name}) to an annotation";
     }
     has Annot @.Annots is entry(:&coerce); #| (Optional) An array of annotation dictionaries representing annotations associated with the page
     use PDF::Action;

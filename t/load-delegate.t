@@ -16,11 +16,11 @@ isa-ok $shading-class, (require ::('PDF::COS::Stream')), 'delegation by ShadingT
 
 does-ok PDF::Class.loader.load-delegate( :dict{ :ShadingType(42) }), (require ::('PDF::Shading')), 'delegation by ShadingType (unknown)';
 isa-ok PDF::Class.loader.load-delegate( :dict{ :Type<Unknown> }, :base-class(Hash)), Hash, 'delegation base-class';
-isa-ok PDF::Class.loader.load-delegate( :dict{ :FunctionType(3) }),  ::('PDF::Function::Stitching'), 'delegation by FunctionType';
+isa-ok PDF::Class.loader.load-delegate( :dict{ :FunctionType(3) }, :base-class(Hash)), ::('PDF::Function::Stitching'), 'delegation by FunctionType';
 
-isa-ok PDF::Class.loader.load-delegate( :dict{ :Subtype<Link> }),  ::('PDF::Annot::Link'), 'annot defaulted /Type - implemented';
-isa-ok PDF::Class.loader.load-delegate( :dict{ :Subtype<Caret> }, ),  ::('PDF::Annot'), 'annot defaulted /Type - unimplemented';
-does-ok PDF::Class.loader.load-delegate( :dict{ :S<GTS_PDFX> }, ),  (require ::('PDF::OutputIntent')), 'output intent defaulted /Type';
+isa-ok PDF::Class.loader.load-delegate( :dict{ :Subtype<Link> }, :base-class(Hash)),  ::('PDF::Annot::Link'), 'annot defaulted /Type - implemented';
+isa-ok PDF::Class.loader.load-delegate( :dict{ :Subtype<Caret> }, :base-class(Hash)),  ::('PDF::Annot'), 'annot defaulted /Type - unimplemented';
+does-ok PDF::Class.loader.load-delegate( :dict{ :S<GTS_PDFX> }, :base-class(Hash)),  (require ::('PDF::OutputIntent')), 'output intent defaulted /Type';
 
 require ::('PDF::Pages');
 my $pages = ::('PDF::Pages').new;

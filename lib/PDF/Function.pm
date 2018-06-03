@@ -35,7 +35,7 @@ class PDF::Function
 	}
 
 	my $subtype = FunctionTypes[$function-type];
-	PDF::COS.loader.find-delegate( 'Function', $subtype );
+	PDF::COS.loader.find-delegate( 'Function', $subtype , :base-class(PDF::COS::Stream));
     }
 
     class Transform {

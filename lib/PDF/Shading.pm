@@ -10,6 +10,7 @@ role PDF::Shading
     use PDF::COS::Tie;
     use PDF::COS::Array;
     use PDF::COS::Name;
+    use PDF::COS::Dict;
     my subset ShadingTypeInt of Int where 1..7;
     has ShadingTypeInt $.ShadingType is entry(:required);
 
@@ -28,7 +29,7 @@ role PDF::Shading
     method subtype { ShadingTypes[ $.ShadingType - 1] }
 
     #| see also PDF::Class::Loader
-    method delegate-shading(Hash :$dict!) {
+    method delegate-shading(Hash :$dict!, |c) {
 
 	use PDF::COS::Util :from-ast;
 	my UInt $type-int = from-ast $dict<ShadingType>;
@@ -39,7 +40,7 @@ role PDF::Shading
 	}
 
 	my $subtype = ShadingTypes[$type-int - 1];
-	PDF::COS.loader.find-delegate( 'Shading', $subtype );
+	PDF::COS.loader.find-delegate( 'Shading', $subtype, :base-class(PDF::COS::Dict));
     }
 
     method cb-init {

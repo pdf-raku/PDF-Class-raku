@@ -7,64 +7,27 @@ PDF::COS.loader = class PDF::Class::Loader
 
     use PDF::COS::Util :from-ast;
     use PDF::COS::Name;
+    use PDF::COS::Dict;
 
-    method class-paths {<PDF::COS::Type PDF>}
-
-    method find-delegate( Str $type!, $subtype?, :$base-class) {
-
-	my Str $subclass = $type;
-	$subclass ~= '::' ~ $_
-            with $subtype;
-
-	return self.handler{$subclass}
-	    if self.handler{$subclass}:exists;
-
-        my $handler-class = $base-class;
-        my Bool $resolved;
-
-	for self.class-paths -> $class-path {
-            my $class-name = $class-path ~ '::' ~ $subclass;
-            $handler-class = PDF::COS.required($class-name);
-            if $handler-class ~~ Failure {
-                warn "failed to load: $class-name: {$handler-class.exception.message}";
-            }
-            else {
-                $handler-class = $base-class.^mixin($handler-class)
-                    unless $handler-class.isa($base-class);
-                $resolved = True;
-                last;
-            }
-            CATCH {
-                when X::CompUnit::UnsatisfiedDependency {
-		    # try loading just the parent class
-		    $handler-class = $.find-delegate($type, :$base-class)
-			if $subtype;
-		}
-            }
-	}
-
-	note "No PDF handler class [{self.class-paths}]::{$subclass}"
-	    unless $resolved;
-
-        self.install-delegate( $subclass, $handler-class );
-    }
+    method class-paths {<PDF>}
+    method warn {True}
 
     multi method load-delegate(Hash :$dict! where {.<FunctionType>:exists}) {
-	$.find-delegate('Function').delegate-function( :$dict );
+	$.find-delegate('Function', :base-class(PDF::COS::Dict)).delegate-function( :$dict );
     }
 
     multi method load-delegate(Hash :$dict! where {.<PatternType>:exists}) {
         my Int $pt = from-ast $dict<PatternType>;
         my $sub-type = [Mu, 'Tiling', 'Shading'][$pt];
         note "Unknown /PatternType $pt" without $sub-type;
-	$.find-delegate('Pattern', $sub-type);
+	$.find-delegate('Pattern', :base-class(PDF::COS::Dict), $sub-type);
     }
 
     multi method load-delegate(Hash :$dict! where {.<ShadingType>:exists}) {
-	$.find-delegate('Shading').delegate-shading( :$dict );
-    }
+	$.find-delegate('Shading', :base-class(PDF::COS::Dict)).delegate-shading( :$dict );
+   }
 
-    multi method load-delegate( Hash :$dict! where {.<Type>:exists}, :$base-class) {
+    multi method load-delegate( Hash :$dict! where {.<Type>:exists}, :$base-class!) {
         my $type = from-ast($dict<Type>);
         my $subtype = from-ast($dict<Subtype> // $dict<S>);
         $type ~~ 'Ind'|'Ttl'|'Org'  # handled by PDF::OCG User attribute
@@ -75,7 +38,7 @@ PDF::COS.loader = class PDF::Class::Loader
     }
 
     #| Reverse lookup for classes when /Subtype is required but optional /Type is absent
-    multi method load-delegate(Hash :$dict! where {.<Subtype>:exists }, :$base-class) {
+    multi method load-delegate(Hash :$dict! where {.<Subtype>:exists }, :$base-class!) {
 	my $subtype = from-ast $dict<Subtype>;
 
 	my $type = do given $subtype {
@@ -94,7 +57,7 @@ PDF::COS.loader = class PDF::Class::Loader
 	};
 
 	with $type {
-	    $.find-delegate($_, $subtype);
+	    $.find-delegate($_, $subtype, :$base-class);
 	}
 	else {
 	    $base-class;
@@ -102,7 +65,7 @@ PDF::COS.loader = class PDF::Class::Loader
     }
 
     #| Reverse lookup for classes when /S (subtype) is required, but /Type is optional
-    multi method load-delegate(Hash :$dict! where {.<S>:exists }, :$base-class) {
+    multi method load-delegate(Hash :$dict! where {.<S>:exists }, :$base-class!) {
 	my $subtype = from-ast $dict<S>;
 
 	my $type = do given $subtype {
@@ -116,7 +79,7 @@ PDF::COS.loader = class PDF::Class::Loader
 	};
 
 	with $type {
-	    $.find-delegate($_, $subtype);
+	    $.find-delegate($_, $subtype, :$base-class);
 	}
         else {
             $base-class;
@@ -133,9 +96,9 @@ PDF::COS.loader = class PDF::Class::Loader
                 !! $t ~~ 'Indexed'|'Separation'|'DeviceN'); #| PDF Spec 1.7 Section 4.5.5 Special Color Spaces
     }
 
-    multi method load-delegate(ColorSpace-Array :$array!) {
+    multi method load-delegate(ColorSpace-Array :$array!, :$base-class!) {
 	my $color-type = from-ast $array[0];
-	$.find-delegate('ColorSpace', $color-type);
+	$.find-delegate('ColorSpace', $color-type, :$base-class);
     }
 
     multi method load-delegate(:$base-class!) is default {

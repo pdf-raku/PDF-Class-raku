@@ -9,8 +9,8 @@ my $pdf;
 
 lives-ok {$pdf = PDF::Class.open("t/pdf/samples/OoPdfFormExample.pdf")}, "open form example  lives";
 my $annots = $pdf.page(1).Annots;
-isa-ok $annots[0], PDF::Annot::Widget, 'page annots';
-does-ok $annots[0], PDF::Field, 'page annots';
+isa-ok $annots[0], PDF::Annot::Widget, 'page annot isa Annot';
+does-ok $annots[0], PDF::Field, 'page annot does PDF::Field';
 
 does-ok $pdf.page(1).fields[0], PDF::Field, 'page fields accessor';
 
