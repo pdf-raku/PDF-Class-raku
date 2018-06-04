@@ -10,7 +10,7 @@ role PDF::Field::Signature
     use PDF::COS::TextString;
 
     use PDF::Signature;
-    has PDF::Signature $.V is entry;
+    has PDF::Signature $.V is entry(:alias<value>);
 
     my role LockDict
 	does PDF::COS::Tie::Hash {
