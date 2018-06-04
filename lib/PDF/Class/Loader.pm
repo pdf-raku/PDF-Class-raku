@@ -9,7 +9,7 @@ PDF::COS.loader = class PDF::Class::Loader
     use PDF::COS::Name;
     use PDF::COS::Dict;
 
-    method class-paths {<PDF>}
+    method class-paths {<PDF PDF::COS::Type>}
     method warn {True}
 
     multi method load-delegate(Hash :$dict! where {.<FunctionType>:exists}) {

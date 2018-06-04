@@ -1,3 +1,5 @@
+Release 0.2.3
+- Fix PDF 1.6+ Cross Reference Streams, broken in 0.2.2
 Release 0.2.2
 - Fix PDF::Shading::Function
 - Added PDF::ICCProfile, PDF::Annot::Caret, PDF::Signature,
