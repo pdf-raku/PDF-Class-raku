@@ -157,6 +157,7 @@ PDF::Catalog | dict | AA(additional-actions), AcroForm, Collection, Dests, Lang,
 PDF::AcroForm | dict | CO(calculation-order), DA(default-appearance), DR(default-resources), Fields, NeedAppearances, Q(quadding), SigFlags, XFA | fields, fields-hash | 
 PDF::Action::GoTo | dict | D(destination), Next, S, Type |  | /Action Subtype - GoTo
 PDF::Action::GoToR | dict | D(destination), NewWindow, Next, S, Type |  | /Action Subtype - GoToR
+PDF::Action::JavaScript | dict | JS, Next, S, Type |  | /Action Subtype - GoTo
 PDF::Action::Named | dict | N(action-name), Next, S, Type |  | /Action Subtype - GoTo
 PDF::Action::URI | dict | Base, IsMap, Next, S, Type, URI |  | /Action Subtype - URI
 PDF::Annot::Caret | dict | AP(appearance), AS(appearance-state), Border, C(color), Contents, DR(default-resources), F(flags), M(mod-time), NM(name), OC(optional-content), P(page), RD(rectangle-differences), Rect, StructParent, Subtype, Sy(symbol), Type |  | 
@@ -178,12 +179,12 @@ PDF::ColorSpace::Indexed | array | Base, Hival, Lookup, Subtype |  |
 PDF::ColorSpace::Lab | array | Subtype, dict | BlackPoint, Range, WhitePoint | 
 PDF::ColorSpace::Pattern | array | Colorspace, Subtype |  | 
 PDF::ColorSpace::Separation | array | AlternateSpace, Name, Subtype, TintTransform |  | 
-PDF::Destination | array | fit, page | delegate-destination | 
+PDF::Destination | array | fit, page | delegate-destination, is-page-ref | 
 PDF::Encoding | dict | BaseEncoding, Differences, Type |  | 
 PDF::ExtGState | dict | AIS(alpha-source-flag), BG(black-generation-old), BG2(black-generation), BM(blend-mode), CA(stroke-alpha), D(dash-pattern), FL(flatness-tolerance), Font, HT(halftone), LC(line-cap), LJ(line-join), LW(line-width), ML(miter-limit), OP(overprint-paint), OPM(overprint-mode), RI(rendering-intent), SA(stroke-adjustment), SM(smoothness-tolerance), SMask(soft-mask), TK(text-knockout), TR(transfer-function-old), TR2(transfer-function), Type, UCR(under-color-removal-old), UCR2(under-color-removal), ca(fill-alpha), op(overprint-stroke) | transparency | /Type /ExtGState
 PDF::Field::Button | dict | DV(default-value), Opt, V(value) |  | 
 PDF::Field::Choice | dict | DV(default-value), I(indices), Opt, TI(top-index), V(value) |  | 
-PDF::Field::Signature | dict | Lock, SV(seed-value) |  | 
+PDF::Field::Signature | dict | Lock, SV(seed-value), V(value) |  | 
 PDF::Field::Text | dict | DV(default-value), MaxLen, V(value) |  | 
 PDF::Font::CIDFont | dict | BaseFont, CIDSystemInfo, CIDToGIDMap, DW, DW2, FontDescriptor, W, W2 |  | 
 PDF::Font::CIDFontType0 | dict | BaseFont, CIDSystemInfo, CIDToGIDMap, DW, DW2, FontDescriptor, Subtype, Type, W, W2 | font-obj, make-font, set-font-obj | 
@@ -200,14 +201,14 @@ PDF::Function::Stitching | stream | Bounds, Domain, Encode, FunctionType, Functi
 PDF::Group::Transparency | dict | CS(color-space), I(isolated), K(knockout), S, Type |  | 
 PDF::Image | stream | Alternatives, BitsPerComponent, ColorSpace, Decode, Height, ID, ImageMask, Intent, Interpolate, Mask, Metadata, Name, OC, OPI, SMask, SMaskInData, StructParent, Width | to-png | 
 PDF::MCR | dict | MCID, Pg(page), Stm, StmOwn, Type |  | 
-PDF::Mask::Alpha | dict | BC(backdrop-color), G(transparency-group), S(subtype), TR(transfer-function), Type |  | 
-PDF::Mask::Luminosity | dict | BC(backdrop-color), G(transparency-group), S(subtype), TR(transfer-function), Type |  | 
+PDF::Mask::Alpha | dict | BC(backdrop-color), G(transparency-group), S, TR(transfer-function), Type |  | 
+PDF::Mask::Luminosity | dict | BC(backdrop-color), G(transparency-group), S, TR(transfer-function), Type |  | 
 PDF::Metadata::XML | stream | Metadata, Subtype, Type |  | 
 PDF::NameTree | dict | Kids, Limits, Names |  | 
 PDF::NumberTree | dict | Kids, Limits, Nums |  | 
 PDF::OBJR | dict | Obj, Pg(page), Type |  | /Type /OBJR - Object Reference dictionary
 PDF::OCG | dict | Intent, Name, Type, Usage |  | 
-PDF::OCMD | dict | OCGs, P, Type, VE |  | 
+PDF::OCMD | dict | OCGs, P(visibility-policy), Type, VE(visibility-expression) |  | 
 PDF::Outline | dict | A(action), C(color), Count, Dest, F(flags), First, Last, Next, Parent, Prev, SE(structure-element), Title |  | 
 PDF::Outlines | dict | Count, First, Last, Type |  | 
 PDF::OutputIntent::GTS_PDFX | dict | DestOutputProfile, Info, OutputCondition, OutputConditionIdentifier, RegistryName, S, Type |  | 

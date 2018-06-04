@@ -42,17 +42,8 @@ role PDF::Field
         }
     }
 
-    #| pure annotation or field/annotation union
-    sub is-annot($_) returns Bool {
-	   ?( .<Type> ~~ 'Annot' );
-    }
-
-    #| pure annotation only
-    sub is-annot-only($_) returns Bool {
-	?( is-annot($_)
-	   && !(.<FT>:exists)
-	   && !(.<Kids>:exists))
-    }
+    my subset Annot of Hash where .<Type> ~~ 'Annot';
+    my subset Field of Hash where { (.<FT>:exists) || (.<Kids>:exists) }
 
     proto sub coerce( $, $ ) is export(:coerce) {*}
     multi sub coerce( PDF::COS::Dict $dict is rw, PDF::Field $field ) {
@@ -63,17 +54,20 @@ role PDF::Field
     has FieldTypeName $.FT is entry(:inherit, :alias<field-type>);  #| Required for terminal fields; inheritable) The type of field that this dictionary describes
     has PDF::Field $.Parent is entry(:indirect);      #| (Required if this field is the child of another in the field hierarchy; absent otherwise) The field that is the immediate parent of this one (the field, if any, whose Kids array includes this field). A field can have at most one parent; that is, it can be included in the Kids array of at most one other field.
 
-    my subset AnnotOrField of Hash where { is-annot-only($_) || $_ ~~ PDF::Field }
-    multi sub coerce( PDF::COS::Dict $dict is rw, AnnotOrField) {
+    my subset AnnotOrField of Hash where Annot|PDF::Field;
+    multi sub coerce( Field $dict is rw, AnnotOrField) {
 	PDF::COS.coerce( $dict, PDF::Field.field-delegate( $dict ) )
-	    unless is-annot-only($dict)
     }
+    multi sub coerce( $_, AnnotOrField) is default {
+        fail "unable to coerce {.perl} to an Annotation or Field";
+    }
+
     has AnnotOrField @.Kids is entry(:indirect, :&coerce); #| (Sometimes required, as described below) An array of indirect references to the immediate children of this field.
                                                 #| In a non-terminal field, the Kids array is required to refer to field dictionaries that are immediate descendants of this field. In a terminal field, the Kids array ordinarily must refer to one or more separate widget annotations that are associated with this field. However, if there is only one associated widget annotation, and its contents have been merged into the field dictionary, Kids must be omitted.
 
     method is-terminal returns Bool {
 	with $.Kids {
-            [&&] .keys.map: -> $k {is-annot-only(.[$k]) }
+            ! .keys.first: -> $k {.[$k] ~~ Field }
         }
         else {
             True;
@@ -90,7 +84,7 @@ role PDF::Field
 	    for self.Kids.keys {
 		my $kid = self.Kids[$_];
 		@fields.append: $kid.fields
-		    unless is-annot-only($kid)
+		    if $kid ~~ Field;
 	    }
 	}
 	flat @fields;
@@ -100,14 +94,14 @@ role PDF::Field
     #| otherwise return any annots from out immediate kids
     method annots {
 	my @annots;
-	if is-annot(self) {
+	if self ~~ Annot {
 	    @annots.push: self
 	}
 	elsif  self.Kids.defined {
 	    for self.Kids.keys {
 		my $kid = self.Kids[$_];
 		@annots.append: $kid.fields
-		    if is-annot-only($kid)
+		    if $kid ~~ Annot && $kid !~~ Field;
 	    }
 	}
 	flat @annots;
