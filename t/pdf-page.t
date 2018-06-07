@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 42;
+plan 41;
 
 use PDF::IO::IndObj;
 use PDF::Class;
@@ -43,7 +43,6 @@ is-json-equiv $ind-obj.ast, %ast, 'ast regeneration';
 
 $page.Contents = $dummy-stream;
 is-deeply $page.Contents, ($dummy-stream), '$.Contents accessor';
-is-deeply $page.content-streams, [$dummy-stream], '$.contents accessor';
 is-deeply $page.contents, '%dummy stream', '$.contents accessor';
 
 lives-ok {$page.Thumb = PDF::Image.open: "t/images/dna.small.gif"}, '$page.Thumb = $image - lives';
