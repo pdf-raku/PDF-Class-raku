@@ -20,7 +20,7 @@ class PDF::Pages
     has PDF::COS::Name $.Type is entry(:required) where 'Pages';
     has Hash $.Parent is entry(:indirect); #| (Required except in root node; must be an indirect reference) The page tree node that is the immediate parent of this one.
     has PDF::Content::PageNode @.Kids is entry(:required, :indirect);  #| (Required) An array of indirect references to the immediate children of this node. The children may be page objects or other page tree nodes.
-    has UInt $.Count is entry(:required, :alias<page-count>);   #| (Required) The number of leaf nodes (page objects) that are descendants of this node within the page tree.
+    has UInt $.Count is entry(:required);   #| (Required) The number of leaf nodes (page objects) that are descendants of this node within the page tree.
     use PDF::Resources;
     has PDF::Resources $.Resources is entry(:inherit);
     has Int $.Rotate is entry(:inherit) where { $_ %% 90 };     #| (Optional; inheritable) The number of degrees by which the page should be rotated clockwise when displayed or printed
