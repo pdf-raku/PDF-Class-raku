@@ -102,9 +102,19 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 	    if $*strict && +$entries && !($entries{$k}:exists);
     }
 
-    error("Error in {ref($obj)} ({$obj.WHAT.^name}), missing required field(s): {%required.keys.sort.join(', ')}")
-        if %required;
-
+    if %required {
+        error("Error in {ref($obj)} ({$obj.WHAT.^name}), missing required field(s): {%required.keys.sort.join(', ')}")
+    }
+    else {
+        do {
+            $obj.?cb-check();
+            CATCH {
+                default {
+                    error("Error in {ref($obj)} ({$obj.WHAT.^name}) record: $_");
+                }
+            }
+        }
+    }
     warning("Unknown entries {ref($obj)} ({$obj.WHAT.^name}) struct: @unknown-entries[]")
         if @unknown-entries;
 }
