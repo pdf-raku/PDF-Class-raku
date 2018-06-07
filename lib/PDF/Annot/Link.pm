@@ -26,4 +26,9 @@ class PDF::Annot::Link
     use PDF::Border;
     has PDF::Border $.BS is entry; #| (Optional; PDF 1.6) A border style dictionary (see Table 166) specifying the line width and dash pattern to be used in drawing the annotation’s border. The annotation dictionary’s AP entry, if present, takes precedence over the BS entry
 
+    method cb-check {
+        die "A Link should not have both /A and Dest entries"
+            if (self<A>:exists) && (self<Dest>:exists);
+    }
+
 }

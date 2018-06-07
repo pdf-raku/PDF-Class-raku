@@ -15,6 +15,9 @@ role PDF::Field::Text
     multi sub coerce(Str $s is rw, TextOrStream) {
 	PDF::COS.coerce($s, PDF::COS::TextString)
     }
+    multi sub coerce($s_, TextOrStream) is default {
+	fail "unable to coerce {.perl} to Text or a Stream";
+    }
     has TextOrStream $.V is entry(:&coerce, :inherit, :alias<value>);
     has TextOrStream $.DV is entry(:&coerce, :inherit, :alias<default-value>);
 

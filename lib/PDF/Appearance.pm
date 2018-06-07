@@ -1,7 +1,5 @@
 use v6;
 
-use PDF::Class::Type; # just to help rakudo
-use PDF::COS::Tie;
 use PDF::COS::Tie::Hash;
 
 #| Appearance role - see PDF::Annot - /AP entry

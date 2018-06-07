@@ -16,4 +16,9 @@ role PDF::NumberTree
         }
     }
     has Numeric @.Limits is entry(:len(2)); #| (Shall be present in Intermediate and leaf nodes only) Shall be an array of two integers, that shall specify the (numerically) least and greatest keys included in the Nums array of a leaf node or in the Nums arrays of any leaf nodes that are descendants of an intermediate node.
+
+    method cb-check {
+        die "Number Tree has neither a /Kids or /Nums entry"
+            unless (self<Kids>:exists) or (self<Nums>:exists);
+    }
 }

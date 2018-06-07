@@ -12,7 +12,7 @@ role PDF::Action
 
     has PDF::COS::Name $.Type is entry where 'Action';
 
-    my subset Subtype of PDF::COS::Name where
+    my subset ActionType of PDF::COS::Name where
 	'GoTo'         #| Go to a destination in the current document.
 	|'GoToR'       #| (“Go-to remote”) Go to a destination in another document.
 	|'GoToE'       #| (“Go-to embedded”; PDF 1.6) Go to a destination in an embedded file.
@@ -33,7 +33,7 @@ role PDF::Action
 	|'GoTo3DView'  #| (PDF 1.6) Set the current view of a 3D annotation
 	;
 
-    has Subtype $.S is entry(:required);
+    has ActionType $.S is entry(:required);
 
     has PDF::Action @.Next is entry(:array-or-item);
 }

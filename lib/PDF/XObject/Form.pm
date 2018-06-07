@@ -18,13 +18,13 @@ class PDF::XObject::Form
     #|See [PDF Spec 1.7 Section 4.9.1 TABLE 4.45 Additional entries specific to a type 1 form dictionary]
     has Int $.FormType is entry where 1;    #| (Optional) A code identifying the type of form XObject that this dictionary describes. The only valid value is 1.
     has Numeric @.BBox is entry(:required,:len(4)); #| (Required) An array of four numbers in the form coordinate system (see above), giving the coordinates of the left, bottom, right, and top edges, respectively, of the form XObject’s bounding box.
-    has Numeric @.Matrix is entry(:len(6));          #| (Optional) An array of six numbers specifying the form matrix, which maps form space into user space
+    has Numeric @.Matrix is entry(:len(6));         #| (Optional) An array of six numbers specifying the form matrix, which maps form space into user space
     use PDF::Resources;
-    has PDF::Resources $.Resources is entry;          #| (Optional but strongly recommended; PDF 1.2) A dictionary specifying any resources (such as fonts and images) required by the form XObject
+    has PDF::Resources $.Resources is entry;        #| (Optional but strongly recommended; PDF 1.2) A dictionary specifying any resources (such as fonts and images) required by the form XObject
     has Hash $.Group is entry;              #| (Optional; PDF 1.4) A group attributes dictionary indicating that the contents of the form XObject are to be treated as a group and specifying the attributes of that group
     has Hash $.Ref is entry;                #| (Optional; PDF 1.4) A reference dictionary identifying a page to be imported from another PDF file, and for which the form XObject serves as a proxy
     use PDF::COS::Stream;
-    has PDF::COS::Stream $.Metadata is entry;           #| (Optional; PDF 1.4) A metadata stream containing metadata for the form XObject
+    has PDF::COS::Stream $.Metadata is entry;       #| (Optional; PDF 1.4) A metadata stream containing metadata for the form XObject
     has Hash $.PieceInfo is entry;          #| (Optional; PDF 1.3) A page-piece dictionary associated with the form XObject
     has PDF::COS::DateString $.LastModified is entry;        #| (Required if PieceInfo is present; optional otherwise; PDF 1.3) The date and time (see Section 3.8.3, “Dates”) when the form XObject’s contents were most recently modified
     has UInt $.StructParent is entry;       #| (Required if the form XObject is a structural content item; PDF 1.3) The integer key of the form XObject’s entry in the structural parent tree
@@ -34,4 +34,9 @@ class PDF::XObject::Form
 
     use PDF::COS::Name;
     has PDF::COS::Name $.Name is entry; #| (Required in PDF 1.0; optional otherwise) The name by which this form XObject is referenced in the XObject subdictionary of the current resource dictionary.
+
+    method cb-check {
+        die "/LastModified is required when /PieceInfo is present"
+            if (self<PieceInfo>:exists) && !(self<LastModified>:exists);
+    }
 }

@@ -80,5 +80,9 @@ class PDF::Page
 	%fields;
     }
 
+    method cb-check {
+        die "/LastModified is required in Page objects when /PieceInfo is present"
+            if (self<PieceInfo>:exists) && !(self<LastModified>:exists);
+    }
 }
 

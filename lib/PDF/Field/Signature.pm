@@ -57,7 +57,7 @@ role PDF::Field::Signature
 	    #| A value of true is relevant only if SubFilter is adbe.pkcs7.detached or adbe.pkcs7.sha1. If SubFilter is x509.rsa_sha1, this entry must be omitted or set to false; otherwise, the signature process may fail.
 	    #| If AddRevInfo is true and the Ff entry indicates this is a required constraint, then the tasks described above must be performed. If they cannot be performed, then signing must fail.
 
-	    has UInt $.Ff is entry;                      #| this dictionary. A value of 1 for the flag indicates that the associated entry is a required constraint. A value of 0 indicates that the associated entry is an optional constraint. Bit positions are 1 (Filter); 2 (SubFilter); 3 (V); 4 (Reasons); 5 (LegalAttestation); 6(AddRevInfo); and 7(DigestMethod)
+	    has UInt $.Ff is entry(:alias<flags>);                      #| (Optional) A set of bit flags specifying the interpretation of specific entries in this dictionary. A value of 1 for the flag indicates that the associated entry is a required constraint. A value of 0 indicates that the associated entry is an optional constraint. Bit positions are 1 (Filter); 2 (SubFilter); 3 (V); 4 (Reasons); 5 (LegalAttestation); 6(AddRevInfo); and 7(DigestMethod)
 
     }
 

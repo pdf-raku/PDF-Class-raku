@@ -28,4 +28,9 @@ role PDF::Outline
     my enum OutlineFlag is export(:OutlineFlag) « :Italic(1) :Bold(2) »;
     has UInt $.F is entry(:alias<flags>);              #| (Optional; PDF 1.4) A set of flags specifying style characteristics for displaying the outline item’s text. Default value: 0.
 
+    method cb-check {
+        die "An Outline should not have both /A and Dest entries"
+            if (self<A>:exists) && (self<Dest>:exists);
+    }
+
 }

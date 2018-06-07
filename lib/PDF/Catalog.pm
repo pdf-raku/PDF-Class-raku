@@ -18,6 +18,7 @@ class PDF::Catalog
     use PDF::COS::Null;
     use PDF::COS::Stream;
     use PDF::COS::TextString;
+
     use PDF::NumberTree;
     use PDF::NameTree;
     use PDF::Destination :DestSpec, :coerce-dest;
@@ -61,7 +62,7 @@ class PDF::Catalog
         PDF::COS.coerce($dict, DestDict);
     }
     multi sub coerce($dest, Dest) is default {
-        PDF::COS.coerce($dest, DestSpec);
+        coerce-dest($dest, DestSpec);
     }
     has Dest %.Dests is entry(:&coerce);    #| (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
 

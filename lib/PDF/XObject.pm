@@ -13,6 +13,6 @@ class PDF::XObject
 	use PDF::COS::Tie;
         use PDF::COS::Name;
 	has PDF::COS::Name $.Type is entry where 'XObject';
-	has PDF::COS::Name $.Subtype is entry;
+	has PDF::COS::Name $.Subtype is entry where 'Form'|'Image'|'PS';
 
 }

@@ -140,4 +140,9 @@ role PDF::Field
 	$value = PDF::COS.coerce( $value, PDF::COS::TextString );
     }
     has TextOrStream $.RV is entry( :&coerce, :alias<rich-text> );  #| (Optional; PDF 1.5) A rich text string
+
+    method cb-check {
+        die "Fields should have an /FT or /Kids entry"
+            unless self ~~ Field;
+    }
 }

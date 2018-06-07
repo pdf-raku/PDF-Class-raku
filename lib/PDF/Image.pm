@@ -21,11 +21,12 @@ role PDF::Image
     has UInt $.BitsPerComponent is entry;         #| (Required except for image masks and images that use the JPXDecode filter)The number of bits used to represent each color component.
     has PDF::COS::Name $.Intent is entry;         #| (Optional; PDF 1.1) The name of a color rendering intent to be used in rendering the image
     has Bool $.ImageMask is entry;                #| (Optional) A flag indicating whether the image is to be treated as an image mask. If this flag is true, the value of BitsPerComponent must be 1 and Mask and ColorSpace should not be specified;
+
     my subset StreamOrArray of PDF::COS where PDF::COS::Stream | PDF::COS::Array;
     has StreamOrArray $.Mask is entry;            #| (Optional except for image masks; not allowed for image masks; PDF 1.3) An image XObject defining an image mask to be applied to this image, or an array specifying a range of colours to be applied to it as a colour key mask. If ImageMask is true, this entry shall not be present.
     has Numeric @.Decode is entry;                #| (Optional) An array of numbers describing how to map image samples into the range of values appropriate for the image’s color space
     has Bool $.Interpolate is entry;              #| (Optional) A flag indicating whether image interpolation is to be performed
-    has Hash @.Alternatives is entry;             #| An array of alternate image dictionaries for this image
+    has PDF::Image @.Alternatives is entry;             #| An array of alternate image dictionaries for this image
     my role SoftMask does PDF::COS::Tie::Hash {
         has Numeric @.Matte is entry; #| (Optional; PDF 1.4) An array of component values specifying the matte colour with which the image data in the parent image shall have been preblended. The array shall consist of n numbers, where n is the number of components in the colour space specified by the ColorSpace entry in the parent image’s image dictionary; the numbers shall be valid colour components in that colour space. If this entry is absent, the image data shall not be preblended.
     }
@@ -137,6 +138,26 @@ role PDF::Image
         $png.palette = $_ with $palette;
         $png.trans = $_ with $trans;
         $png;
+    }
+
+    method cb-check {
+        my \has-mask = self<Mask>:exists;
+        my \is-mask = self<ImageMask> // False;
+        if has-mask {
+            die "Image Masks should not have a /Mask entry"
+               if is-mask;
+        }
+        elsif is-mask {
+            die "/BitsPerComponent should be 1 when /ImageMask is true"
+                unless self<BitsPerComponent> == 1;
+            die "ColorSpace should not be specified when /ImageMask is true"
+                with self<ColorSpace>;
+        }
+
+        if self<SMaskInData> {
+            die "/SMask and /SMaskData shold not both be specified"
+                with self<SMask>;
+        }
     }
 
 }
