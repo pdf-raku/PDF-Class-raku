@@ -56,7 +56,7 @@ sub MAIN(Str $infile,                 #= input PDF
     @*exclude = $exclude.split(/:s ',' /)
     	      if $exclude;
     check( $pdf, :ent<xref> );
-    say "Checking of $infile completed with $warnings warnings and $errors errors";
+    $*ERR.say: "Checking of $infile completed with $warnings warnings and $errors errors";
 }
 
 |# Recursively check a dictionary (array) object
@@ -193,14 +193,14 @@ sub check-contents( $obj, :$depth ) {
             unless $render-warnings++ {
                 $*ERR.print: (" " x ($depth*2))
                     if $*trace;
-                $*ERR.print: "Rendering warnings(s)";
+                $*ERR.print: "Rendering warning(s)";
                 $*ERR.print: " in {ref($obj)} ({$obj.WHAT.^name})"
                     unless $*trace;
                 $*ERR.say: ":";
             }
             $*ERR.print: (" " x ($depth*2))
                 if $*trace;
-            note "-- $_";
+            $*ERR.say: "-- $_";
             $warnings++;
             .resume
         }
