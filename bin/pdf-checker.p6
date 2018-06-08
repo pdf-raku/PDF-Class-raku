@@ -72,9 +72,6 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     my Hash $entries = $obj.entries;
     my Str @unknown-entries;
 
-    check-contents($obj)
-	if $*render && $obj.does(PDF::Content::Graphics);
-
      my %required = $entries.pairs.grep(*.value.tied.is-required);
 
     for $obj.keys.sort -> $k {
@@ -117,6 +114,10 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     }
     warning("Unknown entries {ref($obj)} ({$obj.WHAT.^name}) struct: @unknown-entries[]")
         if @unknown-entries;
+
+    check-contents($obj, :$depth)
+	if $*render && $obj.does(PDF::Content::Graphics);
+
 }
 
 #| Recursively check an array object
@@ -154,7 +155,7 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 multi sub check($obj) is default {}
 
 #| check contents of a Page, XObject Form, Pattern or CharProcs
-sub check-contents( $obj ) {
+sub check-contents( $obj, :$depth ) {
 
     # cross check with the resources directory
     my $resources = $obj.?Resources // {};
@@ -186,6 +187,24 @@ sub check-contents( $obj ) {
         }
     }
 
+    my $render-warnings;
+    CONTROL {
+        when CX::Warn {
+            unless $render-warnings++ {
+                $*ERR.print: (" " x ($depth*2))
+                    if $*trace;
+                $*ERR.print: "Rendering warnings(s)";
+                $*ERR.print: " in {ref($obj)} ({$obj.WHAT.^name})"
+                    unless $*trace;
+                $*ERR.say: ":";
+            }
+            $*ERR.print: (" " x ($depth*2))
+                if $*trace;
+            note "-- $_";
+            $warnings++;
+            .resume
+        }
+    }
     my $gfx = $obj.render: :$*strict, :&callback;
     $gfx.finish;
 
