@@ -34,15 +34,7 @@ class PDF::Class:ver<0.2.3> #:api<PDF-1.7>
 	$doc;
     }
 
-    method !preservation-needed {
-        if self.reader and my $sig-flags = self.Root.?AcroForm.?SigFlags {
-            constant AppendOnly = 2;
-	    return $sig-flags.flag-is-set: AppendOnly
-        }
-        False;
-    }
-
-    method save-as($spec, Bool :$info = True, Bool :$preserve = self!preservation-needed, |c) {
+    method save-as($spec, Bool :$info = True, |c) {
 
         if $info {
             my $now = DateTime.now;
@@ -57,7 +49,7 @@ class PDF::Class:ver<0.2.3> #:api<PDF-1.7>
                 $Info.CreationDate //= $now
             }
         }
-	nextwith($spec, :!info, :$preserve, |c);
+	nextwith($spec, :!info, |c);
     }
 
     method update(Bool :$info = True, |c) {
@@ -68,6 +60,18 @@ class PDF::Class:ver<0.2.3> #:api<PDF-1.7>
             $Info.ModDate = $now;
         }
         nextsame;
+    }
+
+    # permissions check, e.g: $doc.permitted( PermissionsFlag::Modify )
+    method permitted(UInt $flag --> Bool) {
+
+	my $perms = self.Encrypt.?P
+	    // return True;
+
+	return True
+	    if $.crypt.?is-owner;
+
+	return $perms.flag-is-set( $flag );
     }
 
     method cb-init {
