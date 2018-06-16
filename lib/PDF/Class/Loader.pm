@@ -44,15 +44,17 @@ PDF::COS.loader = class PDF::Class::Loader
 	my $type = do given $subtype {
 	    # See [PDF 1.7 - TABLE 8.20 Annotation types]
 	    when 'Text'|'Link'|'FreeText'|'Line'|'Square'|'Circle'
-		|'Polygon'|'PolyLine'|'Highlight' |' Underline'|'Squiggly'
+		|'Polygon'|'PolyLine'|'Highlight'|'Underline'|'Squiggly'
 		|'StrikeOut'|'Stamp'|'Caret'|'Ink'|'Popup'|'FileAttachment'
 		|'Sound'|'Movie'|'Widget'|'Screen'|'PrinterMark'|'TrapNet'
-		|'Watermark'|'3D'    { 'Annot' }
+		|'Watermark'    { 'Annot' }
+            when '3D' { $subtype = 'ThreeD'; 'Annot' }
 	    when 'PS'|'Image'|'Form' { 'XObject' }
             when 'Type1C'|'CIDFontType0C'|'OpenType' {
                 $subtype = Nil; # not currently subclassed
                 'FontFile'
             }
+            when 'Markup3D' { Nil } # Handled by PDF::Annot::Markup
 	    default { Nil }
 	};
 

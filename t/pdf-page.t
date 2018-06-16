@@ -70,12 +70,12 @@ $page<MediaBox>:delete;
 is-json-equiv $page.media-box, [0, 0, 612, 792], 'media-box - default';
 is-json-equiv $page.bleed-box, $page.media-box, '$.bleed-box - default';
 
-$page.MediaBox = [0,0,150,200];
-is-json-equiv $page.media-box, [0, 0, 150, 200], 'media-box - 2 arg setter';
+$page.media-box = 0, 0, 150, 200;
+is-json-equiv $page.media-box, [0, 0, 150, 200], 'media-box - list setter';
 
-$page.MediaBox = [-10,-10,260,310];
-$page.CropBox = [0,0,250,300];
-$page.BleedBox = [-3,-3,253,303];
+$page.media-box = [-10,-10,260,310];
+$page.crop-box = [0,0,250,300];
+$page.bleed-box = [-3,-3,253,303];
 is-json-equiv $page.media-box, [-10, -10, 260, 310], 'media-box - 4 arg setter';
 is-json-equiv $page.MediaBox, [-10, -10, 260, 310], '.MediaBox accessor';
 is-json-equiv $page<MediaBox>, [-10, -10, 260, 310], '<MediaBox> accessor';

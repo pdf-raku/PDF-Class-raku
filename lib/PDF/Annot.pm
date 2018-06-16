@@ -1,6 +1,6 @@
 use v6;
 
-use PDF::COS::Dict;
+use PDF::COS::Tie::Hash;
 use PDF::Class::Type;
 
 #| /Type /Annot Annotations
@@ -24,17 +24,17 @@ class PDF::Annot
     has Numeric @.Rect is entry(:required);                     #| (Required) The annotation rectangle, defining the location of the annotation on the page in default user space units.
     has PDF::COS::TextString $.Contents is entry;               #| (Optional) Text to be displayed for the annotation or, if this type of annotation does not display text, an alternate description of the annotation’s contents in human-readable form
     has Hash $.P is entry(:alias<page>);                        #| (Optional; PDF 1.3; not used in FDF files) An indirect reference to the page object with which this annotation is associated.
-    has PDF::COS::TextString $.NM is entry(:alias<name>);       #| (Optional; PDF 1.4) The annotation name, a text string uniquely identifying it among all the annotations on its page.
-    subset DateOrTextString where PDF::COS::DateString | PDF::COS::TextString;
+    has PDF::COS::TextString $.NM is entry(:alias<annotation-name>);       #| (Optional; PDF 1.4) The annotation name, a text string uniquely identifying it among all the annotations on its page.
+    my subset DateOrTextString where PDF::COS::DateString | PDF::COS::TextString;
     multi sub coerce(Str $s is rw, DateOrTextString) {
-	my $target-type = $s ~~ /^ 'D:'? $<year>=\d**4/
+	my \target-type = $s ~~ PDF::COS::DateString::DateRegex
 	    ?? PDF::COS::DateString
 	    !! PDF::COS::TextString;
-	PDF::COS.coerce($s, $target-type);
+	PDF::COS.coerce($s, target-type);
     }
     has DateOrTextString $.M is entry(:&coerce, :alias<mod-time>);                #| (Optional; PDF 1.1) The date and time when the annotation was most recently modified.
                                                                 #| The preferred format is a date string, but viewer applications should be prepared to accept and display a string in any format.
-    subset AnnotFlagsInt of UInt where 0 ..^ 2 +< 9;
+    my subset AnnotFlagsInt of UInt where 0 ..^ 2 +< 9;
 ##    my UInt enum AnnotsFlag is export(:AnnotsFlag) « :Invisable(1) :Hidden(2) :Print(3) :NoZoom(4) :NoRotate(5) :NoView(6)
 ##						     :ReadOnly(7) :Locked(8) :ToggleNoView(9) :LockedContents(10) »;
     has AnnotFlagsInt $.F is entry(:alias<flags>);              #| (Optional; PDF 1.1) A set of flags specifying various characteristics of the annotation

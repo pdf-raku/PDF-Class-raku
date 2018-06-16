@@ -35,6 +35,7 @@ my $open-text-annot = ::('PDF::Annot::Text').new(:dict{
     :Rect[ 120, 120, 200, 200],
     :Contents("...xpdf doesn't display annotations. This annotation is closed, btw"),
     :!Open,
+    :Subtype<Text>,
 });
 
 is-deeply $open-text-annot.Open, False, '.Open';
@@ -71,7 +72,6 @@ PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
 $ind-obj = PDF::IO::IndObj.new( :$input, |%ast, :$reader );
 my $link-annot = $ind-obj.object;
 isa-ok $link-annot, (require ::('PDF::Annot::Link'));
-is $link-annot.Type, 'Annot', 'Annot with /Type defaulted';
 is-json-equiv $link-annot.Border, [ 16, 16, 1 ], '.Border';
 is-json-equiv $link-annot.Dest, [ { :Type<Page> }, 'FitR', -4, 399, 199, 533], '.Dest';
 lives-ok {$link-annot.check}, '$link-annot.check lives';

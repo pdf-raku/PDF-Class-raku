@@ -12,7 +12,7 @@ endobj
   /Kids [ 3 0 R ]
   /Resources <<
     /Font <<
-      /F1 7 0 R
+      /F1 6 0 R
     >>
     /ProcSet [ /PDF /Text ]
   >>
@@ -21,8 +21,13 @@ endobj
 
 3 0 obj <<
   /Type /Page
-  /Annots [ 4 0 R 5 0 R ]
-  /Contents 6 0 R
+  /Annots [ 4 0 R <<
+      /Subtype /Text
+      /Contents (...xpdf doesn't display annotations. This annotation is closed, btw)
+      /Open false
+      /Rect [ 120 120 200 200 ]
+    >> ]
+  /Contents 5 0 R
   /MediaBox [ 0 0 350 250 ]
   /Parent 2 0 R
 >>
@@ -38,15 +43,6 @@ endobj
 endobj
 
 5 0 obj <<
-  /Type /Annot
-  /Subtype /Text
-  /Contents (...xpdf doesn't display annotations. This annotation is closed, btw)
-  /Open false
-  /Rect [ 120 120 200 200 ]
->>
-endobj
-
-6 0 obj <<
   /Length 79
 >> stream
 BT
@@ -59,7 +55,7 @@ ET
 endstream
 endobj
 
-7 0 obj <<
+6 0 obj <<
   /Type /Font
   /Subtype /Type1
   /BaseFont /Courier
@@ -68,21 +64,20 @@ endobj
 endobj
 
 xref
-0 8
+0 7
 0000000000 65535 f 
 0000000014 00000 n 
 0000000068 00000 n 
 0000000219 00000 n 
-0000000343 00000 n 
-0000000507 00000 n 
-0000000685 00000 n 
-0000000817 00000 n 
+0000000504 00000 n 
+0000000668 00000 n 
+0000000800 00000 n 
 trailer
 <<
   /ID [ <d743a886fcdcf87b69c36548219ea941> <d743a886fcdcf87b69c36548219ea941> ]
   /Root 1 0 R
-  /Size 8
+  /Size 7
 >>
 startxref
-921
+904
 %%EOF

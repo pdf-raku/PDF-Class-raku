@@ -1,9 +1,9 @@
 use v6;
 
-use PDF::Annot;
+use PDF::Annot::Markup;
 
 class PDF::Annot::Caret
-    is PDF::Annot {
+    is PDF::Annot::Markup {
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

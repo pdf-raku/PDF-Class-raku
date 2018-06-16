@@ -27,6 +27,8 @@
     "PDF::Annot::Circle" : "lib/PDF/Annot/Circle.pm",
     "PDF::Annot::FileAttachment" : "lib/PDF/Annot/FileAttachment.pm",
     "PDF::Annot::Link" : "lib/PDF/Annot/Link.pm",
+    "PDF::Annot::Markup" : "lib/PDF/Annot/Markup.pm",
+    "PDF::Annot::Popup" : "lib/PDF/Annot/Popup.pm",
     "PDF::Annot::Square" : "lib/PDF/Annot/Square.pm",
     "PDF::Annot::Text" : "lib/PDF/Annot/Text.pm",
     "PDF::Annot::Widget" : "lib/PDF/Annot/Widget.pm",
@@ -119,5 +121,5 @@
     "pdf"
   ],
   "test-depends" : [ ],
-  "version" : "0.2.3"
+  "version" : "0.2.4"
 }

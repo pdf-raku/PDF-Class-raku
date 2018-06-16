@@ -39,8 +39,9 @@ class PDF::Page
     has Numeric $.Dur is entry(:alias<display-duration>);       #| (Optional; PDF 1.1) The page’s display duration (also called its advance timing): the maximum length of time, in seconds, that the page is displayed during presentations before the viewer application automatically advances to the next page
     has Hash $.Trans is entry(:alias<transition-effect>);       #| (Optional; PDF 1.1) A transition dictionary describing the transition effect to be used when displaying the page during presentations
     use PDF::Field;
-    my subset Annot of Hash where { .<Type> ~~ 'Annot' && (! .<FT> || $_ ~~ PDF::Field) }
+    my subset Annot of Hash where { .<Subtype> && (! .<FT> || $_ ~~ PDF::Field) }
     multi sub coerce(Hash $annot is rw where {.<FT>:exists}, Annot) {
+        # secondary coercement needed to a field
         my PDF::Field $delegate .= field-delegate($annot);
         PDF::COS.coerce($annot, $delegate)
     }

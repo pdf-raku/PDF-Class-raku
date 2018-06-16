@@ -15,7 +15,7 @@ multi sub is-destination($_, $, $reason) is default {
     note "{.perl} is not a valid destination";
 }
 
-my $page = PDF::Page.new;
+my $page = PDF::Page.new: :dict{ :Type<Page> };
 my $dest = [$page, 'Fit'];
 
 ok $dest ~~ DestinationArray, 'is destination array';

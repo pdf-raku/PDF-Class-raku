@@ -1,8 +1,9 @@
 use v6;
 use Test;
-plan 18;
+plan 17;
 
 use PDF::Class;
+use PDF::COS::Name;
 
 isa-ok PDF::Class.loader.load-delegate( :dict{ :Type<Page> }), ::('PDF::Page'), 'delegation sanity';
 isa-ok PDF::Class.loader.load-delegate( :dict{ :Type<XObject>, :Subtype<Image> }), ::('PDF::XObject::Image'), 'delegation to subclass';
@@ -18,8 +19,8 @@ does-ok PDF::Class.loader.load-delegate( :dict{ :ShadingType(42) }), (require ::
 isa-ok PDF::Class.loader.load-delegate( :dict{ :Type<Unknown> }, :base-class(Hash)), Hash, 'delegation base-class';
 isa-ok PDF::Class.loader.load-delegate( :dict{ :FunctionType(3) }, :base-class(Hash)), ::('PDF::Function::Stitching'), 'delegation by FunctionType';
 
-isa-ok PDF::Class.loader.load-delegate( :dict{ :Subtype<Link> }, :base-class(Hash)),  ::('PDF::Annot::Link'), 'annot defaulted /Type - implemented';
-isa-ok PDF::Class.loader.load-delegate( :dict{ :Subtype<Caret> }, :base-class(Hash)),  ::('PDF::Annot'), 'annot defaulted /Type - unimplemented';
+does-ok PDF::Class.loader.load-delegate( :dict{ :Subtype<Link> }, :base-class(Hash)),  (require ::('PDF::Annot::Link')), 'annot defaulted /Type - implemented';
+does-ok PDF::Class.loader.load-delegate( :dict{ :Subtype<Caret> }, :base-class(Hash)),  (require ::('PDF::Annot')), 'annot defaulted /Type - unimplemented';
 does-ok PDF::Class.loader.load-delegate( :dict{ :S<GTS_PDFX> }, :base-class(Hash)),  (require ::('PDF::OutputIntent')), 'output intent defaulted /Type';
 
 require ::('PDF::Pages');
@@ -27,8 +28,8 @@ my $pages = ::('PDF::Pages').new;
 is $pages.Type, 'Pages', '$.Type init';
 
 require ::('PDF::XObject::Form');
-my $form = ::('PDF::XObject::Form').new( :dict{ :BBox[0, 0, 100, 140 ] } );
-is $form.Type, 'XObject', '$.Type init';
+my PDF::COS::Name $Subtype .= coerce: :name<Form>;
+my $form = ::('PDF::XObject::Form').new( :dict{ :BBox[0, 0, 100, 140 ], :$Subtype });
 is $form.Subtype, 'Form', '$.Subtype init';
 
 require ::('PDF::Shading::Radial');

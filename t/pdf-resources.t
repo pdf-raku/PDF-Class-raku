@@ -49,7 +49,7 @@ is $tt-font-obj.type, 'Font', 'tt font type accessor';
 is $tt-font-obj.subtype, 'TrueType', 'tt font subtype accessor';
 lives-ok {$tt-font-obj.check}, '$tt-font.check lives';
 
-$dict = { :BaseFont(:name<Wingdings-Regular>), :Encoding(:name<Identity-H>), :DescendantFonts[:ind-ref[15, 0]] };
+$dict = { :BaseFont(:name<Wingdings-Regular>), :Encoding(:name<Identity-H>), :DescendantFonts[:ind-ref[15, 0]], :Type<Font>, :Subtype<Type0> };
 my $t0-font-obj = PDF::Font::Type0.new( :$dict );
 is $t0-font-obj.Type, 'Font', 't0 font $.Type';
 is $t0-font-obj.Subtype, 'Type0', 't0 font $.Subtype';
@@ -57,7 +57,7 @@ is $t0-font-obj.Encoding, 'Identity-H', 't0 font $.Encoding';
 
 use PDF::Font::Type1;
 class SubclassedType1Font is PDF::Font::Type1 {};
-my $sc-font-obj = SubclassedType1Font.new( :dict{ :BaseFont( :name<Helvetica> ) }, );
+my $sc-font-obj = SubclassedType1Font.new( :dict{ :BaseFont( :name<Helvetica> ), :Type<Font>, :Subtype<Type1> }, );
 is $sc-font-obj.Type, 'Font', 'sc font $.Type';
 is $sc-font-obj.Subtype, 'Type1', 'sc font $.Subtype';
 is $sc-font-obj.BaseFont, 'Helvetica', 'sc font $.BaseFont';
@@ -105,20 +105,20 @@ lives-ok {$oi-obj.check}, '$io-obj.check lives';
 use PDF::Page;
 use PDF::XObject::Form;
 use PDF::XObject::Image;
-my $new-page = PDF::Page.new;
-my $form1 = PDF::XObject::Form.new( :dict{ :BBox[0, 0, 100, 120] } );
+my $new-page = PDF::Page.new: :dict{ :Type<Page> };
+my $form1 = PDF::XObject::Form.new( :dict{ :BBox[0, 0, 100, 120], :Subtype<Form> } );
 my $fm1 = $new-page.use-resource( $form1 );
 is-deeply $new-page.resource-key($fm1), 'Fm1', 'xobject form name';
 
-my $form2 = PDF::XObject::Form.new( :dict{ :BBox[-3, -3, 103, 123] } );
-my $image = PDF::XObject::Image.new( :dict{ :ColorSpace( :name<DeviceRGB> ), :Width(120), :Height(150) } );
+my $form2 = PDF::XObject::Form.new( :dict{ :BBox[-3, -3, 103, 123], :Subtype<Form> } );
+my $image = PDF::XObject::Image.new( :dict{ :ColorSpace( :name<DeviceRGB> ), :Width(120), :Height(150), :Subtype<Image> } );
 my $fm2 = $new-page.use-resource( $form2 );
 is-deeply $new-page.resource-key($fm2), 'Fm2', 'xobject form name';
 
 my $im1 = $new-page.use-resource( $image );
 is-deeply $new-page.resource-key($im1), 'Im1', 'xobject form name';
 
-my $font = ::('PDF::Font::Type1').new: :dict{ :BaseFont<Helvetica> };
+my $font = ::('PDF::Font::Type1').new: :dict{ :BaseFont<Helvetica>, :Type<Font>, :Subtype<Type1> };
 my $f1 = $new-page.use-resource( $font );
 is-deeply $new-page.resource-key($f1), 'F1', 'font name';
 
