@@ -41,7 +41,9 @@ class PDF::Annot
     use PDF::Appearance;
     has PDF::Appearance $.AP is entry(:alias<appearance>);      #| (Optional; PDF 1.2) An appearance dictionary specifying how the annotation is presented visually on the page
     has PDF::COS::Name $.AS is entry(:alias<appearance-state>); #| (Required if the appearance dictionary AP contains one or more subdictionaries; PDF 1.2) The annotation’s appearance state, which selects the applicable appearance stream from an appearance subdictionary
-    has Numeric @.Border is entry;                              #| (Optional) An array specifying the characteristics of the annotation’s border. The border is specified as a rounded rectangle.
+    has Numeric @.Border is entry(:len(4));                     #| (Optional) An array specifying the characteristics of the annotation’s border. The border is specified as a rounded rectangle.
+    use PDF::Border;
+    has PDF::Border $.BS is entry(:alias<border-style>);
     has Numeric @.C is entry(:alias<color>);                    #| (Optional; PDF 1.1) An array of numbers in the range 0.0 to 1.0, representing a color used for (*) background, when closed, (*) title bar of pop-up window, (*) link border
     has UInt $.StructParent is entry;                           #| (Required if the annotation is a structural content item; PDF 1.3) The integer key of the annotation’s entry in the structural parent tree
     has Hash $.OC is entry(:alias<optional-content>);           #| (Optional; PDF 1.5) An optional content group or optional content membership dictionary (see Section 4.10, “Optional Content”) specifying the optional content properties for the annotation.

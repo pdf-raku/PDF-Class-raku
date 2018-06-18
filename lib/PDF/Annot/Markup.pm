@@ -47,11 +47,7 @@ class PDF::Annot::Markup
     has PDF::COS::Name $.IT is entry(:alias<intent>); #| (Optional; PDF 1.6) A name describing the intent of the markup annotation. Intents allow conforming readers to distinguish between different uses and behaviors of a single markup annotation type. If this entry is not present or its value is the same as the annotation type, the annotation shall have no explicit intent and should behave in a generic manner in a conforming reader.
     #| Free text annotations, line annotations, polygon annotations, and (PDF 1.7) polyline annotations (Table 178) have defined intents, whose values are enumerated in the corresponding tables.
 
-    my role ExDataDict does PDF::COS::Tie::Hash {
-        has PDF::COS::Name $.Type is entry where 'Markup';
-        has PDF::COS::Name $.Subtype is entry(:required) where 'Markup3D';
-        # todo handle numeric entries '3DD', etc
-    }
-    has ExDataDict $.ExData is entry(:alias<external-data>); #| (Optional; PDF 1.7) An external data dictionary specifying data that shall be associated with the annotation.
+    use PDF::Markup::Markup3D;
+    has PDF::Markup::Markup3D $.ExData is entry(:alias<external-data>); #| (Optional; PDF 1.7) An external data dictionary specifying data that shall be associated with the annotation.
 }
 

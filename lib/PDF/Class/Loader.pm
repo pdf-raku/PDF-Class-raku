@@ -29,10 +29,17 @@ PDF::COS.loader = class PDF::Class::Loader
 
     multi method load-delegate( Hash :$dict! where {.<Type>:exists}, :$base-class!) {
         my $type = from-ast($dict<Type>);
-        my $subtype = from-ast($dict<Subtype> // $dict<S>);
-        $type ~~ 'Ind'|'Ttl'|'Org'  # handled by PDF::OCG User attribute
-            |'OutputIntent' # no specific subclasses
-            |'Sig' # ref PDF::Signature
+        my $subtype = from-ast($_)
+            with $dict<Subtype> // $dict<S>;
+        with $subtype {
+            when '3D'   { $_ = 'ThreeD' }
+            when .chars <= 2
+            || $type ~~ 'OutputIntent' # no specific subclasses
+                        { $_ = Nil }
+        }
+        $type ~~
+            'Ind'|'Ttl'|'Org'  # handled by PDF::OCG
+            |'Sig'             # handled by PDF::Signature
             ?? $base-class
             !! $.find-delegate( $type, $subtype, :$base-class );
     }
@@ -54,7 +61,6 @@ PDF::COS.loader = class PDF::Class::Loader
                 $subtype = Nil; # not currently subclassed
                 'FontFile'
             }
-            when 'Markup3D' { Nil } # Handled by PDF::Annot::Markup
 	    default { Nil }
 	};
 

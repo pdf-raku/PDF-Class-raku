@@ -1,5 +1,6 @@
 Release 0.2.4
-- Add PDF::Annot::Markup, PDF::Annot::Popup
+- Added PDF::Annot::Markup, PDF::Annot::Popup,
+  PDF:::Annot::ThreeD, PDF::Markup::Markup3D
 
 Release 0.2.3
 - Fix PDF 1.6+ Cross Reference Streams, broken in 0.2.2
