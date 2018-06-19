@@ -26,11 +26,19 @@ sub warning($msg) {
     $warnings++;
 }
 
+sub dump($obj) {
+    my $content = $obj.content;
+    with $content<stream> {
+        $content = :dict(%(.<dict>));
+    }
+    $*writer.write($content).subst(/\s+/, ' ', :g);
+}
+
 sub ref($obj) {
     my $obj-num = $obj.obj-num;
     $obj-num && $obj-num > 0
 	?? "{$obj.obj-num} {$obj.gen-num//0} R "
-        !! $*writer.write($obj.content).subst(/\s+/, ' ', :g);
+        !! dump($obj)
 }
 
 #| check a PDF against PDF class definitions
@@ -65,7 +73,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     return
         if $obj-num && $obj-num > 0
            && %indobj-seen{"$obj-num {$obj.gen-num}"}++;
-    $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t{ref($obj)} ({$obj.WHAT.^name})"
+    $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t{dump($obj)} ({$obj.WHAT.^name})"
 	if $*trace;
     die "maximum depth of $*max-depth exceeded $ent: {ref($obj)}"
 	if ++$depth > $*max-depth;

@@ -1,6 +1,6 @@
 # PDF::Class
 
-PDF::Class rovides a set of roles and classes that map to the internal structure of PDF documents; the aim being to make it easier to read, write and validate PDF files.
+PDF::Class provides a set of roles and classes that map to the internal structure of PDF documents; the aim being to make it easier to read, write and validate PDF files.
 
 It assists with the construction of valid PDF documents, providing type-checking and the sometimes finicky serialization rules regarding objects.
 
@@ -131,7 +131,7 @@ bursts a multi-page PDF into single page PDF files
 
 #### `pdf-checker.p6 --trace --render --strict --max-depth=n --exclude=Entry1,Entry2 --repair input-pdf`
 
-This is an advanced tool for PDF authors and users. It traverses a PDF, checking it's internal structure against
+This is a low-level tool for PDF authors and users. It traverses a PDF, checking it's internal structure against
 PDF:Class definitions as derived from the [PDF 32000-1:2008 1.7](http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/PDF32000_2008.pdf) specification.
 
  - `--trace` print a dump of PDF Objects as the file is traversed
@@ -139,7 +139,43 @@ PDF:Class definitions as derived from the [PDF 32000-1:2008 1.7](http://www.adob
  - `--strict` perform additional checks:
  - `--max-depth` set maximum traversal depth.
 
-#### Example:
+#### Example 1: Dump a simple PDF
+
+    % pdf-checker.p6 --trace t/helloworld.pdf
+    ref:   << /ID [ <d743a886fcdcf87b69c36548219ea941> <d743a886fcdcf87b69c36548219ea941> ] /Info 1 0 R /Root 2 0 R >> (PDF::Class)
+      /ID:  [ <d743a886fcdcf87b69c36548219ea941> <d743a886fcdcf87b69c36548219ea941> ] (PDF::COS::Array)
+      /Info:       << /Author (t/helloworld.t) /CreationDate (D:20151225000000Z00'00') /Creator (PDF::Class) /Producer (Perl 6 PDF::Class 0.2.4) >> (PDF::COS::Dict+{PDF::Info})
+      /Root:       << /Type /Catalog /Pages 3 0 R >> (PDF::Catalog)
+        /Pages:    << /Type /Pages /Count 1 /Kids [ 4 0 R ] /Resources << /ExtGState << /GS1 6 0 R >> /Font << /F1 7 0 R /F2 8 0 R /F3 9 0 R >> /ProcSet [ /PDF /Text ] /XObject << /Im1 10 0 R /Im2 11 0 R >> >> >> (PDF::Pages)
+          /Kids:   [ 4 0 R ] (PDF::COS::Array)
+            [0]:   << /Type /Page /Contents 5 0 R /MediaBox [ 0 0 595 842 ] /Parent 3 0 R >> (PDF::Page)
+              /Contents:    << /Length 1944 >> (PDF::COS::Stream)
+              /MediaBox:    [ 0 0 595 842 ] (PDF::COS::Array)
+          /Resources:       << /ExtGState << /GS1 6 0 R >> /Font << /F1 7 0 R /F2 8 0 R /F3 9 0 R >> /ProcSet [ /PDF /Text ] /XObject << /Im1 10 0 R /Im2 11 0 R >> >> (PDF::COS::Dict+{PDF::Resources})
+            /ExtGState:     << /GS1 6 0 R >> (PDF::COS::Dict)
+              /GS1: << /Type /ExtGState /ca 0.5 >> (PDF::COS::Dict+{PDF::ExtGState})
+            /Font: << /F1 7 0 R /F2 8 0 R /F3 9 0 R >> (PDF::COS::Dict)
+              /F1: << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >> (PDF::Font::Type1)
+              /F2: << /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >> (PDF::Font::Type1)
+              /F3: << /Type /Font /Subtype /Type1 /BaseFont /ZapfDingbats >> (PDF::Font::Type1)
+            /ProcSet:       [ /PDF /Text ] (PDF::COS::Array)
+            /XObject:       << /Im1 10 0 R /Im2 11 0 R >> (PDF::COS::Dict)
+              /Im1: << /Type /XObject /Subtype /Image /BitsPerComponent 8 /ColorSpace /DeviceRGB /Filter /DCTDecode /Height 254 /Width 200 /Length 8247 >> (PDF::XObject::Image)
+              /Im2: << /Type /XObject /Subtype /Image /BitsPerComponent 8 /ColorSpace [ /Indexed /DeviceRGB 255 12 0 R ] /Height 42 /Width 37 /Length 1554 >> (PDF::XObject::Image)
+                /ColorSpace:        [ /Indexed /DeviceRGB 255 12 0 R ] (PDF::ColorSpace::Indexed)
+                  [3]:      << /Length 768 >> (PDF::COS::Stream)
+    Checking of t/helloworld.pdf completed with 0 warnings and 0 errors
+
+This example dumps a PDF and shows how PDF::Class has interpeted it.
+
+- indirect object `1 0 R` is a dictionary that has had the `PDF::Info` role applied
+- indirect object `2 0 R` has been loaded as a `PDF::Catalog` object.
+- font `/F3` is a ZapfDingbats type1 font
+
+The PDF contains has one page (PDF::Page) that references various other objects, such as fonts and
+xobject images.
+
+#### Example 2: Check a sample PDF
 
     % wget http://www.stillhq.com/pdfdb/000025/data.pdf
     % pdf-checker-p6 --strict --render data.pdf
@@ -153,7 +189,7 @@ PDF:Class definitions as derived from the [PDF 32000-1:2008 1.7](http://www.adob
     Unknown entries 1 0 R (PDF::Catalog) struct: /ViewPreferences
     Checking of /home/david/Documents/test-pdf/000025.pdf completed with 5 warnings and 0 errors
 
-In the above example
+In this example:
 
 - Object `28 0 R` had an extra byte in its stream data.
 - Some Page and XObject graphics operations were not in the
@@ -192,11 +228,11 @@ PDF::Action::URI | dict | Base, IsMap, Next, S, Type, URI |  | /Action Subtype -
 PDF::Annot::Caret | dict | AP(appearance), AS(appearance-state), BS(border-style), Border, C(color), CA(constant-opacity), Contents, CreationDate, DR(default-resources), ExData(external-data), F(flags), IRT(reply-to-ref), IT(intent), M(mod-time), NM(annotation-name), OC(optional-content), P(page), Popup, RC(rich-text), RD(rectangle-differences), RT(reply-type), Rect, StructParent, Subtype, Sy(symbol), T(text-label), Type |  | 
 PDF::Annot::Circle | dict | AP(appearance), AS(appearance-state), BE(border-effect), BS(border-style), Border, C(color), Contents, DR(default-resources), F(flags), IC(interior-color), M(mod-time), NM(annotation-name), OC(optional-content), P(page), RD(rectangle-differences), Rect, StructParent, Subtype, Type |  | 
 PDF::Annot::FileAttachment | dict | AP(appearance), AS(appearance-state), BS(border-style), Border, C(color), CA(constant-opacity), Contents, CreationDate, DR(default-resources), ExData(external-data), F(flags), FS(file-spec), IRT(reply-to-ref), IT(intent), M(mod-time), NM(annotation-name), Name(icon-name), OC(optional-content), P(page), Popup, RC(rich-text), RT(reply-type), Rect, StructParent, Subtype, T(text-label), Type |  | 
-PDF::Annot::Link | dict | A(action), AP(appearance), AS(appearance-state), BS, Border, C(color), CA(constant-opacity), Contents, CreationDate, DR(default-resources), Dest, ExData(external-data), F(flags), H(highlight-mode), IRT(reply-to-ref), IT(intent), M(mod-time), NM(annotation-name), OC(optional-content), P(page), PA(uri-action), Popup, QuadPoints, RC(rich-text), RT(reply-type), Rect, StructParent, Subtype, T(text-label), Type | cb-check | 
+PDF::Annot::Link | dict | A(action), AP(appearance), AS(appearance-state), BS, Border, C(color), CA(constant-opacity), Contents, CreationDate, DR(default-resources), Dest, ExData(external-data), F(flags), H(highlight-mode), IRT(reply-to-ref), IT(intent), M(mod-time), NM(annotation-name), OC(optional-content), P(page), PA(uri-action), Popup, QuadPoints, RC(rich-text), RT(reply-type), Rect, StructParent, Subtype, T(text-label), Type | | 
 PDF::Annot::Markup | dict | AP(appearance), AS(appearance-state), BS(border-style), Border, C(color), CA(constant-opacity), Contents, CreationDate, DR(default-resources), ExData(external-data), F(flags), IRT(reply-to-ref), IT(intent), M(mod-time), NM(annotation-name), OC(optional-content), P(page), Popup, RC(rich-text), RT(reply-type), Rect, StructParent, Subtype, T(text-label), Type |  | 
 PDF::Annot::Popup | dict | AP(appearance), AS(appearance-state), BS(border-style), Border, C(color), Contents, DR(default-resources), F(flags), M(mod-time), NM(annotation-name), OC(optional-content), Open, P(page), Parent, Rect, StructParent, Subtype, Type |  | 
 PDF::Annot::Square | dict | AP(appearance), AS(appearance-state), BE(border-effect), BS(border-style), Border, C(color), Contents, DR(default-resources), F(flags), IC(interior-color), M(mod-time), NM(annotation-name), OC(optional-content), P(page), RD(rectangle-differences), Rect, StructParent, Subtype, Type |  | 
-PDF::Annot::Text | dict | AP(appearance), AS(appearance-state), BS(border-style), Border, C(color), CA(constant-opacity), Contents, CreationDate, DR(default-resources), ExData(external-data), F(flags), IRT(reply-to-ref), IT(intent), M(mod-time), NM(annotation-name), Name(icon-name), OC(optional-content), Open, P(page), Popup, RC(rich-text), RT(reply-type), Rect, State, StateModel, StructParent, Subtype, T(text-label), Type | cb-check | /Type Annot - Annonation subtypes See [PDF 1.7 Section 8.4 Annotations]
+PDF::Annot::Text | dict | AP(appearance), AS(appearance-state), BS(border-style), Border, C(color), CA(constant-opacity), Contents, CreationDate, DR(default-resources), ExData(external-data), F(flags), IRT(reply-to-ref), IT(intent), M(mod-time), NM(annotation-name), Name(icon-name), OC(optional-content), Open, P(page), Popup, RC(rich-text), RT(reply-type), Rect, State, StateModel, StructParent, Subtype, T(text-label), Type | | /Type Annot - Annonation subtypes See [PDF 1.7 Section 8.4 Annotations]
 PDF::Annot::ThreeD | dict | 3DA(activation), 3DB(view-box), 3DD(artwork), 3DI(interactive), 3DV(default-view), AP(appearance), AS(appearance-state), BS(border-style), Border, C(color), Contents, DR(default-resources), F(flags), M(mod-time), NM(annotation-name), OC(optional-content), P(page), Rect, StructParent, Subtype, Type |  | 
 PDF::Annot::Widget | dict | A(action), AA(additional-actions), AP(appearance), AS(appearance-state), BS(border-style), Border, C(color), Contents, DR(default-resources), F(flags), H(highlight-mode), M(mod-time), MK, NM(annotation-name), OC(optional-content), P(page), Rect, StructParent, Subtype, Type |  | 
 PDF::Appearance | dict | D(down), N(normal), R(rollover) |  | 
@@ -232,7 +268,7 @@ PDF::Function::PostScript | stream | Domain, FunctionType, Range | calc, calcula
 PDF::Function::Sampled | stream | BitsPerSample, Decode, Domain, Encode, FunctionType, Order, Range, Size | calc, calculator | /FunctionType 0 - Sampled see [PDF 1.7 Section 3.9.1 Type 0 (Sampled) Functions]
 PDF::Function::Stitching | stream | Bounds, Domain, Encode, FunctionType, Functions, Range | calc, calculator | /FunctionType 3 - Stitching see [PDF 1.7 Section 3.9.3 Type 3 (Stitching) Functions]
 PDF::Group::Transparency | dict | CS(color-space), I(isolated), K(knockout), S, Type |  | 
-PDF::Image | stream | Alternatives, BitsPerComponent, ColorSpace, Decode, Height, ID, ImageMask, Intent, Interpolate, Mask, Metadata, Name, OC, OPI, SMask, SMaskInData, StructParent, Width | cb-check, to-png | 
+PDF::Image | stream | Alternatives, BitsPerComponent, ColorSpace, Decode, Height, ID, ImageMask, Intent, Interpolate, Mask, Metadata, Name, OC, OPI, SMask, SMaskInData, StructParent, Width | to-png | 
 PDF::MCR | dict | MCID, Pg(page), Stm, StmOwn, Type |  | 
 PDF::Mask::Alpha | dict | BC(backdrop-color), G(transparency-group), S, TR(transfer-function), Type |  | 
 PDF::Mask::Luminosity | dict | BC(backdrop-color), G(transparency-group), S, TR(transfer-function), Type |  | 
@@ -245,7 +281,7 @@ PDF::OCMD | dict | OCGs, P(visibility-policy), Type, VE(visibility-expression) |
 PDF::Outline | dict | A(action), C(color), Count, Dest, F(flags), First, Last, Next, Parent, Prev, SE(structure-element), Title |  | 
 PDF::Outlines | dict | Count, First, Last, Type |  | 
 PDF::OutputIntent::GTS_PDFX | dict | DestOutputProfile, Info, OutputCondition, OutputConditionIdentifier, RegistryName, S, Type |  | 
-PDF::Page | dict | AA(additional-actions), Annots, ArtBox, B(beads), BleedBox, BoxColorInfo, Contents, CropBox, Dur(display-duration), Group, ID, LastModified, MediaBox, Metadata, PZ(preferred-zoom), Parent, PieceInfo, PressSteps, Resources, Rotate, SeparationInfo, StructParents, Tabs, TemplateInstantiated, Thumb(thumbnail-image), Trans(transition-effect), TrimBox, Type, UserUnit, VP(view-ports) | art-box, bbox, bleed-box, canvas, cb-check, contents, contents-parse, core-font, crop-box, fields, fields-hash, find-resource, finish, gfx, graphics, has-pre-gfx, height, images, media-box, new-gfx, pre-gfx, pre-graphics, render, resource-entry, resource-key, save-as-image, text, tiling-pattern, to-landscape, to-xobject, trim-box, use-font, use-resource, width, xobject-form | /Type /Page - describes a single PDF page
+PDF::Page | dict | AA(additional-actions), Annots, ArtBox, B(beads), BleedBox, BoxColorInfo, Contents, CropBox, Dur(display-duration), Group, ID, LastModified, MediaBox, Metadata, PZ(preferred-zoom), Parent, PieceInfo, PressSteps, Resources, Rotate, SeparationInfo, StructParents, Tabs, TemplateInstantiated, Thumb(thumbnail-image), Trans(transition-effect), TrimBox, Type, UserUnit, VP(view-ports) | art-box, bbox, bleed-box, canvas, contents, contents-parse, core-font, crop-box, fields, fields-hash, find-resource, finish, gfx, graphics, has-pre-gfx, height, images, media-box, new-gfx, pre-gfx, pre-graphics, render, resource-entry, resource-key, save-as-image, text, tiling-pattern, to-landscape, to-xobject, trim-box, use-font, use-resource, width, xobject-form | /Type /Page - describes a single PDF page
 PDF::Pages | dict | Count, CropBox, Kids, MediaBox, Parent, Resources, Rotate, Type | add-page, add-pages, art-box, bbox, bleed-box, core-font, crop-box, find-resource, height, images, media-box, page-count, resource-entry, resource-key, to-landscape, trim-box, use-font, use-resource, width | /Type /Pages - a node in the page tree
 PDF::Pattern::Shading | dict | ExtGState, Matrix, PatternType, Shading, Type |  | /ShadingType 2 - Axial
 PDF::Pattern::Tiling | stream | BBox, Matrix, PaintType, PatternType, Resources, TilingType, Type, XStep, YStep | canvas, contents, contents-parse, core-font, find-resource, finish, gfx, graphics, has-pre-gfx, height, images, new-gfx, open, pre-gfx, pre-graphics, render, resource-entry, resource-key, save-as-image, text, tiling-pattern, use-font, use-resource, width, xobject-form | /ShadingType 1 - Tiling
@@ -259,8 +295,8 @@ PDF::Shading::Radial | dict | AntiAlias, BBox, Background, ColorSpace, Coords, D
 PDF::Shading::Tensor | stream | AntiAlias, BBox, Background, BitsPerComponent, BitsPerCoordinate, BitsPerFlag, ColorSpace, Decode, Function, ShadingType |  | /ShadingType 7 - Tensor
 PDF::StructElem | dict | A(attributes), ActualText, Alt(alternative-description), C, E(expanded-form), ID, K(children), Lang, P(parent), Pg(page), R(revision), S(structure-type), T(title), Type |  | 
 PDF::StructTreeRoot | dict | ClassMap, IDTree, K(children), ParentTree, ParentTreeNextKey, RoleMap, Type |  | 
-PDF::XObject::Form | stream | BBox, FormType, Group, LastModified, Matrix, Metadata, Name, OC(optional-content-group), OPI, PieceInfo, Ref, Resources, StructParent, StructParents, Subtype, Type | canvas, cb-check, contents, contents-parse, core-font, find-resource, finish, gfx, graphics, has-pre-gfx, height, images, new-gfx, open, pre-gfx, pre-graphics, render, resource-entry, resource-key, save-as-image, text, tiling-pattern, use-font, use-resource, width, xobject-form | XObject Forms - /Type /XObject /Subtype Form See [PDF Spec 1.7 4.9 Form XObjects]
-PDF::XObject::Image | stream | Alternatives, BitsPerComponent, ColorSpace, Decode, Height, ID, ImageMask, Intent, Interpolate, Mask, Metadata, Name, OC, OPI, SMask, SMaskInData, StructParent, Subtype, Type, Width | cb-check, height, image-obj, inline-content, inline-to-xobject, open, to-png, width | XObjects /Type XObject /Subtype /Image See [PDF 1.7 Section 4.8 - Images ]
+PDF::XObject::Form | stream | BBox, FormType, Group, LastModified, Matrix, Metadata, Name, OC(optional-content-group), OPI, PieceInfo, Ref, Resources, StructParent, StructParents, Subtype, Type | canvas, contents, contents-parse, core-font, find-resource, finish, gfx, graphics, has-pre-gfx, height, images, new-gfx, open, pre-gfx, pre-graphics, render, resource-entry, resource-key, save-as-image, text, tiling-pattern, use-font, use-resource, width, xobject-form | XObject Forms - /Type /XObject /Subtype Form See [PDF Spec 1.7 4.9 Form XObjects]
+PDF::XObject::Image | stream | Alternatives, BitsPerComponent, ColorSpace, Decode, Height, ID, ImageMask, Intent, Interpolate, Mask, Metadata, Name, OC, OPI, SMask, SMaskInData, StructParent, Subtype, Type, Width | height, image-obj, inline-content, inline-to-xobject, open, to-png, width | XObjects /Type XObject /Subtype /Image See [PDF 1.7 Section 4.8 - Images ]
 PDF::XObject::PS | stream | Level1, Subtype, Type |  | Postscript XObjects /Type XObject /Subtype PS See [PDF 1.7 Section 4.7.1 PostScript XObjects]
 
 *(generated by `etc/make-quick-ref.pl`)*
