@@ -8,7 +8,7 @@ use PDF::Content::XObject;
 
 my %classes;
 
-my Set $std-methods .= new: flat( <cb-init cb-finish type subtype <anon> delegate-function delegate-shading>, (PDF::COS::Stream, PDF::COS::Array).map: *.^methods>>.name);
+my Set $std-methods .= new: flat( <cb-init cb-check cb-finish type subtype <anon> delegate-function delegate-shading>, (PDF::COS::Stream, PDF::COS::Array).map: *.^methods>>.name);
 my Set $stream-accessors .= new: <Length Filter DecodeParms F FFilter FDecodeParms DL>;
 
 sub scan-classes($path) {
