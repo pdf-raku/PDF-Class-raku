@@ -3,6 +3,7 @@ use v6;
 use PDF::Content;
 use PDF::Content::Graphics;
 use PDF::Writer;
+use PDF::COS::Util :to-ast;
 
 my UInt $*max-depth;
 my Bool $*contents;
@@ -26,7 +27,30 @@ sub warning($msg) {
     $warnings++;
 }
 
-sub dump($obj) {
+sub place-holder($_) {
+    my $obj-num = .?obj-num;
+    $obj-num && $obj-num > 0
+        ?? ref($_)
+        !! '...';
+}
+
+sub key-sort($_) {
+    when 'Type'        {"0"}
+    when 'Subtype'|'S' {"1"}
+    when /Type$/       {"1" ~ $_}
+    when 'Length'      {"z"}
+    default            {$_}
+}
+
+multi sub dump(List $obj) {
+    '[ ' ~ (flat($obj.keys.map: { $obj[$_] }).map({ $_ ~~ Hash|Array ?? place-holder($_) !! $*writer.write(to-ast($_))}).join: ' ') ~ ' ]';
+}
+
+multi sub dump(Hash $obj) {
+    '<< ' ~ (flat($obj.keys.grep(* ne 'encoded').sort(&key-sort).map: -> $name { :$name, $obj{$name} }).map({ $_ ~~ Hash|Array ?? place-holder($_) !! $*writer.write(to-ast($_))}).join: ' ') ~ ' >>';
+}
+
+multi sub dump($obj) is default {
     my $content = $obj.content;
     with $content<stream> {
         $content = :dict(%(.<dict>));
@@ -37,7 +61,7 @@ sub dump($obj) {
 sub ref($obj) {
     my $obj-num = $obj.obj-num;
     $obj-num && $obj-num > 0
-	?? "{$obj.obj-num} {$obj.gen-num//0} R "
+	?? "{$obj.obj-num} {$obj.gen-num//0} R"
         !! dump($obj)
 }
 
