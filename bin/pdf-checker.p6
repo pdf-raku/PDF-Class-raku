@@ -250,7 +250,7 @@ pdf-checker.p6 - Check PDF structure and values
    --render            check the contents streams of pages, forms, patterns and type3 fonts
    --strict            enable some additional warnings:
                        -- unknown entries in dictionarys
-                       -- additional graphics checks (when --contents is enabled)
+                       -- additional graphics checks (when --render is enabled)
    --class <name>      checking class (default PDF::Class)
    --exclude <key>,..  restrict checking
 
