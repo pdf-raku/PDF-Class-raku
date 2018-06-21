@@ -87,7 +87,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     return
         if $obj-num && $obj-num > 0
            && %indobj-seen{"$obj-num {$obj.gen-num}"}++;
-    $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t{dump($obj)} ({$obj.WHAT.^name})"
+    $*ERR.say: (" " x ($depth++*2)) ~ "$ent\:\t{dump($obj)} ({$obj.WHAT.^name})"
 	if $*trace;
     my Hash $entries = $obj.entries;
     my Str @unknown-entries;
@@ -147,7 +147,7 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
         if $obj-num && $obj-num > 0
            && %indobj-seen{"$obj-num {$obj.gen-num}"}++;
 
-    $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t{ref($obj)} ({$obj.WHAT.^name})"
+    $*ERR.say: (" " x ($depth++*2)) ~ "$ent\:\t{ref($obj)} ({$obj.WHAT.^name})"
 	if $*trace;
     my Array $index = $obj.index;
     for $obj.keys.sort -> $i {
