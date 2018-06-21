@@ -5,7 +5,6 @@ use PDF::Content::Graphics;
 use PDF::Writer;
 use PDF::COS::Util :to-ast;
 
-my UInt $*max-depth;
 my Bool $*contents;
 my Bool $*trace;
 my Bool $*strict = False;
@@ -50,14 +49,6 @@ multi sub dump(Hash $obj) {
     '<< ' ~ (flat($obj.keys.grep(* ne 'encoded').sort(&key-sort).map: -> $name { :$name, $obj{$name} }).map({ $_ ~~ Hash|Array ?? place-holder($_) !! $*writer.write(to-ast($_))}).join: ' ') ~ ' >>';
 }
 
-multi sub dump($obj) is default {
-    my $content = $obj.content;
-    with $content<stream> {
-        $content = :dict(%(.<dict>));
-    }
-    $*writer.write($content).subst(/\s+/, ' ', :g);
-}
-
 sub ref($obj) {
     my $obj-num = $obj.obj-num;
     $obj-num && $obj-num > 0
@@ -72,7 +63,6 @@ sub MAIN(Str $infile,                 #= input PDF
          Bool :$*trace,               #= show progress
          Bool :$*render,              #= validate/check contents of pages, etc
          Bool :$*strict,              #= perform additional checks
-         UInt :$*max-depth = 100,     #= maximum recursion depth
 	 Str  :$exclude,              #= excluded entries: Entry1,Entry2,
          Bool :$repair = False        #= repair PDF before checking
          ) {
@@ -99,8 +89,6 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
            && %indobj-seen{"$obj-num {$obj.gen-num}"}++;
     $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t{dump($obj)} ({$obj.WHAT.^name})"
 	if $*trace;
-    die "maximum depth of $*max-depth exceeded $ent: {ref($obj)}"
-	if ++$depth > $*max-depth;
     my Hash $entries = $obj.entries;
     my Str @unknown-entries;
 
@@ -118,14 +106,14 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 		?? $obj."$k"()   # entry has an accessor. use it
 		!! $obj{$k};     # dereferece hash entry
 
+            check($kid, :ent("/$k"), :$depth) if $kid ~~ Array | Hash;
+
 	    CATCH {
 		default {
 		    error("Error in {ref($obj)} ({$obj.WHAT.^name}) /$k entry: $_");
 		}
 	    }
 	}
-
-	check($kid, :ent("/$k"), :$depth) if $kid ~~ Array | Hash;
 
 	@unknown-entries.push: '/' ~ $k
 	    if $*strict && +$entries && !($entries{$k}:exists);
@@ -161,8 +149,6 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 
     $*ERR.say: (" " x ($depth*2)) ~ "$ent\:\t{ref($obj)} ({$obj.WHAT.^name})"
 	if $*trace;
-    die "maximum depth of $*max-depth exceeded $ent: {ref($obj)}"
-	if ++$depth > $*max-depth;
     my Array $index = $obj.index;
     for $obj.keys.sort -> $i {
 	my Str $accessor = .tied.accessor-name
@@ -173,14 +159,15 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 		?? $obj."$accessor"()  # array element has an accessor. use it
 		!! $obj[$i];           # dereference array element
 
+            check($kid, :ent("\[$i\]"), :$depth)  if $kid ~~ Array | Hash
+                && !($i == 0 && $accessor ~~ 'page'); # avoid recursing to page destinations
+
 	    CATCH {
 		default {
 		    error("error in {ref($obj)}\[$i\] ({$obj.WHAT.^name}) $ent: $_");
 		}
 	    }
 	}
-	check($kid, :ent("\[$i\]"), :$depth)  if $kid ~~ Array | Hash
-            && !($i == 0 && $accessor ~~ 'page'); # avoid recursing to page destinations
     }
 }
 
@@ -259,7 +246,6 @@ pdf-checker.p6 - Check PDF structure and values
 
  Options:
    --password          password for an encrypted PDF
-   --max-depth         max navigation depth (default 200)
    --trace             trace PDF navigation
    --render            check the contents streams of pages, forms, patterns and type3 fonts
    --strict            enable some additional warnings:
