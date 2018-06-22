@@ -2,7 +2,7 @@ use v6;
 
 use PDF::COS::Tie::Hash;
 
-#| ViewPreferences role - see PDF::Catalog - /ViewPreferences entry
+#| ViewerPreferences role - see PDF::Catalog - /ViewerPreferences entry
 
 role PDF::ViewerPreferences
     does PDF::COS::Tie::Hash {

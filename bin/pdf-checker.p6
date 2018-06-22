@@ -42,11 +42,20 @@ sub key-sort($_) {
 }
 
 multi sub dump(List $obj) {
-    '[ ' ~ (flat($obj.keys.map: { $obj[$_] }).map({ $_ ~~ Hash|Array ?? place-holder($_) !! $*writer.write(to-ast($_))}).join: ' ') ~ ' ]';
+    '[ ' ~ (
+        $obj.keys.map({ $obj[$_] })
+            .map({ $_ ~~ Hash|Array ?? place-holder($_) !! $*writer.write(to-ast($_))})
+            .join: ' ')
+        ~ ' ]';
 }
 
 multi sub dump(Hash $obj) {
-    '<< ' ~ (flat($obj.keys.grep(* ne 'encoded').sort(&key-sort).map: -> $name { :$name, $obj{$name} }).map({ $_ ~~ Hash|Array ?? place-holder($_) !! $*writer.write(to-ast($_))}).join: ' ') ~ ' >>';
+    '<< ' ~ (
+        $obj.keys.grep(* ne 'encoded').sort(&key-sort)
+            .map(-> $name { :$name, $obj{$name} })
+            .flat
+            .map({ $_ ~~ Hash|Array ?? place-holder($_) !! $*writer.write(to-ast($_))}).join: ' ')
+        ~ ' >>';
 }
 
 sub ref($obj) {
@@ -147,7 +156,7 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
         if $obj-num && $obj-num > 0
            && %indobj-seen{"$obj-num {$obj.gen-num}"}++;
 
-    $*ERR.say: (" " x ($depth++*2)) ~ "$ent\:\t{ref($obj)} ({$obj.WHAT.^name})"
+    $*ERR.say: (" " x ($depth++*2)) ~ "$ent\:\t{dump($obj)} ({$obj.WHAT.^name})"
 	if $*trace;
     my Array $index = $obj.index;
     for $obj.keys.sort -> $i {
@@ -253,6 +262,7 @@ pdf-checker.p6 - Check PDF structure and values
                        -- additional graphics checks (when --render is enabled)
    --class <name>      checking class (default PDF::Class)
    --exclude <key>,..  restrict checking
+   --repair            Repair PDF before Checking
 
 =head1 DESCRIPTION
 
