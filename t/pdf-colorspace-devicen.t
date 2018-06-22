@@ -3,7 +3,7 @@ use Test;
 use PDF::Class;
 use PDF::Grammar::Test :is-json-equiv;
 
-my $doc = PDF.open: "t/pdf/colorspace-devicen.in";
+my PDF::Class $doc .= open: "t/pdf/colorspace-devicen.in";
 my %cs = $doc.Root.Pages.resources: 'ColorSpace';
 
 my $cs1 = %cs<CS1>;

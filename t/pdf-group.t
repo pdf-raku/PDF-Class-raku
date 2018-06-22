@@ -17,12 +17,12 @@ my $input = q:to"--END--";
 endobj
 --END--
 
-my $actions = PDF::Grammar::PDF::Actions.new;
+my PDF::Grammar::PDF::Actions $actions .= new;
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed: $input";
 my %ast = $/.ast;
 
-my $ind-obj = PDF::IO::IndObj.new( :$input, |%ast );
+my PDF::IO::IndObj $ind-obj .= new( :$input, |%ast );
 my $group-obj = $ind-obj.object;
 isa-ok $group-obj, ::('PDF::Group');
 is $group-obj.Type, 'Group', 'Group Type';

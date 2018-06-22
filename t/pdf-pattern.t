@@ -9,7 +9,7 @@ use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 
-my $actions = PDF::Grammar::PDF::Actions.new;
+my PDF::Grammar::PDF::Actions $actions .= new;
 
 # example taken from PDF 1.7 Specification
 
@@ -31,7 +31,7 @@ my $input = q:to"--END-OBJ--";
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
 my %ast = $/.ast;
-my $ind-obj = PDF::IO::IndObj.new( |%ast, :$input);
+my PDF::IO::IndObj $ind-obj .= new( |%ast, :$input);
 is $ind-obj.obj-num, 15, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $pattern-obj = $ind-obj.object;
@@ -74,7 +74,7 @@ my @lines = $contents.lines;
 is-deeply [ @lines[0..2] ], ['q', '  BT', '    /F1 1 Tf'], 'first three lines of content';
 is-deeply [ @lines[*-4..*] ], ['    0 0 0 rg', '    (¨) Tj', '  ET', 'Q'], 'last 5 lines of content';
 
-my $pdf = PDF::Class.new;
+my PDF::Class $pdf .= new;
 my $page = $pdf.Pages.add-page;
 $page.media-box = [0, 0, 230, 210];
 $page.gfx.ops: [

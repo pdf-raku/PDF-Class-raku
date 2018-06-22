@@ -18,14 +18,14 @@ my $input = q:to"--END--";
 >> endobj
 --END--
 
-my $actions = PDF::Grammar::PDF::Actions.new;
+my PDF::Grammar::PDF::Actions $actions .= new;
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed: $input";
 my %ast = $/.ast;
 
 my $reader = class { has $.auto-deref = False }.new;
 
-my $ind-obj = PDF::IO::IndObj.new( :$input, |%ast, :$reader );
+my PDF::IO::IndObj $ind-obj .= new( :$input, |%ast, :$reader );
 my $text-annot = $ind-obj.object;
 isa-ok $text-annot, (require ::('PDF::Annot::Text'));
 is-json-equiv $text-annot.Rect, [ 100, 100, 300, 200 ], '.Rect';
@@ -41,7 +41,7 @@ my $open-text-annot = ::('PDF::Annot::Text').new(:dict{
 is-deeply $open-text-annot.Open, False, '.Open';
 lives-ok {$open-text-annot.check}, '$open-check-annot.check lives';
 
-my $pdf = PDF::Class.new;
+my PDF::Class $pdf .= new;
 my $page = $pdf.Pages.add-page;
 $page<MediaBox> = [0, 0, 350, 250];
 $page<Annots> = [ $text-annot, $open-text-annot ];

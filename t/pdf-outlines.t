@@ -9,7 +9,7 @@ use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::Grammar::Test :is-json-equiv;
 
-my $actions = PDF::Grammar::PDF::Actions.new;
+my PDF::Grammar::PDF::Actions $actions .= new;
 
 my $input = q:to"--END-OBJ--";
 18 0 obj <<
@@ -23,7 +23,7 @@ PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
 my %ast = $/.ast;
 my $reader = class { has $.auto-deref = False }.new;
-my $ind-obj = PDF::IO::IndObj.new( |%ast, :$reader);
+my PDF::IO::IndObj $ind-obj .= new( |%ast, :$reader);
 is $ind-obj.obj-num, 18, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $outlines-obj = $ind-obj.object;

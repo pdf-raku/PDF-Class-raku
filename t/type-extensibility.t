@@ -28,15 +28,15 @@ PDF::COS.loader = MyLoader;
 use lib '.';
 use t::Doc::Catalog;
 
-my $Catalog = t::Doc::Catalog.new( :dict{ :Type( :name<Catalog> ),
-                                          :Version( :name<1.3>) ,
-                                          :Pages{ :Type{ :name<Pages> },
-                                                  :Kids[],
-                                                  :Count(0),
-                                                },
-					  :ViewerPreferences{ :HideToolbar(True) },
-                                        },
-                                   );
+my t::Doc::Catalog $Catalog .= new( :dict{ :Type( :name<Catalog> ),
+                                           :Version( :name<1.3>) ,
+                                           :Pages{ :Type{ :name<Pages> },
+                                                   :Kids[],
+                                                   :Count(0),
+                                                 },
+					   :ViewerPreferences{ :HideToolbar(True) },
+                                         },
+                                   ) ;
 
 isa-ok $Catalog, t::Doc::Catalog;
 is $Catalog.Type, 'Catalog', '$Catalog.Type';

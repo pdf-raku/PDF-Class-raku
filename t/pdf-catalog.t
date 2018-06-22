@@ -11,7 +11,7 @@ use PDF::Grammar::Test :is-json-equiv;
 use PDF::Page;
 use PDF::Catalog;
 
-my $actions = PDF::Grammar::PDF::Actions.new;
+my PDF::Grammar::PDF::Actions $actions .= new;
 
 my $input = q:to"--END-OBJ--";
 215 0 obj <<
@@ -68,10 +68,10 @@ my $reader = class { has $.auto-deref = False }.new;
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
 my %ast = $/.ast;
-my $ind-obj = PDF::IO::IndObj.new( |%ast, :$reader);
+my PDF::IO::IndObj $ind-obj .= new( |%ast, :$reader);
 is $ind-obj.obj-num, 215, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
-my $catalog = $ind-obj.object;
+my PDF::Catalog $catalog = $ind-obj.object;
 isa-ok $catalog, PDF::Catalog;
 is $catalog<PageLayout>, 'OneColumn', 'dict lookup';
 is-json-equiv $catalog.Lang, 'EN-US', '$catalog.Lang';
@@ -140,10 +140,10 @@ is $catalog.Dests<Foo>, 'Bar', 'Named destination';
 
 # crosschecks on /Type
 my $dict = { :Type( :name<Catalog> ) };
-lives-ok {$catalog = PDF::Catalog.new( :$dict )}, 'catalog .new with valid /Type - lives';
+lives-ok {$catalog .= new( :$dict )}, 'catalog .new with valid /Type - lives';
 $dict<Type>:delete;
 
-lives-ok {$catalog = PDF::Catalog.new( :$dict )}, 'catalog .new default /Type - lives';
+lives-ok {$catalog .= new( :$dict )}, 'catalog .new default /Type - lives';
 isa-ok $catalog.Type, Str, 'catalog $.Type';
 is $catalog.Type, 'Catalog', 'catalog $.Type';
 

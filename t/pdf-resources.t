@@ -30,8 +30,8 @@ my $input = q:to"--END--";
 --END--
 
 my $reader = class { has $.auto-deref = False }.new;
-my $actions = PDF::Grammar::PDF::Actions.new;
-my $grammar = PDF::Grammar::PDF;
+my PDF::Grammar::PDF::Actions $actions .= new;
+my PDF::Grammar::PDF $grammar;
 $grammar.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed: $input";
 my %ast = $/.ast;

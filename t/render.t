@@ -6,7 +6,7 @@ use PDF::Content:ver(v0.0.5+);
 use PDF::Class;
 use PDF::Grammar::Test :is-json-equiv;
 
-my $pdf = PDF::Class.open: "t/helloworld.pdf";
+my PDF::Class $pdf .= open: "t/helloworld.pdf";
 my $page = $pdf.page: 1;
 
 my %seen;

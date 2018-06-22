@@ -11,7 +11,7 @@ use PDF::Grammar::PDF::Actions;
 use PDF::COS::Stream;
 use PDF::Image;
 
-my $actions = PDF::Grammar::PDF::Actions.new;
+my PDF::Grammar::PDF::Actions $actions .= new;
 
 my $input = q:to"--END-OBJ--";
 4 0 obj <<
@@ -29,13 +29,13 @@ PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
 my %ast = $/.ast;
 my $reader = class { has $.auto-deref = False }.new;
-my $ind-obj = PDF::IO::IndObj.new( |%ast, :$reader);
+my PDF::IO::IndObj $ind-obj .= new( |%ast, :$reader);
 is $ind-obj.obj-num, 4, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $page = $ind-obj.object;
 isa-ok $page, (require ::('PDF::Page'));
 is $page.Type, 'Page', '$.Type accessor';
-my $dummy-stream = PDF::COS::Stream.new( :decoded('%dummy stream') );
+my  PDF::COS::Stream $dummy-stream .= new( :decoded('%dummy stream') );
 is $page<Parent>, (:ind-ref[3, 0]), '$page<Parent>';
 is $page.Resources, { :Font{ :F1( :ind-ref[7, 0] )}, :ProcSet( :ind-ref[6, 0]) }, '$.Resources accessor';
 

@@ -11,7 +11,7 @@ use PDF::Grammar::PDF::Actions;
 use PDF::CIDSystemInfo;
 use PDF::Font::CIDFontType2;
 
-my $actions = PDF::Grammar::PDF::Actions.new;
+my PDF::Grammar::PDF::Actions $actions .= new;
 
 my $input = q:to"--END-OBJ--";
 7 0 obj 
@@ -36,7 +36,7 @@ PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
 my %ast = $/.ast;
 my $reader = class { has $.auto-deref = False }.new;
-my $ind-obj = PDF::IO::IndObj.new( |%ast, :$input, :$reader);
+my PDF::IO::IndObj $ind-obj .= new( |%ast, :$input, :$reader);
 my $object = $ind-obj.object;
 is $ind-obj.obj-num, 7, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';

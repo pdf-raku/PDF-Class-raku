@@ -15,7 +15,7 @@ sub check-png($png) {
 
 }
 
-my $png1 = PDF::Content::Image::PNG.new.read: "t/images/basn0g08.png".IO.open(:r);
+my PDF::Content::Image::PNG $png1 .= new.read: "t/images/basn0g08.png".IO.open(:r);
 
 check-png($png1);
 

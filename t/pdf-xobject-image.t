@@ -10,7 +10,7 @@ use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 
-my $actions = PDF::Grammar::PDF::Actions.new;
+my PDF::Grammar::PDF::Actions $actions .= new;
 
 my $input = q:to"--END-OBJ--";
 14 0 obj <<
@@ -32,7 +32,7 @@ endstream endobj
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
 my %ast = $/.ast;
-my $ind-obj = PDF::IO::IndObj.new( |%ast, :$input);
+my PDF::IO::IndObj $ind-obj .= new( |%ast, :$input);
 is $ind-obj.obj-num, 14, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $ximage-obj = $ind-obj.object;
@@ -61,7 +61,7 @@ is-json-equiv $inline[0], (:BI[ :dict{ BPC => :int(8),
 is-json-equiv $inline[1], (:ID[ :encoded($snoopy.encoded) ]), 'second .content(:inline) op: :ID[...]';
 is-json-equiv $inline[2], (:EI[ ]), 'third .content(:inline) op: :EI[]';
 
-my $pdf = PDF::Class.new;
+my PDF::Class $pdf .= new;
 my $page = $pdf.add-page;
 $page.media-box = [0, 0, 220,220];
 $page.gfx.do($snoopy, 10, 15, :width(100), :height(190), :inline);

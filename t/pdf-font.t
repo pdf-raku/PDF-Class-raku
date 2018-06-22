@@ -11,7 +11,7 @@ use PDF::Grammar::PDF::Actions;
 use PDF::COS;
 use PDF::Content::Font::CoreFont;
 
-my $actions = PDF::Grammar::PDF::Actions.new;
+my PDF::Grammar::PDF::Actions $actions .= new;
 
 my $input = q:to"--END-OBJ--";
 7 0 obj <<
@@ -26,7 +26,7 @@ my $input = q:to"--END-OBJ--";
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed";
 my %ast = $/.ast;
-my $ind-obj = PDF::IO::IndObj.new( |%ast);
+my PDF::IO::IndObj $ind-obj .= new( |%ast);
 my $object = $ind-obj.object;
 is $ind-obj.obj-num, 7, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
