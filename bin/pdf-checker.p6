@@ -90,19 +90,22 @@ sub MAIN(Str $infile,                 #= input PDF
     $*ERR.say: "Checking of $infile completed with $warnings warnings and $errors errors";
 }
 
+sub show-type($obj where Array|Hash) {
+    my $name = ~ $obj.WHAT.^name;
+    $name ~= [~] '[', .type.^name, ']'
+        with $obj.of-att;
+    $name;
+}
+
 |# Recursively check a dictionary (array) object
 multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     my $obj-num = $obj.obj-num;
     return
         if $obj-num && $obj-num > 0
            && %indobj-seen{"$obj-num {$obj.gen-num}"}++;
-    if $*trace {
-        my $name = ~ $obj.WHAT.^name;
-        $name ~= [~] '[', .type.^name, ']'
-            with $obj.of-att;
+    $*ERR.say: (" " x ($depth++*2)) ~ "$ent\:\t{dump($obj)}\t% {show-type($obj)}"
+        if $*trace;
 
-        $*ERR.say: (" " x ($depth++*2)) ~ "$ent\:\t{dump($obj)}\t% $name";
-    }
     my Hash $entries = $obj.entries;
     my Str @unknown-entries;
 
@@ -124,7 +127,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 
 	    CATCH {
 		default {
-		    error("Error in {ref($obj)} ({$obj.WHAT.^name}) /$k entry: $_");
+		    error("Error in {ref($obj)} ({show-type($obj)}) /$k entry: $_");
 		}
 	    }
 	}
@@ -134,19 +137,19 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     }
 
     if %required {
-        error("Error in {ref($obj)} ({$obj.WHAT.^name}), missing required field(s): {%required.keys.sort.join(', ')}")
+        error("Error in {ref($obj)} ({show-type($obj)}), missing required field(s): {%required.keys.sort.join(', ')}")
     }
     else {
         do {
             $obj.?cb-check();
             CATCH {
                 default {
-                    error("Error in {ref($obj)} ({$obj.WHAT.^name}) record: $_");
+                    error("Error in {ref($obj)} ({show-type($obj)}) record: $_");
                 }
             }
         }
     }
-    warning("Unknown entries {ref($obj)} ({$obj.WHAT.^name}) struct: @unknown-entries[]")
+    warning("Unknown entries {ref($obj)} ({show-type($obj)}) struct: @unknown-entries[]")
         if @unknown-entries;
 
     check-contents($obj, :$depth)
@@ -161,13 +164,9 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
         if $obj-num && $obj-num > 0
            && %indobj-seen{"$obj-num {$obj.gen-num}"}++;
 
-    if $*trace {
-        my $name = ~ $obj.WHAT.^name;
-        $name ~= "[{.type.^name}]"
-            with $obj.of-att;
+    $*ERR.say: (" " x ($depth++*2)) ~ "$ent\:\t{dump($obj)}\t% {show-type($obj)}"
+        if $*trace;
 
-        $*ERR.say: (" " x ($depth++*2)) ~ "$ent\:\t{dump($obj)}\t% $name";
-    }
     my Array $index = $obj.index;
     for $obj.keys.sort -> $i {
 	my Str $accessor = .tied.accessor-name
@@ -183,7 +182,7 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 
 	    CATCH {
 		default {
-		    error("error in {ref($obj)}\[$i\] ({$obj.WHAT.^name}) $ent: $_");
+		    error("error in {ref($obj)}\[$i\] ({show-type($obj)}) $ent: $_");
 		}
 	    }
 	}
@@ -232,7 +231,7 @@ sub check-contents( $obj, :$depth ) {
                 $*ERR.print: (" " x ($depth*2))
                     if $*trace;
                 $*ERR.print: "Rendering warning(s)";
-                $*ERR.print: " in {ref($obj)} ({$obj.WHAT.^name})"
+                $*ERR.print: " in {ref($obj)} ({show-type($obj)})"
                     unless $*trace;
                 $*ERR.say: ":";
             }
