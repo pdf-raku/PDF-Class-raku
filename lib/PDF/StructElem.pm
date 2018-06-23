@@ -19,12 +19,14 @@ role PDF::StructElem
     has Str $.ID is entry;    #| (Optional) The element identifier, a byte string designating this structure element. The string shall be unique among all elements in the document’s structure hierarchy. The IDTree entry in the structure tree root (see Table 322) defines the correspondence between element identifiers and the structure elements they denote.
     use PDF::Page;
     has PDF::Page $.Pg is entry(:indirect, :alias<page>); #|dictionary (Optional; shall be an indirect reference) A page object representing a page on which some or all of the content items designated by the K entry shall be rendered.
-    use PDF::MCR;  # Marked Content Reference
-    use PDF::OBJR; # Object Reference
-    my subset StructElemChild where PDF::MCR|PDF::OBJR|UInt|PDF::StructElem;
-    multi sub coerce(Hash $obj, StructElemChild) {
+    my subset StructElemChild where { $_ ~~ UInt|PDF::StructElem || ( $_ ~~ Hash && .<Type> ~~ 'MCR'|'OBJ') }
+    multi sub coerce(Hash $obj where .<S>, StructElemChild) {
         PDF::COS.coerce($obj, PDF::StructElem);
     }
+    multi sub coerce($_, StructElemChild) is default {
+        fail "Unable to coerce {.perl} to a PDF::StructElem.K (child) element";
+    }
+
     has StructElemChild @.K is entry(:array-or-item, :alias<children>, :&coerce);    #| (Optional) The children of this structure element. The value of this entry may be one of the following objects or an array consisting of one or more of the following objects:
     #| • A structure element dictionary denoting another structure element
     #| • An integer marked-content identifier denoting a marked-content sequence
