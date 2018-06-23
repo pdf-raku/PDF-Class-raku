@@ -96,8 +96,13 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     return
         if $obj-num && $obj-num > 0
            && %indobj-seen{"$obj-num {$obj.gen-num}"}++;
-    $*ERR.say: (" " x ($depth++*2)) ~ "$ent\:\t{dump($obj)} ({$obj.WHAT.^name})"
-	if $*trace;
+    if $*trace {
+        my $name = ~ $obj.WHAT.^name;
+        $name ~= [~] '[', .type.^name, ']'
+            with $obj.of-att;
+
+        $*ERR.say: (" " x ($depth++*2)) ~ "$ent\:\t{dump($obj)}\t% $name";
+    }
     my Hash $entries = $obj.entries;
     my Str @unknown-entries;
 
@@ -156,8 +161,13 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
         if $obj-num && $obj-num > 0
            && %indobj-seen{"$obj-num {$obj.gen-num}"}++;
 
-    $*ERR.say: (" " x ($depth++*2)) ~ "$ent\:\t{dump($obj)} ({$obj.WHAT.^name})"
-	if $*trace;
+    if $*trace {
+        my $name = ~ $obj.WHAT.^name;
+        $name ~= "[{.type.^name}]"
+            with $obj.of-att;
+
+        $*ERR.say: (" " x ($depth++*2)) ~ "$ent\:\t{dump($obj)}\t% $name";
+    }
     my Array $index = $obj.index;
     for $obj.keys.sort -> $i {
 	my Str $accessor = .tied.accessor-name
