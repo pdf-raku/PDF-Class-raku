@@ -129,7 +129,7 @@ appends PDF files.
 
 bursts a multi-page PDF into single page PDF files
 
-#### `pdf-checker.p6 --trace --render --strict --max-depth=n --exclude=Entry1,Entry2 --repair input-pdf`
+#### `pdf-checker.p6 --trace --render --strict --exclude=Entry1,Entry2 --repair input-pdf`
 
 This is a low-level tool for PDF authors and users. It traverses a PDF, checking it's internal structure against
 PDF:Class definitions as derived from the [PDF 32000-1:2008 1.7](http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/PDF32000_2008.pdf) specification.
@@ -137,7 +137,7 @@ PDF:Class definitions as derived from the [PDF 32000-1:2008 1.7](http://www.adob
  - `--trace` print a dump of PDF Objects as the file is traversed
  - `--render` also render and check the contents of graphical objects, such as Pages and XObject forms
  - `--strict` perform additional checks:
- - `--max-depth` set maximum traversal depth.
+  - `--repair` repair PDF before Checking
 
 #### Example 1: Dump a simple PDF
 

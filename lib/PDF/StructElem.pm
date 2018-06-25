@@ -20,7 +20,7 @@ role PDF::StructElem
     use PDF::Page;
     has PDF::Page $.Pg is entry(:indirect, :alias<page>); #|dictionary (Optional; shall be an indirect reference) A page object representing a page on which some or all of the content items designated by the K entry shall be rendered.
     my subset StructElemChild where { $_ ~~ UInt|PDF::StructElem || ( $_ ~~ Hash && .<Type> ~~ 'MCR'|'OBJ') }
-    multi sub coerce(Hash $obj where .<S>, StructElemChild) {
+    multi sub coerce(Hash $obj where {.<S>.defined}, StructElemChild) {
         PDF::COS.coerce($obj, PDF::StructElem);
     }
     multi sub coerce($_, StructElemChild) is default {

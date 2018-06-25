@@ -18,9 +18,6 @@ for @<code> {
 	    # disable say
 	    sub say(|c) { }
 
-            if ++$n == 4|5 {
-                todo "Class from an eval";
-            }
             # ensure consistant document ID generation
             srand(123456);
             lives-ok {EVAL $snippet}, 'code sample'
