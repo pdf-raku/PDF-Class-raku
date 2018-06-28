@@ -17,10 +17,10 @@ class PDF::Class:ver<0.2.4> #:api<PDF-1.7>
     method type { 'PDF' }
     method version {
         Proxy.new(
-            FETCH => {
+            FETCH => sub ($) {
                 Version.new: $.catalog<Version> // self.reader.?version // '1.4'
             },
-            STORE => -> Version $_ {
+            STORE =>  sub ($, Version $_) {
                 my $name = .Str;
                 $.catalog<Version> = PDF::COS.coerce: :$name;
             },
