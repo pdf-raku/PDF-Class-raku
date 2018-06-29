@@ -79,7 +79,7 @@ PDF::COS.loader = class PDF::Class::Loader
 	my $type = do given $subtype {
             when 'Alpha'|'Luminosity' { 'Mask' }
             when 'GTS_PDFX'|'GTS_PDFA1'|'ISO_PDFE1' {
-                    $subtype = Nil;
+                    $subtype = Nil; # not subclassed
                     'OutputIntent';
                  }
             when 'GoTo'|'GoToR'|'GoToE'|'Launch'|'Thread'|'URI'|'Sound'|'Movie'|'Hide'|'Named'|'SubmitForm'|'ResetForm'|'ImportData'|'JavaScript'|'SetOCGState'|'Rendition'|'Trans'|'GoTo3DView' { 'Action' }

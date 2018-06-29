@@ -5,7 +5,7 @@ use PDF::COS::Tie::Hash;
 #| /Type /ExtGState
 
 role PDF::ExtGState
-    is PDF::COS::Tie::Hash {
+    does PDF::COS::Tie::Hash {
 
     use PDF::COS::Tie;
     use PDF::COS::Name;
