@@ -49,19 +49,19 @@ $pattern-obj.gfx.ops: [
     :Tw[0],                            # Set word spacing
 
     :rg[1.0, 0.0, 0.0],                # Set nonstroking color to red
-    :Tj($zfont.encode("♠", :str)),           # Show spade glyph
+    :Tj($zfont.encode("♠", :str)),     # Show spade glyph
 
     :TD[0.7478, -0.007],               # Move text position
     :rg[0.0, 1.0, 0.0],                # Set nonstroking color to green
-    :Tj($zfont.encode("♥", :str)),           # Show heart glyph
+    :Tj($zfont.encode("♥", :str)),     # Show heart glyph
 
     :TD[-0.7323, 0.7813],              # Move text position
     :rg[0.0, 0.0, 1.0],                # Set nonstroking color to blue
-    :Tj($zfont.encode("♦", :str)),           # Show diamond glyph
+    :Tj($zfont.encode("♦", :str)),     # Show diamond glyph
 
     :TD[0.6913, 0.007],                # Move text position
     :rg[0.0, 0.0, 0.0],                # Set nonstroking color to black
-    :Tj($zfont.encode("♣", :str)),           # Show club glyph
+    :Tj($zfont.encode("♣", :str)),     # Show club glyph
     'ET',                              # End text object
     'Q',
     ];

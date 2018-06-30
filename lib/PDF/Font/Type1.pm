@@ -8,6 +8,8 @@ class PDF::Font::Type1
     use PDF::COS::Dict;
     use PDF::COS::Name;
     use PDF::COS::Stream;
+    use PDF::FontDescriptor;
+    use PDF::Encoding;
 
     # see [PDF 1.7 TABLE 5.8 Entries in a Type 1 font dictionary]
     has PDF::COS::Name $.Name is entry;                 #| (Required in PDF 1.0; optional otherwise) The name by which this font is referenced in the Font subdictionary of the current resource dictionary.
@@ -21,10 +23,8 @@ class PDF::Font::Type1
     ## has Numeric @.Widths; # causing errors in t/pdf-resources.t
     has @.Widths is entry;                      #| (Required except for the standard 14 fonts; indirect reference preferred) An array of (LastChar − FirstChar + 1) widths, each element being the glyph width for the character code that equals FirstChar plus the array index.
 
-    use PDF::FontDescriptor;
     has PDF::FontDescriptor $.FontDescriptor is entry(:indirect);      #| (Required except for the standard 14 fonts; must be an indirect reference) A font descriptor describing the font’s metrics other than its glyph widths
 
-    use PDF::Encoding;
     my subset NameOrEncoding where PDF::COS::Name | PDF::Encoding;
     multi sub coerce(Hash $dict, NameOrEncoding) {
         PDF::COS.coerce($dict, PDF::Encoding);

@@ -8,6 +8,7 @@ role PDF::Mask
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::COS::Stream;
+
     #| /Type entry is optional, but should be /Mask when present
     has PDF::COS::Name $.Type is entry where 'Mask';
     method type {'Mask'}

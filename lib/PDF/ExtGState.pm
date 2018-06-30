@@ -9,6 +9,7 @@ role PDF::ExtGState
 
     use PDF::COS::Tie;
     use PDF::COS::Name;
+    use PDF::Mask;
 
     # see [PDF .1.7 TABLE 4.8 Entries in a graphics state parameter dictionary]
     has PDF::COS::Name $.Type is entry where 'ExtGState';
@@ -38,7 +39,6 @@ role PDF::ExtGState
     has Numeric $.SM is entry(:alias<smoothness-tolerance>);             #| (Optional; PDF 1.3) The smoothness tolerance
     has Bool $.SA is entry(:alias<stroke-adjustment>);           #| (Optional) A flag specifying whether to apply automatic stroke adjustment
     has $.BM is entry(:alias<blend-mode>);                       #| (Optional; PDF 1.4) The current blend mode to be used in the transparent imaging model
-    use PDF::Mask;
     my subset MaskOrName where PDF::Mask|PDF::COS::Name;
     has MaskOrName $.SMask is entry(:alias<soft-mask>);           #| (Optional; PDF 1.4) The current soft mask, specifying the mask shape or mask opacity values to be used in the transparent imaging mode
     my subset Alpha of Numeric where 0.0 .. 1.0;

@@ -11,6 +11,9 @@ class PDF::Annot::Markup
     use PDF::COS::Name;
     use PDF::COS::DateString;
     use PDF::COS::TextString;
+    use PDF::Annot::Popup;
+    use PDF::COS::Stream;
+    use PDF::Markup::Markup3D;
 
     # This is the base class for Markup Annotations, as indicated in [PDF 32000 Table 169, Column 3].
     # I.e.: Text, FreeText, Line, Square, Circle, Polygon, PolyLine, Highlight Underline, Squiggly,
@@ -19,14 +22,12 @@ class PDF::Annot::Markup
     # See Also [PDF 32000 Table 170 – Additional entries specific to markup annotations]
 
     has PDF::COS::TextString $.T is entry(:alias<text-label>); #| (Optional; PDF 1.1) The text label that shall be displayed in the title bar of the annotation’s pop-up window when open and active. This entry shall identify the user who added the annotation.
-    use PDF::Annot::Popup;
     has PDF::Annot::Popup $.Popup is entry; #| (Optional; PDF 1.3) An indirect reference to a pop-up annotation for entering or editing the text associated with this annotation.
 
     has Numeric $.CA is entry(:alias<constant-opacity>); #| (Optional; PDF 1.4) The constant opacity value that shall be used in painting the annotation. This value shall apply to all visible elements of the annotation in its closed state (including its background and border) but not to the pop-up window that appears when the annotation is opened.
     #| The specified value shall not used if the annotation has an appearance stream; in that case, the appearance stream shall specify any transparency. (However, if the compliant viewer regenerates the annotation’s appearance stream, it may incorporate the CA value into the stream’s content.)
     #| The implicit blend mode (see 11.3.5, “Blend Mode””) is Normal. Default value: 1.0.
     #| If no explicit appearance stream is defined for the annotation, it may be painted by implementation-dependent means that do not necessarily conform to the PDF imaging model; in this case, the effect of this entry is implementation-dependent as well.
-    use PDF::COS::Stream;
     my subset TextOrStream where PDF::COS::TextString | PDF::COS::Stream;
     multi sub coerce(Str $value is rw, TextOrStream) {
 	$value = PDF::COS.coerce( $value, PDF::COS::TextString );
@@ -47,7 +48,6 @@ class PDF::Annot::Markup
     has PDF::COS::Name $.IT is entry(:alias<intent>); #| (Optional; PDF 1.6) A name describing the intent of the markup annotation. Intents allow conforming readers to distinguish between different uses and behaviors of a single markup annotation type. If this entry is not present or its value is the same as the annotation type, the annotation shall have no explicit intent and should behave in a generic manner in a conforming reader.
     #| Free text annotations, line annotations, polygon annotations, and (PDF 1.7) polyline annotations (Table 178) have defined intents, whose values are enumerated in the corresponding tables.
 
-    use PDF::Markup::Markup3D;
     has PDF::Markup::Markup3D $.ExData is entry(:alias<external-data>); #| (Optional; PDF 1.7) An external data dictionary specifying data that shall be associated with the annotation.
 }
 

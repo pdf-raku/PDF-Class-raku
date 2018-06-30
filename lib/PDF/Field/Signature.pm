@@ -8,8 +8,8 @@ role PDF::Field::Signature
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::COS::TextString;
-
     use PDF::Signature;
+
     has PDF::Signature $.V is entry(:alias<value>);
 
     my role LockDict

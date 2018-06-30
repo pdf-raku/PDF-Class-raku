@@ -8,6 +8,8 @@ class PDF::ColorSpace::DeviceN
     use PDF::COS::Tie;
     use PDF::COS::Tie::Hash;
     use PDF::COS::Name;
+    use PDF::Function;
+    use PDF::ColorSpace::Separation;
 
     # see [PDF 1.7 Section 4.5 DeviceN Color Spaces
     my subset NameOrColorSpace where PDF::COS::Name|PDF::ColorSpace;
@@ -16,13 +18,10 @@ class PDF::ColorSpace::DeviceN
 
     has NameOrColorSpace $.AlternateSpace is index(2, :required);
 
-    use PDF::Function;
     has PDF::Function $.TintTransform is index(3, :required);
 
     my role DeviceNDict {...} # see below
     has DeviceNDict $.Attributes is index(4);
-
-    use PDF::ColorSpace::Separation;
 
     my role DeviceNProcessDict
 	# see [PDF 1.7 TABLE 4.22 Entries in a DeviceN process dictionary]

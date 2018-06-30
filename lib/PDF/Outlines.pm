@@ -9,8 +9,9 @@ role PDF::Outlines
 
     use PDF::COS::Tie;
     use PDF::COS::Name;
-    has PDF::COS::Name $.Type is entry where 'Outlines';  #| (Optional) The type of PDF object that this dictionary describes; if present, shall be Outlines for an outline dictionary.
     use PDF::Outline;
+
+    has PDF::COS::Name $.Type is entry where 'Outlines';  #| (Optional) The type of PDF object that this dictionary describes; if present, shall be Outlines for an outline dictionary.
 
     # see TABLE 8.3 Entries in the outline dictionary
     has PDF::Outline $.First is entry(:indirect); #| (Required if there are any open or closed outline entries; must be an indirect reference) An outline item dictionary representing the first top-level item in the outline.

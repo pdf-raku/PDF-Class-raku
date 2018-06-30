@@ -16,6 +16,7 @@ class PDF::Pattern::Tiling
     does PDF::Content::Resourced {
 
     use PDF::COS::Tie;
+    use PDF::Resources;
 
     # see [PDF 1.7 TABLE 4.25 Additional entries specific to a type 1 pattern dictionary]
     subset PaintCode of Int where 1|2;
@@ -30,6 +31,5 @@ class PDF::Pattern::Tiling
     has Numeric @.BBox is entry(:required,:len(4));  #| (Required) An array of four numbers in the pattern coordinate system giving the coordinates of the left, bottom, right, and top edges, respectively, of the pattern cell’s bounding box. These boundaries are used to clip the pattern cell.
     has Numeric $.XStep is entry(:required);         #| (Required) The desired horizontal spacing between pattern cells, measured in the pattern coordinate system.
     has Numeric $.YStep is entry(:required);         #| (Required) The desired vertical spacing between pattern cells, measured in the pattern coordinate system.
-    use PDF::Resources;
     has PDF::Resources $.Resources is entry(:required);        #| (Required) A resource dictionary containing all of the named resources required by the pattern’s content stream (see Section 3.7.2, “Resource Dictionaries”).
 }

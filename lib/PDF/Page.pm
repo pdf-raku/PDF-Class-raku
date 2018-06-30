@@ -17,12 +17,14 @@ class PDF::Page
     use PDF::COS::Name;
     use PDF::COS::Stream;
     use PDF::Image;
+    use PDF::Resources;
+    use PDF::Field;
+    use PDF::Action;
 
     # see [PDF 1.7 TABLE 3.27 Entries in a page object]
     has PDF::COS::Name $.Type is entry(:required) where 'Page';
     has Hash $.Parent is entry(:indirect);       #| (Required; must be an indirect reference) The page tree node that is the immediate parent of this page object.
     has Str $.LastModified is entry;             #| (Required if PieceInfo is present; optional otherwise; PDF 1.3) The date and time when the page’s contents were most recently modified
-    use PDF::Resources;
     has PDF::Resources $.Resources is entry(:inherit);   #| (Required; inheritable) A dictionary containing any resources required by the page
     has Numeric @.MediaBox is entry(:inherit,:len(4));   #| (Required; inheritable) A rectangle, expressed in default user space units, defining the boundaries of the physical medium on which the page is intended to be displayed or printed
     has Numeric @.CropBox is entry(:inherit,:len(4));    #| Optional; inheritable) A rectangle, expressed in default user space units, defining the visible region of default user space. When the page is displayed or printed, its contents are to be clipped (cropped) to this rectangle and then imposed on the output medium in some implementation-defined manner
@@ -38,7 +40,6 @@ class PDF::Page
     has Hash @.B is entry(:indirect, :alias<beads>);                 #| (Optional; PDF 1.1; recommended if the page contains article beads) An array of indirect references to article beads appearing on the page
     has Numeric $.Dur is entry(:alias<display-duration>);       #| (Optional; PDF 1.1) The page’s display duration (also called its advance timing): the maximum length of time, in seconds, that the page is displayed during presentations before the viewer application automatically advances to the next page
     has Hash $.Trans is entry(:alias<transition-effect>);       #| (Optional; PDF 1.1) A transition dictionary describing the transition effect to be used when displaying the page during presentations
-    use PDF::Field;
     my subset Annot of Hash where { .<Subtype> && (! .<FT> || $_ ~~ PDF::Field) }
     multi sub coerce(Hash $annot is rw where {.<FT>:exists}, Annot) {
         # secondary coercement needed to a field
@@ -49,7 +50,6 @@ class PDF::Page
         fail "unable to coerce: {.perl} ({.WHAT.^name}) to an annotation";
     }
     has Annot @.Annots is entry(:&coerce); #| (Optional) An array of annotation dictionaries representing annotations associated with the page
-    use PDF::Action;
     has PDF::Action $.AA is entry(:alias<additional-actions>);                      #| (Optional; PDF 1.2) An additional-actions dictionary defining actions to be performed when the page is opened or closed
     has PDF::COS::Stream $.Metadata is entry;    #| (Optional; PDF 1.4) A metadata stream containing metadata for the page
     has Hash $.PieceInfo is entry;               #| (Optional; PDF 1.3) A page-piece dictionary associated with the page

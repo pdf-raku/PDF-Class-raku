@@ -4,15 +4,19 @@ use PDF::COS::Tie::Array;
 
 my subset NumNull where { .does(Numeric) || !.defined };  #| UInt value or null
 
-role PDF::Destination does PDF::COS::Tie::Array {
+role PDF::Destination
+    does PDF::COS::Tie::Array {
+
     my enum Fit is export(:Fit) «
         :FitXYZoom<XYZ>     :FitWindow<Fit>
         :FitHoriz<FitH>     :FitVert<FitV>
         :FitRect<FitR>      :FitBox<FitB>
         :FitBoxHoriz<FitBH> :FitBoxVert<FitBV>
         »;
+
     use PDF::Page;
     use PDF::COS::Name;
+
     my subset PageRef where PDF::Page|UInt|Pair;
     method is-page-ref { .[0] ~~ PDF::Page }
     has PageRef $.page is index(0);

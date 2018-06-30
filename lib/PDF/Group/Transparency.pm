@@ -6,8 +6,9 @@ class PDF::Group::Transparency
     is PDF::Group {
     use PDF::COS::Tie;
     use PDF::COS::Name;
-    has PDF::COS::Name $.S is entry(:required) where 'Transparency';
     use PDF::ColorSpace;
+
+    has PDF::COS::Name $.S is entry(:required) where 'Transparency';
     my subset NameOrColorSpace where PDF::COS::Name|PDF::ColorSpace;
     has NameOrColorSpace  $.CS is entry(:alias<color-space>); #| (Sometimes required) The group colour space, which is used for the following purposes:
     #| • As the colour space into which colours shall be converted when painted into the group

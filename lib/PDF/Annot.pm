@@ -13,6 +13,8 @@ class PDF::Annot
     use PDF::COS::Name;
     use PDF::COS::DateString;
     use PDF::COS::TextString;
+    use PDF::Appearance;
+    use PDF::Border;
 
     # See [PDF Spec 1.7 table 8.15 - Entries common to all annotation dictionaries ]
     has PDF::COS::Name $.Type is entry where 'Annot';
@@ -38,11 +40,9 @@ class PDF::Annot
 ##    my UInt enum AnnotsFlag is export(:AnnotsFlag) « :Invisable(1) :Hidden(2) :Print(3) :NoZoom(4) :NoRotate(5) :NoView(6)
 ##						     :ReadOnly(7) :Locked(8) :ToggleNoView(9) :LockedContents(10) »;
     has AnnotFlagsInt $.F is entry(:alias<flags>);              #| (Optional; PDF 1.1) A set of flags specifying various characteristics of the annotation
-    use PDF::Appearance;
     has PDF::Appearance $.AP is entry(:alias<appearance>);      #| (Optional; PDF 1.2) An appearance dictionary specifying how the annotation is presented visually on the page
     has PDF::COS::Name $.AS is entry(:alias<appearance-state>); #| (Required if the appearance dictionary AP contains one or more subdictionaries; PDF 1.2) The annotation’s appearance state, which selects the applicable appearance stream from an appearance subdictionary
     has Numeric @.Border is entry(:len(4));                     #| (Optional) An array specifying the characteristics of the annotation’s border. The border is specified as a rounded rectangle.
-    use PDF::Border;
     has PDF::Border $.BS is entry(:alias<border-style>);
     has Numeric @.C is entry(:alias<color>);                    #| (Optional; PDF 1.1) An array of numbers in the range 0.0 to 1.0, representing a color used for (*) background, when closed, (*) title bar of pop-up window, (*) link border
     has UInt $.StructParent is entry;                           #| (Required if the annotation is a structural content item; PDF 1.3) The integer key of the annotation’s entry in the structural parent tree

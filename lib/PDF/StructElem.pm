@@ -11,13 +11,13 @@ role PDF::StructElem
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::COS::TextString;
+    use PDF::Page;
 
     has PDF::COS::Name $.Type is entry where 'StructElem'; #| Optional) The type of PDF object that this dictionary describes; if present, shall be StructElem for a structure element.
 
     has PDF::COS::Name $.S is entry(:required, :alias<structure-type>); #| (Required) The structure type, a name object identifying the nature of the structure element and its role within the document, such as a chapter, paragraph, or footnote
     has Hash $.P is entry(:required, :alias<parent>);         #| (Required; shall be an indirect reference) The structure element that is the immediate parent of this one in the structure hierarchy.
     has Str $.ID is entry;    #| (Optional) The element identifier, a byte string designating this structure element. The string shall be unique among all elements in the document’s structure hierarchy. The IDTree entry in the structure tree root (see Table 322) defines the correspondence between element identifiers and the structure elements they denote.
-    use PDF::Page;
     has PDF::Page $.Pg is entry(:indirect, :alias<page>); #|dictionary (Optional; shall be an indirect reference) A page object representing a page on which some or all of the content items designated by the K entry shall be rendered.
     my subset StructElemChild where { $_ ~~ UInt|PDF::StructElem || ( $_ ~~ Hash && .<Type> ~~ 'MCR'|'OBJ') }
     multi sub coerce(Hash $obj where {.<S>.defined}, StructElemChild) {

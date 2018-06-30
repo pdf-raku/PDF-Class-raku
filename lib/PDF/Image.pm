@@ -7,15 +7,19 @@ use PDF::COS::Tie::Hash;
 role PDF::Image
     does PDF::Content::XObject['Image']
     does PDF::COS::Tie::Hash {
+
     use PDF::COS::Tie;
     use PDF::COS::Stream;
     use PDF::COS::Array;
     use PDF::COS::Name;
+    use PDF::ColorSpace;
+    use PDF::Content::Image::PNG :PNG-CS;
+    use PDF::ColorSpace::Indexed;
+    use PDF::IO::Filter;
 
     # See [PDF 1.7 TABLE 4.39 Additional entries specific to an image dictionary]
     has Numeric $.Width is entry(:required);      #| (Required) The width of the image, in samples.
     has Numeric $.Height is entry(:required);     #| (Required) The height of the image, in samples.
-    use PDF::ColorSpace;
     my subset NameOrColorSpace of PDF::COS where PDF::COS::Name | PDF::ColorSpace;
     has NameOrColorSpace $.ColorSpace is entry;   #| (Required for images, except those that use the JPXDecode filter; not allowed for image masks) The color space in which image samples are specified; it can be any type of color space except Pattern.
     has UInt $.BitsPerComponent is entry;         #| (Required except for image masks and images that use the JPXDecode filter)The number of bits used to represent each color component.
@@ -49,9 +53,6 @@ role PDF::Image
     my subset PNGPredictor of Int where 10 .. 15;
 
     method to-png {
-        use PDF::Content::Image::PNG :PNG-CS;
-        need PDF::ColorSpace::Indexed;
-        need PDF::IO::Filter;
         my $bit-depth = self.BitsPerComponent || 8;
         my UInt $width = self.Width;
         my UInt $height = self.Height;

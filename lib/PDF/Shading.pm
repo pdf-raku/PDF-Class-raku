@@ -11,11 +11,12 @@ role PDF::Shading
     use PDF::COS::Array;
     use PDF::COS::Name;
     use PDF::COS::Dict;
+    use PDF::ColorSpace;
+
     my subset ShadingTypeInt of Int where 1..7;
     has ShadingTypeInt $.ShadingType is entry(:required);
 
     # see [PDF 1.7 TABLE 4.28 Entries common to all shading dictionaries]
-    use PDF::ColorSpace;
     my subset NameOrColorSpace of PDF::COS where PDF::COS::Name | PDF::ColorSpace;
     has NameOrColorSpace $.ColorSpace is entry(:required); #| (Required) The color space in which color values are expressed.
     has @.Background is entry;                        #| (Optional) An array of color components appropriate to the color space, specifying a single background color value.

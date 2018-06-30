@@ -7,13 +7,13 @@ role PDF::Font::CIDFont
     use PDF::COS::Tie;
     use PDF::COS::Stream;
     use PDF::COS::Name;
+    use PDF::FontDescriptor;
 
     # see [PDF 1.7 TABLE 5.14 Entries in a CIDFont dictionary]
     has PDF::COS::Name $.BaseFont is entry(:required);        #| (Required) The PostScript name of the CIDFont. For Type 0 CIDFonts, this is usually the value of the CIDFontName entry in the CIDFont program. For Type 2 CIDFonts, it is derived the same way as for a simple TrueType font
 ##    use PDF::CIDSystemInfo; # todo - causing failures in pdf-font-cidfont.t
     has Hash $.CIDSystemInfo is entry(:required);             #| (Required) A dictionary containing entries that define the character collection of the CIDFont.
     #| See [PDF 320000 Table 124 – Additional font descriptor entries for CIDFonts]
-    use PDF::FontDescriptor;
     my role CIDFontDescriptor
         does PDF::FontDescriptor {
             has Hash $.Style is entry;              #| (Optional) A dictionary containing entries that describe the style of the glyphs in the font.

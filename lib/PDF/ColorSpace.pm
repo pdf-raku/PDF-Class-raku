@@ -9,6 +9,7 @@ class PDF::ColorSpace
 
     use PDF::COS::Name;
     use PDF::COS::Tie;
+
     has PDF::COS::Name $.Subtype is index(0, :required);
 
     method type {'ColorSpace'}

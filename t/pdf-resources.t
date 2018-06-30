@@ -210,7 +210,7 @@ for qw<ExtGState ColorSpace Pattern Shading XObject Font> {
     lives-ok { $resources."$_"() }, "Resource.$_ accessor";
 }
 
-is-json-equiv $new-page.Resources, {
+my %Resources = %(
     :ExtGState{ :GS1($gs-obj) },
     :ColorSpace{ :CS1($colorspace) },
     :Pattern{ :Pt1($pat-obj) },
@@ -219,5 +219,7 @@ is-json-equiv $new-page.Resources, {
 	      :Fm2($form2),
 	      :Im1($image)},
     :Font{ :F1($font) },
-}, 'Resources';
+);
+
+is-json-equiv $new-page.Resources, %Resources, 'Resources';
 

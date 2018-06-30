@@ -12,6 +12,7 @@ class PDF::Action::Named
     # see [PDF 32000 Table 212 – Additional entries specific to named actions]
     use PDF::COS::Tie;
     use PDF::COS::Name;
+
     my subset ActionName of PDF::COS::Name where 'NextPage'|'PrevPage'|'FirstPage'|'LastPage';
     has ActionName $.N is entry(:required, :alias<action-name>); #| (Required) The name of the action that shall be performed (see Table 211).
 

@@ -10,10 +10,11 @@ class PDF::XObject
     is PDF::COS::Stream
     does PDF::Class::Type {
 
-	use PDF::COS::Tie;
-        use PDF::COS::Name;
-	has PDF::COS::Name $.Type is entry where 'XObject';
-        my subset XObjectSubtype of  PDF::COS::Name where 'Form'|'Image'|'PS';
-	has XObjectSubtype $.Subtype is entry(:required);
+    use PDF::COS::Tie;
+    use PDF::COS::Name;
+
+    has PDF::COS::Name $.Type is entry where 'XObject';
+    my subset XObjectSubtype of  PDF::COS::Name where 'Form'|'Image'|'PS';
+    has XObjectSubtype $.Subtype is entry(:required);
 
 }
