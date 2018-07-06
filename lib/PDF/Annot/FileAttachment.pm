@@ -8,8 +8,8 @@ class PDF::Annot::FileAttachment
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::COS::ByteString;
-
     use PDF::Filespec;
+
     my subset Filespec where PDF::COS::ByteString | PDF::Filespec; #| [PDF 32000-1:2008] 7.11.2 File Specification Strings
     multi sub coerce(Hash $_, Filespec) {
         PDF::COS.coerce($_,  PDF::Filespec);

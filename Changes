@@ -1,5 +1,6 @@
 Release 0.2.5
 - Added PDF::Filespec, PDF::Action::Launch
+- pdf-checker.p6 improvements
 
 Release 0.2.4
 - Added PDF::Annot::Markup, PDF::Annot::Popup,
