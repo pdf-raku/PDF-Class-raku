@@ -82,7 +82,9 @@ PDF::COS.loader = class PDF::Class::Loader
                     $subtype = Nil; # not subclassed
                     'OutputIntent';
                  }
-            when 'GoTo'|'GoToR'|'GoToE'|'Launch'|'Thread'|'URI'|'Sound'|'Movie'|'Hide'|'Named'|'SubmitForm'|'ResetForm'|'ImportData'|'JavaScript'|'SetOCGState'|'Rendition'|'Trans'|'GoTo3DView' { 'Action' }
+            when 'GoTo'|'GoToR'|'GoToE'|'Launch'|'Thread'|'URI'|'Sound'|'Movie'
+                |'Hide'|'Named'|'SubmitForm'|'ResetForm'|'ImportData'|'JavaScript'
+                |'SetOCGState'|'Rendition'|'Trans'|'GoTo3DView' { 'Action' }
             default { Nil }
 	};
 

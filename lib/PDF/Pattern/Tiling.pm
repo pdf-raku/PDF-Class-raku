@@ -6,7 +6,7 @@ use PDF::Content::XObject;
 use PDF::Content::Graphics;
 use PDF::Content::Resourced;
 
-#| /ShadingType 1 - Tiling
+#| /PatternType 1 - Tiling
 
 class PDF::Pattern::Tiling
     is PDF::COS::Stream

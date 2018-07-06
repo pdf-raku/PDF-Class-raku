@@ -19,7 +19,7 @@ role PDF::StructElem
     has Hash $.P is entry(:required, :alias<parent>);         #| (Required; shall be an indirect reference) The structure element that is the immediate parent of this one in the structure hierarchy.
     has Str $.ID is entry;    #| (Optional) The element identifier, a byte string designating this structure element. The string shall be unique among all elements in the document’s structure hierarchy. The IDTree entry in the structure tree root (see Table 322) defines the correspondence between element identifiers and the structure elements they denote.
     has PDF::Page $.Pg is entry(:indirect, :alias<page>); #|dictionary (Optional; shall be an indirect reference) A page object representing a page on which some or all of the content items designated by the K entry shall be rendered.
-    my subset StructElemChild where { $_ ~~ UInt|PDF::StructElem || ( $_ ~~ Hash && .<Type> ~~ 'MCR'|'OBJ') }
+    my subset StructElemChild where { $_ ~~ UInt|PDF::StructElem || ( $_ ~~ Hash && .<Type> ~~ 'MCR'|'OBJR') }
     multi sub coerce(Hash $obj where {.<S>.defined}, StructElemChild) {
         PDF::COS.coerce($obj, PDF::StructElem);
     }
