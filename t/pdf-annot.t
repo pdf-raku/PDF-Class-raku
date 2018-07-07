@@ -78,7 +78,7 @@ lives-ok {$link-annot.check}, '$link-annot.check lives';
 
 $input = q:to"--END--";
 7 0 obj
-<</Type /Annot /Subtype /FileAttachment /Rect [240.944882 751.181339 255.118110 765.354567] /Contents (\376\377\000t\000e\000x\000t) /P 11 0 R /NM (0001-0000) /M (D:20150802122217+00'00') /F 4 /Border [0 0 0] /CreationDate (D:20150802122217+00'00') /FS 8 0 R /Name /PushPin>>
+<</Type /Annot /Subtype /FileAttachment /Rect [240.944882 751.181339 255.118110 765.354567] /Contents (\376\377\000t\000e\000x\000t) /P 11 0 R /NM (0001-0000) /M (D:20150802122217+00'00') /F 4 /Border [0 0 0] /CreationDate (D:20150802122217+00'00') /FS (/etc/passwd) /Name /PushPin>>
 endobj
 --END--
 
@@ -91,7 +91,7 @@ my $file-annot = $ind-obj.object;
 isa-ok $file-annot, (require ::('PDF::Annot::FileAttachment'));
 is $file-annot.Type, 'Annot', 'Annot with /Type defaulted';
 is-json-equiv $file-annot.Border, [ 0, 0, 0 ], '.Border';
-is-json-equiv $file-annot.FS, (:ind-ref[8, 0]), '.FS';
+is-json-equiv $file-annot.FS, "/etc/passwd", '.FS';
 is-json-equiv $file-annot.Name, 'PushPin', '.Name';
 is $file-annot.Contents, "text", '.Contents';
 lives-ok {$file-annot.check}, '$file-annot.check lives';

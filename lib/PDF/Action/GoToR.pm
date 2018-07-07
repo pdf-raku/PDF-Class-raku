@@ -12,8 +12,9 @@ class PDF::Action::GoToR
 
     use PDF::COS::Tie;
     use PDF::Destination :DestSpecRemote, :coerce-dest;
+    use PDF::Filespec :file-spec, :&to-file-spec;
 
-    has $.F is entry(:alias<file>) where Str|Hash; #| (Required) The file in which the destination shall be located.
+    has files-spec $.F is entry(:alias<file>, :required, :coerce(&to-file-spec)); #| (Required) The file in which the destination shall be located.
     has DestSpecRemote $.D is entry(:required, :alias<destination>, :coerce(&coerce-dest)); #| (Required) The destination to jump to (see 12.3.2, “Destinations”). If the value is an array defining an explicit destination (as described under 12.3.2.2, “Explicit Destinations”), its first element shall be a page number within the remote document rather than an indirect reference to a page object in the current document. The first page shall be numbered 0.
     has Bool $.NewWindow is entry; #| (Optional; PDF 1.2) A flag specifying whether to open the destination document in a new window. If this flag is false, the destination document replaces the current document in the same window. If this entry is absent, the conforming reader should behave in accordance with its preference.
 }

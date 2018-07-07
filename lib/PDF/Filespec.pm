@@ -5,12 +5,28 @@ use PDF::COS::Tie::Hash;
 role PDF::Filespec
     does PDF::COS::Tie::Hash {
 
+    use PDF::COS;
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::COS::ByteString;
     use PDF::COS::TextString;
     use PDF::COS::Dict;
     use PDF::COS::Stream;
+
+    # [See PDF 32000 7.11 File Specifications]
+    # file specifications may be either a dictionary or a simple text-string
+    my subset file-spec is export(:file-spec) where PDF::COS::TextString|PDF::Filespec;
+
+    proto sub to-file-spec($, file-spec) is export(:to-file-spec) {*};
+    multi sub to-file-spec(Str $value is rw, file-spec) {
+        PDF::COS.coerce( $value, PDF::COS::TextString );
+    }
+    multi sub to-file-spec(Hash $value is rw, file-spec) {
+        PDF::COS.coerce( $value, PDF::Filespec );
+    }
+    multi sub to-file-spec($_, file-spec) is default {
+        fail "unable to coerce to a file-spec: {.perl}";
+    }
 
     has PDF::COS::Name $.Type is entry where 'Filespec'; #| (Required if an EF or RF entry is present; recommended always) The type of PDF object that this dictionary describes; shall be Filespec for a file specification dictionary.
     has PDF::COS::Name $.FS is entry; #| (Optional) The name of the file system that shall be used to interpret this file specification. If this entry is present, all other entries in the dictionary shall be interpreted by the designated file system. PDF shall define only one standard file system name, URL (see 7.11.5, "URL Specifications"); an application can register other names (see Annex E). This entry shall be independent of the F, UF, DOS, Mac, and Unix entries.
@@ -25,4 +41,6 @@ role PDF::Filespec
     has Array %.RF is entry; #| (Optional; PDF 1.3) A dictionary with the same structure as the EF dictionary, which shall be present. Each key in the RF dictionary shall also be present in the EF dictionary. Each value shall be a related files array (see 7.11.4.2, "Related Files Arrays") identifying files that are related to the corresponding file in the EF dictionary. If this entry is present, the Type entry is required and the file specification dictionary shall be indirectly referenced.
     has PDF::COS::TextString $.Desc is entry; #| (Optional; PDF 1.6) Descriptive text associated with the file specification. It shall be used for files in the EmbeddedFiles name tree (see 7.7.4, "Name Dictionary").
     has PDF::COS::Dict $.CI is entry(:indirect); #| (Optional; shall be indirect reference; PDF 1.7) A collection item dictionary, which shall be used to create the user interface for portable collections.
+
 }
+
