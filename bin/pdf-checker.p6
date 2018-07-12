@@ -3,6 +3,7 @@ use v6;
 use PDF::Content;
 use PDF::Content::Graphics;
 use PDF::Writer;
+use PDF::COS::TextString;
 use PDF::COS::Util :to-ast;
 
 my Bool $*contents;
@@ -26,13 +27,6 @@ sub warning($msg) {
     $warnings++;
 }
 
-sub place-holder($_) {
-    my $obj-num = .?obj-num;
-    $obj-num && $obj-num > 0
-        ?? ref($_)
-        !! '...';
-}
-
 sub key-sort($_) {
     when 'Type'        {"0"}
     when 'Subtype'|'S' {"1"}
@@ -41,20 +35,37 @@ sub key-sort($_) {
     default            {$_}
 }
 
-multi sub dump(List $obj) {
+sub display-item($_) {
+    when Hash|Array {
+        my $obj-num = .?obj-num;
+        $obj-num && $obj-num > 0
+            ?? ref($_)
+            !! '...';
+    }
+    when PDF::COS::TextString { .Str.perl }
+    default {
+        given to-ast($_) {
+            .key ~~ 'hex-string'
+                ?? .value.perl
+                !! $*writer.write($_)
+        }
+    }
+}
+
+multi sub display(List $obj) {
     '[ ' ~ (
         $obj.keys.map({ $obj[$_] })
-            .map({ $_ ~~ Hash|Array ?? place-holder($_) !! $*writer.write(to-ast($_))})
+            .map({display-item($_)})
             .join: ' ')
         ~ ' ]';
 }
 
-multi sub dump(Hash $obj) {
+multi sub display(Hash $obj) {
     '<< ' ~ (
         $obj.keys.grep(* ne 'encoded').sort(&key-sort)
             .map(-> $name { :$name, $obj{$name} })
             .flat
-            .map({ $_ ~~ Hash|Array ?? place-holder($_) !! $*writer.write(to-ast($_))}).join: ' ')
+            .map({display-item($_)}).join: ' ')
         ~ ' >>';
 }
 
@@ -62,7 +73,7 @@ sub ref($obj) {
     my $obj-num = $obj.obj-num;
     $obj-num && $obj-num > 0
 	?? "{$obj.obj-num} {$obj.gen-num//0} R"
-        !! dump($obj)
+        !! display($obj)
 }
 
 #| check a PDF against PDF class definitions
@@ -103,7 +114,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     return
         if $obj-num && $obj-num > 0
            && %indobj-seen{"$obj-num {$obj.gen-num}"}++;
-    $*ERR.say: (" " x ($depth++*2)) ~ "$ent\:\t{dump($obj)}\t% {show-type($obj)}"
+    $*ERR.say: (" " x ($depth++*2)) ~ "$ent\:\t{display($obj)}\t% {show-type($obj)}"
         if $*trace;
 
     my Hash $entries = $obj.entries;
@@ -164,7 +175,7 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
         if $obj-num && $obj-num > 0
            && %indobj-seen{"$obj-num {$obj.gen-num}"}++;
 
-    $*ERR.say: (" " x ($depth++*2)) ~ "$ent\:\t{dump($obj)}\t% {show-type($obj)}"
+    $*ERR.say: (" " x ($depth++*2)) ~ "$ent\:\t{display($obj)}\t% {show-type($obj)}"
         if $*trace;
 
     my Array $index = $obj.index;

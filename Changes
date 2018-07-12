@@ -1,3 +1,7 @@
+Release 0.2.6
+- further pdf-checker.p6 improvements:
+  --trace option now displays encoded hex and text-strings as Perl strings
+
 Release 0.2.5
 - Added PDF::Filespec, PDF::Action::Launch
 - pdf-checker.p6 improvements
