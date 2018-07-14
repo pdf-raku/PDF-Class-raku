@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 8;
+plan 9;
 
 use PDF::Class;
 use PDF::IO::IndObj;
@@ -31,9 +31,12 @@ is $ind-obj.obj-num, 20, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $nametree-obj = PDF::COS.coerce($ind-obj.object, PDF::NameTree);
 does-ok $nametree-obj, PDF::NameTree;
-is-json-equiv $nametree-obj.Kids, [:ind-ref[10, 0]], '$obj.First';
 is-json-equiv $nametree-obj.Names, [ '1.1', 'Xxx', '1.2', 42, '1.3', 3.14 ], '$obj.Names';
-is-json-equiv $nametree-obj.names.List, ( '1.1' => 'Xxx', '1.2' => 42 , '1.3' => 3.14), '$obj.names';
-is-json-equiv $nametree-obj.Limits, ['1.1', '1.3'], '$obj.Limits';
+is-json-equiv $nametree-obj.Kids, [:ind-ref[10, 0]], '$obj.First';
+$nametree-obj.Kids = [];
+my $names = $nametree-obj.names;
+for '1.1' => 'Xxx', '1.2' => 42, '1.3' => 3.14 {
+   is $names{.key}, .value, "names\{{.key}\}";
+}
 lives-ok {$nametree-obj.check}, '$nametree-obj.check lives';
 
