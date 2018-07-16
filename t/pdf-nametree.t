@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 9;
+plan 10;
 
 use PDF::Class;
 use PDF::IO::IndObj;
@@ -38,5 +38,6 @@ my $names = $nametree-obj.names;
 for '1.1' => 'Xxx', '1.2' => 42, '1.3' => 3.14 {
    is $names{.key}, .value, "names\{{.key}\}";
 }
+is-deeply $names.keys.sort, ('1.1', '1.2', '1.3'), '$.keys';
 lives-ok {$nametree-obj.check}, '$nametree-obj.check lives';
 

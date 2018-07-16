@@ -37,7 +37,7 @@ sub MAIN(Str $infile,           #| input PDF
     }
     $dests = $pdf.catalog.Dests
      // do with $pdf.catalog.Names {
-        .names-fetcher with .Dests;
+        .names with .Dests;
     } // {};
 
     with $pdf.catalog.Outlines {
@@ -47,8 +47,6 @@ sub MAIN(Str $infile,           #| input PDF
         note "document does not contain outlines: $infile";
     }
 }
-
-my %seen{Any};
 
 multi sub show-dest(Str $_) {
     show-dest($dests{$_});
@@ -72,7 +70,6 @@ multi sub show-dest($_) is default {
 }
 
 
-
 sub toc($outline, :$nesting!) {
     my $where = do with $outline.Dest // $outline.A { show-dest($_) };
     with $where {
@@ -88,3 +85,18 @@ sub toc-children($_, :$nesting!) {
         $node = $node.Next;
     }
 }
+
+=begin pod
+
+=head1 SYNOPSIS
+
+pdf-toc.p6 [options] file.pdf
+
+Options:
+   --password   password for an encrypted PDF
+
+=head1 DESCRIPTION
+
+Prints a table of contents for a given PDF.
+
+=end pod

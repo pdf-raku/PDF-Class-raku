@@ -6,25 +6,19 @@ role PDF::NameTree
     does PDF::COS::Tie::Hash {
 
     #| a lightweight tied hash to fetch objects from a Name Tree
-    my class Fetcher is Hash {
+    my class Names is Hash {
         has PDF::NameTree $.root is rw;
+        has Bool %!fetched{Any};
+        has Bool $realized;
         method !fetch($node, $key) {
-            with $node.Names -> $names {
-                my $l = 0;
-                my $r = +$names div 2 - 1;
-                loop {
-                    # binary search of ordered name-key pairs
-                    last if $l > $r;
-
-                    my $m = ($l + $r) div 2;
-                    my $i = 2 * $m;
-
-                    given $key cmp $names[$i] {
-                        when Same { return $names[$i + 1]; }
-                        when More { $l = $m + 1 }
-                        when Less { $r = $m - 1 }
+            unless %!fetched{$node}++ {
+                with $node.Names -> $names {
+                    for 0, 2 ...^ +$names {
+                        self.ASSIGN-KEY($names[$_], $names[$_ + 1]);
                     }
                 }
+                return self{$key}
+                    if self{$key}:exists;
             }
             with $node.Kids -> $kids {
                 for 0 ..^ +$kids {
@@ -36,6 +30,25 @@ role PDF::NameTree
                 }
             }
         }
+        method !fetch-all($node) {
+            unless %!fetched{$node}++ {
+                with $node.Names -> $names {
+                    for 0, 2 ...^ +$names {
+                        self.ASSIGN-KEY( $names[$_], $names[$_ + 1]);
+                    }
+                }
+            }
+            with $node.Kids -> $kids {
+                for 0 ..^ +$kids {
+                    self!fetch-all($_)
+                        given $kids[$_];
+                }
+            }
+        }
+        method realize {
+            self!fetch-all($!root)
+                unless $!realized++;
+        }
         method AT-KEY(Str $key) {
             if self{$key}:exists {
                 nextsame();
@@ -44,12 +57,14 @@ role PDF::NameTree
                 callsame() = self!fetch($!root, $key);
             }
         }
-        method keys { ... }
-        method perl {'{ ... }'};
+        method keys   {self.realize; callsame}
+        method values {self.realize; callsame}
+        method pairs  {self.realize; callsame}
+        method perl   {self.realize; callsame};
     }
 
-    method names-fetcher {
-        given Fetcher.new {
+    method names {
+        given Names.new {
             .root = self;
             $_;
         }
