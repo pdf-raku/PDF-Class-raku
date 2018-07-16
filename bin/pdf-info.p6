@@ -60,7 +60,7 @@ multi sub MAIN(Str $infile,           #| input PDF
     say "File Size:    $size bytes";
     say "Pages:        $pages";
     if $pdf-info {
-	for $pdf-info.keys -> $key {
+	for $pdf-info.keys.sort -> $key {
 	    my Str $info = pretty-print( $pdf-info{$key} );
 	    printf "%-13s %s\n", $key ~ q{:}, $info
 	        unless $info eq '';

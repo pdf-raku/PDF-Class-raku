@@ -1,4 +1,5 @@
 Release 0.2.6
+- added pdf-toc.p6 (table-of-contents) utility
 - further pdf-checker.p6 improvements:
   --trace option now displays encoded hex and text-strings as Perl strings
 

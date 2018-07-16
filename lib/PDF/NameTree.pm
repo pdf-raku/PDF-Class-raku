@@ -6,7 +6,7 @@ role PDF::NameTree
     does PDF::COS::Tie::Hash {
 
     #| a lightweight tied hash to fetch objects from a Name Tree
-    my class Names is Hash {
+    my class Fetcher is Hash {
         has PDF::NameTree $.root is rw;
         method !fetch($node, $key) {
             with $node.Names -> $names {
@@ -18,6 +18,7 @@ role PDF::NameTree
 
                     my $m = ($l + $r) div 2;
                     my $i = 2 * $m;
+
                     given $key cmp $names[$i] {
                         when Same { return $names[$i + 1]; }
                         when More { $l = $m + 1 }
@@ -44,10 +45,11 @@ role PDF::NameTree
             }
         }
         method keys { ... }
+        method perl {'{ ... }'};
     }
 
-    method names {
-        given Names.new {
+    method names-fetcher {
+        given Fetcher.new {
             .root = self;
             $_;
         }

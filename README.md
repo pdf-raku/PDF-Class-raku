@@ -178,7 +178,7 @@ xobject images.
 #### Example 2: Check a sample PDF
 
     % wget http://www.stillhq.com/pdfdb/000025/data.pdf
-    % pdf-checker-p6 --strict --render data.pdf
+    % pdf-checker.p6 --strict --render data.pdf
     Warning: Error processing indirect object 27 0 R at byte offset 976986:
     Ignoring 1 bytes before 'endstream' marker
     Rendering warning(s) in 28 0 R (PDF::Page):
@@ -203,11 +203,46 @@ In this example:
 
 #### `pdf-info.p6 in.pdf`
 
-prints various PDF properties
+Prints various PDF properties. For example:
+
+    % pdf-info.p6 ~/Documents/test-pdfs/stillhq.com/000056.pdf 
+    File:         /home/david/Documents/test-pdfs/stillhq.com/000056.pdf
+    File Size:    63175 bytes
+    Pages:        2
+    Author:       Prince Restaurant
+    CreationDate: Wed Oct 03 23:41:01 2001
+    Creator:      FrameMaker+SGML 6.0
+    Keywords:     Pizza, Pasta, Antipasto, Lasagna, Food
+    ModDate:      Thu Oct 04 00:03:04 2001
+    Producer:     Acrobat PDFWriter 4.05  for Power Macintosh
+    Subject:      Take Out & Catering Menu
+    Title:        Prince Pizzeria & Bar
+    Tagged:       no
+    Page Size:    variable
+    PDF version:  1.3
+    Revisions:    2
+    Encryption:   no
 
 #### `pdf-revert.p6 --password=pass --save-as=out.pdf in.pdf`
 
 undoes the last revision of an incrementally saved PDF file.
+
+#### `pdf-toc.p6 --password=pass in.pdf`
+
+prints a table of contents, showing titles and page-numbers, using PDF bookmarks.
+
+    % wget http://www.stillhq.com/pdfdb/000432/data.pdf
+    % pdf-toc.p6 data.pdf
+    Table of Contents . . . 2
+    1. Purpose of this Document . . . 3
+    2. Pre-requisites . . . 4
+    3. Compiler Speed-up . . . 5
+    4. Recompiling the Kernel for Modules . . . 6
+      5.1. Configuring Debian or RedHat for Modules . . . 7
+      5.2. Configuring Slackware for Modules . . . 7
+      5.3. Configuring Other Distributions for Modules . . . 8
+
+Note that bookmarks are an optional PDF feature.
 
 ## Development Status
 
