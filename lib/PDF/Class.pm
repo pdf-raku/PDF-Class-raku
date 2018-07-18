@@ -15,7 +15,7 @@ class PDF::Class:ver<0.2.6> #:api<PDF-1.7>
     has Catalog $.Root is entry(:required, :indirect, :alias<catalog>);
 
     method type { 'PDF' }
-    method version {
+    method version is rw {
         Proxy.new(
             FETCH => {
                 Version.new: $.catalog<Version> // self.reader.?version // '1.4'
@@ -85,7 +85,7 @@ class PDF::Class:ver<0.2.6> #:api<PDF-1.7>
     method Pages returns Pages { self.Root.Pages }
 
     BEGIN for <page add-page delete-page insert-page page-count media-box crop-box bleed-box trim-box art-box core-font use-font> {
-        $?CLASS.^add_method($_, method (|a) { self<Root><Pages>."$_"(|a) } );
+        $?CLASS.^add_method($_, method (|a) is rw { self<Root><Pages>."$_"(|a) } );
     }
 
 }
