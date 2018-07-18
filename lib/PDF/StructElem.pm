@@ -27,7 +27,7 @@ role PDF::StructElem
         fail "Unable to coerce {.perl} to a PDF::StructElem.K (child) element";
     }
 
-    has StructElemChild @.K is entry(:array-or-item, :alias<children>, :&coerce);    #| (Optional) The children of this structure element. The value of this entry may be one of the following objects or an array consisting of one or more of the following objects:
+    has StructElemChild @.K is entry(:array-or-item, :alias<kids>, :&coerce);    #| (Optional) The children of this structure element. The value of this entry may be one of the following objects or an array consisting of one or more of the following objects:
     #| • A structure element dictionary denoting another structure element
     #| • An integer marked-content identifier denoting a marked-content sequence
     #| • A marked-content reference dictionary denoting a marked-content sequence

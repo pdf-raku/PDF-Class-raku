@@ -9,52 +9,46 @@ role PDF::NameTree
     my class Names is Hash {
         has PDF::NameTree $.root is rw;
         has Bool %!fetched{Any};
-        has Bool $realized;
-        method !fetch($node, $key) {
+        has Bool $!realized;
+        method !fetch($node, Str $key?) {
             unless %!fetched{$node}++ {
                 with $node.Names -> $names {
                     for 0, 2 ...^ +$names {
                         self.ASSIGN-KEY($names[$_], $names[$_ + 1]);
                     }
                 }
-                return self{$key}
-                    if self{$key}:exists;
+                with $key {
+                    return self{$_}
+                        if self{$_}:exists;
+                }
             }
             with $node.Kids -> $kids {
                 for 0 ..^ +$kids {
                     given $kids[$_] {
-                        my $limits = .Limits;
-                        return self!fetch($_, $key)
-                            if $limits[0] le $key le $limits[1];
+                        if $key.defined {
+                            my $limits = .Limits;
+                            return self!fetch($_, $key)
+                                if $limits[0] le $key le $limits[1];
+                        }
+                        else {
+                            self!fetch($_);
+                        }
                     }
                 }
             }
         }
-        method !fetch-all($node) {
-            unless %!fetched{$node}++ {
-                with $node.Names -> $names {
-                    for 0, 2 ...^ +$names {
-                        self.ASSIGN-KEY( $names[$_], $names[$_ + 1]);
-                    }
-                }
-            }
-            with $node.Kids -> $kids {
-                for 0 ..^ +$kids {
-                    self!fetch-all($_)
-                        given $kids[$_];
-                }
-            }
-        }
+
         method realize {
-            self!fetch-all($!root)
+            self!fetch($!root)
                 unless $!realized++;
+            self;
         }
-        method AT-KEY(Str $key) {
-            if self{$key}:exists {
+        method AT-KEY(Str(Cool) $key) {
+            if $!realized || (self{$key}:exists) {
                 nextsame();
             }
             else {
-                callsame() = self!fetch($!root, $key);
+                self!fetch($!root, $key);
             }
         }
         method keys   {self.realize; callsame}
