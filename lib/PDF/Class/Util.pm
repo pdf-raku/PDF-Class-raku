@@ -2,15 +2,32 @@ unit module PDF::Class::Util;
 
 constant %Roman-Numerals = %( :M(1000), :CM(900), :D(500), :CD(400), :C(100), :XC(90), :L(50), :XL(40) :X(10), :IX(9), :V(5), :IV(4), :I(1) );
 constant @To-Roman = [ %Roman-Numerals.invert.sort.reverse ];
-our proto sub roman-numerals($, :$lc?) is export(:roman-numerals) {*}
-multi sub roman-numerals($_, :$lc! where .so) {
-    roman-numerals($_).lc
+our proto sub to-roman($, :$lc?) is export(:to-roman) {*}
+multi sub to-roman($_, :$lc! where .so) {
+    to-roman($_).lc
 }
-multi sub roman-numerals(0) { '' }
-multi sub roman-numerals(UInt \n) is default {
+multi sub to-roman(0) { '' }
+multi sub to-roman(UInt \n) is default {
     given @To-Roman.first({n >= .key}) {
-        .value ~ roman-numerals(n - .key);
+        .value ~ to-roman(n - .key);
     }
+}
+
+sub from-roman(Str \r) is export(:from-roman) {
+    my Str @r = r.uc.comb;
+    my $num = 0;
+    while @r {
+        if @r >= 2 && my $d = %Roman-Numerals{@r[0] ~ @r[1]} {
+            $num += $d;
+            @r.pop;
+        }
+        else {
+            $num += $_
+                with %%Roman-Numerals{@r[0]};
+        }
+        @r.pop;
+    }
+    $num;
 }
 
 our proto sub alpha-number($, :$lc?) is export(:alpha-number) {*}

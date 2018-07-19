@@ -29,7 +29,7 @@ class PDF::Catalog
     use PDF::AcroForm;
     use PDF::OutputIntent;
     use PDF::Resources;
-    use PDF::Class::Util :roman-numerals, :alpha-number, :decimal-number;
+    use PDF::Class::Util :to-roman, :alpha-number, :decimal-number;
 
     has PDF::COS::Name $.Type is entry(:required) where 'Catalog';
 
@@ -38,12 +38,26 @@ class PDF::Catalog
     my subset Pages of PDF::Class::Type where { .<Type> ~~ 'Pages' }; # autoloaded PDF::Pages
     has Pages $.Pages is entry(:required, :indirect);    #| (Required; must be an indirect reference) The page tree node that is the root of the document’s page tree
 
-    role PageLabels does PDF::NumberTree {
+    role PageLabelNode does PDF::COS::Tie::Hash {
+        has PDF::COS::Name $.Type is entry where 'PageLabel'; #| (Optional) The type of PDF object that this dictionary describes; if present, shall be PageLabel for a page label dictionary.
+        my subset NumberingStyle of PDF::COS::Name where 'D'|'R'|'r'|'A'|'a';
+        has NumberingStyle $.S is entry(:alias<style>); #| (Optional) The numbering style that shall be used for the numeric portion of each page label:
+        #| D: Decimal arabic numerals
+        #| R: Uppercase roman numerals
+        #| r: Lowercase roman numerals
+        #| A: Uppercase letters (A to Z for the first 26 pages, AA to ZZ for the next 26, and so on)
+        #| a: Lowercase letters (a to z for the first 26 pages, aa to zz for the next 26, and so on)
+        #| There is no default numbering style; if no S entry is present, page labels consist solely of a label prefix with no numeric portion.
+        has PDF::COS::TextString $.P is entry(:alias<prefix>); #| (Optional) The label prefix for page labels in this range.
+        has UInt $.St is entry(:alias<start>); #| (Optional) The value of the numeric portion for the first page label in the range.
+    }
+
+    role PageLabels does PDF::NumberTree[PageLabelNode] {
         has Array $!nums;
 
         multi sub page-num('D', UInt $seq) { decimal-number($seq) }
-        multi sub page-num('R', UInt $seq) { roman-numerals($seq) }
-        multi sub page-num('r', UInt $seq) { roman-numerals($seq, :lc) }
+        multi sub page-num('R', UInt $seq) { to-roman($seq) }
+        multi sub page-num('r', UInt $seq) { to-roman($seq, :lc) }
         multi sub page-num('A', UInt $seq) { alpha-number($seq) }
         multi sub page-num('a', UInt $seq) { alpha-number($seq, :lc) }
         multi sub page-num($_,   UInt $seq) is default {
@@ -56,12 +70,12 @@ class PDF::Catalog
             $!nums //= [ self.nums.Hash.pairs.sort ];
             my Pair $num = $!nums.grep(*.key <= $page-idx).tail;
             my UInt $base  = $num.key;
-            my Hash $props = $num.value;
-            my UInt $start = $props<St> // 1;
+            my PageLabelNode $props = $num.value;
+            my UInt $start = $props.start // 1;
             my UInt $seq   = $page-idx + $start - $base;
-            my $label      = $props<P> // '';
+            my $label      = $props.prefix // '';
             $label ~= page-num($_, $seq)
-                with $props<S>;
+                with $props.style;
             $label;
         }
         #| page labels, starting at page 1

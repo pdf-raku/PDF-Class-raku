@@ -5,6 +5,7 @@ use PDF::COS::Tie::Hash;
 role PDF::NumberTree
     does PDF::COS::Tie::Hash {
 
+    use PDF::COS;
     use PDF::COS::Tie;
     has PDF::NumberTree @.Kids is entry(:indirect); #| (Root and intermediate nodes only; required in intermediate nodes; present in the root node if and only if Nums is not present) Shall be an array of indirect references to the immediate children of this node. The children may be intermediate or leaf nodes.
     has @.Nums is entry; #| Root and leaf nodes only; required in leaf nodes; present in the root node if and only if Kids is not present) An array of the form
@@ -19,7 +20,10 @@ role PDF::NumberTree
             unless %!fetched{$node}++ {
                 with $node.Nums -> $kv {
                     for 0, 2 ...^ +$kv {
-                        %!nums{$kv[$_] + 0} = $kv[$_ + 1];
+                       my $val = $kv[$_ + 1];
+                       PDF::COS.coerce($val, $!root.of)
+                           if $!root.coerce-nodes;
+                       %!nums{$kv[$_] + 0} = $val;
                     }
                 }
             }
@@ -64,4 +68,10 @@ role PDF::NumberTree
         die "Number Tree has neither a /Kids or /Nums entry"
             unless (self<Kids>:exists) or (self<Nums>:exists);
     }
+    method coerce-nodes {False}
+}
+
+role PDF::NumberTree[$type] does PDF::NumberTree {
+    method of {$type}
+    method coerce-nodes {True}
 }
