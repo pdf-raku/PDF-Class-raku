@@ -6,55 +6,47 @@ role PDF::NameTree
     does PDF::COS::Tie::Hash {
 
     #| a lightweight tied hash to fetch objects from a Name Tree
-    my class Names is Hash {
+    my class Names {
+        has %!names;
         has PDF::NameTree $.root is rw;
         has Bool %!fetched{Any};
         has Bool $!realized;
         method !fetch($node, Str $key?) {
             unless %!fetched{$node}++ {
-                with $node.Names -> $names {
-                    for 0, 2 ...^ +$names {
-                        self.ASSIGN-KEY($names[$_], $names[$_ + 1]);
+                with $node.Names -> $kv {
+                    for 0, 2 ...^ +$kv {
+                        %!names{ $kv[$_] } = $kv[$_ + 1];
                     }
                 }
-                with $key {
-                    return self{$_}
-                        if self{$_}:exists;
-                }
             }
-            with $node.Kids -> $kids {
-                for 0 ..^ +$kids {
-                    given $kids[$_] {
-                        if $key.defined {
-                            my $limits = .Limits;
-                            return self!fetch($_, $key)
-                                if $limits[0] le $key le $limits[1];
-                        }
-                        else {
-                            self!fetch($_);
+            if !$key.defined || (%!names{$key}:!exists) {
+                with $node.Kids -> $kids {
+                    for 0 ..^ +$kids {
+                        given $kids[$_] {
+                            if $key.defined {
+                                my $limits = .Limits;
+                                return self!fetch($_, $key)
+                                    if $limits[0] le $key le $limits[1];
+                            }
+                            else {
+                                self!fetch($_);
+                            }
                         }
                     }
                 }
             }
         }
 
-        method realize {
+        method Hash handles <keys values pairs perl> {
             self!fetch($!root)
                 unless $!realized++;
-            self;
+            %!names;
         }
         method AT-KEY(Str(Cool) $key) {
-            if $!realized || (self{$key}:exists) {
-                nextsame();
-            }
-            else {
-                self!fetch($!root, $key);
-            }
+            self!fetch($!root, $key)
+               unless $!realized || (%!names{$key}:exists);
+            %!names{$key};
         }
-        method keys   {self.realize; callsame}
-        method values {self.realize; callsame}
-        method pairs  {self.realize; callsame}
-        method perl   {self.realize; callsame};
     }
 
     method names {

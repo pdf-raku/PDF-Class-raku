@@ -21,8 +21,9 @@ sub ind-ref(IndRef $_ ) {
 
 my %page-index;
 
-sub MAIN(Str $infile,           #| input PDF
-	 Str :$password = '',   #| password for the input PDF, if encrypted
+sub MAIN(Str $infile,           #= input PDF
+	 Str :$password = '',   #= password for the input PDF, if encrypted
+         Bool :$no-labels       #= don't display page labels
     ) {
 
     my $input = $infile eq '-'
@@ -31,9 +32,15 @@ sub MAIN(Str $infile,           #| input PDF
 
     my PDF::Class $pdf .= open( $input, :$password );
 
+    my $page-labels = $pdf.catalog.PageLabels
+        unless $no-labels;
+
     my @index = $pdf.catalog.Pages.page-index;
     %page-index = @index.pairs.map: {
-        ind-ref(.value) => .key + 1
+        my $page-num = .key + 1;
+        $page-num = .page-label($page-num)
+            with $page-labels;
+        ind-ref(.value) => $page-num;
     }
     $dests = $pdf.catalog.Dests
      // do with $pdf.catalog.Names {

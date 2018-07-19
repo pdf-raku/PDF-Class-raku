@@ -10,58 +10,50 @@ role PDF::NumberTree
     has @.Nums is entry; #| Root and leaf nodes only; required in leaf nodes; present in the root node if and only if Kids is not present) An array of the form
                          #| [ key 1 value 1 key 2 value 2 ... key n value n ]
                          #| where each key i is an integer and the corresponding value i shall be the object associated with that key. The keys are sorted in numerical order
-    my class Nums is Hash {
+    my class Nums {
+        has %!nums{Int};
         has PDF::NumberTree $.root is rw;
         has Bool %!fetched{Any};
         has Bool $!realized;
         method !fetch($node, Int $key?) {
             unless %!fetched{$node}++ {
-                with $node.Nums -> $nums {
-                    for 0, 2 ...^ +$nums {
-                        self.ASSIGN-KEY($nums[$_], $nums[$_ + 1]);
-                    }
-                }
-                with $key {
-                    return self{$_}
-                        if self{$_}:exists;
-                }
-            }
-            with $node.Kids -> $kids {
-                for 0 ..^ +$kids {
-                    given $kids[$_] {
-                        if $key.defined {
-                            my $limits = .Limits;
-                            return self!fetch($_, $key)
-                                if $limits[0] <= $key <= $limits[1];
-                        }
-                        else {
-                            self!fetch($_);
-                        }
+                with $node.Nums -> $kv {
+                    for 0, 2 ...^ +$kv {
+                        %!nums{$kv[$_] + 0} = $kv[$_ + 1];
                     }
                 }
             }
+            if !$key.defined || (%!nums{$key}:!exists) {
+                with $node.Kids -> $kids {
+                    for 0 ..^ +$kids {
+                        given $kids[$_] {
+                            if $key.defined {
+                                my $limits = .Limits;
+                                return self!fetch($_, $key)
+                                    if $limits[0] <= $key <= $limits[1];
+                            }
+                            else {
+                                self!fetch($_);
+                            }
+                        }
+                    }
+                }
+           }
         }
-        method realize {
+        method Hash handles <keys values pairs perl> {
             self!fetch($!root)
                 unless $!realized++;
-            self;
+            %!nums;
         }
         method AT-KEY(Int(Cool) $key) {
-            if $!realized || (self{$key}:exists) {
-                nextsame();
-            }
-            else {
-                self!fetch($!root, $key);
-            }
+            self!fetch($!root, $key)
+                unless $!realized || (%!nums{$key}:exists);
+            %!nums{$key};
         }
-        method keys   {self.realize; callsame}
-        method values {self.realize; callsame}
-        method pairs  {self.realize; callsame}
-        method perl   {self.realize; callsame};
     }
 
     method nums {
-        given Nums[Int].new {
+        given Nums.new {
             .root = self;
             $_;
         }

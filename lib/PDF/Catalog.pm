@@ -29,6 +29,7 @@ class PDF::Catalog
     use PDF::AcroForm;
     use PDF::OutputIntent;
     use PDF::Resources;
+    use PDF::Class::Util :roman-numerals, :alpha-number, :decimal-number;
 
     has PDF::COS::Name $.Type is entry(:required) where 'Catalog';
 
@@ -37,7 +38,38 @@ class PDF::Catalog
     my subset Pages of PDF::Class::Type where { .<Type> ~~ 'Pages' }; # autoloaded PDF::Pages
     has Pages $.Pages is entry(:required, :indirect);    #| (Required; must be an indirect reference) The page tree node that is the root of the document’s page tree
 
-    has PDF::NumberTree $.PageLabels is entry;           #| (Optional; PDF 1.3) A number tree defining the page labeling for the document.
+    role PageLabels does PDF::NumberTree {
+        has Array $!nums;
+
+        multi sub page-num('D', UInt $seq) { decimal-number($seq) }
+        multi sub page-num('R', UInt $seq) { roman-numerals($seq) }
+        multi sub page-num('r', UInt $seq) { roman-numerals($seq, :lc) }
+        multi sub page-num('A', UInt $seq) { alpha-number($seq) }
+        multi sub page-num('a', UInt $seq) { alpha-number($seq, :lc) }
+        multi sub page-num($_,   UInt $seq) is default {
+            warn "unknown page-label type: $_";
+            decimal-number($seq)
+        }
+
+        #| page indices, starting at zero
+        method AT-POS(Int(Cool) $page-idx) {
+            $!nums //= [ self.nums.Hash.pairs.sort ];
+            my Pair $num = $!nums.grep(*.key <= $page-idx).tail;
+            my UInt $base  = $num.key;
+            my Hash $props = $num.value;
+            my UInt $start = $props<St> // 1;
+            my UInt $seq   = $page-idx + $start - $base;
+            my $label      = $props<P> // '';
+            $label ~= page-num($_, $seq)
+                with $props<S>;
+            $label;
+        }
+        #| page labels, starting at page 1
+        method page-label(UInt $page-num) {
+            self[$page-num - 1];
+        }
+    }
+    has PageLabels $.PageLabels is entry;           #| (Optional; PDF 1.3) A number tree defining the page labeling for the document.
 
     my role Names does PDF::COS::Tie::Hash {
         has PDF::NameTree $.Dests is entry;                  #| (Optional; PDF 1.2) A name tree mapping name strings to destinations.

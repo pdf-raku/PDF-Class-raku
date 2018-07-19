@@ -43,6 +43,7 @@
     "PDF::Class::Loader" : "lib/PDF/Class/Loader.pm",
     "PDF::Class::ThreeD" : "lib/PDF/Class/ThreeD.pm",
     "PDF::Class::Type" : "lib/PDF/Class/Type.pm",
+    "PDF::Class::Util" : "lib/PDF/Class/Util.pm",
     "PDF::ColorSpace" : "lib/PDF/ColorSpace.pm",
     "PDF::ColorSpace::CalGray" : "lib/PDF/ColorSpace/CalGray.pm",
     "PDF::ColorSpace::CalRGB" : "lib/PDF/ColorSpace/CalRGB.pm",

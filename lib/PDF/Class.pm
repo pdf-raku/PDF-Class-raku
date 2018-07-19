@@ -82,10 +82,6 @@ class PDF::Class:ver<0.2.6> #:api<PDF-1.7>
     }
 
     my subset Pages of PDF::Class::Type where { .<Type> ~~ 'Pages' }; # autoloaded PDF::Pages
-    method Pages returns Pages { self.Root.Pages }
-
-    BEGIN for <page add-page delete-page insert-page page-count media-box crop-box bleed-box trim-box art-box core-font use-font> {
-        $?CLASS.^add_method($_, method (|a) is rw { self<Root><Pages>."$_"(|a) } );
-    }
+    method Pages returns Pages handles <page add-page delete-page insert-page page-count media-box crop-box bleed-box trim-box art-box core-font use-font> { self.Root.Pages }
 
 }

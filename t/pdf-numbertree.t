@@ -34,7 +34,7 @@ does-ok $nametree-obj, PDF::NumberTree;
 is-json-equiv $nametree-obj.Kids, [], '$obj.First';
 is-json-equiv $nametree-obj.Nums, [ 20, 'Xxx', 30, 42 ], '$obj.Nums';
 is-json-equiv $nametree-obj.nums{30}, 42, '.nums deref';
-is-json-equiv $nametree-obj.nums.realize, { 20 => 'Xxx', 30 => 42 }, '$obj.nums';
+is-json-equiv $nametree-obj.nums.Hash, { 20 => 'Xxx', 30 => 42 }, '$obj.nums';
 is-json-equiv $nametree-obj.Limits, [20, 30], '$obj.Limits';
 lives-ok {$nametree-obj.check}, '$nametree-obj.check lives';
 

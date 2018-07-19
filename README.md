@@ -227,22 +227,22 @@ Prints various PDF properties. For example:
 
 undoes the last revision of an incrementally saved PDF file.
 
-#### `pdf-toc.p6 --password=pass in.pdf`
+#### `pdf-toc.p6 --password=pass --no-labels in.pdf`
 
 prints a table of contents, showing titles and page-numbers, using PDF bookmarks.
 
     % wget http://www.stillhq.com/pdfdb/000432/data.pdf
     % pdf-toc.p6 data.pdf
-    Table of Contents . . . 2
-    1. Purpose of this Document . . . 3
-    2. Pre-requisites . . . 4
-    3. Compiler Speed-up . . . 5
-    4. Recompiling the Kernel for Modules . . . 6
-      5.1. Configuring Debian or RedHat for Modules . . . 7
-      5.2. Configuring Slackware for Modules . . . 7
-      5.3. Configuring Other Distributions for Modules . . . 8
+    Table of Contents . . . i
+    1. Purpose of this Document . . . 1
+    2. Pre-requisites . . . 2
+    3. Compiler Speed-up . . . 3
+    4. Recompiling the Kernel for Modules . . . 4
+      5.1. Configuring Debian or RedHat for Modules . . . 5
+      5.2. Configuring Slackware for Modules . . . 5
+      5.3. Configuring Other Distributions for Modules . . . 6
 
-Note that bookmarks are an optional PDF feature.
+Note that bookmarks and page-labels are optional PDF features.
 
 ## Development Status
 

@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 46;
+plan 52;
 
 use PDF::Class;
 use PDF::IO::IndObj;
@@ -83,7 +83,14 @@ is-json-equiv $catalog<LastModified>, 'D:20081012130709', '$catalog<LastModified
 is-json-equiv $catalog.MarkInfo, { :LetterspaceFlags(0), :Marked }, '$object.MarkInfo'; 
 is-json-equiv $catalog.Metadata, (:ind-ref[10, 0]), '$catalog.Metadata';
 is-json-equiv $catalog.Outlines, (:ind-ref[18, 0]), '$catalog.Outlines';
-is-json-equiv $catalog.PageLabels.Nums, [0, { :S<r> }, 4, { :S<D> }, 7, { :S<D>, :P<A->, :St(8), }, ], '$catalog.PageLabels';
+my $page-labels = $catalog.PageLabels;
+is-json-equiv $page-labels.Nums, [0, { :S<r> }, 4, { :S<D> }, 7, { :S<D>, :P<A->, :St(8), }, ], '$catalog.PageLabels';
+is $page-labels[0], 'i', 'page [0] label';
+is $page-labels[2], 'iii', 'page [2] label';
+is $page-labels.page-label(3), 'iii', '.page-label(3)';
+is $page-labels[3], 'iv', 'page [3] label';
+is $page-labels[4], '1', 'page [4] label';
+is $page-labels[9], 'A-10', 'page [9] label';
 is-json-equiv $catalog.PageLayout, 'OneColumn', '$catalog.PageLayout';
 is-json-equiv $catalog.Pages, (:ind-ref[212, 0]), '$catalog.Pages';
 is-json-equiv $catalog.PieceInfo, { :MarkedPDF{ :LastModified<D:20081012130709> } }, '$catalog.PieceInfo';
