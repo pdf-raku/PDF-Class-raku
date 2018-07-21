@@ -209,6 +209,7 @@ Prints various PDF properties. For example:
     File:         /home/david/Documents/test-pdfs/stillhq.com/000056.pdf
     File Size:    63175 bytes
     Pages:        2
+    Outlines:     no
     Author:       Prince Restaurant
     CreationDate: Wed Oct 03 23:41:01 2001
     Creator:      FrameMaker+SGML 6.0
@@ -227,22 +228,26 @@ Prints various PDF properties. For example:
 
 undoes the last revision of an incrementally saved PDF file.
 
-#### `pdf-toc.p6 --password=pass --no-labels in.pdf`
+#### `pdf-toc.p6 --password=pass --/title --/labels in.pdf`
 
-prints a table of contents, showing titles and page-numbers, using PDF bookmarks.
+prints a table of contents, showing titles and page-numbers, using PDF outlines.
 
     % wget http://www.stillhq.com/pdfdb/000432/data.pdf
     % pdf-toc.p6 data.pdf
-    Table of Contents . . . i
-    1. Purpose of this Document . . . 1
-    2. Pre-requisites . . . 2
-    3. Compiler Speed-up . . . 3
-    4. Recompiling the Kernel for Modules . . . 4
-      5.1. Configuring Debian or RedHat for Modules . . . 5
-      5.2. Configuring Slackware for Modules . . . 5
-      5.3. Configuring Other Distributions for Modules . . . 6
+    Linux Kernel Modules Installation HOWTO
+      Table of Contents . . . i
+      1. Purpose of this Document . . . 1
+      2. Pre-requisites . . . 2
+      3. Compiler Speed-up . . . 3
+      4. Recompiling the Kernel for Modules . . . 4
+        5.1. Configuring Debian or RedHat for Modules . . . 5
+        5.2. Configuring Slackware for Modules . . . 5
+        5.3. Configuring Other Distributions for Modules . . . 6
 
-Note that bookmarks and page-labels are optional PDF features.
+Note that outlines are an optional PDF feature. C<pdf-info.p6> can be
+used to check if a PDF has them:
+
+    % pdf-info.p6 my-doc.pdf | grep Outlines:
 
 ## Development Status
 

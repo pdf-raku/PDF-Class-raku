@@ -59,9 +59,10 @@ multi sub MAIN(Str $infile,           #| input PDF
     say "File:         $infile";
     say "File Size:    $size bytes";
     say "Pages:        $pages";
+    say 'Outlines:     ' ~ yes-no(do with $catalog.Outlines {?.First} else {False});
     if $pdf-info {
 	for $pdf-info.keys.sort -> $key {
-	    my Str $info = pretty-print( $pdf-info{$key} );
+	    my Str $info = try {pretty-print( $pdf-info{$key} ) } // '???';
 	    printf "%-13s %s\n", $key ~ q{:}, $info
 	        unless $info eq '';
 	}
