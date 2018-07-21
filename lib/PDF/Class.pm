@@ -3,7 +3,7 @@ use v6;
 use PDF:ver(v0.3.2+);
 
 #| PDF entry-point. either a trailer dict or an XRef stream
-class PDF::Class:ver<0.2.6> #:api<PDF-1.7>
+class PDF::Class:ver<0.2.7> #:api<PDF-1.7>
     is PDF {
 
     # base class declares: $.Size, $.Encrypt, $.ID
@@ -82,6 +82,6 @@ class PDF::Class:ver<0.2.6> #:api<PDF-1.7>
     }
 
     my subset Pages of PDF::Class::Type where { .<Type> ~~ 'Pages' }; # autoloaded PDF::Pages
-    method Pages returns Pages handles <page add-page delete-page insert-page page-count media-box crop-box bleed-box trim-box art-box core-font use-font> { self.Root.Pages }
+    method Pages returns Pages handles <page add-page delete-page insert-page page-count page-index media-box crop-box bleed-box trim-box art-box core-font use-font> { self.Root.Pages }
 
 }

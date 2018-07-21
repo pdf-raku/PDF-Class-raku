@@ -1,3 +1,7 @@
+Release 0.2.7
+- add page numbering schemes PDF page labels. Including
+  Roman and Decimal. Added to pdf-toc.p6
+
 Release 0.2.6
 - added pdf-toc.p6 (table-of-contents) utility
 - further pdf-checker.p6 improvements:

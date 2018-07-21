@@ -18,7 +18,6 @@ role PDF::Destination
     use PDF::COS::Name;
 
     my subset PageRef where PDF::Page|UInt|Pair;
-    method is-page-ref { .[0] ~~ PDF::Page }
     has PageRef $.page is index(0);
     has PDF::COS::Name $.fit is index(1);
     # See [PDF 1.7 TABLE 8.2 Destination syntax]

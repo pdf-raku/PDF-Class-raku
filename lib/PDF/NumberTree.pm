@@ -17,8 +17,8 @@ role PDF::NumberTree
         has Bool %!fetched{Any};
         has Bool $!realized;
         method !fetch($node, Int $key?) {
-            unless %!fetched{$node}++ {
-                with $node.Nums -> $kv {
+            with $node.Nums -> $kv {
+                unless %!fetched{$node}++ {
                     for 0, 2 ...^ +$kv {
                        my $val = $kv[$_ + 1];
                        PDF::COS.coerce($val, $!root.of)
@@ -27,8 +27,8 @@ role PDF::NumberTree
                     }
                 }
             }
-            if !$key.defined || (%!nums{$key}:!exists) {
-                with $node.Kids -> $kids {
+            else {
+                given $node.Kids -> $kids {
                     for 0 ..^ +$kids {
                         given $kids[$_] {
                             if $key.defined {
