@@ -10,25 +10,13 @@ This is the base class for [PDF::API6](https://github.com/p6-pdf/PDF-API6).
 
 The top level of a PDF document is of type `PDF::Class`. It contains the `PDF::Catalog` as its `Root` entry.
 
-As an example, the following PDF::Lite code:
-
-    use PDF::Lite;
-    my PDF::Lite $pdf .= open: "t/helloworld.pdf";
-    my Hash $catalog = $pdf<Root>;
-    given $catalog<ViewerPreferences> //= {} {
-        .<HideToolbar> = True;
-    }
-    my Hash $new-page = $pdf.add-page;
-    #...
-
-Could be more safely and legibly written in PDF::Class as:
 ```
     use PDF::Class;
     use PDF::Catalog;
     use PDF::Page;
 
     my PDF::Class $pdf .= open: "t/helloworld.pdf";
-    my PDF::Catalog $catalog = $pdf.catalog;
+    my PDF::Catalog $catalog = $pdf.Root;
     given $catalog.ViewerPreferences //= {} {
         .HideToolbar = True;
     }
@@ -197,9 +185,24 @@ In this example:
 - The Catalog dictionary had an unexpected `/ViewPreferences`
    entry (It should be `/ViewerPreferences`, see PDF::Catalog).
 
-#### Notes
+##### Notes
 
 - A message such as `No handler class PDF::Filespec`, usually indicates the the object has not yet been implemented in PDF::Class.
+
+#### `pdf-content-dump.p6 in.pdf`
+
+Displays the content streams for PDF pages, commented,
+and in a human-readable formt:
+
+    % pdf-content-dump.p6 t/example.pdf 
+    % **** Page 1 ****
+    BT % BeginText
+      1 0 0 1 100 150 Tm % SetTextMatrix
+      /F1 16 Tf % SetFont
+      17.6 TL % SetTextLeading
+      [ (Hello, world!) ] TJ % ShowSpaceText
+      T* % TextNextLine
+    ET % EndText
 
 #### `pdf-info.p6 in.pdf`
 

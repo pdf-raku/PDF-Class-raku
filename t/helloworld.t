@@ -100,10 +100,11 @@ $page.text: {
     .say('Hello, world!');
 }
 
-my PDF::Info $info = $pdf.Info //= {}
-$info.Author = 't/helloworld.t';
-$info.Creator = 'PDF::Class';
-$info.CreationDate = DateTime.new: :year(2015), :month(12), :day(25);
+given $pdf.Info //= {} -> PDF::Info $info {
+    $info.Author = 't/helloworld.t';
+    $info.Creator = 'PDF::Class';
+    $info.CreationDate = DateTime.new: :year(2015), :month(12), :day(25);
+}
 skip '$pdf.Info<Author> - not completing';
 ##is $pdf.Info<Author>, 't/helloworld.t', '$root.Info accessor';
 

@@ -1,6 +1,8 @@
 Release 0.2.7
-- add page numbering schemes PDF page labels. Including
-  Roman and Decimal. Added to pdf-toc.p6
+- Createed PDF::Class::Util - with support functionsd page numbering schemes and PDF page labels.
+  Including Roman and Decimal.
+- Added page-label printing to pdf-toc.p6
+- Added pdf-content-dump.p6
 
 Release 0.2.6
 - added pdf-toc.p6 (table-of-contents) utility

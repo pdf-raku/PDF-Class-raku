@@ -2,11 +2,7 @@
 use v6;
 
 use PDF::Class;
-use PDF::Catalog;
-use PDF::Outline; # outline root
-use PDF::Outlines; # outline entries
-use PDF::Destination :DestinationArray, :coerce-dest;
-use PDF::Action::URI;
+use PDF::Destination :DestinationArray;
 
 use PDF::IO::Str;
 use PDF::IO::Handle;
