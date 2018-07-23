@@ -154,7 +154,7 @@ PDF:Class definitions as derived from the [PDF 32000-1:2008 1.7](http://www.adob
                   [3]:      << /Length 768 >>       % PDF::COS::Stream
     Checking of t/helloworld.pdf completed with 0 warnings and 0 errors
 
-This example dumps a PDF and shows how PDF::Class has interpeted it.
+This example dumps a PDF and shows how PDF::Class has interpreted it.
 
 - indirect object `1 0 R` is a dictionary that has had the `PDF::Info` role applied
 - indirect object `2 0 R` has been loaded as a `PDF::Catalog` object.
@@ -192,7 +192,7 @@ In this example:
 #### `pdf-content-dump.p6 in.pdf`
 
 Displays the content streams for PDF pages, commented,
-and in a human-readable formt:
+and in a human-readable format:
 
     % pdf-content-dump.p6 t/example.pdf 
     % **** Page 1 ****
