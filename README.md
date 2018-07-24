@@ -189,7 +189,7 @@ In this example:
 
 - A message such as `No handler class PDF::Filespec`, usually indicates the the object has not yet been implemented in PDF::Class.
 
-#### `pdf-content-dump.p6 in.pdf`
+#### `pdf-content-dump.p6 --perl in.pdf`
 
 Displays the content streams for PDF pages, commented,
 and in a human-readable format:
@@ -203,6 +203,18 @@ and in a human-readable format:
       [ (Hello, world!) ] TJ % ShowSpaceText
       T* % TextNextLine
     ET % EndText
+
+The C<--perl> option dumps using a Perl-like notation:
+
+    pdf-content-dump.p6 --perl t/example.pdf 
+    # **** Page 1 ****
+    .BeginText();
+      .SetTextMatrix(1, 0, 0, 1, 100, 150);
+      .SetFont("F1", 16);
+      .SetTextLeading(17.6);
+      .ShowSpaceText($["Hello, world!"]);
+      .TextNextLine();
+    .EndText();
 
 #### `pdf-info.p6 in.pdf`
 
