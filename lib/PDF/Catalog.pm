@@ -57,9 +57,9 @@ class PDF::Catalog
 
         multi sub page-num('D', UInt $seq) { decimal-number($seq) }
         multi sub page-num('R', UInt $seq) { to-roman($seq) }
-        multi sub page-num('r', UInt $seq) { to-roman($seq, :lc) }
+        multi sub page-num('r', UInt $seq) { to-roman($seq).lc }
         multi sub page-num('A', UInt $seq) { alpha-number($seq) }
-        multi sub page-num('a', UInt $seq) { alpha-number($seq, :lc) }
+        multi sub page-num('a', UInt $seq) { alpha-number($seq).lc }
         multi sub page-num($_,   UInt $seq) is default {
             warn "unknown page-label type: $_";
             decimal-number($seq)
