@@ -29,6 +29,13 @@ is $d.is-page-ref, False, 'destination is page ref';
 does-ok $d.fit, PDF::COS::Name, 'fit accessor';
 is-deeply $d.content, (:array($[:dict{:Type(:name<Page>)}, :name<Fit>])), 'destination content';
 
+is-destination $d=PDF::Destination.construct(:$page), [$page, FitWindow], 'Default destination';
+is-deeply $d.page, $page, 'page accessor';
+is $d.fit, 'Fit', 'fit accessor';
+is $d.is-page-ref, False, 'destination is page ref';
+does-ok $d.fit, PDF::COS::Name, 'fit accessor';
+is-deeply $d.content, (:array($[:dict{:Type(:name<Page>)}, :name<Fit>])), 'destination content';
+
 is-destination $d=PDF::Destination.construct(FitXYZoom, :$page, :left(42), :top(99), :zoom(1.5)), [$page, FitXYZoom, 42, 99, 1.5], 'FitXYZoom destination';
 is $d.left, 42, 'left accessor';
 is $d.top, 99, 'top accessor';

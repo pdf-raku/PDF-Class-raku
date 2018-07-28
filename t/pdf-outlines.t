@@ -1,14 +1,14 @@
 use v6;
 use Test;
 
-plan 9;
+plan 13;
 
 use PDF::Class;
 use PDF::IO::IndObj;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::Grammar::Test :is-json-equiv;
-
+use PDF::COS;
 my PDF::Grammar::PDF::Actions $actions .= new;
 
 my $input = q:to"--END-OBJ--";
@@ -34,3 +34,17 @@ is-deeply $outlines-obj.First, (:ind-ref[19, 0]), '$obj.First';
 is-deeply $outlines-obj.Last, (:ind-ref[20, 0]), '$obj.Last';
 lives-ok {$outlines-obj.check}, '$outlines-obj.check lives';
 is-json-equiv $ind-obj.ast, %ast, 'ast regeneration';
+
+$outlines-obj = PDF::COS.coerce({}, (require ::('PDF')::('Outlines')));
+$outlines-obj.add-kid({:Title<k1>});
+$outlines-obj.add-kid({:Title<k2>});
+$outlines-obj.First.add-kid({:Title<k3>});
+my @titles = $outlines-obj.kids.map: *.Title;
+is-deeply @titles.join(','), 'k1,k2', 'titles';
+is $outlines-obj.First.Title, 'k1', '.First';
+is $outlines-obj.Last.Title, 'k2', '.Last';
+is $outlines-obj.First.First.Title, 'k3', '.First.First';
+
+
+
+

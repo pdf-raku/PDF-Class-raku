@@ -1,10 +1,12 @@
 use v6;
 
+use PDF::Class::OutlineNode;
 use PDF::COS::Tie::Hash;
 
 #| /Type /Outlines - the Outlines dictionary
 
 role PDF::Outlines
+    does PDF::Class::OutlineNode
     does PDF::COS::Tie::Hash {
 
     use PDF::COS::Tie;

@@ -2,6 +2,7 @@
 use v6;
 
 use PDF::Class;
+use PDF::Class::OutlineNode;
 use PDF::Destination :DestinationArray;
 
 use PDF::IO::Str;
@@ -62,7 +63,7 @@ sub MAIN(Str $infile,           #= input PDF
     }
 
     with $pdf.catalog.Outlines {
-        toc-children($_, :$nesting);
+        toc($_, :$nesting) for .kids;
     }
     else {
         note "document does not contain outlines: $infile";
@@ -92,19 +93,13 @@ multi sub show-dest($_) is default {
 }
 
 
-sub toc($outline, :$nesting!) {
+sub toc(PDF::Class::OutlineNode $outline, :$nesting! is copy) {
     my $where = do with $outline.Dest // $outline.A { show-dest($_) };
     with $where {
         say( ('  ' x $nesting) ~ $outline.Title.trim ~ ' . . . ' ~ $_);
-        toc-children($outline, :nesting($nesting+1));
-    }
-}
-
-sub toc-children($_, :$nesting!) {
-    my $node = .First;
-    while $node.defined {
-        toc($node, :$nesting);
-        $node = $node.Next;
+        $nesting++;
+        toc($_, :$nesting)
+            for $outline.kids;
     }
 }
 

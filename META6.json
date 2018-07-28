@@ -41,6 +41,7 @@
     "PDF::Catalog" : "lib/PDF/Catalog.pm",
     "PDF::Class" : "lib/PDF/Class.pm",
     "PDF::Class::Loader" : "lib/PDF/Class/Loader.pm",
+    "PDF::Class::OutlineNode" : "lib/PDF/Class/OutlineNode.pm",
     "PDF::Class::ThreeD" : "lib/PDF/Class/ThreeD.pm",
     "PDF::Class::Type" : "lib/PDF/Class/Type.pm",
     "PDF::Class::Util" : "lib/PDF/Class/Util.pm",
@@ -127,5 +128,5 @@
     "pdf"
   ],
   "test-depends" : [ ],
-  "version" : "0.2.7"
+  "version" : "0.2.8"
 }

@@ -60,6 +60,8 @@ role PDF::Destination
                            Numeric :$right!,  Numeric :$top!, )  { self!dest: [$page, fit(FitRect),   $left,
                                                                                                       $bottom, $right, $top] }
 
+    multi method construct(PageRef :$page!, )                    { self!dest: [$page, fit(FitWindow), ] }
+
 
     # Coercions for explicit and named destinations
     # a named destination may be either a byte-string or name object

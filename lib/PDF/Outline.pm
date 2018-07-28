@@ -1,11 +1,13 @@
 use v6;
 
+use PDF::Class::OutlineNode;
 use PDF::COS::Tie::Hash;
 
 #| Outline - an entry in the Outlines Dictionary
 #| See /First and /Last Accessors in PDF::Outlines
 
 role PDF::Outline
+    does PDF::Class::OutlineNode
     does PDF::COS::Tie::Hash {
 
     use PDF::COS::Tie;

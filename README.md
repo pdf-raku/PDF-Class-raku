@@ -204,7 +204,7 @@ and in a human-readable format:
       T* % TextNextLine
     ET % EndText
 
-The C<--perl> option dumps using a Perl-like notation:
+The `--perl` option dumps using a Perl-like notation:
 
     pdf-content-dump.p6 --perl t/example.pdf 
     # **** Page 1 ****
@@ -259,7 +259,7 @@ prints a table of contents, showing titles and page-numbers, using PDF outlines.
         5.2. Configuring Slackware for Modules . . . 5
         5.3. Configuring Other Distributions for Modules . . . 6
 
-Note that outlines are an optional PDF feature. C<pdf-info.p6> can be
+Note that outlines are an optional PDF feature. `pdf-info.p6` can be
 used to check if a PDF has them:
 
     % pdf-info.p6 my-doc.pdf | grep Outlines:

@@ -56,7 +56,7 @@ pdf-content-dump.p6 [options] --page=number file.pdf
 Options:
    --password   password for an encrypted PDF
    --page=num   dump a single page
-   --perl       dump in a perl-like notation
+   --perl       dump in a Perl-like notation
 
 =head1 DESCRIPTION
 

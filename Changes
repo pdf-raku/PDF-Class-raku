@@ -1,5 +1,8 @@
+Release 0.2.8
+- Added PDF::Outline(s) .kids iterator and .add-kid method
+
 Release 0.2.7
-- Createed PDF::Class::Util - with support functionsd page numbering schemes and PDF page labels.
+- Created PDF::Class::Util - with support functions page numbering schemes and PDF page labels.
   Including Roman and Decimal.
 - Added page-label printing to pdf-toc.p6
 - Added pdf-content-dump.p6
