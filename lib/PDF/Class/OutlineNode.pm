@@ -1,5 +1,6 @@
 role PDF::Class::OutlineNode {
     use PDF::COS;
+    use PDF::Destination :coerce-dest, :DestinationArray;
     has Array $.parents is rw;
     sub siblings($cur) {
         my class Siblings does Iterable does Iterator {
@@ -12,12 +13,20 @@ role PDF::Class::OutlineNode {
             }
         }.new( :$cur );
     }
-    method kids {
-        siblings($.First);
-    }
-    method add-kid($kid is copy = {}) {
+    method add-kid(Hash $kid is copy = {}) {
         require PDF::Outline;
+        my $grand-kids = $kid<kids>:delete;
+        my PDF::Destination $dest;
+        with $kid<dest>:delete {
+            when PDF::Destination { $dest = $_; }
+            when Hash { $dest = coerce-dest($_, PDF::Destination) }
+            when DestinationArray {
+                $dest = PDF::Destination.construct($_);
+            }
+            default { warn "ignoring outline <dest>: {.perl}" }
+        }
         $kid = PDF::COS.coerce($kid, PDF::Outline);
+        $kid.Dest = $_ with $dest;
         $kid.parents //= [];
         $kid.parents.push: self;
         with self.Last {
@@ -39,6 +48,16 @@ role PDF::Class::OutlineNode {
                 }
             }
         }
-
+        $kid.kids = $_ with $grand-kids;
+        $kid;
     }
+    method kids is rw {
+        Proxy.new:
+            :FETCH(sub ($) {siblings(self.First)}),
+            :STORE(sub ($, @kids) {
+                self<First Last>:delete;
+                self.add-kid($_) for @kids;
+            })
+    }
+
 }

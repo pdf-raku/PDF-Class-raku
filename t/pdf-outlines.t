@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 13;
+plan 17;
 
 use PDF::Class;
 use PDF::IO::IndObj;
@@ -45,6 +45,14 @@ is $outlines-obj.First.Title, 'k1', '.First';
 is $outlines-obj.Last.Title, 'k2', '.Last';
 is $outlines-obj.First.First.Title, 'k3', '.First.First';
 
+$outlines-obj = PDF::COS.coerce({}, (require ::('PDF')::('Outlines')));
 
+$outlines-obj.kids = ({:Title<k1>, :kids[ {:Title<k3>}, ] }, {:Title<k2>});
+
+@titles = $outlines-obj.kids.map: *.Title;
+is-deeply @titles.join(','), 'k1,k2', 'titles';
+is $outlines-obj.First.Title, 'k1', 'kids-accessor: .First';
+is $outlines-obj.Last.Title, 'k2', 'kids-accessor: .Last';
+is $outlines-obj.First.First.Title, 'k3', 'kids-accessor: .First.First';
 
 
