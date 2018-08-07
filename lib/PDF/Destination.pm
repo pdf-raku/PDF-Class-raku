@@ -63,6 +63,9 @@ role PDF::Destination
 
     multi method construct(PageRef :$page!, )                    { self!dest: [$page, fit(FitWindow), ] }
     multi method construct(DestinationArray $dest) { self.construct(|$dest) }
+    multi method construct(*@args) is default {
+        fail "unable to construct destination: {@args.perl}";
+    }
 
     # Coercions for explicit and named destinations
     # a named destination may be either a byte-string or name object

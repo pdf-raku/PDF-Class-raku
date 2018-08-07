@@ -2,7 +2,7 @@ role PDF::Class::OutlineNode {
     use PDF::COS;
     use PDF::Destination :coerce-dest, :DestinationArray;
     has Array $.parents is rw;
-    sub siblings($cur) {
+    sub siblings($cur) is rw {
         my class Siblings does Iterable does Iterator {
             has $.cur;
             method iterator { self }
@@ -19,11 +19,10 @@ role PDF::Class::OutlineNode {
         my PDF::Destination $dest;
         with $kid<dest>:delete {
             when PDF::Destination { $dest = $_; }
-            when Hash { $dest = coerce-dest($_, PDF::Destination) }
             when DestinationArray {
                 $dest = PDF::Destination.construct($_);
             }
-            default { warn "ignoring outline <dest>: {.perl}" }
+            default { warn "ignoring outline dest: {.gist}" }
         }
         $kid = PDF::COS.coerce($kid, PDF::Outline);
         $kid.Dest = $_ with $dest;
@@ -51,13 +50,15 @@ role PDF::Class::OutlineNode {
         $kid.kids = $_ with $grand-kids;
         $kid;
     }
+    #| .get Proxy Fetch not working
+    method get-kids { siblings(self.First) }
     method kids is rw {
-        Proxy.new:
-            :FETCH(sub ($) {siblings(self.First)}),
-            :STORE(sub ($, @kids) {
+        Proxy.new(
+            FETCH => { siblings(self.First) },
+            STORE => -> $, @kids {
                 self<First Last>:delete;
                 self.add-kid($_) for @kids;
-            })
+            });
     }
 
 }
