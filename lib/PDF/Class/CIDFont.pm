@@ -1,7 +1,7 @@
 use v6;
 
 use PDF::COS::Tie::Hash;
-role PDF::Font::CIDFont
+role PDF::Class::CIDFont
     does PDF::COS::Tie::Hash {
 
     use PDF::COS::Tie;
