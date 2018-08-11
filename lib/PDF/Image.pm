@@ -16,6 +16,7 @@ role PDF::Image
     use PDF::Content::Image::PNG :PNG-CS;
     use PDF::ColorSpace::Indexed;
     use PDF::IO::Filter;
+    use PDF::OCG;
 
     # See [PDF 1.7 TABLE 4.39 Additional entries specific to an image dictionary]
     has Numeric $.Width is entry(:required);      #| (Required) The width of the image, in samples.
@@ -48,7 +49,7 @@ role PDF::Image
     has Str $.ID is entry;                        #| (Optional; PDF 1.3; indirect reference preferred) The digital identifier of the image’s parent Web Capture content set
     has Hash $.OPI is entry;                      #| (Optional; PDF 1.2) An OPI version dictionary for the image. If ImageMask is true, this entry is ignored.
     has PDF::COS::Stream $.Metadata is entry;     #| (Optional; PDF 1.4) A metadata stream containing metadata for the image
-    has Hash $.OC is entry;                       #| (Optional; PDF 1.5) An optional content group or optional content membership dictionary
+    has PDF::OCG $.OC is entry(:alias<optional-content>);   #| (Optional; PDF 1.5) An optional content group or optional content membership dictionary
 
     my subset PNGPredictor of Int where 10 .. 15;
 
