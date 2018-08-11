@@ -47,7 +47,6 @@ $object.reader = $reader;
 lives-ok {$object.check}, '$object.check lives';
 
 lives-ok { $object.CIDSystemInfo }, 'CIDSystemInfo accessor';
-todo "fix PDF::CIDFontType2.CIDSystemInfo accessor";
 does-ok $object.CIDSystemInfo, PDF::CIDSystemInfo;
 
 sub to-doc($font-obj) {

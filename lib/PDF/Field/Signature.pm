@@ -47,7 +47,12 @@ role PDF::Field::Signature
 	    has UInt %.MDP is entry;                     #| (Optional; PDF 1.6) A dictionary containing a single entry whose key is P and whose value is an integer between 0 and 3. A value of 0 defines the signature as an ordinary (non-author) signature (see Section 8.7, “Digital Signatures”). The values 1 through 3 are used for author signatures and correspond to the value of P in a DocMDP transform parameters dictionary (see Table 8.104).
 	    #| If this entry is not present or does not contain a P entry, no rules are defined regarding the type of signature or its permissions.
 
-	    has Hash $.TimeStamp is entry;               #| (Optional; PDF 1.6) A time stamp dictionary containing two entries:
+            my role TimeStampUrl
+                does PDF::COS::Tie::Hash {
+                has Str $.URL is entry;
+                has Int $.Ff is entry where 0|1;
+            }
+	    has TimeStampUrl $.TimeStamp is entry;       #| (Optional; PDF 1.6) A time stamp dictionary containing two entries:
 	    #| URL: An ASCII string specifying the URL of a time-stamping server, providing a time stamp that is compliant with RFC 3161, Internet X.509 Public Key Infrastructure Time-Stamp Protocol (see the Bibliography).
             #| Ff: An integer whose value is 1 (the signature is required to have a time stamp) or 0 (the signature is not required to have a time stamp). Default value: 0.
 

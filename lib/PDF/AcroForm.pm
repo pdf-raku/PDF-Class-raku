@@ -44,13 +44,13 @@ role PDF::AcroForm
     »;
     has SigFlagsInt $.SigFlags is entry;       #| (Optional; PDF 1.3) A set of flags specifying various document-level characteristics related to signature fields
 
-    has Hash @.CO is entry(:indirect, :alias<calculation-order>);         #| (Required if any fields in the document have additional-actions dictionaries containing a C entry; PDF 1.3) An array of indirect references to field dictionaries with calculation actions, defining the calculation order in which their values will be recalculated when the value of any field changes
+    has PDF::Field @.CO is entry(:indirect, :alias<calculation-order>);   #| (Required if any fields in the document have additional-actions dictionaries containing a C entry; PDF 1.3) An array of indirect references to field dictionaries with calculation actions, defining the calculation order in which their values will be recalculated when the value of any field changes
 
     has Hash $.DR is entry(:alias<default-resources>);                    #| (Optional) A resource dictionary containing default resources (such as fonts, patterns, or color spaces) to be used by form field appearance streams. At a minimum, this dictionary must contain a Font entry specifying the resource name and font dictionary of the default font for displaying text.
 
-    has Str $.DA is entry(:alias<default-appearance>);                     #| (Optional) A document-wide default value for the DA attribute of variable text fields
+    has Str $.DA is entry(:alias<default-appearance>);                    #| (Optional) A document-wide default value for the DA attribute of variable text fields
 
-    has UInt $.Q is entry(:alias<quadding>);                     #| (Optional) A document-wide default value for the Q attribute of variable text fields
+    has UInt $.Q is entry(:alias<quadding>);                              #| (Optional) A document-wide default value for the Q attribute of variable text fields
 
     my subset StreamOrArray where PDF::COS::Stream | Array;
     has StreamOrArray $.XFA is entry;          #| (Optional; PDF 1.5) A stream or array containing an XFA resource, whose format is described by the Data Package (XDP) Specification. (see the Bibliography).

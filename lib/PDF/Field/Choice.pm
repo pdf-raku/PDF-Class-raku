@@ -18,8 +18,8 @@ role PDF::Field::Choice
         PDF::COS.coerce( $a, PDF::COS::TextString)
     }
     multi sub coerce(List $a is rw, FieldOptions) {
-        PDF::COS.coerce( $a[$_],  PDF::COS::TextString)
-              for $a.keys;
+        PDF::COS.coerce( $a[$_], PDF::COS::TextString)
+            for $a.keys;
     }
     multi sub coerce($_, FieldOptions) is default {
         fail "unable to coerce {.perl} to field options";

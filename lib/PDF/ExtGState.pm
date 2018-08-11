@@ -50,7 +50,7 @@ role PDF::ExtGState
     # The graphics transparency , with 0 being fully opaque and 1 being fully transparent.
     # This is a convenience method setting proper values for strokeaplha and fillalpha.
     method transparency is rw {
-	Proxy.new( 
+	Proxy.new(
 	    FETCH => sub (\p) {
 		my \fill-alpha = self.ca;
 		fill-alpha eqv self.CA
