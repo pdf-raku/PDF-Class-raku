@@ -17,8 +17,5 @@ class PDF::ColorSpace::CalGray
     }
 
     has CalGrayDict $.dict is index(1);
-
-    method WhitePoint is rw { self.dict.WhitePoint }
-    method BlackPoint is rw { self.dict.BlackPoint }
-    method Gamma      is rw { self.dict.Gamma }
+    method props is rw handles <WhitePoint BlackPoint Gamma> { $.dict; }
 }

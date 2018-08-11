@@ -18,9 +18,5 @@ class PDF::ColorSpace::CalRGB
    }
 
    has CalRGBDict $.dict is index(1);
-
-   method WhitePoint is rw { self.dict.WhitePoint }
-   method BlackPoint is rw { self.dict.BlackPoint }
-   method Gamma      is rw { self.dict.Gamma }
-   method Matrix     is rw { self.dict.Matrix }
+   method props is rw handles <WhitePoint BlackPoint Gamma Matrix> { $.dict; }
 }

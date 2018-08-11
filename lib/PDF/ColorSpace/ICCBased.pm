@@ -10,9 +10,5 @@ class PDF::ColorSpace::ICCBased
 
     # see [PDF 1.7 TABLE 4.16 Additional entries specific to an ICC profile stream dictionary]
     has PDF::ICCProfile $.dict is index(1);
-    method N         is rw { self.dict.N }
-    method Alternate is rw { self.dict.Alternate }
-    method Range     is rw { self.dict.Range }
-    method Metadata  is rw { self.dict.Metadata }
-
+    method props is rw handles <N Alternate Range Metadata> { $.dict }
 }

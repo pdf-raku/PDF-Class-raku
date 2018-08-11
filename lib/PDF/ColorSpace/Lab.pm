@@ -16,8 +16,5 @@ class PDF::ColorSpace::Lab
     }
 
     has LabDict $.dict is index(1);
-    method WhitePoint is rw { self.dict.WhitePoint }
-    method BlackPoint is rw { self.dict.BlackPoint }
-    method Range      is rw { self.dict.Range }
-
+    method props is rw handles <WhitePoint BlackPoint Range> { $.dict }
 }
