@@ -63,7 +63,7 @@ sub MAIN(Str $infile,           #= input PDF
     }
 
     with $pdf.catalog.Outlines {
-        toc($_, :$nesting) for .kids;
+        toc($_, :$nesting) for .get-kids;
     }
     else {
         note "document does not contain outlines: $infile";
@@ -99,7 +99,7 @@ sub toc(PDF::Class::OutlineNode $outline, :$nesting! is copy) {
         say( ('  ' x $nesting) ~ $outline.Title.trim ~ ' . . . ' ~ $_);
         $nesting++;
         toc($_, :$nesting)
-            for $outline.kids;
+            for $outline.get-kids;
     }
 }
 
