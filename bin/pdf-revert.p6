@@ -1,6 +1,7 @@
 #!/usr/bin/env perl6
 use v6;
 use PDF::Class;
+use PDF::Reader;
 
 sub MAIN(Str $infile,              #| input PDF
 	 Str :$password = '',      #| password for the input PDF, if encrypted
@@ -12,27 +13,29 @@ sub MAIN(Str $infile,              #| input PDF
         ?? $*IN
 	!! $infile;
 
-    my PDF::Class $pdf .= open( $input, :$password);
+    my PDF::Reader $reader = PDF::Class.open( $input, :$password).reader;
 
-    my UInt $revs = + $pdf.reader.xrefs;
+    # filter out hybryd references
+    my @xrefs = $reader.revision-xrefs;
+warn :@xrefs.perl;
+    my UInt $revs = + @xrefs;
 
     if $count {
 	say $revs;
     }
     elsif $revs < 1 {
-	die "Error: this does not seem to be an indexed PDF document\n";
+	die "Error: this does not seem to be a PDF document\n";
     }
     elsif $revs == 1 {
 	die "Error: there is only one revision in this PDF document.  It cannot be reverted.\n";
     }
     else {
-        constant EOF-MARKER = '%%EOF';
-        my UInt $prev = $pdf.reader.xrefs[*-2];
-	my Str $body = $pdf.reader.input.substr(0, $prev);
-	my Str $tail = $pdf.reader.input.substr($prev);
-        my UInt $eof-index = $tail.index(EOF-MARKER)
-            // die "Cannot find the end-of-file marker\n";
-        my Str $xref = $tail.substr(0, $eof-index + EOF-MARKER.ords);
+        my UInt $prev = @xrefs.tail(2)[0];
+	my Str $body = $reader.input.byte-str(0, $prev);
+	my Str $xref = $reader.input.byte-str($prev);
+        warn :$xref.perl;
+        $xref ~~ s/<after \n'%%EOF'> .* $/\n/;
+        warn :$xref.perl;
 
 	my $fh = $save-as eq q{-}
 	   ?? $*OUT
@@ -56,7 +59,7 @@ pdf-revert.p6 - Remove the last edits to a PDF document
  pdf-revert.p6 [options] --save-as=outfile.pdf infile.pdf
 
  Options:
-   --count          just print the number of revisions and exits
+   -c --count          just print the number of revisions and exits
 
 =head1 DESCRIPTION
 
@@ -75,7 +78,7 @@ has endured and applies no changes.
 =head1 SEE ALSO
 
 CAM::PDF (Perl 5)
-PDF::Class (Perl 6)
+PDF (Perl 6)
 
 =head1 AUTHOR
 

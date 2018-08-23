@@ -2,6 +2,8 @@
 use v6;
 
 use PDF::Class;
+use PDF::Catalog;
+use PDF::Info;
 use PDF::IO::Str;
 use PDF::IO::Handle;
 
@@ -44,13 +46,12 @@ multi sub MAIN(Str $infile,           #| input PDF
     my UInt $size = $input.codes;
     my UInt $pages = $pdf.page-count;
     my Version $pdf-version = $pdf.version;
-    my $pdf-info = $pdf.Info;
-    my $box = $pdf.Pages.MediaBox;
-    my $encrypt = $pdf.Encrypt;
-    my $catalog = $pdf.Root;
-    my $tagged  = $catalog.?MarkInfo.?Marked   // False;
-    my $partial = $catalog.?MarkInfo.?Suspects // False;
-    my UInt $revisions = + $pdf.reader.xrefs;
+    my PDF::Info $pdf-info = $pdf.Info;
+    my List $box = $pdf.Pages.MediaBox;
+    my PDF::Catalog $catalog = $pdf.catalog;
+    my Bool $tagged  = $catalog.?MarkInfo.?Marked   // False;
+    my Bool $partial = $catalog.?MarkInfo.?Suspects // False;
+    my UInt $revisions = + $pdf.reader.revision-xrefs;
 
     my UInt @page-size = $box
 	?? ($box[2] - $box[0],  $box[3] - $box[1])
@@ -60,39 +61,39 @@ multi sub MAIN(Str $infile,           #| input PDF
     say "File Size:    $size bytes";
     say "Pages:        $pages";
     say 'Outlines:     ' ~ yes-no(do with $catalog.Outlines {?.First} else {False});
-    if $pdf-info {
-	for $pdf-info.keys.sort -> $key {
-	    my Str $info = try {pretty-print( $pdf-info{$key} ) } // '???';
-	    printf "%-13s %s\n", $key ~ q{:}, $info
-	        unless $info eq '';
+    given $pdf-info {
+	for .keys.sort -> $key {
+	    my Str $prop = try {pretty-print( $pdf-info{$key} ) } // '???';
+	    printf "%-13s %s\n", $key ~ q{:}, $prop
+	        unless $prop ~~ '';
 	}
     }
     say 'Tagged:       ' ~ yes-no($tagged) ~ ($partial ?? ' (partial)' !! '');
     say 'Page Size:    ' ~ (@page-size[0] ?? "@page-size[0] x @page-size[1] pts" !! 'variable');
-##	say 'Optimized:    '.($pdf->isLinearized()?'yes':'no');
-	say "PDF version:  $pdf-version";
-	say "Revisions:    $revisions";
-        use PDF::COS::Type::Encrypt :PermissionsFlag;
+ ##   say 'Web Optimized:' ~ yes-no($pdf.is-Linearized);
+    say "PDF version:  $pdf-version";
+    say "Revisions:    $revisions";
+    use PDF::COS::Type::Encrypt :PermissionsFlag;
 
-	print 'Encryption:   ';
-	if my $enc = $pdf.Encrypt and $enc.O {
-            my $V = $enc.V // 0;
-            my $Length = $enc.Length // 40;
-	    print "yes (";
+    print 'Encryption:   ';
+    if my $enc = $pdf.Encrypt and $enc.O {
+        my $V = $enc.V // 0;
+        my $Length = $enc.Length // 40;
+	print "yes (";
 
-	    # show user, not owner, permissions
-##	    temp $pdf.reader.crypt.is-owner = False
-##	        if $pdf.reader.?crypt;
+	# show user, not owner, permissions
+##	temp $pdf.reader.crypt.is-owner = False
+##	    if $pdf.reader.?crypt;
 
-            for :print(PermissionsFlag::Print), :copy(PermissionsFlag::Copy),
-                :change(PermissionsFlag::Modify), :addNotes(PermissionsFlag::Add) {
-	        print "{.key}:{yes-no( $pdf.permitted: .value)} ";
-            }
-            say "algorithm:RC4 {$V}.{$enc.R}, $Length bits)";
-	}
-        else {
-	    say "no";
-	}
+        for :print(PermissionsFlag::Print), :copy(PermissionsFlag::Copy),
+            :change(PermissionsFlag::Modify), :addNotes(PermissionsFlag::Add) {
+	    print "{.key}:{yes-no( $pdf.permitted: .value)} ";
+        }
+        say "algorithm:RC4 {$V}.{$enc.R}, $Length bits)";
+    }
+    else {
+        say "no";
+    }
 
 ##	if (@ARGV > 0)
 ##	{

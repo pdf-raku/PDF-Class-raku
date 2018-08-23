@@ -1,5 +1,11 @@
 Release 0.2.9
-- Rename PDF::Font::CIDFont -> PDF::Class::CIDFont
+- Renamed PDF::Font::CIDFont -> PDF::Class::CIDFont
+- Script fixes:
+  -- pdf-burst.p6 to work with inherited page resources.
+  -- pdf-revert.p6, pdf-info.p6 to not be confused by
+     hybrid xrefs
+  -- minor improvements to: pdf-append.p6, pdf-content-dump.p6,
+     pdf-toc.p6
 
 Release 0.2.8
 - Added PDF::Outline(s) .kids iterator and .add-kid method

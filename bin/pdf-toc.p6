@@ -15,7 +15,7 @@ sub ind-ref(IndRef $_ ) {
 }
 
 my %page-index;
-my  PDF::Class $pdf;
+my PDF::Class $pdf;
 
 sub named-dest($_) {
     state $named-dests = do with $pdf.catalog.Names {

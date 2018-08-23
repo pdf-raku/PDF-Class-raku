@@ -1,6 +1,9 @@
 #!/usr/bin/env perl6
 use v6;
 use PDF::Class;
+use PDF::Catalog;
+use PDF::Page;
+use PDF::Pages;
 
 #| reading from stdin
 multi sub output-filename('-') {"pdf-page%03d.pdf"}
@@ -26,24 +29,26 @@ sub MAIN(Str $infile,            #| input PDF
 	!! $infile;
 
     my PDF::Class $pdf .= open( $input, :$password);
-    my $catalog = $pdf.catalog;
+    my PDF::Catalog $catalog = $pdf.catalog;
 
-    my UInt $pages = $pdf.page-count;
+    my UInt $page-count = $pdf.page-count;
 
-    for 1 .. $pages -> UInt $page-num {
+    for 1 .. $page-count -> UInt $page-num {
 
 	my $save-page-as = $save-as.sprintf($page-num);
 	die "invalid 'sprintf' output page format: $save-as"
 	    if $save-page-as eq $save-as;
 
-	my $page = $pdf.page($page-num);
+	my PDF::Page $page = $pdf.page($page-num);
 
-        with $catalog.Pages {
+        with $catalog.Pages -> PDF::Pages $p {
             # pretend this is the only page in the document
-	    temp .Kids = [ $page, ];
-	    temp .Count = 1;
-            temp $page.Parent = $catalog;
-
+	    temp $p.Kids = [ $page, ];
+	    temp $p.Count = 1;
+            # bind resources and other inherited properties to the page
+            for <Resources Rotate MediaBox CropBox> -> $k {
+                $page{$k} //= $_ with $page."$k"();
+            }
 	    warn "saving page: $save-page-as";
 	    $pdf.save-as( $save-page-as, :rebuild );
         }
@@ -71,8 +76,7 @@ This program bursts a multiple page into single page PDF files.
 
 By default, the output pdf will be named infile001.pdf infile002.pdf ...
 
-The save-as argument, if present, will be used as a 'sprintf' template
-for generation of the individual output files.
+The save-as argument, if present, will be used as a 'sprintf' template for generation of the individual output files.
 
 =head1 SEE ALSO
 
