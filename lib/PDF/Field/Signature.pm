@@ -38,7 +38,7 @@ role PDF::Field::Signature
 	    #| The Ff entry indicates whether this is a required constraint.
 	    #| Note: The PDF Reference fifth edition (PDF 1.6) and earlier, erroneously indicates that the V entry is of type integer. This entry is of type real
 
-	    has Hash $.Cert is entry;                     #| (Optional) A certificate seed value dictionary (see Table 8.84) containing information about the certificate to be used when signing.
+	    has Hash $.Cert is entry;                     #| (Optional) A certificate seed value dictionary containing information about the certificate to be used when signing.
 
             has PDF::COS::TextString @.Reasons is entry;                   #| (Optional) An array of text strings that specifying possible reasons for signing a document. If specified, the reasons supplied in this entry replace those used by viewer applications. The Ff entry specifies whether one of the reasons in the array must be used in the signature.
 	    #| •If the Reasons array is provided and the Ff entry indicates that Reasons is a required constraint, one of the reasons in the array must be used for the signature dictionary; otherwise, signing must not take place. If the Ff entry indicates Reasons is an optional constraint, one of the reasons in the array can be chosen or a custom reason can be provided.
@@ -50,7 +50,7 @@ role PDF::Field::Signature
             my role TimeStampUrl
                 does PDF::COS::Tie::Hash {
                 has Str $.URL is entry;
-                has Int $.Ff is entry where 0|1;
+                has Int $.Ff is entry(:default(0)) where 0|1;
             }
 	    has TimeStampUrl $.TimeStamp is entry;       #| (Optional; PDF 1.6) A time stamp dictionary containing two entries:
 	    #| URL: An ASCII string specifying the URL of a time-stamping server, providing a time stamp that is compliant with RFC 3161, Internet X.509 Public Key Infrastructure Time-Stamp Protocol (see the Bibliography).

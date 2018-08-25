@@ -26,9 +26,9 @@ role PDF::Outline
     has PDF::Action $.A is entry(:alias<action>);      #| (Optional; PDF 1.1; not permitted if a Dest entry is present) The action to be performed when this item is activated.
     has Hash $.SE is entry(:indirect, :alias<structure-element>);                #| (Optional; PDF 1.3; must be an indirect reference) The structure element to which the item refers.
     #| Note: The ability to associate an outline item with a structure element (such as the beginning of a chapter) is a PDF 1.3 feature. For backward compatibility with earlier PDF versions, such an item should also specify a destination (Dest) corresponding to an area of a page where the contents of the designated structure element are displayed.
-    has Numeric @.C is entry(:len(3), :alias<color>);  #| (Optional; PDF 1.4) An array of three numbers in the range 0.0 to 1.0, representing the components in the DeviceRGB color space of the color to be used for the outline entry’s text. Default value: [ 0.0 0.0 0.0 ].
+    has Numeric @.C is entry(:len(3), :alias<color>, :default[0.0, 0.0, 0.0]);  #| (Optional; PDF 1.4) An array of three numbers in the range 0.0 to 1.0, representing the components in the DeviceRGB color space of the color to be used for the outline entry’s text. Default value: [ 0.0 0.0 0.0 ].
     my enum OutlineFlag is export(:OutlineFlag) « :Italic(1) :Bold(2) »;
-    has UInt $.F is entry(:alias<flags>);              #| (Optional; PDF 1.4) A set of flags specifying style characteristics for displaying the outline item’s text. Default value: 0.
+    has UInt $.F is entry(:alias<flags>, :default(0));              #| (Optional; PDF 1.4) A set of flags specifying style characteristics for displaying the outline item’s text. Default value: 0.
 
     method cb-check {
         die "An Outline should not have both /A and Dest entries"

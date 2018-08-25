@@ -32,7 +32,7 @@ class PDF::Page
     has Numeric @.TrimBox is entry(:len(4));     #| Optional; PDF 1.3) A rectangle, expressed in default user space units, defining the intended dimensions of the finished page after trimming
     has Numeric @.ArtBox is entry(:len(4));      #| (Optional; PDF 1.3) A rectangle, expressed in default user space units, defining the extent of the page’s meaningful content (including potential white space) as intended by the page’s creator
     has Hash $.BoxColorInfo is entry;            #| (Optional; PDF 1.4) A box color information dictionary specifying the colors and other visual characteristics to be used in displaying guidelines on the screen for the various page boundaries
-    has PDF::COS::Stream @.Contents is entry(:array-or-item);       #| (Optional) A content stream (see Section 3.7.1, “Content Streams”) describing the contents of this page. If this entry is absent, the page is empty
+    has PDF::COS::Stream @.Contents is entry(:array-or-item);       #| (Optional) A content stream describing the contents of this page. If this entry is absent, the page is empty
     subset NinetyDegreeAngle of Int where { $_ %% 90}
     has NinetyDegreeAngle $.Rotate is entry(:inherit);     #| (Optional; inheritable) The number of degrees by which the page should be rotated clockwise when displayed or printed
     has Hash $.Group is entry;                   #| (Optional; PDF 1.4) A group attributes dictionary specifying the attributes of the page’s page group for use in the transparent imaging model

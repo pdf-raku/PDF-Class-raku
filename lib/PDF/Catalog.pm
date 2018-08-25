@@ -148,7 +148,7 @@ class PDF::Catalog
 	has Bool $.Marked is entry;          #| (Optional) A flag indicating whether the document conforms to Tagged PDF conventions. Default value: false.
 					     #| Note: If Suspects is true, the document may not completely conform to Tagged PDF conventions.
 	has Bool $.UserProperties is entry;  #| (Optional; PDF 1.6) A flag indicating the presence of structure elements that contain user properties attributes. Default value: false.
-	has Bool $.Suspects is entry;        #| Optional; PDF 1.6) A flag indicating the presence of tag suspects (see “Page Content Order” on page 889). Default value: false.
+	has Bool $.Suspects is entry;        #| Optional; PDF 1.6) A flag indicating the presence of tag suspects. Default value: false.
     }
 
     has MarkInfoDict $.MarkInfo is entry;                #| (Optional; PDF 1.4) A mark information dictionary containing information about the document’s usage of Tagged PDF conventions
@@ -184,9 +184,9 @@ class PDF::Catalog
     role OCProperties
 	does PDF::COS::Tie::Hash {
         #| Table 100 – Entries in the Optional Content Properties Dictionary
-        has OCG @.OCGs is entry(:indirect, :required, :alias<optional-content-groups>); #| (Required) An array of indirect references to all the optional content groups in the document (see 8.11.2, "Optional Content Groups"), in any order. Every optional content group shall be included in this array
-        has PDF::COS::Dict $.D is entry(:required, :alias<viewing-config>); #| (Required) The default viewing optional content configuration dictionary (see 8.11.4.3, "Optional Content Configuration Dictionaries").
-        has OCConfig @.Configs is entry;    #| (Optional) An array of alternate optional content configuration dictionaries (see 8.11.4.3, "Optional Content Configuration Dictionaries").
+        has OCG @.OCGs is entry(:indirect, :required, :alias<optional-content-groups>); #| (Required) An array of indirect references to all the optional content groups in the document, in any order. Every optional content group shall be included in this array
+        has PDF::COS::Dict $.D is entry(:required, :alias<viewing-config>); #| (Required) The default viewing optional content configuration dictionary.
+        has OCConfig @.Configs is entry;    #| (Optional) An array of alternate optional content configuration dictionaries.
     }
     has OCProperties $.OCProperties is entry;   #| (Optional; PDF 1.5; required if a document contains optional content) The document’s optional content properties dictionary
 

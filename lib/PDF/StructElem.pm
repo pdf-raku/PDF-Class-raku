@@ -17,7 +17,7 @@ role PDF::StructElem
 
     has PDF::COS::Name $.S is entry(:required, :alias<structure-type>); #| (Required) The structure type, a name object identifying the nature of the structure element and its role within the document, such as a chapter, paragraph, or footnote
     has Hash $.P is entry(:required, :alias<parent>);         #| (Required; shall be an indirect reference) The structure element that is the immediate parent of this one in the structure hierarchy.
-    has Str $.ID is entry;    #| (Optional) The element identifier, a byte string designating this structure element. The string shall be unique among all elements in the document’s structure hierarchy. The IDTree entry in the structure tree root (see Table 322) defines the correspondence between element identifiers and the structure elements they denote.
+    has Str $.ID is entry;    #| (Optional) The element identifier, a byte string designating this structure element. The string shall be unique among all elements in the document’s structure hierarchy. The IDTree entry in the structure tree root defines the correspondence between element identifiers and the structure elements they denote.
     has PDF::Page $.Pg is entry(:indirect, :alias<page>); #|dictionary (Optional; shall be an indirect reference) A page object representing a page on which some or all of the content items designated by the K entry shall be rendered.
     my subset StructElemChild where { $_ ~~ UInt|PDF::StructElem || ( $_ ~~ Hash && .<Type> ~~ 'MCR'|'OBJR') }
     multi sub coerce(Hash $obj where {.<S>.defined}, StructElemChild) {
@@ -39,7 +39,7 @@ role PDF::StructElem
 # If both the A and C entries are present and a given attribute is
 # specified by both, the one specified by the A entry shall take
 # precedence.
-    has UInt $.R is entry(:alias<revision>);                      #| (Optional) The current revision number of this structure element. The value shall be a non-negative integer. Default value: 0.
+    has UInt $.R is entry(:alias<revision>, :default(0));                      #| (Optional) The current revision number of this structure element. The value shall be a non-negative integer. Default value: 0.
     has PDF::COS::TextString $.T  is entry(:alias<title>);        #| (Optional) The title of the structure element, a text string representing it in human-readable form. The title should characterize the specific structure element, such as 'Chapter 1', rather than merely a generic element type, such as 'Chapter'.
     has PDF::COS::TextString $.Lang is entry;  #| (Optional; PDF 1.4) A language identifier specifying the natural language for all text in the structure element except where overridden by language specifications for nested structure elements or marked content. If this entry is absent, the language (if any) specified in the document catalogue applies.
     has PDF::COS::TextString $.Alt is entry(:alias<alternative-description>); #| (Optional) An alternate description of the structure element and its children in human-readable form, which is useful when extracting the document’s contents in support of accessibility to users with.

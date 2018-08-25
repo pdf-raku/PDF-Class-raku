@@ -18,7 +18,7 @@ class PDF::OCG
     has PDF::COS::Name $.Type is entry(:required) where 'OCG';
 
     has PDF::COS::TextString $.Name is entry(:required);  #| (Required) The name of the optional content group, suitable for presentation in a reader’s user interface.
-    has PDF::COS::Name @.Intent is entry(:array-or-item); #| (Optional) A single intent name or an array containing any combination of names. PDF defines two names, View and Design, that may indicate the intended use of the graphics in the group. A conforming reader may choose to use only groups that have a specific intent and ignore others.
+    has PDF::COS::Name @.Intent is entry(:array-or-item, :default<View>); #| (Optional) A single intent name or an array containing any combination of names. PDF defines two names, View and Design, that may indicate the intended use of the graphics in the group. A conforming reader may choose to use only groups that have a specific intent and ignore others.
     #| Default value: View.
 
     role Usage
@@ -44,19 +44,19 @@ class PDF::OCG
             does PDF::COS::Tie::Hash {
 
             has PDF::COS::TextString $.Lang is entry(:required); #| A text string that specifies a language and possibly. For example, es-MX represents Mexican Spanish
-            has PDF::COS::Name $.Preferred is entry where 'ON'|'OFF';             #| name whose values shall be either ON or OFF. Default value: OFF.
+            has PDF::COS::Name $.Preferred is entry(:default<OFF>) where 'ON'|'OFF';             #| name whose values shall be either ON or OFF. Default value: OFF.
         }
         has Language $.Language is entry; #| Optional) A dictionary specifying the language of the content controlled by this optional content group. I
 
         my role Export
         does PDF::COS::Tie::Hash {
-            has PDF::COS::Name $.ExportState is entry where 'ON'|'OFF';             #| name whose values shall be either ON or OFF. Default value: OFF.
+            has PDF::COS::Name $.ExportState is entry(:default<OFF>) where 'ON'|'OFF';             #| name whose values shall be either ON or OFF. Default value: OFF.
         }
         has Export $.Export is entry; #| This value shall indicate the recommended state for content in this group when the document (or part of it) is saved by a conforming reader to a format that does not support optional content (for example, a raster image format).
 
         my role Zoom
             does PDF::COS::Tie::Hash {
-            has Numeric $.min is entry; #| The minimum recommended magnification factor at which the group shall be ON. Default value: 0.
+            has Numeric $.min is entry(:default(0)); #| The minimum recommended magnification factor at which the group shall be ON. Default value: 0.
             has Numeric $.max is entry; #| The magnification factor below which the group shall be ON. Default value: infinity.
         }
         has Zoom $.Zoom is entry; #| Optional) A dictionary specifying a range of magnifications at which the content in this optional content group is best viewed.
@@ -70,7 +70,7 @@ class PDF::OCG
 
         my role View
             does PDF::COS::Tie::Hash {
-            has PDF::COS::Name $.ViewState is entry where 'ON'|'OFF';             #| name whose values shall be either ON or OFF. Default value: OFF.
+            has PDF::COS::Name $.ViewState is entry(:default<OFF>) where 'ON'|'OFF';             #| name whose values shall be either ON or OFF. Default value: OFF.
         }
         has View $.View is entry; #| 
 

@@ -46,11 +46,11 @@ class PDF::ColorSpace::DeviceN
 	does PDF::COS::Tie::Hash {
 	# see [PDF 1.7 TABLE 4.21 Entries in a DeviceN color space attributes dictionary]
         my subset DeviceNSubtype of PDF::COS::Name where 'DeviceN' | 'NChannel';
-	has DeviceNSubtype $.Subtype is entry;  #| (Optional; PDF 1.6) A name specifying the preferred treatment for the color space. Possible values are DeviceN and NChannel. Default value: DeviceN.
+	has DeviceNSubtype $.Subtype is entry(:default<DeviceN>);  #| (Optional; PDF 1.6) A name specifying the preferred treatment for the color space. Possible values are DeviceN and NChannel. Default value: DeviceN.
 	#| This dictionary provides information about the individual colorants that may be useful to some applications. In particular, the alternate color space and tint transformation function of a Separation color space describe the appearance of that colorant alone, whereas those of a DeviceN color space describe only the appearance of its colorants in combination.
 	#| If Subtype is NChannel, this dictionary must have entries for all spot colorants in this color space. This dictionary may also include additional colorants not used by this color space.
 
-        has PDF::ColorSpace::Separation %.Colorants is entry(:indirect); #| (Required if Subtype is NChannel and the color space includes spot colorants; otherwise optional) A dictionary describing the individual colorants used in the DeviceN color space. For each entry in this dictionary, the key is a colorant name and the value is an array defining a Separation color space for that colorant (see “Separation Color Spaces” on page 264). The key must match the colorant name given in that color space.
+        has PDF::ColorSpace::Separation %.Colorants is entry(:indirect); #| (Required if Subtype is NChannel and the color space includes spot colorants; otherwise optional) A dictionary describing the individual colorants used in the DeviceN color space. For each entry in this dictionary, the key is a colorant name and the value is an array defining a Separation color space for that colorant. The key must match the colorant name given in that color space.
 	#| This dictionary provides information about the individual colorants that may be useful to some applications. In particular, the alternate color space and tint transformation function of a Separation color space describe the appearance of that colorant alone, whereas those of a DeviceN color space describe only the appearance of its colorants in combination.
 	#| If Subtype is NChannel, this dictionary must have entries for all spot colorants in this color space. This dictionary may also include additional colorants not used by this color space.
 

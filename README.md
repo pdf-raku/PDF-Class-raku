@@ -8,20 +8,33 @@ This is the base class for [PDF::API6](https://github.com/p6-pdf/PDF-API6).
 
 ## Description
 
-The top level of a PDF document is of type `PDF::Class`. It contains the `PDF::Catalog` as its `Root` entry.
+The top level of a PDF document is of type `PDF::Class`, which corresponds to the trailer dictionary. It may contain several entries including `PDF::Info` metadata in the 'Info' entry and `PDF::Catalog` in the `Root` entry.
 
 ```
     use PDF::Class;
     use PDF::Catalog;
     use PDF::Page;
+    use PDF::Info;
 
     my PDF::Class $pdf .= open: "t/helloworld.pdf";
+
+    # vivify Info entry; set title
+    given $pdf.Info //= {} -> PDF::Info $_ {
+        .Title = 'Hello World!';
+    }
+
+    # modify Viewer Preferences
     my PDF::Catalog $catalog = $pdf.Root;
     given $catalog.ViewerPreferences //= {} {
         .HideToolbar = True;
     }
+
+    # add a page ...
     my PDF::Page $new-page = $pdf.add-page;
-    #...
+    $new-page.gfx.say: "New last page!";
+
+    # save the updated pdf
+    $pdf.save-as: "tmp/pdf-updated.pdf";
 ```
 
 - This module contains definitions for many other standard PDF objects, such as Pages, Fonts and Images, as listed below.
@@ -38,7 +51,7 @@ This module is a work in progress. It currently defines roles and classes for ma
     use PDF::Class;
     use PDF::Catalog;
     my PDF::Class $pdf .= new;
-    my PDF::Catalog $catalog = $pdf.catalog;
+    my PDF::Catalog $catalog = $pdf.catalog; # same as $pdf.Root;
     with $catalog.MarkInfo //= {} {
         .Marked = True;
         .UserProperties = False;
@@ -82,11 +95,14 @@ with my PDF::AcroForm $acroform = $doc.catalog.AcroForm {
 
 ```
 
-## Gradual Types
+## Gradual Typing
 
-In general, PDF::Class provides accessors for structured access and safe update of PDF objects.
+In theory, we should always be able to use PDF::Class accessors for structured access and updating of PDF objects.
 
-However is is also possible to bypass these accessors; instead access hashes and arrays directly, giving raw access to the PDF data.
+In reality, a fair percentage of PDF files contain some issues (as reported by `pdf-checker.p6`) and PDF::Class itself
+is under development.
+
+For these reasons it possible to bypass PDF::Class accessors; instead accessing hashes and arrays directly, giving raw access to the PDF data.
 
 This will also bypass type coercements, so you may need to be more explicit. In
 the following example we cast the PageMode to a name, so it appears as a name
@@ -106,6 +122,9 @@ in the out put stream `:name<UseToes>`, rather than a string `'UseToes'`.
     # same again, bypassing type checking
     $doc<PageMode>  = :name<UseToes>;
 ```
+
+- If this this looks like something that PDF::Class should handle, please consider raising an issue or pull-request on the PDF::Class
+repository, ideally with sample PDF files and code demonstrating the problem and/or desired behaviour.
 
 ## Scripts in this Distribution
 
@@ -236,7 +255,7 @@ Prints various PDF properties. For example:
     Tagged:       no
     Page Size:    variable
     PDF version:  1.3
-    Revisions:    2
+    Revisions:    1
     Encryption:   no
 
 #### `pdf-revert.p6 --password=pass --save-as=out.pdf in.pdf`

@@ -26,7 +26,7 @@ class PDF::Annot::Markup
 
     has Numeric $.CA is entry(:alias<constant-opacity>); #| (Optional; PDF 1.4) The constant opacity value that shall be used in painting the annotation. This value shall apply to all visible elements of the annotation in its closed state (including its background and border) but not to the pop-up window that appears when the annotation is opened.
     #| The specified value shall not used if the annotation has an appearance stream; in that case, the appearance stream shall specify any transparency. (However, if the compliant viewer regenerates the annotation’s appearance stream, it may incorporate the CA value into the stream’s content.)
-    #| The implicit blend mode (see 11.3.5, “Blend Mode””) is Normal. Default value: 1.0.
+    #| The implicit blend mode is Normal. Default value: 1.0.
     #| If no explicit appearance stream is defined for the annotation, it may be painted by implementation-dependent means that do not necessarily conform to the PDF imaging model; in this case, the effect of this entry is implementation-dependent as well.
     my subset TextOrStream where PDF::COS::TextString | PDF::COS::Stream;
     multi sub coerce(Str $value is rw, TextOrStream) {
@@ -39,9 +39,9 @@ class PDF::Annot::Markup
 	$value = PDF::COS.coerce( $value, PDF::COS::TextString );
     }
     has TextOrDict $.IRT is entry(:alias<reply-to-ref>, :&coerce); #| (Required if an RT entry is present, otherwise optional; PDF 1.5) A reference to the annotation that this annotation is “in reply to.” Both annotations shall be on the same page of the document. The relationship between the two annotations shall be specified by the RT entry.
-    #| If this entry is present in an FDF file (see 12.7.7, “Forms Data Format”), its type shall not be a dictionary but a text string containing the contents of the NM entry of the annotation being replied to, to allow for a situation where the annotation being replied to is not in the same FDF file. Subj text string (Optional; PDF 1.5) Text representing a short description of the subject being addressed by the annotation.
+    #| If this entry is present in an FDF file, its type shall not be a dictionary but a text string containing the contents of the NM entry of the annotation being replied to, to allow for a situation where the annotation being replied to is not in the same FDF file. Subj text string (Optional; PDF 1.5) Text representing a short description of the subject being addressed by the annotation.
     my subset RelationshipType of PDF::COS::Name where 'R'|'Group';
-    has  RelationshipType $.RT is entry(:alias<reply-type>); #| (Optional; meaningful only if IRT is present; PDF 1.6) A name specifying the relationship (the “reply type”) between this annotation and onespecified by IRT. Valid values are:
+    has  RelationshipType $.RT is entry(:alias<reply-type>, :default<R>); #| (Optional; meaningful only if IRT is present; PDF 1.6) A name specifying the relationship (the “reply type”) between this annotation and onespecified by IRT. Valid values are:
     # R - The annotation shall be considered a reply to the annotationspecified by IRT. Conforming readers shall not display replies to an annotation individually but together in the form of threaded comments.
     # Group - The annotation shall be grouped with the annotation specified by IRT; see the discussion following this Table.
     # Default value: R.

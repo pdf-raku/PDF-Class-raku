@@ -11,7 +11,7 @@ class PDF::Annot::Square
 
     # See [PDF 1.7 TABLE 8.39 Additional entries specific to a widget annotation]
 
-    has PDF::Border $.BS is entry(:alias<border-style>);       #| (Optional) A border style dictionary (see Table 8.17 on page 611) specifying the line width and dash pattern to be used in drawing the rectangle or ellipse.
+    has PDF::Border $.BS is entry(:alias<border-style>);       #| (Optional) A border style dictionary specifying the line width and dash pattern to be used in drawing the rectangle or ellipse.
                                          #| Note: The annotation dictionary’s AP entry, if present, takes precedence over the Land BS entries
 
     has Numeric @.IC is entry(:alias<interior-color>);           #| (Optional; PDF 1.4) An array of numbers in the range 0.0 to 1.0 specifying the interior color with which to fill the annotation’s rectangle or ellipse. The number of array elements determines the color space in which the color is defined:
