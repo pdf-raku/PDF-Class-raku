@@ -4,7 +4,7 @@ use PDF::Class;
 use PDF::Pages;
 use PDF::COS::Type::Encrypt :PermissionsFlag;
 
-sub MAIN(*@files, Str :$save-as, Bool :$force)  {
+sub MAIN(*@files, Str :$save-as, Bool :$drm = True)  {
 
     my PDF::Class $pdf .= open: @files.shift;
 
@@ -12,7 +12,7 @@ sub MAIN(*@files, Str :$save-as, Bool :$force)  {
 	unless @files;
 
     die "PDF forbids modification\n"
-	unless $force || $pdf.permitted( PermissionsFlag::Modify );
+	if $drm && !$pdf.permitted( PermissionsFlag::Modify );
 
     # create a new page root. 
     my PDF::Pages $pages-out = $pdf.catalog.Pages;
@@ -21,7 +21,7 @@ sub MAIN(*@files, Str :$save-as, Bool :$force)  {
 	my PDF::Class $pdf-in .= open: $in-file;
 
 	die "PDF forbids copy: $in-file"
-	    unless $force || $pdf-in.permitted( PermissionsFlag::Copy );
+	    if $drm && !$pdf-in.permitted( PermissionsFlag::Copy );
 
         my PDF::Pages $pages-in = $pdf-in.catalog.Pages;
 	$pages-out.add-pages: $pages-in;
