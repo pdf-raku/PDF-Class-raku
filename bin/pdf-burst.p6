@@ -4,6 +4,7 @@ use PDF::Class;
 use PDF::Catalog;
 use PDF::Page;
 use PDF::Pages;
+use PDF::IO;
 
 #| reading from stdin
 multi sub output-filename('-') {"pdf-page%03d.pdf"}
@@ -24,9 +25,11 @@ sub MAIN(Str $infile,            #| input PDF
 
     $save-as = output-filename( $save-as // $infile );
 
-    my $input = $infile eq q{-}
-        ?? $*IN
-	!! $infile;
+    my $input = PDF::IO.coerce(
+       $infile eq '-'
+           ?? $*IN.slurp-rest( :bin ) # not random access
+           !! $infile.IO
+    );
 
     my PDF::Class $pdf .= open( $input, :$password);
     my PDF::Catalog $catalog = $pdf.catalog;

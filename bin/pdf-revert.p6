@@ -1,5 +1,6 @@
 #!/usr/bin/env perl6
 use v6;
+use PDF::IO;
 use PDF::Class;
 use PDF::Reader;
 
@@ -9,9 +10,11 @@ sub MAIN(Str $infile,              #| input PDF
 	 Bool :$count,             #| show the number of revision
     ) {
 
-    my $input = $infile eq q{-}
-        ?? $*IN
-	!! $infile;
+    my $input = PDF::IO.coerce(
+       $infile eq '-'
+           ?? $*IN.slurp-rest( :bin ) # not random access
+           !! $infile.IO
+    );
 
     my PDF::Reader $reader = PDF::Class.open( $input, :$password).reader;
 

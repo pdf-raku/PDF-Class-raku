@@ -4,8 +4,7 @@ use v6;
 use PDF::Class;
 use PDF::Catalog;
 use PDF::Info;
-use PDF::IO::Str;
-use PDF::IO::Handle;
+use PDF::IO;
 
 multi sub pretty-print(DateTime $dt --> Str) {
     sprintf('%s %s %02d %02d:%02d:%02d %04d',
@@ -37,9 +36,11 @@ multi sub MAIN(Str $infile,           #| input PDF
 	       Str :$password = '',   #| password for the input PDF, if encrypted
     ) {
 
-    my $input = $infile eq '-'
-	?? PDF::IO::Str.new( :value($*IN.slurp-rest( :enc<latin-1> )) )
-	!! PDF::IO::Handle.new( :value($infile.IO.open( :enc<latin-1> )) );
+    my $input = PDF::IO.coerce(
+       $infile eq '-'
+           ?? $*IN.slurp-rest( :bin ) # not random access
+           !! $infile.IO
+    );
 
     my PDF::Class $pdf .= open( $input, :$password );
 
@@ -49,8 +50,8 @@ multi sub MAIN(Str $infile,           #| input PDF
     my PDF::Info $pdf-info = $pdf.Info;
     my List $box = $pdf.Pages.MediaBox;
     my PDF::Catalog $catalog = $pdf.catalog;
-    my Bool $tagged  = $catalog.?MarkInfo.?Marked   // False;
-    my Bool $partial = $catalog.?MarkInfo.?Suspects // False;
+    my Bool $tagged  = with $catalog.MarkInfo { .Marked } else { False };
+    my Bool $partial = with $catalog.MarkInfo { .Suspects } else { False };
     my UInt $revisions = + $pdf.reader.revision-xrefs;
 
     my UInt @page-size = $box
@@ -60,7 +61,7 @@ multi sub MAIN(Str $infile,           #| input PDF
     say "File:         $infile";
     say "File Size:    $size bytes";
     say "Pages:        $pages";
-    say 'Outlines:     ' ~ yes-no(do with $catalog.Outlines {?.First} else {False});
+    say 'Outlines:     ' ~ yes-no(do with $catalog.Outlines {.First} else {False});
     given $pdf-info {
 	for .keys.sort -> $key {
 	    my Str $prop = try {pretty-print( $pdf-info{$key} ) } // '???';

@@ -5,8 +5,7 @@ use PDF::Class;
 use PDF::Page;
 use PDF::Content::Ops :OpName;
 
-use PDF::IO::Str;
-use PDF::IO::Handle;
+use PDF::IO;
 
 sub MAIN(Str $infile,           #= input PDF
 	 Str :$password = '',   #= password for the input PDF, if encrypted
@@ -15,9 +14,11 @@ sub MAIN(Str $infile,           #= input PDF
          Bool :$strict = False, #= enable extra rendering warnings
     ) {
 
-    my $input = $infile eq '-'
-	?? PDF::IO::Str.new( :value($*IN.slurp-rest( :enc<latin-1> )) )
-	!! PDF::IO::Handle.new( :value($infile.IO.open( :enc<latin-1> )) );
+    my $input = PDF::IO.coerce(
+       $infile eq '-'
+           ?? $*IN.slurp-rest( :bin ) # not random access
+           !! $infile.IO
+    );
 
     my PDF::Class $pdf .= open( $input, :$password );
 

@@ -5,8 +5,7 @@ use PDF::Class;
 use PDF::Class::OutlineNode;
 use PDF::Destination :DestinationArray;
 
-use PDF::IO::Str;
-use PDF::IO::Handle;
+use PDF::IO;
 use PDF::COS;
 
 my subset IndRef of Pair where {.key eq 'ind-ref'};
@@ -30,9 +29,11 @@ sub MAIN(Str $infile,           #= input PDF
          Bool :$labels = True   #= don't display page labels
     ) {
 
-    my $input = $infile eq '-'
-	?? PDF::IO::Str.new( :value($*IN.slurp-rest( :enc<latin-1> )) )
-	!! PDF::IO::Handle.new( :value($infile.IO.open( :enc<latin-1> )) );
+    my $input = PDF::IO.coerce(
+       $infile eq '-'
+           ?? $*IN.slurp-rest( :bin ) # not random access
+           !! $infile.IO
+    );
 
     $pdf .= open( $input, :$password );
 
