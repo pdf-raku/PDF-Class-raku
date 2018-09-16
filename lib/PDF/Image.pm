@@ -16,6 +16,7 @@ role PDF::Image
     use PDF::Content::Image::PNG :PNG-CS;
     use PDF::ColorSpace::Indexed;
     use PDF::IO::Filter;
+    use PDF::Metadata::XML;
     use PDF::OCG;
 
     # See [PDF 1.7 TABLE 4.39 Additional entries specific to an image dictionary]
@@ -48,7 +49,7 @@ role PDF::Image
     has UInt $.StructParent is entry;             #| (Required if the image is a structural content item; PDF 1.3) The integer key of the image’s entry in the structural parent tree
     has Str $.ID is entry;                        #| (Optional; PDF 1.3; indirect reference preferred) The digital identifier of the image’s parent Web Capture content set
     has Hash $.OPI is entry;                      #| (Optional; PDF 1.2) An OPI version dictionary for the image. If ImageMask is true, this entry is ignored.
-    has PDF::COS::Stream $.Metadata is entry;     #| (Optional; PDF 1.4) A metadata stream containing metadata for the image
+    has PDF::Metadata::XML $.Metadata is entry;     #| (Optional; PDF 1.4) A metadata stream containing metadata for the image
     has PDF::OCG $.OC is entry(:alias<optional-content>);   #| (Optional; PDF 1.5) An optional content group or optional content membership dictionary
 
     my subset PNGPredictor of Int where 10 .. 15;

@@ -26,7 +26,8 @@ class PDF::XObject::Form
     has PDF::Resources $.Resources is entry;        #| (Optional but strongly recommended; PDF 1.2) A dictionary specifying any resources (such as fonts and images) required by the form XObject
     has Hash $.Group is entry;              #| (Optional; PDF 1.4) A group attributes dictionary indicating that the contents of the form XObject are to be treated as a group and specifying the attributes of that group
     has Hash $.Ref is entry;                #| (Optional; PDF 1.4) A reference dictionary identifying a page to be imported from another PDF file, and for which the form XObject serves as a proxy
-    has PDF::COS::Stream $.Metadata is entry;       #| (Optional; PDF 1.4) A metadata stream containing metadata for the form XObject
+    use PDF::Metadata::XML;
+    has PDF::Metadata::XML $.Metadata is entry;       #| (Optional; PDF 1.4) A metadata stream containing metadata for the form XObject
     has Hash $.PieceInfo is entry;          #| (Optional; PDF 1.3) A page-piece dictionary associated with the form XObject
     has PDF::COS::DateString $.LastModified is entry;        #| (Required if PieceInfo is present; optional otherwise; PDF 1.3) The date and time when the form XObject’s contents were most recently modified
     has UInt $.StructParent is entry;       #| (Required if the form XObject is a structural content item; PDF 1.3) The integer key of the form XObject’s entry in the structural parent tree

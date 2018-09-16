@@ -29,6 +29,7 @@ class PDF::Catalog
     use PDF::AcroForm;
     use PDF::OutputIntent;
     use PDF::Resources;
+    use PDF::Metadata::XML;
     use PDF::Class::Util :to-roman, :alpha-number, :decimal-number;
 
     has PDF::COS::Name $.Type is entry(:required) where 'Catalog';
@@ -136,8 +137,7 @@ class PDF::Catalog
 
     has PDF::AcroForm $.AcroForm is entry;               #| (Optional; PDF 1.2) The document’s interactive form (AcroForm) dictionary
 
-    my subset Metadata of PDF::COS::Stream where { .<Type> ~~ 'Metadata' && .<Subtype> ~~ 'XML' }; # autoloaded PDF::Metadata::XML
-    has Metadata $.Metadata is entry(:indirect);         #| (Optional; PDF 1.4; must be an indirect reference) A metadata stream containing metadata for the document
+    has PDF::Metadata::XML $.Metadata is entry(:indirect);         #| (Optional; PDF 1.4; must be an indirect reference) A metadata stream containing metadata for the document
 
     my subset StructTreeRoot of PDF::Class::Type where { .<Type> ~~ 'StructTreeRoot' }; # autoloaded PDF::StructTreeRoot
     has StructTreeRoot $.StructTreeRoot is entry;        #| (Optional; PDF 1.3) The document’s structure tree root dictionary
@@ -203,7 +203,7 @@ class PDF::Catalog
     has PDF::Resources $.Resources is entry;
 
     method cb-init {
-        # vivify pages
+        # vivify pages root
 	self<Type> //= PDF::COS.coerce( :name<Catalog> );
 
         self<Pages> //= PDF::COS.coerce(

@@ -51,7 +51,8 @@ class PDF::Page
     }
     has Annot @.Annots is entry(:&coerce); #| (Optional) An array of annotation dictionaries representing annotations associated with the page
     has PDF::Action $.AA is entry(:alias<additional-actions>);                      #| (Optional; PDF 1.2) An additional-actions dictionary defining actions to be performed when the page is opened or closed
-    has PDF::COS::Stream $.Metadata is entry;    #| (Optional; PDF 1.4) A metadata stream containing metadata for the page
+    use PDF::Metadata::XML;
+    has PDF::Metadata::XML $.Metadata is entry;    #| (Optional; PDF 1.4) A metadata stream containing metadata for the page
     has Hash $.PieceInfo is entry;               #| (Optional; PDF 1.3) A page-piece dictionary associated with the page
     has UInt $.StructParents is entry;           #| (Required if the page contains structural content items; PDF 1.3) The integer key of the page’s entry in the structural parent tree
     has Str $.ID is entry;                       #| (Optional; PDF 1.3; indirect reference preferred) The digital identifier of the page’s parent Web Capture content set
