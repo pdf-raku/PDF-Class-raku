@@ -47,11 +47,15 @@ multi sub MAIN(Str $infile,           #| input PDF
     my UInt $size = $input.codes;
     my UInt $pages = $pdf.page-count;
     my Version $pdf-version = $pdf.version;
-    my PDF::Info $pdf-info = $pdf.Info;
+    my PDF::Info $pdf-info = $_ with $pdf.Info;
     my List $box = $pdf.Pages.MediaBox;
     my PDF::Catalog $catalog = $pdf.catalog;
-    my Bool $tagged  = with $catalog.MarkInfo { .Marked } else { False };
-    my Bool $partial = with $catalog.MarkInfo { .Suspects } else { False };
+    my Bool $tagged = False;
+    my Bool $partial = False;
+    with $catalog.MarkInfo {
+        $tagged  = $_ with .Marked;
+        $partial = $_ with .Suspects;
+    }
     my UInt $revisions = + $pdf.reader.revision-xrefs;
 
     my UInt @page-size = $box
@@ -61,8 +65,8 @@ multi sub MAIN(Str $infile,           #| input PDF
     say "File:         $infile";
     say "File Size:    $size bytes";
     say "Pages:        $pages";
-    say 'Outlines:     ' ~ yes-no(do with $catalog.Outlines {.First} else {False});
-    given $pdf-info {
+    say 'Outlines:     ' ~ yes-no(do with $catalog.Outlines {?.First} else {False});
+    with $pdf-info {
 	for .keys.sort -> $key {
 	    my Str $prop = try {pretty-print( $pdf-info{$key} ) } // '???';
 	    printf "%-13s %s\n", $key ~ q{:}, $prop
@@ -85,12 +89,13 @@ multi sub MAIN(Str $infile,           #| input PDF
 	# show user, not owner, permissions
 ##	temp $pdf.reader.crypt.is-owner = False
 ##	    if $pdf.reader.?crypt;
+        my $alg-type = $pdf.reader.crypt.type.join: ',';
 
         for :print(PermissionsFlag::Print), :copy(PermissionsFlag::Copy),
             :change(PermissionsFlag::Modify), :addNotes(PermissionsFlag::Add) {
 	    print "{.key}:{yes-no( $pdf.permitted: .value)} ";
         }
-        say "algorithm:RC4 {$V}.{$enc.R}, $Length bits)";
+        say "algorithm:{$alg-type} {$V}.{$enc.R}, $Length bits)";
     }
     else {
         say "no";
