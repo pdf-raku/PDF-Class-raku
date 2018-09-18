@@ -9,7 +9,7 @@ use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::COS;
-use PDF::NameTree;
+use PDF::NameTree :NameTree;
 
 my PDF::Grammar::PDF::Actions $actions .= new;
 
@@ -34,7 +34,7 @@ does-ok $nametree-obj, PDF::NameTree;
 is-json-equiv $nametree-obj.Names, [ '1.1', 'Xxx', '1.2', 42, '1.3', 3.14 ], '$obj.Names';
 is-json-equiv $nametree-obj.Kids, [:ind-ref[10, 0]], '$obj.First';
 $nametree-obj.Kids = [];
-my $names = $nametree-obj.names;
+my NameTree $names = $nametree-obj.name-tree;
 for '1.1' => 'Xxx', '1.2' => 42, '1.3' => 3.14 {
    is $names{.key}, .value, "names\{{.key}\}";
 }

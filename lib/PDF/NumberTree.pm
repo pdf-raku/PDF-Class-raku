@@ -11,7 +11,7 @@ role PDF::NumberTree
     has @.Nums is entry; #| Root and leaf nodes only; required in leaf nodes; present in the root node if and only if Kids is not present) An array of the form
                          #| [ key 1 value 1 key 2 value 2 ... key n value n ]
                          #| where each key i is an integer and the corresponding value i shall be the object associated with that key. The keys are sorted in numerical order
-    my class Nums {
+    my class NumberTree is export(:NumberTree) {
         has %!nums{Int};
         has PDF::NumberTree $.root is rw;
         has Bool %!fetched{Any};
@@ -49,15 +49,18 @@ role PDF::NumberTree
                 unless $!realized++;
             %!nums;
         }
-        method AT-KEY(Int(Cool) $key) {
+        method AT-KEY(Int() $key) {
             self!fetch($!root, $key)
                 unless $!realized || (%!nums{$key}:exists);
             %!nums{$key};
         }
+        method AT-POS(Int() $key) {
+            $.AT-KEY($key);
+        }
     }
 
-    method nums {
-        given Nums.new {
+    method number-tree {
+        given NumberTree.new {
             .root = self;
             $_;
         }

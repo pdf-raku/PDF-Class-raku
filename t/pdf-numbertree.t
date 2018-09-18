@@ -9,7 +9,7 @@ use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::COS;
-use PDF::NumberTree;
+use PDF::NumberTree :NumberTree;
 
 my PDF::Grammar::PDF::Actions $actions .= new;
 
@@ -33,8 +33,9 @@ my $nametree-obj = PDF::COS.coerce($ind-obj.object, PDF::NumberTree);
 does-ok $nametree-obj, PDF::NumberTree;
 is-json-equiv $nametree-obj.Kids, [], '$obj.First';
 is-json-equiv $nametree-obj.Nums, [ 20, 'Xxx', 30, 42 ], '$obj.Nums';
-is-json-equiv $nametree-obj.nums{30}, 42, '.nums deref';
-is-json-equiv $nametree-obj.nums.Hash, { 20 => 'Xxx', 30 => 42 }, '$obj.nums';
+my NumberTree $nums = $nametree-obj.number-tree;
+is-json-equiv $nums{30}, 42, '.nums deref';
+is-json-equiv $nums.Hash, { 20 => 'Xxx', 30 => 42 }, '$obj.nums';
 is-json-equiv $nametree-obj.Limits, [20, 30], '$obj.Limits';
 lives-ok {$nametree-obj.check}, '$nametree-obj.check lives';
 

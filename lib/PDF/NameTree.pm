@@ -9,7 +9,7 @@ role PDF::NameTree
     #| a lightweight tied hash to fetch objects from a Name Tree
     use PDF::COS::Tie;
 
-    my class Names {
+    my class NameTree is export(:NameTree) {
         has %!names;
         has PDF::NameTree $.root is rw;
         has Bool %!fetched{Any};
@@ -55,8 +55,8 @@ role PDF::NameTree
         }
     }
 
-    method names {
-        given Names.new {
+    method name-tree {
+        given NameTree.new {
             .root = self;
             $_;
         }
