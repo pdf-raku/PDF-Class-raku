@@ -18,6 +18,13 @@ class PDF::Annot
     use PDF::Border;
     use PDF::OCG;
 
+    method cb-init {
+        use PDF::Field :coerce;
+        # annots are also sometimes fields
+        coerce(self, PDF::Field)
+            if (self<FT>:exists) && !(self ~~ PDF::Field);
+    }
+
     # See [PDF Spec 1.7 table 8.15 - Entries common to all annotation dictionaries ]
     has PDF::COS::Name $.Type is entry where 'Annot';
     my subset AnnotName of PDF::COS::Name where 'Text'|'Link'|'FreeText'|'Line'|'Square'|

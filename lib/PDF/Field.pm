@@ -46,7 +46,7 @@ role PDF::Field
     my subset Field of Hash where { (.<FT>:exists) || (.<Kids>:exists) }
 
     proto sub coerce( $, $ ) is export(:coerce) {*}
-    multi sub coerce( PDF::COS::Dict $dict is rw, PDF::Field $field ) {
+    multi sub coerce( PDF::COS::Dict $dict, PDF::Field $field ) {
 	# refuse to coerce an annotation as a field
 	PDF::COS.coerce( $dict, $field.field-delegate( $dict ) );
     }
@@ -55,7 +55,7 @@ role PDF::Field
     has PDF::Field $.Parent is entry(:indirect);      #| (Required if this field is the child of another in the field hierarchy; absent otherwise) The field that is the immediate parent of this one (the field, if any, whose Kids array includes this field). A field can have at most one parent; that is, it can be included in the Kids array of at most one other field.
 
     my subset AnnotOrField of Hash where Annot|PDF::Field;
-    multi sub coerce( Field $dict is rw, AnnotOrField) {
+    multi sub coerce( Field $dict, AnnotOrField) {
 	PDF::COS.coerce( $dict, PDF::Field.field-delegate( $dict ) )
     }
     multi sub coerce( $_, AnnotOrField) is default {

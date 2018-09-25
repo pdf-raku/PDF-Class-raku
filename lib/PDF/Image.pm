@@ -13,12 +13,12 @@ role PDF::Image
     use PDF::COS::Array;
     use PDF::COS::Name;
     use PDF::ColorSpace;
-    use PDF::Content::Image::PNG :PNG-CS;
     use PDF::ColorSpace::Indexed;
-    use PDF::IO::Filter;
     use PDF::Metadata::XML;
     use PDF::OCG;
 
+    use PDF::Content::Image::PNG :PNG-CS;
+    use PDF::IO::Filter;
     # See [PDF 1.7 TABLE 4.39 Additional entries specific to an image dictionary]
     has Numeric $.Width is entry(:required);      #| (Required) The width of the image, in samples.
     has Numeric $.Height is entry(:required);     #| (Required) The height of the image, in samples.

@@ -1,6 +1,7 @@
 use v6;
 
-use PDF::Action::GoTo;
+use PDF::COS::Dict;
+use PDF::Action;
 
 #| /Action Subtype - GoToR
 

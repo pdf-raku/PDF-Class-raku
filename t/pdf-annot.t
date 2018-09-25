@@ -41,6 +41,22 @@ my $open-text-annot = ::('PDF::Annot::Text').new(:dict{
 is-deeply $open-text-annot.Open, False, '.Open';
 lives-ok {$open-text-annot.check}, '$open-check-annot.check lives';
 
+my $field-annot = (require ::('PDF::Annot::Widget')).new(
+    :dict{
+        :Subtype<Widget>,
+        :DA("/Helv 12 Tf 0 g"),
+        :F(4),
+        :FT<Tx>,
+        :Rect[ 105, 107, 325, 130 ],
+        :T<Name>,
+        :V<Test>,
+    }
+);
+
+isa-ok $field-annot, ::('PDF::Annot::Widget');
+does-ok $field-annot, (require ::('PDF::Field::Text'));
+lives-ok { $field-annot.check }, "field-annot check";
+
 my PDF::Class $pdf .= new;
 my $page = $pdf.Pages.add-page;
 $page<MediaBox> = [0, 0, 350, 250];

@@ -21,6 +21,7 @@ sub scan-classes($path) {
             next unless /'.pm'$/;
             my @class = .Str.split('/');
             @class.shift;
+            next if @class[*-2] eq 'Class';
             @class.tail ~~ s/'.pm'$//;
             my $name = @class.join: "::";
             (require ::($name)).so;
