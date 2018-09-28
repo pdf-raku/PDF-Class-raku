@@ -21,6 +21,7 @@ multi sub output-filename(Str $infile) is default {
 sub MAIN(Str $infile,            #| input PDF
 	 Str :$password = '',    #| password for the input PDF, if encrypted
 	 Str :$save-as is copy,  #| output template filename
+         UInt :$batch-size = 1,  #| number of pages per batch (1)
     ) {
 
     $save-as = output-filename( $save-as // $infile );
@@ -33,25 +34,38 @@ sub MAIN(Str $infile,            #| input PDF
 
     my PDF::Class $pdf .= open( $input, :$password);
     my PDF::Catalog $catalog = $pdf.catalog;
+    # just remove anything in the catalog that may
+    # reference other pages or otherwise confuse things
+    $catalog<AcroForm MarkInfo Names OCProperties Outlines PageLabels StructTreeRoot>:delete;
 
     my UInt $page-count = $pdf.page-count;
+    my UInt $page-num = 1;
 
-    for 1 .. $page-count -> UInt $page-num {
+    while $page-num <= $page-count {
 
 	my $save-page-as = $save-as.sprintf($page-num);
 	die "invalid 'sprintf' output page format: $save-as"
 	    if $save-page-as eq $save-as;
 
-	my PDF::Page $page = $pdf.page($page-num);
-
-        with $catalog.Pages -> PDF::Pages $p {
-            # pretend this is the only page in the document
-	    temp $p.Kids = [ $page, ];
-	    temp $p.Count = 1;
+        my PDF::Page @pages;
+        for 1 .. $batch-size {
+            my PDF::Page $page = $pdf.page($page-num);
             # bind resources and other inherited properties to the page
             for <Resources Rotate MediaBox CropBox> -> $k {
                 $page{$k} //= $_ with $page."$k"();
             }
+            # strip external references from the page
+            $page<StructParents>:delete;
+            $page<Annots>:delete;
+            $page<Parent>:delete;
+            push @pages, $page;
+            last if ++$page-num > $page-count;
+        }
+
+        with $catalog.Pages -> PDF::Pages $p {
+            # pretend these are the only pages in the document
+	    temp $p.Kids = @pages;
+	    temp $p.Count = +@pages;
 	    warn "saving page: $save-page-as";
 	    $pdf.save-as( $save-page-as, :rebuild );
         }
@@ -70,12 +84,13 @@ pdf-burst.p6 - Burst a PDF into individual pages
  pdf-burst.p6 [options] --save-as=outspec.pdf infile.pdf
 
  Options:
-   --save=outspec.pdf  # e.g. --save-as=myout-%02d.pdf
+   --save-as=outspec.pdf  # e.g. --save-as=myout-%02d.pdf
    --pasword=str       # provide a password for  an encrypted PDF
+   --batch-size=n      # number of pages per burst (1)
 
 =head1 DESCRIPTION
 
-This program bursts a multiple page into single page PDF files.
+This program bursts a large input PDF into single or multi-page output PDF files.
 
 By default, the output pdf will be named infile001.pdf infile002.pdf ...
 
