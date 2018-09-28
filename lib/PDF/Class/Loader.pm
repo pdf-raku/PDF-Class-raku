@@ -34,7 +34,7 @@ PDF::COS.loader = class PDF::Class::Loader
         with $subtype {
             when '3D'   { $_ = 'ThreeD' }
             when .chars <= 2
-            || $type ~~ 'OutputIntent' # no specific subclasses
+            || $type ~~ 'OutputIntent'|'StructElem' # no specific subclasses
                         { $_ = Nil }
         }
         $type ~~
