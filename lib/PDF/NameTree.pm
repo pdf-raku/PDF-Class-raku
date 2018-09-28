@@ -11,7 +11,7 @@ role PDF::NameTree
 
     my class NameTree is export(:NameTree) {
         has %!names;
-        has PDF::NameTree $.root is rw;
+        has PDF::NameTree $.root;
         has Bool %!fetched{Any};
         has Bool $!realized;
         method !fetch($node, Str $key?) {
@@ -30,9 +30,9 @@ role PDF::NameTree
                     for 0 ..^ +$kids {
                         given $kids[$_] {
                             if $key.defined {
-                                my $limits = .Limits;
+                                my @limits[2] = .Limits;
                                 return self!fetch($_, $key)
-                                    if $limits[0] le $key le $limits[1];
+                                    if @limits[0] le $key le @limits[1];
                             }
                             else {
                                 self!fetch($_);
@@ -48,7 +48,7 @@ role PDF::NameTree
                 unless $!realized++;
             %!names;
         }
-        method AT-KEY(Str(Cool) $key) {
+        method AT-KEY(Str() $key) {
             self!fetch($!root, $key)
                unless $!realized || (%!names{$key}:exists);
             %!names{$key};
@@ -56,10 +56,7 @@ role PDF::NameTree
     }
 
     method name-tree {
-        given NameTree.new {
-            .root = self;
-            $_;
-        }
+        NameTree.new: :root(self);
     }
 
     has PDF::NameTree @.Kids is entry(:indirect); #| (Root and intermediate nodes only; required in intermediate nodes; present in the root node if and only if Names is not present) Shall be an array of indirect references to the immediate children of this node. The children may be intermediate or leaf nodes.

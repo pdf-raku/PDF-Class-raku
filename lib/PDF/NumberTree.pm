@@ -13,7 +13,7 @@ role PDF::NumberTree
                          #| where each key i is an integer and the corresponding value i shall be the object associated with that key. The keys are sorted in numerical order
     my class NumberTree is export(:NumberTree) {
         has %!nums{Int};
-        has PDF::NumberTree $.root is rw;
+        has PDF::NumberTree $.root;
         has Bool %!fetched{Any};
         has Bool $!realized;
         method !fetch($node, Int $key?) {
@@ -32,9 +32,9 @@ role PDF::NumberTree
                     for 0 ..^ +$kids {
                         given $kids[$_] {
                             if $key.defined {
-                                my $limits = .Limits;
+                                my @limits[2] = .Limits;
                                 return self!fetch($_, $key)
-                                    if $limits[0] <= $key <= $limits[1];
+                                    if @limits[0] <= $key <= @limits[1];
                             }
                             else {
                                 self!fetch($_);
@@ -60,11 +60,9 @@ role PDF::NumberTree
     }
 
     method number-tree {
-        given NumberTree.new {
-            .root = self;
-            $_;
-        }
+        NumberTree.new: :root(self);
     }
+
     has Numeric @.Limits is entry(:len(2)); #| (Shall be present in Intermediate and leaf nodes only) Shall be an array of two integers, that shall specify the (numerically) least and greatest keys included in the Nums array of a leaf node or in the Nums arrays of any leaf nodes that are descendants of an intermediate node.
 
     method cb-check {
