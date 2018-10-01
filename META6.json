@@ -73,7 +73,6 @@
     "PDF::Font::Type1" : "lib/PDF/Font/Type1.pm",
     "PDF::Font::Type3" : "lib/PDF/Font/Type3.pm",
     "PDF::FontDescriptor" : "lib/PDF/FontDescriptor.pm",
-    "PDF::FontDescriptor::CID" : "lib/PDF/FontDescriptor/CID.pm",
     "PDF::FontFile" : "lib/PDF/FontFile.pm",
     "PDF::FontStream" : "lib/PDF/FontStream.pm",
     "PDF::Function" : "lib/PDF/Function.pm",

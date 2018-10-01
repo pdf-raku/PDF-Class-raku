@@ -1,10 +1,7 @@
 Release 0.2.9
 - Renamed PDF::Font::CIDFont -> PDF::Class::CIDFont
-- pdf-burst.pdf
-  -- added --batch-size option, for multi-page bursts
-  -- remove interactive features
-  -- work better with inherited page resources.
-- other script fixes:
+- Script fixes:
+  -- pdf-burst.p6 to work with inherited page resources.
   -- pdf-revert.p6, pdf-info.p6 to not be confused by
      hybrid xrefs
   -- minor improvements to: pdf-append.p6, pdf-content-dump.p6,
