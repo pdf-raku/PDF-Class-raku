@@ -18,10 +18,12 @@ multi sub output-filename(Str $infile) is default {
       !! $infile.subst(/ '.' $ext$/, '%03d.' ~ $ext);
 }
 
-sub MAIN(Str $infile,            #| input PDF
-	 Str :$password = '',    #| password for the input PDF, if encrypted
-	 Str :$save-as is copy,  #| output template filename
-         UInt :$batch-size = 1,  #| number of pages per batch (1)
+subset Number of Int where * > 0;
+
+sub MAIN(Str $infile,              #| input PDF
+	 Str :$password = '',      #| password for the input PDF, if encrypted
+	 Str :$save-as is copy,    #| output template filename
+         Number :$batch-size = 1,  #| number of pages per batch (1)
     ) {
 
     $save-as = output-filename( $save-as // $infile );
@@ -36,7 +38,8 @@ sub MAIN(Str $infile,            #| input PDF
     my PDF::Catalog $catalog = $pdf.catalog;
     # just remove anything in the catalog that may
     # reference other pages or otherwise confuse things
-    $catalog<AcroForm MarkInfo Names OCProperties Outlines PageLabels StructTreeRoot>:delete;
+    $catalog<AcroForm MarkInfo Names OCProperties
+             Outlines PageLabels StructTreeRoot>:delete;
 
     my UInt $page-count = $pdf.page-count;
     my UInt $page-num = 1;
@@ -55,9 +58,7 @@ sub MAIN(Str $infile,            #| input PDF
                 $page{$k} //= $_ with $page."$k"();
             }
             # strip external references from the page
-            $page<StructParents>:delete;
-            $page<Annots>:delete;
-            $page<Parent>:delete;
+            $page<StructParents Annots Parent>:delete;
             push @pages, $page;
             last if ++$page-num > $page-count;
         }
@@ -66,7 +67,7 @@ sub MAIN(Str $infile,            #| input PDF
             # pretend these are the only pages in the document
 	    temp $p.Kids = @pages;
 	    temp $p.Count = +@pages;
-	    warn "saving page: $save-page-as";
+	    warn "saving {+@pages} pages: $save-page-as";
 	    $pdf.save-as( $save-page-as, :rebuild );
         }
     }
