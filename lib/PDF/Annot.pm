@@ -19,11 +19,13 @@ class PDF::Annot
     use PDF::OCG;
 
     method cb-init {
-        use PDF::Field :coerce;
+        use PDF::Field :coerce, :FieldLike;
         # annots are also sometimes fields
         coerce(self, PDF::Field)
-            if (self<FT>:exists) && !(self ~~ PDF::Field);
+            if self ~~ FieldLike && self !~~ PDF::Field;
     }
+
+    has PDF::COS::Name $.FT is entry(:inherit, :alias<field-type>); #| Include this, just to help discover if we're a field
 
     # See [PDF Spec 1.7 table 8.15 - Entries common to all annotation dictionaries ]
     has PDF::COS::Name $.Type is entry where 'Annot';

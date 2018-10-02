@@ -42,8 +42,8 @@ role PDF::Field
         }
     }
 
-    my subset Annot of Hash where .<Type> ~~ 'Annot';
-    my subset Field of Hash where { (.<FT>:exists) || (.<Kids>:exists) }
+    my subset AnnotLike of Hash where .<Type> ~~ 'Annot';
+    my subset FieldLike is export(:FieldLike) of Hash where { (.<FT>:exists) || (.<Kids>:exists) }
 
     proto sub coerce( $, $ ) is export(:coerce) {*}
     multi sub coerce( PDF::COS::Dict $dict, PDF::Field $field ) {
@@ -54,8 +54,8 @@ role PDF::Field
     has FieldTypeName $.FT is entry(:inherit, :alias<field-type>);  #| Required for terminal fields; inheritable) The type of field that this dictionary describes
     has PDF::Field $.Parent is entry(:indirect);      #| (Required if this field is the child of another in the field hierarchy; absent otherwise) The field that is the immediate parent of this one (the field, if any, whose Kids array includes this field). A field can have at most one parent; that is, it can be included in the Kids array of at most one other field.
 
-    my subset AnnotOrField of Hash where Annot|PDF::Field;
-    multi sub coerce( Field $dict, AnnotOrField) {
+    my subset AnnotOrField of Hash where AnnotLike|PDF::Field;
+    multi sub coerce( FieldLike $dict, AnnotOrField) {
 	PDF::COS.coerce( $dict, PDF::Field.field-delegate( $dict ) )
     }
     multi sub coerce( $_, AnnotOrField) is default {
@@ -67,7 +67,7 @@ role PDF::Field
 
     method is-terminal returns Bool {
 	with $.Kids {
-            ! .keys.first: -> $k {.[$k] ~~ Field }
+            ! .keys.first: -> $k {.[$k] ~~ FieldLike }
         }
         else {
             True;
@@ -84,7 +84,7 @@ role PDF::Field
 	    for self.Kids.keys {
 		my $kid = self.Kids[$_];
 		@fields.append: $kid.fields
-		    if $kid ~~ Field;
+		    if $kid ~~ FieldLike;
 	    }
 	}
 	flat @fields;
@@ -94,14 +94,14 @@ role PDF::Field
     #| otherwise return any annots from out immediate kids
     method annots {
 	my @annots;
-	if self ~~ Annot {
+	if self ~~ AnnotLike {
 	    @annots.push: self
 	}
 	elsif  self.Kids.defined {
 	    for self.Kids.keys {
 		my $kid = self.Kids[$_];
 		@annots.append: $kid.fields
-		    if $kid ~~ Annot && $kid !~~ Field;
+		    if $kid ~~ AnnotLike && $kid !~~ FieldLike;
 	    }
 	}
 	flat @annots;
@@ -143,6 +143,6 @@ role PDF::Field
 
     method cb-check {
         die "Fields should have an /FT or /Kids entry"
-            unless self ~~ Field;
+            unless self ~~ FieldLike;
     }
 }

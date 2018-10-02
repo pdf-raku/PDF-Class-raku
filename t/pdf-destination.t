@@ -1,7 +1,7 @@
 use v6;
 use Test;
 use PDF::Class;
-use PDF::Destination :Fit, :DestinationArray;
+use PDF::Destination :Fit, :DestinationLike;
 use PDF::Page;
 use PDF::COS::Name;
 
@@ -18,8 +18,8 @@ multi sub is-destination($_, $, $reason) is default {
 my PDF::Page $page .= new: :dict{ :Type<Page> };
 my $dest = [$page, 'Fit'];
 
-ok $dest ~~ DestinationArray, 'is destination array';
-ok [$page, 'Blah'] !~~ DestinationArray, 'non-destination array';
+ok $dest ~~ DestinationLike, 'is destination array';
+ok [$page, 'Blah'] !~~ DestinationLike, 'non-destination array';
 
 my PDF::Destination $d;
 is-destination $d=PDF::Destination.construct(FitWindow, :$page), [$page, FitWindow], 'FitWindow destination';

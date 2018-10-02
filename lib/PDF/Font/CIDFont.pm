@@ -1,21 +1,20 @@
 use v6;
 
-use PDF::COS::Tie::Hash;
-role PDF::Class::CIDFont
-    does PDF::COS::Tie::Hash {
+use PDF::Font;
+class PDF::Font::CIDFont
+    is PDF::Font {
 
     use PDF::COS::Tie;
     use PDF::COS::Stream;
     use PDF::COS::Name;
-    use PDF::FontDescriptor;
 
     # see [PDF 1.7 TABLE 5.14 Entries in a CIDFont dictionary]
     has PDF::COS::Name $.BaseFont is entry(:required);        #| (Required) The PostScript name of the CIDFont. For Type 0 CIDFonts, this is usually the value of the CIDFontName entry in the CIDFont program. For Type 2 CIDFonts, it is derived the same way as for a simple TrueType font
-    use PDF::CIDSystemInfo; # todo - causing failures in pdf-font-cidfont.t
+    use PDF::CIDSystemInfo;
     has PDF::CIDSystemInfo $.CIDSystemInfo is entry(:required);             #| (Required) A dictionary containing entries that define the character collection of the CIDFont.
     #| See [PDF 320000 Table 124 – Additional font descriptor entries for CIDFonts]
     my role CIDFontDescriptor
-        does PDF::FontDescriptor {
+        does PDF::COS::Tie::Hash {
             has Hash $.Style is entry;              #| (Optional) A dictionary containing entries that describe the style of the glyphs in the font.
             has PDF::COS::Name $.Lang is entry;     #| (Optional; PDF 1.5) A name specifying the language of the font, which may be used for encodings where the language is not implied by the encoding itself. The value shall be one of the codes defined by Internet RFC 3066, Tags for the Identification of Languages or (PDF 1.0) 2-character language codes defined by ISO 639. If this entry is absent, the language shall be considered to be unknown.
             has Hash $.FD is entry;                 #| (Optional) A dictionary whose keys identify a class of glyphs in a CIDFont. Each value shall be a dictionary containing entries that shall override the corresponding values in the main font descriptor dictionary for that class of glyphs.

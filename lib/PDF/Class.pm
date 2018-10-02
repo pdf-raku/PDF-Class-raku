@@ -65,7 +65,7 @@ class PDF::Class:ver<0.2.9> #:api<PDF-1.7>
     # permissions check, e.g: $doc.permitted( PermissionsFlag::Modify )
     method permitted(UInt $flag --> Bool) {
 
-	my $perms = self.Encrypt.?P
+	my Int $perms = self.Encrypt.?P
 	    // return True;
 
 	return True

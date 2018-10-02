@@ -13,14 +13,18 @@ role PDF::Appearance
     use PDF::COS::Tie;
     use PDF::COS::Stream;
 
+    my subset FormLike of PDF::COS::Stream where .<Subtype> ~~ 'Form'; # autoloaded PDF::XObject::Form
     my role AppearanceStatus
 	does PDF::COS::Tie::Hash {
-	has PDF::COS::Stream $.Off is entry;
-	has PDF::COS::Stream $.On is entry;
-	has PDF::COS::Stream $.Yes is entry;
+	has FormLike $.Off is entry;
+	has FormLike $.On  is entry;
+	has FormLike $.Yes is entry;
     }
-    #| /Type entry is optional, but should be /Pattern when present
-    my subset AppearanceEntry where PDF::COS::Stream | AppearanceStatus;
+
+    my subset AppearanceEntry where FormLike | AppearanceStatus;
+    multi sub coerce(PDF::COS::Stream $dict is rw, AppearanceEntry) {
+        fail "Stream not of /Subtype /Form"
+    }
     multi sub coerce(Hash $dict is rw, AppearanceEntry) {
 	PDF::COS.coerce($dict,  AppearanceStatus)
     }

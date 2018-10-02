@@ -1,6 +1,6 @@
 role PDF::Class::OutlineNode {
     use PDF::COS;
-    use PDF::Destination :coerce-dest, :DestinationArray;
+    use PDF::Destination :coerce-dest, :DestinationLike;
     has Array $.parents is rw;
     sub siblings($cur) is rw {
         my class Siblings does Iterable does Iterator {
@@ -19,9 +19,7 @@ role PDF::Class::OutlineNode {
         my PDF::Destination $dest;
         with $kid<dest>:delete {
             when PDF::Destination { $dest = $_; }
-            when DestinationArray {
-                $dest = PDF::Destination.construct($_);
-            }
+            when DestinationLike  { warn "todo coerce dest: {.perl}" }
             default { warn "ignoring outline dest: {.gist}" }
         }
         $kid = PDF::COS.coerce($kid, PDF::Outline);

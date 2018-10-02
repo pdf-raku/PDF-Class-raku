@@ -25,8 +25,9 @@ my $input = q:to"--END-OBJ--";
     /FontName /MPAEJB+Wingdings-Regular
     /FontStretch /Normal
     /FontWeight 400
-    /ItalicAngle 0 /StemV 0
-    >> endobj
+    /ItalicAngle 0
+    /StemV 0
+>> endobj
 --END-OBJ--
 
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
