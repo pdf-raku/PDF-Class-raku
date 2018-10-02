@@ -54,7 +54,10 @@ class PDF::Catalog
     }
 
     role PageLabels does PDF::NumberTree[PageLabelNode] {
-        has Array $!nums;
+        has Array $.nums;
+        method nums {
+            $!nums //= [ self.number-tree.Hash.pairs.sort ];
+        }
 
         multi sub page-num('D', UInt $seq) { decimal-number($seq) }
         multi sub page-num('R', UInt $seq) { to-roman($seq) }
@@ -68,8 +71,7 @@ class PDF::Catalog
 
         #| page indices, starting at zero
         method AT-POS(Int(Cool) $page-idx) {
-            $!nums //= [ self.number-tree.Hash.pairs.sort ];
-            my Pair $num = $!nums.grep(*.key <= $page-idx).tail;
+            my Pair $num = $.nums.grep(*.key <= $page-idx).tail;
             my UInt $base  = $num.key;
             my PageLabelNode $props = $num.value;
             my UInt $start = $props.start // 1;
