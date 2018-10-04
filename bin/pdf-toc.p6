@@ -3,7 +3,7 @@ use v6;
 
 use PDF::Class;
 use PDF::Class::OutlineNode;
-use PDF::Destination :DestinationArray;
+use PDF::Destination :DestinationLike;
 
 use PDF::IO;
 use PDF::COS;
@@ -18,7 +18,7 @@ my PDF::Class $pdf;
 
 sub named-dest($_) {
     state $named-dests = do with $pdf.catalog.Names {
-        .names with .Dests;
+        .name-tree with .Dests;
     } // $pdf.catalog.Dests // {};
     $named-dests{$_};
 }
@@ -85,7 +85,7 @@ multi sub show-dest(IndRef $_) {
     %page-index{$ref}  // $ref;
 }
 
-multi sub show-dest(DestinationArray $_) {
+multi sub show-dest(DestinationLike $_) {
     show-dest(.values[0]);
 }
 
