@@ -2,11 +2,12 @@
 use v6;
 
 use PDF::Class;
+use PDF::Catalog;
 use PDF::Class::OutlineNode;
-use PDF::Destination :DestinationLike;
+use PDF::Destination;
+use PDF::Action::GoTo;
 
 use PDF::IO;
-use PDF::COS;
 
 my subset IndRef of Pair where {.key eq 'ind-ref'};
 sub ind-ref(IndRef $_ ) {
@@ -25,8 +26,8 @@ sub named-dest($_) {
 
 sub MAIN(Str $infile,           #= input PDF
 	 Str :$password = '',   #= password for the input PDF, if encrypted
-         Bool :$title = True,   #= display title (if present)
-         Bool :$labels = True   #= don't display page labels
+         Bool :$title = True,   #= display title, if present (True)
+         Bool :$labels = True   #= display page labels (True)
     ) {
 
     my $input = PDF::IO.coerce(
@@ -35,7 +36,7 @@ sub MAIN(Str $infile,           #= input PDF
            !! $infile.IO
     );
 
-    $pdf .= open( $input, :$password );
+    $pdf .= open( $input, :$password, );
 
     my $page-labels = $pdf.catalog.PageLabels
         if $labels;
@@ -76,8 +77,9 @@ multi sub show-dest(Str $_) {
     show-dest(named-dest($_));
 }
 
-multi sub show-dest(Hash $deref where .<D>.defined) {
-    show-dest($deref<D>);
+subset DestInternalRef of Hash where PDF::Action::GoTo | PDF::Catalog::DestDict;
+multi sub show-dest(DestInternalRef $ref) {
+    show-dest($ref.D);
 }
 
 multi sub show-dest(IndRef $_) {
@@ -85,14 +87,13 @@ multi sub show-dest(IndRef $_) {
     %page-index{$ref}  // $ref;
 }
 
-multi sub show-dest(DestinationLike $_) {
+multi sub show-dest(PDF::Destination $_) {
     show-dest(.values[0]);
 }
 
 multi sub show-dest($_) is default {
     Nil
 }
-
 
 sub toc(PDF::Class::OutlineNode $outline, :$nesting! is copy) {
     my $where = do with $outline.Dest // $outline.A { show-dest($_) };

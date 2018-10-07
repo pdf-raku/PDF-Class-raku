@@ -54,7 +54,7 @@ class PDF::Page
     use PDF::Metadata::XML;
     has PDF::Metadata::XML $.Metadata is entry;    #| (Optional; PDF 1.4) A metadata stream containing metadata for the page
     has Hash $.PieceInfo is entry;               #| (Optional; PDF 1.3) A page-piece dictionary associated with the page
-    has UInt $.StructParents is entry;           #| (Required if the page contains structural content items; PDF 1.3) The integer key of the page’s entry in the structural parent tree
+    has UInt $.StructParents is entry(:alias<struct-parent>);           #| (Required if the page contains structural content items; PDF 1.3) The integer key of the page’s entry in the structural parent tree
     has Str $.ID is entry;                       #| (Optional; PDF 1.3; indirect reference preferred) The digital identifier of the page’s parent Web Capture content set
     has Numeric $.PZ is entry(:alias<preferred-zoom>); #| (Optional; PDF 1.3) The page’s preferred zoom (magnification) factor
     has Hash $.SeparationInfo is entry;          #| (Optional; PDF 1.3) A separation dictionary containing information needed to generate color separations for the page
@@ -66,7 +66,7 @@ class PDF::Page
 
     method fields {
         my $annots = self.Annots;
-        $annots.keys.map({$annots[$_]}).grep({$_ ~~ PDF::Field})
+        $annots.keys.map({$annots[$_]}).grep(PDF::Field)
     }
 
     method fields-hash( Array $fields-arr = self.fields,

@@ -19,7 +19,7 @@ role PDF::NameTree
                 unless %!fetched{$node}++ {
                     for 0, 2 ...^ +$kv {
                         my $val = $kv[$_ + 1];
-                        PDF::COS.coerce($val, $!root.of)
+                        $!root.coerce-node($val)
                             if $!root.coerce-nodes;
                         %!names{ $kv[$_] } = $val;
                     }
@@ -65,8 +65,16 @@ role PDF::NameTree
     method coerce-nodes {False}
 }
 
-role PDF::NameTree[$type] does PDF::NameTree {
+role PDF::NameTree[
+    $type,
+    :&coerce = sub ($_ is rw, $t) {
+        PDF::COS.coerce($_, $t);
+    },
+] does PDF::NameTree {
     method of {$type}
     method coerce-nodes {True}
+    method coerce-node($node is rw) {
+        &coerce($node, $type);
+    }
 }
 

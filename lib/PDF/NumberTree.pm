@@ -21,7 +21,7 @@ role PDF::NumberTree
                 unless %!fetched{$node}++ {
                     for 0, 2 ...^ +$kv {
                        my $val = $kv[$_ + 1];
-                       PDF::COS.coerce($val, $!root.of)
+                       $!root.coerce-node($val)
                            if $!root.coerce-nodes;
                        %!nums{$kv[$_] + 0} = $val;
                     }
@@ -72,7 +72,15 @@ role PDF::NumberTree
     method coerce-nodes {False}
 }
 
-role PDF::NumberTree[$type] does PDF::NumberTree {
+role PDF::NumberTree[
+    $type,
+    :&coerce = sub ($_ is rw, $t) {
+        PDF::COS.coerce($_, $t);
+    },
+] does PDF::NumberTree {
     method of {$type}
     method coerce-nodes {True}
+    method coerce-node($node is rw) {
+        &coerce($node, $type);
+    }
 }

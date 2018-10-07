@@ -1,8 +1,10 @@
+Release 0.3.0
+- fixed pdf-toc.p6
 Release 0.2.9
-- Renamed PDF::Font::CIDFont -> PDF::Class::CIDFont
 - Script fixes:
-  -- pdf-burst.p6 to work with inherited page resources.
-  -- pdf-revert.p6, pdf-info.p6 to not be confused by
+  -- pdf-burst.p6 to work with inherited page resources. added
+     --batch-size option for multi-page bursts
+  -- fixed pdf-revert.p6, pdf-info.p6 to not be confused by
      hybrid xrefs
   -- minor improvements to: pdf-append.p6, pdf-content-dump.p6,
      pdf-toc.p6

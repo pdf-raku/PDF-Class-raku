@@ -88,21 +88,7 @@ class PDF::Catalog
     }
     has PageLabels $.PageLabels is entry;           #| (Optional; PDF 1.3) A number tree defining the page labeling for the document.
 
-    my role Names does PDF::COS::Tie::Hash {
-        has PDF::NameTree $.Dests is entry;                  #| (Optional; PDF 1.2) A name tree mapping name strings to destinations.
-        has PDF::NameTree $.AP is entry;                     #| (Optional; PDF 1.3) A name tree mapping name strings to annotation appearance streams.
-        has PDF::NameTree $.JavaScript is entry;             #| (Optional; PDF 1.3) A name tree mapping name strings to document-level JavaScript actions.
-        has PDF::NameTree $.Pages is entry;                  #| (Optional; PDF 1.3) A name tree mapping name strings to visible pages for use in interactive forms.
-        has PDF::NameTree $.Templates is entry;              #| (Optional; PDF 1.3) A name tree mapping name strings to invisible (template) pages for use in interactive forms.
-        has PDF::NameTree $.IDS is entry;                    #| (Optional; PDF 1.3) A name tree mapping digital identifiers to Web Capture content sets.
-        has PDF::NameTree $.URLS is entry;                   #| (Optional; PDF 1.3) A name tree mapping uniform resource locators (URLs) to Web Capture content sets10.4, "Content Sets").
-        has PDF::NameTree $.EmbeddedFiles is entry;          #| (Optional; PDF 1.4) A name tree mapping name strings to file specifications for embedded file streams.
-        has PDF::NameTree $.AlternatePresentations is entry; #| (Optional; PDF 1.4) A name tree mapping name strings to alternate presentations.
-        has PDF::NameTree $.Renditions is entry;             #| (Optional; PDF 1.5) A name tree mapping name strings (which shall have Unicode encoding) to rendition objects.
-    }
-    has Names $.Names is entry;                  #| (Optional; PDF 1.2) The document’s name dictionary
-
-    my role DestDict does PDF::COS::Tie::Hash {
+    our role DestDict does PDF::COS::Tie::Hash {
         # Intermediate Dictionary with a <D> entry
         has DestSpec $.D is entry(:required, :alias<destination>, :coerce(&coerce-dest));
     }
@@ -113,6 +99,21 @@ class PDF::Catalog
     multi sub coerce($dest, Dest) is default {
         coerce-dest($dest, DestSpec);
     }
+
+    my role NameTrees does PDF::COS::Tie::Hash {
+        has PDF::NameTree[Dest, :&coerce] $.Dests is entry;                  #| (Optional; PDF 1.2) A name tree mapping name strings to destinations.
+        has PDF::NameTree $.AP is entry;                     #| (Optional; PDF 1.3) A name tree mapping name strings to annotation appearance streams.
+        has PDF::NameTree $.JavaScript is entry;             #| (Optional; PDF 1.3) A name tree mapping name strings to document-level JavaScript actions.
+        has PDF::NameTree $.Pages is entry;                  #| (Optional; PDF 1.3) A name tree mapping name strings to visible pages for use in interactive forms.
+        has PDF::NameTree $.Templates is entry;              #| (Optional; PDF 1.3) A name tree mapping name strings to invisible (template) pages for use in interactive forms.
+        has PDF::NameTree $.IDS is entry;                    #| (Optional; PDF 1.3) A name tree mapping digital identifiers to Web Capture content sets.
+        has PDF::NameTree $.URLS is entry;                   #| (Optional; PDF 1.3) A name tree mapping uniform resource locators (URLs) to Web Capture content sets10.4, "Content Sets").
+        has PDF::NameTree $.EmbeddedFiles is entry;          #| (Optional; PDF 1.4) A name tree mapping name strings to file specifications for embedded file streams.
+        has PDF::NameTree $.AlternatePresentations is entry; #| (Optional; PDF 1.4) A name tree mapping name strings to alternate presentations.
+        has PDF::NameTree $.Renditions is entry;             #| (Optional; PDF 1.5) A name tree mapping name strings (which shall have Unicode encoding) to rendition objects.
+    }
+    has NameTrees $.Names is entry;         #| (Optional; PDF 1.2) The document’s name dictionary
+
     has Dest %.Dests is entry(:&coerce);    #| (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
 
     has PDF::ViewerPreferences $.ViewerPreferences is entry; #| (Optional; PDF 1.2) A viewer preferences dictionary specifying the way the document is to be displayed on the screen.
