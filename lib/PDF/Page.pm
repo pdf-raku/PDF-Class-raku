@@ -23,7 +23,8 @@ class PDF::Page
 
     # see [PDF 1.7 TABLE 3.27 Entries in a page object]
     has PDF::COS::Name $.Type is entry(:required) where 'Page';
-    has Hash $.Parent is entry(:indirect);       #| (Required; must be an indirect reference) The page tree node that is the immediate parent of this page object.
+    my subset Pages of Hash where .<Type> ~~ 'Pages'; # autoloaded PDF::Pages
+    has Pages $.Parent is entry(:indirect);       #| (Required; must be an indirect reference) The page tree node that is the immediate parent of this page object.
     has Str $.LastModified is entry;             #| (Required if PieceInfo is present; optional otherwise; PDF 1.3) The date and time when the page’s contents were most recently modified
     has PDF::Resources $.Resources is entry(:inherit);   #| (Required; inheritable) A dictionary containing any resources required by the page
     has Numeric @.MediaBox is entry(:inherit,:len(4));   #| (Required; inheritable) A rectangle, expressed in default user space units, defining the boundaries of the physical medium on which the page is intended to be displayed or printed
@@ -35,7 +36,8 @@ class PDF::Page
     has PDF::COS::Stream @.Contents is entry(:array-or-item);       #| (Optional) A content stream describing the contents of this page. If this entry is absent, the page is empty
     subset NinetyDegreeAngle of Int where { $_ %% 90}
     has NinetyDegreeAngle $.Rotate is entry(:inherit);     #| (Optional; inheritable) The number of degrees by which the page should be rotated clockwise when displayed or printed
-    has Hash $.Group is entry;                   #| (Optional; PDF 1.4) A group attributes dictionary specifying the attributes of the page’s page group for use in the transparent imaging model
+    my subset TransGroup of Hash where .<S> ~~ 'Transparency'; # autoloaded PDF::Group::Transparency]
+    has TransGroup $.Group is entry;                   #| (Optional; PDF 1.4) A group attributes dictionary specifying the attributes of the page’s page group for use in the transparent imaging model
     has PDF::Image $.Thumb is entry(:alias<thumbnail-image>);       #| (Optional) A stream object defining the page’s thumbnail image
     has Hash @.B is entry(:indirect, :alias<beads>);                 #| (Optional; PDF 1.1; recommended if the page contains article beads) An array of indirect references to article beads appearing on the page
     has Numeric $.Dur is entry(:alias<display-duration>);       #| (Optional; PDF 1.1) The page’s display duration (also called its advance timing): the maximum length of time, in seconds, that the page is displayed during presentations before the viewer application automatically advances to the next page
