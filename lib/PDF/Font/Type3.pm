@@ -15,6 +15,9 @@ class PDF::Font::Type3
     use PDF::Resources;
 
     # see [PDF 1.7 TABLE 5.9 Entries in a Type 3 font dictionary]
+    use ISO_32000::Type_3_Font;
+    also does ISO_32000::Type_3_Font;
+
     has PDF::COS::Name $.Name is entry;                         #| (Required in PDF 1.0; optional otherwise) See Table 5.8 on page 413
     has Numeric @.FontBBox is entry(:required, :len(4));         #| (Required) A rectangle expressed in the glyph coordinate system, specifying the font bounding box.
     has Numeric @.FontMatrix is entry(:required, :len(6));       #| (Required) An array of six numbers specifying the font matrix, mapping glyph space to text space

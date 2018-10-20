@@ -12,6 +12,8 @@ class PDF::XObject::PS
     use PDF::COS::Tie;
     use PDF::COS::Stream;
     # see [PDF 1.7 TABLE 4.38 Additional entries specific to a PostScript XObject dictionary]
+    use ISO_32000::Postscript_XObject;
+    also does ISO_32000::Postscript_XObject;
     has PDF::COS::Stream $.Level1 is entry; #| (Optional) A stream whose contents are to be used in place of the PostScript XObject’s stream when the target PostScript interpreter is known to support only LanguageLevel 1.
 
 }

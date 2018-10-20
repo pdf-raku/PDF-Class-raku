@@ -12,6 +12,9 @@ class PDF::Font::Type1
     use PDF::Encoding;
 
     # see [PDF 1.7 TABLE 5.8 Entries in a Type 1 font dictionary]
+    use ISO_32000::Type_1_Font;
+    also does ISO_32000::Type_1_Font;
+
     has PDF::COS::Name $.Name is entry;                 #| (Required in PDF 1.0; optional otherwise) The name by which this font is referenced in the Font subdictionary of the current resource dictionary.
                                                         #| Note: This entry is obsolescent and its use is no longer recommended.
     has PDF::COS::Name $.BaseFont is entry(:required);  #| (Required) The PostScript name of the font. For Type 1 fonts, this is usually the value of the FontName entry in the font program

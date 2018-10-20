@@ -1,3 +1,5 @@
+Release 0.3.1
+- Use ISO_32000 roles (e.g. ISO_32000::Page)
 Release 0.3.0
 - fixed pdf-toc.p6
 Release 0.2.9

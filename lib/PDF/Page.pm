@@ -22,6 +22,9 @@ class PDF::Page
     use PDF::Action;
 
     # see [PDF 1.7 TABLE 3.27 Entries in a page object]
+    use ISO_32000::Page;
+    also does ISO_32000::Page;
+
     has PDF::COS::Name $.Type is entry(:required) where 'Page';
     my subset Pages of Hash where .<Type> ~~ 'Pages'; # autoloaded PDF::Pages
     has Pages $.Parent is entry(:indirect);       #| (Required; must be an indirect reference) The page tree node that is the immediate parent of this page object.
@@ -62,7 +65,7 @@ class PDF::Page
     has Hash $.SeparationInfo is entry;          #| (Optional; PDF 1.3) A separation dictionary containing information needed to generate color separations for the page
     has PDF::COS::Name $.Tabs is entry;          #| (Optional; PDF 1.5) A name specifying the tab order to be used for annotations on the page
     has PDF::COS::Name $.TemplateInstantiated is entry; #| (Required if this page was created from a named page object; PDF 1.5) The name of the originating page object
-    has Hash $.PressSteps is entry;              #| (Optional; PDF 1.5) A navigation node dictionary representing the first node on the pag
+    has Hash $.PresSteps is entry;               #| (Optional; PDF 1.5) A navigation node dictionary representing the first node on the page
     has Numeric $.UserUnit is entry;             #| (Optional; PDF 1.6) A positive number giving the size of default user space units, in multiples of 1 ⁄ 72 inch
     has Hash @.VP is entry(:alias<view-ports>);  #| Optional; PDF 1.6) An array of viewport dictionaries
 

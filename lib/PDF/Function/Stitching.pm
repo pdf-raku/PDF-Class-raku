@@ -7,6 +7,11 @@ use PDF::Function;
 class PDF::Function::Stitching
     is PDF::Function {
 
+    use ISO_32000::Function_common;
+    use ISO_32000::Type_3_Function;
+    also does ISO_32000::Function_common;
+    also does ISO_32000::Type_3_Function;
+
     use PDF::COS::Tie;
 
     # see [PDF 1.7 TABLE 3.38 Additional entries specific to a type 3 function dictionary]

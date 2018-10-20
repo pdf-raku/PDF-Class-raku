@@ -20,6 +20,10 @@ role PDF::Image
     use PDF::Content::Image::PNG :PNG-CS;
     use PDF::IO::Filter;
     # See [PDF 1.7 TABLE 4.39 Additional entries specific to an image dictionary]
+    use ISO_32000::Image;
+    also does ISO_32000::Image;
+    has PDF::COS::Name $.Type is entry where 'XObject';
+    has PDF::COS::Name $.Subtype is entry where 'Image';
     has Numeric $.Width is entry(:required);      #| (Required) The width of the image, in samples.
     has Numeric $.Height is entry(:required);     #| (Required) The height of the image, in samples.
     my subset NameOrColorSpace of PDF::COS where PDF::COS::Name | PDF::ColorSpace;
@@ -32,7 +36,15 @@ role PDF::Image
     has StreamOrArray $.Mask is entry;            #| (Optional except for image masks; not allowed for image masks; PDF 1.3) An image XObject defining an image mask to be applied to this image, or an array specifying a range of colours to be applied to it as a colour key mask. If ImageMask is true, this entry shall not be present.
     has Numeric @.Decode is entry;                #| (Optional) An array of numbers describing how to map image samples into the range of values appropriate for the image’s color space
     has Bool $.Interpolate is entry;              #| (Optional) A flag indicating whether image interpolation is to be performed
-    has PDF::Image @.Alternatives is entry;             #| An array of alternate image dictionaries for this image
+    my role Alternate_Image
+        does PDF::COS::Tie::Hash {
+        use ISO_32000::Alternate_Image;
+        also does ISO_32000::Alternate_Image;
+        has PDF::Image $.Image is entry(:required);
+        has Bool $.DefaultForPrinting is entry;
+        has PDF::OCG $.OC is entry;
+    }
+    has Alternate_Image @.Alternates is entry;             #| An array of alternate image dictionaries for this image
     my role SoftMask does PDF::COS::Tie::Hash {
         has Numeric @.Matte is entry; #| (Optional; PDF 1.4) An array of component values specifying the matte colour with which the image data in the parent image shall have been preblended. The array shall consist of n numbers, where n is the number of components in the colour space specified by the ColorSpace entry in the parent image’s image dictionary; the numbers shall be valid colour components in that colour space. If this entry is absent, the image data shall not be preblended.
     }

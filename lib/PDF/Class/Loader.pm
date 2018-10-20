@@ -98,7 +98,7 @@ PDF::COS.loader = class PDF::Class::Loader
     }
 
     subset ColorSpace-Array of List where {
-        my $elems = .elems;
+        my $elems := .elems;
 
         2 <= $elems <= 5
             && ((my $t = from-ast .[0]) ~~ PDF::COS::Name)

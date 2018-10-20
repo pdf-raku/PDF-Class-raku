@@ -12,6 +12,10 @@ class PDF::Shading::Lattice
     use PDF::COS::Tie;
     use PDF::Function;
 
+    use ISO_32000::Shading_common;
+    use ISO_32000::Type_5_Shading;
+    also does ISO_32000::Shading_common;
+    also does ISO_32000::Type_5_Shading;
     # see [PDF 1.7 TABLE 4.33 Additional entries specific to a type 5 shading dictionary]
     has UInt $.BitsPerCoordinate is entry(:required); #| (Required) The number of bits used to represent each vertex coordinate. Valid values are 1, 2, 4, 8, 12, 16, 24, and 32.
     has UInt $.BitsPerComponent is entry(:required);  #| (Required) The number of bits used to represent each color component. Valid values are 1, 2, 4, 8, 12, and 16.

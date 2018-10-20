@@ -8,6 +8,9 @@ role PDF::Encoding
     does PDF::COS::Tie::Hash {
 
     # see [PDF 1.7 TABLE 5.11 Entries in an encoding dictionary]
+    use ISO_32000::Encoding;
+    also does ISO_32000::Encoding;
+
     use PDF::COS::Tie;
     use PDF::COS::Name;
 

@@ -14,8 +14,7 @@ sub ind-ref(IndRef $_ ) {
       (.value[0], .value[1], 'R').join: ' ';
 }
 
-my %page-index;
-my PDF::Class $pdf;
+my %*page-index;
 
 sub named-dest($_) {
     state $named-dests = do with $pdf.catalog.Names {
@@ -36,13 +35,13 @@ sub MAIN(Str $infile,           #= input PDF
            !! $infile.IO
     );
 
-    $pdf .= open( $input, :$password, );
+    my PDF::Class $pdf .= open( $input, :$password, );
 
     my $page-labels = $pdf.catalog.PageLabels
         if $labels;
 
     my @index = $pdf.catalog.Pages.page-index;
-    %page-index = @index.pairs.map: {
+    %*page-index = @index.pairs.map: {
         my $page-num = .key + 1;
         $page-num = .page-label($page-num)
             with $page-labels;
@@ -84,7 +83,7 @@ multi sub show-dest(DestInternalRef $ref) {
 
 multi sub show-dest(IndRef $_) {
     my $ref = ind-ref($_);
-    %page-index{$ref}  // $ref;
+    %*page-index{$ref}  // $ref;
 }
 
 multi sub show-dest(PDF::Destination $_) {

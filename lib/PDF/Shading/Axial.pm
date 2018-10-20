@@ -10,6 +10,11 @@ class PDF::Shading::Axial
     does PDF::Shading {
 
     # see [PDF 1.7 TABLE 4.30 Additional entries specific to a type 2 shading dictionary]
+    use ISO_32000::Shading_common;
+    use ISO_32000::Type_2_Shading;
+    also does ISO_32000::Shading_common;
+    also does ISO_32000::Type_2_Shading;
+
     use PDF::COS::Tie;
     use PDF::Function;
 

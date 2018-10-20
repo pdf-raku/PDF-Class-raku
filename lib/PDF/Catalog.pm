@@ -10,6 +10,8 @@ class PDF::Catalog
     is PDF::COS::Dict
     does PDF::Class::Type
     does PDF::Content::Resourced {
+    use ISO_32000::Catalog;
+    also does ISO_32000::Catalog;
 
     # see [PDF 1.7 TABLE 3.25 Entries in the catalog dictionary]
     use PDF::COS::Tie;
@@ -35,6 +37,7 @@ class PDF::Catalog
     has PDF::COS::Name $.Type is entry(:required) where 'Catalog';
 
     has PDF::COS::Name $.Version is entry;               #| (Optional; PDF 1.4) The version of the PDF specification to which the document conforms (for example, 1.4)
+    has Hash $.Extensions is entry;
 
     my subset Pages of PDF::Class::Type where { .<Type> ~~ 'Pages' }; # autoloaded PDF::Pages
     has Pages $.Pages is entry(:required, :indirect);    #| (Required; must be an indirect reference) The page tree node that is the root of the document’s page tree
@@ -101,6 +104,8 @@ class PDF::Catalog
     }
 
     my role NameTrees does PDF::COS::Tie::Hash {
+        use ISO_32000::Catalog_Name_tree;
+        also does ISO_32000::Catalog_Name_tree;
         has PDF::NameTree[Dest, :&coerce] $.Dests is entry;                  #| (Optional; PDF 1.2) A name tree mapping name strings to destinations.
         has PDF::NameTree $.AP is entry;                     #| (Optional; PDF 1.3) A name tree mapping name strings to annotation appearance streams.
         has PDF::NameTree $.JavaScript is entry;             #| (Optional; PDF 1.3) A name tree mapping name strings to document-level JavaScript actions.
