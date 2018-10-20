@@ -5,6 +5,9 @@ use PDF::COS::Tie::Hash;
 role PDF::FontStream
     does PDF::COS::Tie::Hash {
 
+    use ISO_32000::Embedded_font_stream_additional;
+    also does ISO_32000::Embedded_font_stream_additional;
+
     use PDF::Metadata::XML;
 
     has UInt $.Length1 is entry; #| (Required for Type 1 and TrueType fonts) The length in bytes of the clear-text portion of the Type 1 font program, or the entire TrueType font program, after it has been decoded using the filters specified by the stream’s Filter entry, if any.

@@ -8,8 +8,8 @@ class PDF::Group::Transparency
     use PDF::COS::Name;
     use PDF::ColorSpace;
 
-    use ISO_32000::Group_Attributes;
-    also does ISO_32000::Group_Attributes;
+    use ISO_32000::Transparency_group_additional;
+    also does ISO_32000::Transparency_group_additional;
     has PDF::COS::Name $.S is entry(:required) where 'Transparency';
     my subset NameOrColorSpace where PDF::COS::Name|PDF::ColorSpace;
     has NameOrColorSpace  $.CS is entry(:alias<color-space>); #| (Sometimes required) The group colour space, which is used for the following purposes:

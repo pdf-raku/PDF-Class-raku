@@ -1,11 +1,11 @@
 use v6;
 
-use PDF::COS::Dict;
+use PDF::COS::Tie::Hash;
 
 #| /Type /FontDescriptor - the FontDescriptor dictionary
 
-class PDF::FontDescriptor
-    is PDF::COS::Dict {
+role PDF::FontDescriptor
+    is PDF::COS::Tie::Hash {
 
     use PDF::COS::Tie;
     use PDF::COS::Name;
@@ -13,6 +13,8 @@ class PDF::FontDescriptor
     use PDF::FontFile;
 
     # see [PDF 1.7 TABLE 5.19 Entries common to all font descriptors]
+    use ISO_32000::Font_descriptor;
+    also does ISO_32000::Font_descriptor;
     has PDF::COS::Name $.Type is entry(:required) where 'FontDescriptor';
     has PDF::COS::Name $.FontName is entry(:required); #| (Required) The PostScript name of the font.
     has Str $.FontFamily is entry;                     #| (Optional; PDF 1.5; strongly recommended for Type 3 fonts in Tagged PDF documents) A byte string specifying the preferred font family name

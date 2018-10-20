@@ -13,6 +13,9 @@ role PDF::Outlines
     use PDF::COS::Name;
     use PDF::Outline;
 
+    use ISO_32000::Outline;
+    also does ISO_32000::Outline;
+
     has PDF::COS::Name $.Type is entry where 'Outlines';  #| (Optional) The type of PDF object that this dictionary describes; if present, shall be Outlines for an outline dictionary.
 
     # see TABLE 8.3 Entries in the outline dictionary
