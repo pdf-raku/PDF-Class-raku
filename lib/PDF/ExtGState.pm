@@ -12,8 +12,8 @@ role PDF::ExtGState
     use PDF::Mask;
 
     # see [PDF .1.7 TABLE 4.8 Entries in a graphics state parameter dictionary]
-    use ISO_32000::Graphics_state;
-    also does ISO_32000::Graphics_state;
+##    use ISO_32000::Graphics_state;
+##    also does ISO_32000::Graphics_state;
     has PDF::COS::Name $.Type is entry where 'ExtGState';
     has Numeric $.LW is entry(:alias<line-width>);               #| (Optional; PDF 1.3) The line width
     has UInt $.LC is entry(:alias<line-cap>);                    #| (Optional; PDF 1.3) The line cap style

@@ -11,8 +11,8 @@ role PDF::ViewerPreferences
     use PDF::COS::Name;
 
     # see [PDF 1.7 TABLE 8.1 Entries in a viewer preferences dictionary]
-    use ISO_32000::Viewer_preferences;
-    also does ISO_32000::Viewer_preferences;
+##    use ISO_32000::Viewer_preferences;
+##    also does ISO_32000::Viewer_preferences;
     has Bool $.HideToolbar is entry;            #| (Optional) A flag specifying whether to hide the viewer application’s tool bars when the document is active. Default value: false.
 
     has Bool $.HideMenubar is entry;            #| (Optional) A flag specifying whether to hide the viewer application’s menu bar when the document is active. Default value: false.

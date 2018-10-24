@@ -15,6 +15,9 @@ class PDF::Annot::Markup
     use PDF::COS::Stream;
     use PDF::Markup::Markup3D;
 
+    use ISO_32000::Annotation_markup_additional;
+    also does ISO_32000::Annotation_markup_additional;
+
     # This is the base class for Markup Annotations, as indicated in [PDF 32000 Table 169, Column 3].
     # I.e.: Text, FreeText, Line, Square, Circle, Polygon, PolyLine, Highlight Underline, Squiggly,
     # StrikeOut, Stamp, Caret, Ink, FileAttachment, Sound
@@ -40,6 +43,7 @@ class PDF::Annot::Markup
     }
     has TextOrDict $.IRT is entry(:alias<reply-to-ref>, :&coerce); #| (Required if an RT entry is present, otherwise optional; PDF 1.5) A reference to the annotation that this annotation is “in reply to.” Both annotations shall be on the same page of the document. The relationship between the two annotations shall be specified by the RT entry.
     #| If this entry is present in an FDF file, its type shall not be a dictionary but a text string containing the contents of the NM entry of the annotation being replied to, to allow for a situation where the annotation being replied to is not in the same FDF file. Subj text string (Optional; PDF 1.5) Text representing a short description of the subject being addressed by the annotation.
+    has PDF::COS::TextString $.Subj is entry; #| text representing a short description of the subject being addressed by the annotation.
     my subset RelationshipType of PDF::COS::Name where 'R'|'Group';
     has  RelationshipType $.RT is entry(:alias<reply-type>, :default<R>); #| (Optional; meaningful only if IRT is present; PDF 1.6) A name specifying the relationship (the “reply type”) between this annotation and onespecified by IRT. Valid values are:
     # R - The annotation shall be considered a reply to the annotationspecified by IRT. Conforming readers shall not display replies to an annotation individually but together in the form of threaded comments.

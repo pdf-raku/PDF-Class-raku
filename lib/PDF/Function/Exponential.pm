@@ -7,16 +7,14 @@ use PDF::Function;
 class PDF::Function::Exponential
     is PDF::Function {
 
-    use ISO_32000::Function_common;
     use ISO_32000::Type_2_Function;
-    also does ISO_32000::Function_common;
     also does ISO_32000::Type_2_Function;
 
     use PDF::COS::Tie;
     # see [PDF 1.7 TABLE 3.37 Additional entries specific to a type 2 function dictionary]
     has Numeric @.C0 is entry(:default[0.0]);          #| (Optional) An array of n numbers defining the function result when x = 0.0. Default value: [ 0.0 ].
     has Numeric @.C1 is entry(:default[0.0]);          #| (Optional) An array of n numbers defining the function result when x = 1.0. Default value: [ 1.0 ].
-    has Numeric $N is entry(:required); #| (Required) The interpolation exponent. Each input value x will return n values, given by yj = C0j + xN × (C1j − C0j ), for 0 ≤ j < n.
+    has Numeric $.N is entry(:required); #| (Required) The interpolation exponent. Each input value x will return n values, given by yj = C0j + xN × (C1j − C0j ), for 0 ≤ j < n.
 
     class Transform
         is PDF::Function::Transform {

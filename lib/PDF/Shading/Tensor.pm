@@ -6,9 +6,7 @@ use PDF::Shading::FreeForm;
 
 class PDF::Shading::Tensor
     is PDF::Shading::FreeForm {
-    use ISO_32000::Shading_common;
     use ISO_32000::Type_6_Shading;
-    also does ISO_32000::Shading_common;
     also does ISO_32000::Type_6_Shading;
     # Tensor and FreeForm shading types have identical structure
 }

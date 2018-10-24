@@ -10,9 +10,7 @@ class PDF::Shading::Function
     does PDF::Shading {
 
      # see [PDF 1.7 TABLE 4.29 Additional entries specific to a type 1 shading dictionary]
-    use ISO_32000::Shading_common;
     use ISO_32000::Type_1_Shading;
-    also does ISO_32000::Shading_common;
     also does ISO_32000::Type_1_Shading;
     use PDF::COS::Tie;
     use PDF::Function;

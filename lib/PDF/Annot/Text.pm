@@ -12,6 +12,8 @@ class PDF::Annot::Text
     use PDF::COS::TextString;
 
     # See [PDF 1.7 TABLE 8.23 Additional entries specific to a text annotation]
+    use ISO_32000::Text_annotation_additional;
+    also does ISO_32000::Text_annotation_additional;
     has Bool $.Open is entry;                        #| (Optional) A flag specifying whether the annotation should initially be displayed open. Default value: false (closed).
     has PDF::COS::Name $.Name is entry(:alias<icon-name>, :default<Note>);              #| (Optional) The name of an icon to be used in displaying the annotation. Viewer applications should provide predefined icon appearances for at least the following standard names:
                                                      #|  - Comment, Key, Note, Help, NewParagraph, Paragraph, Insert

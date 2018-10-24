@@ -8,6 +8,9 @@ role PDF::Border
     does PDF::COS::Tie::Hash {
 
     # set [PDF 1.7 TABLE 8.17 Entries in a border style dictionary]
+##    use ISO_32000::Border_style;
+##    also does ISO_32000::Border_style;
+
     use PDF::COS::Tie;
     use PDF::COS::Name;
 

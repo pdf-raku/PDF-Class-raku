@@ -18,6 +18,9 @@ class PDF::Annot
     use PDF::Border;
     use PDF::OCG;
 
+    use ISO_32000::Annotation;
+    also does ISO_32000::Annotation;
+
     method cb-init {
         use PDF::Field :coerce, :FieldLike;
         # annots are also sometimes fields

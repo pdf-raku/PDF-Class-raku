@@ -7,9 +7,7 @@ use PDF::Function;
 class PDF::Function::Sampled
     is PDF::Function {
 
-    use ISO_32000::Function_common;
     use ISO_32000::Type_0_Function;
-    also does ISO_32000::Function_common;
     also does ISO_32000::Type_0_Function;
 
     use PDF::COS::Tie;

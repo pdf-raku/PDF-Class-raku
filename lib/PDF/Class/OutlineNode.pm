@@ -14,7 +14,6 @@ role PDF::Class::OutlineNode {
         }.new( :$cur );
     }
     method add-kid(Hash $kid is copy = {}) {
-        require PDF::Outline;
         my $grand-kids = $kid<kids>:delete;
         my PDF::Destination $dest;
         with $kid<dest>:delete {
@@ -22,7 +21,7 @@ role PDF::Class::OutlineNode {
             when DestinationLike  { warn "todo coerce dest: {.perl}" }
             default { warn "ignoring outline dest: {.gist}" }
         }
-        $kid = PDF::COS.coerce($kid, PDF::Outline);
+        $kid = PDF::COS.coerce($kid, (require PDF::Outline));
         $kid.Dest = $_ with $dest;
         $kid.parents //= [];
         $kid.parents.push: self;

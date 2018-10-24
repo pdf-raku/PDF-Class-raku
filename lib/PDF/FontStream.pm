@@ -5,8 +5,8 @@ use PDF::COS::Tie::Hash;
 role PDF::FontStream
     does PDF::COS::Tie::Hash {
 
-    use ISO_32000::Embedded_font_stream_additional;
-    also does ISO_32000::Embedded_font_stream_additional;
+##    use ISO_32000::Embedded_font_stream_additional;
+##    also does ISO_32000::Embedded_font_stream_additional;
 
     use PDF::Metadata::XML;
 
