@@ -7,6 +7,9 @@ role PDF::Action
     does PDF::COS::Tie::Hash {
 
     # set [PDF 1.7 TABLE 8.17 Entries in a action style dictionary]
+    use ISO_32000::Action_common;
+    also does ISO_32000::Action_common;
+
     use PDF::COS::Tie;
     use PDF::COS::Name;
 

@@ -104,8 +104,8 @@ class PDF::Catalog
     }
 
     my role NameTrees does PDF::COS::Tie::Hash {
-##        use ISO_32000::Catalog_Name_tree;
-##        also does ISO_32000::Catalog_Name_tree;
+        use ISO_32000::Catalog_Name_tree;
+        also does ISO_32000::Catalog_Name_tree;
         has PDF::NameTree[Dest, :&coerce] $.Dests is entry;                  #| (Optional; PDF 1.2) A name tree mapping name strings to destinations.
         has PDF::NameTree $.AP is entry;                     #| (Optional; PDF 1.3) A name tree mapping name strings to annotation appearance streams.
         has PDF::NameTree $.JavaScript is entry;             #| (Optional; PDF 1.3) A name tree mapping name strings to document-level JavaScript actions.

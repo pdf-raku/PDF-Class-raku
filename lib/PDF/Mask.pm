@@ -9,8 +9,8 @@ role PDF::Mask
     use PDF::COS::Name;
     use PDF::COS::Stream;
 
-##    use ISO_32000::Soft-mask;
-##    also does ISO_32000::Soft-mask;
+    use ISO_32000::Soft-mask;
+    also does ISO_32000::Soft-mask;
     #| /Type entry is optional, but should be /Mask when present
     has PDF::COS::Name $.Type is entry where 'Mask';
     method type {'Mask'}

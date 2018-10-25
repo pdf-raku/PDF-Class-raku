@@ -6,6 +6,9 @@ class PDF::FontFile
     does PDF::FontStream
     is PDF::COS::Stream {
 
+    use ISO_32000::Embedded_font_stream_additional;
+    also does ISO_32000::Embedded_font_stream_additional;
+
     use PDF::COS::Name;
     use PDF::COS::Tie;
 

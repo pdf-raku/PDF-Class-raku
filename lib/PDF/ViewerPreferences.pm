@@ -11,8 +11,8 @@ role PDF::ViewerPreferences
     use PDF::COS::Name;
 
     # see [PDF 1.7 TABLE 8.1 Entries in a viewer preferences dictionary]
-##    use ISO_32000::Viewer_preferences;
-##    also does ISO_32000::Viewer_preferences;
+    use ISO_32000::Viewer_preferences;
+    also does ISO_32000::Viewer_preferences;
     has Bool $.HideToolbar is entry;            #| (Optional) A flag specifying whether to hide the viewer application’s tool bars when the document is active. Default value: false.
 
     has Bool $.HideMenubar is entry;            #| (Optional) A flag specifying whether to hide the viewer application’s menu bar when the document is active. Default value: false.
@@ -44,6 +44,8 @@ role PDF::ViewerPreferences
                                                 #|Note: This entry is intended primarily for use by prepress applications that interpret or manipulate the page boundaries as described in Section 10.10.1, “Page Boundaries.” Most PDF consumer applications disregard it.
 
     has PDF::COS::Name $.ViewClip is entry(:default<CropBox>);  #| (Optional; PDF 1.4) The name of the page boundary to which the contents of a page are to be clipped when viewing the document on the screen. The value is the key designating the relevant page boundary in the page object (see “Page Objects” on page 144 and Section 10.10.1, “Page Boundaries”). If the specified page boundary is not defined in the page object, its default value is used, as specified in Table 3.27 on page 145. Default value: CropBox.
+
+    has PDF::COS::Name $.PrintClip is entry(:default<CropBox>);
                                                 #| Note: This entry is intended primarily for use by prepress applications that interpret or manipulate the page boundaries as described in Section 10.10.1, “Page Boundaries.” Most PDF consumer applications disregard it.
 
     has PDF::COS::Name $.PrintArea is entry(:default<CropBox>); #| (Optional; PDF 1.4) The name of the page boundary representing the area of a page to be rendered when printing the document. The value is the key designating the relevant page boundary in the page object (see “Page Objects” on page 144 and Section 10.10.1, “Page Boundaries”). If the specified page boundary is not defined in the page object, its default value is used, as specified in Table 3.27 on page 145. Default value: CropBox.

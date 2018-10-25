@@ -13,8 +13,8 @@ role PDF::Appearance
     use PDF::COS::Tie;
     use PDF::COS::Stream;
 
-##    use ISO_32000::Appearance;
-##    also does ISO_32000::Appearance;
+    use ISO_32000::Appearance;
+    also does ISO_32000::Appearance;
 
     my subset FormLike of PDF::COS::Stream where .<Subtype> ~~ 'Form'; # autoloaded PDF::XObject::Form
     my role AppearanceStatus
