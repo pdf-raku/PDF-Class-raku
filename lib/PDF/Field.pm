@@ -12,9 +12,15 @@ role PDF::Field
     use PDF::COS::Dict;
     use PDF::COS::Name;
 
-    # see [PDF 1.7 TABLE 8.69 Entries common to all field dictionaries]
-    use ISO_32000::Field_common;
-    also does ISO_32000::Field_common;
+    my role vanilla does PDF::Field {
+        # see [PDF 1.7 TABLE 8.69 Entries common to all field dictionaries]
+        use ISO_32000::Field_common;
+        also does ISO_32000::Field_common;
+        ## type specific - see individual field definitions
+        has Any $.V is entry(:inherit);           #| (Optional; inheritable) The field’s value, whose format varies depending on the field type
+
+        has Any $.DV is entry(:inherit);          #| (Optional; inheritable) The default value to which the field reverts when a reset-form action is executed. The format of this value is the same as that of V.
+    }
 
     my subset FieldTypeName of PDF::COS::Name
 	where ( 'Btn' # Button
@@ -116,11 +122,6 @@ role PDF::Field
     has PDF::COS::TextString $.TM is entry(:alias<tag>);     #| (Optional; PDF 1.3) The mapping name to be used when exporting interactive form field data from the document.
 
     has UInt $.Ff is entry(:inherit, :alias<flags>);           #| Optional; inheritable) A set of flags specifying various characteristics of the field
-
-## type specific - see individual field definitions
-##    has Any $.V is entry(:inherit);           #| (Optional; inheritable) The field’s value, whose format varies depending on the field type
-
-##    has Any $.DV is entry(:inherit);          #| (Optional; inheritable) The default value to which the field reverts when a reset-form action is executed. The format of this value is the same as that of V.
 
     has Hash $.AA is entry(:alias<additional-actions>);                     #| (Optional; PDF 1.2) An additional-actions dictionary defining the field’s behavior in response to various trigger events. This entry has exactly the same meaning as the AA entry in an annotation dictionary
 

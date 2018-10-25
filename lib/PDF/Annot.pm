@@ -5,7 +5,6 @@ use PDF::Class::Type;
 use PDF::Page;
 
 #| /Type /Annot Annotations
-#| See [PDF 1.7 Section 8.4.1 - Annotation Dictionaries ]
 class PDF::Annot
     is PDF::COS::Dict
     does PDF::Class::Type {
@@ -18,6 +17,7 @@ class PDF::Annot
     use PDF::Border;
     use PDF::OCG;
 
+    #| See [PDF 1.7 Section 8.4.1 - Annotation Dictionaries ]
     use ISO_32000::Annotation;
     also does ISO_32000::Annotation;
 
