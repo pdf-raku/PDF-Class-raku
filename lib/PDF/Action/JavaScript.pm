@@ -10,6 +10,8 @@ class PDF::Action::JavaScript
     does PDF::Action {
 
         # see [PDF 32000 Table 212 – Additional entries specific to named actions]
+    use ISO_32000::JavaScript_action_additional;
+    also does ISO_32000::JavaScript_action_additional;
     use PDF::COS::Tie;
     use PDF::COS::Stream;
     use PDF::COS::TextString;

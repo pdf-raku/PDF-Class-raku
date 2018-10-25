@@ -10,6 +10,8 @@ class PDF::Action::Launch
     does PDF::Action {
 
     # see [PDF 32000 Table 203 – Additional entries specific to a launch action]
+    use ISO_32000::Launch_action_additional;
+    also does ISO_32000::Launch_action_additional;
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::Filespec :file-spec, :&to-file-spec;

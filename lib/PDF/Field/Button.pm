@@ -6,6 +6,8 @@ role PDF::Field::Button
     does PDF::Field {
 
     # [PDF 1.7 TABLE 8.76 Additional entry specific to check box and radio button fields]
+    use ISO_32000::Check_box_and_radio_button_additional;
+    also does ISO_32000::Check_box_and_radio_button_additional;
     use PDF::COS::Tie;
     use PDF::COS::TextString;
 

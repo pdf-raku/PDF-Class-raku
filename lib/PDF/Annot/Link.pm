@@ -18,8 +18,8 @@ class PDF::Annot::Link
 
     has PDF::Action $.A is entry(:alias<action>);             #| (Optional; PDF 1.1) An action to be performed when the link annotation is activated.
     has DestSpec $.Dest is entry(:coerce(&coerce-dest));                     #| (Optional; not permitted if an A entry is present) A destination to be displayed when the annotation is activated
-    my subset HName of PDF::COS::Name where 'N'|'I'|'O'|'P';
-    has HName $.H is entry(:alias<highlight-mode>, :default<I>);           #| (Optional; PDF 1.2) The annotation’s highlighting mode, the visual effect to be used when the mouse button is pressed or held down inside its active area:
+    my subset HighlightMode of PDF::COS::Name where 'N'|'I'|'O'|'P';
+    has HighlightMode $.H is entry(:alias<highlight-mode>, :default<I>);           #| (Optional; PDF 1.2) The annotation’s highlighting mode, the visual effect to be used when the mouse button is pressed or held down inside its active area:
                                        #| N(None)    - No highlighting.
                                        #| I(Invert)  - Invert the contents of the annotation rectangle.
                                        #| O(Outline) - Invert the annotation’s border.

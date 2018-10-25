@@ -27,7 +27,6 @@ class PDF::Catalog
     use PDF::ViewerPreferences;
     use PDF::Outlines;
     use PDF::Action;
-    use PDF::Action::URI;
     use PDF::AcroForm;
     use PDF::OutputIntent;
     use PDF::Resources;
@@ -141,7 +140,12 @@ class PDF::Catalog
 
     has PDF::COS::Dict $.AA is entry(:alias<additional-actions>);                    #| (Optional; PDF 1.4) An additional-actions dictionary defining the actions to be taken in response to various trigger events affecting the document as a whole
 
-    has PDF::Action::URI $.URI is entry;                 #| (Optional; PDF 1.1) A URI dictionary containing document-level information for URI
+    my role URI does PDF::COS::Tie::Hash {
+        use ISO_32000::URI;
+        also does ISO_32000::URI;
+        has PDF::COS::ByteString $.Base is entry;           #| (Optional) The base URI that shall be used in resolving relative URI references. URI actions within the document may specify URIs in partial form, to be interpreted relative to this base address. If no base URI is specified, such partial URIs shall be interpreted relative to the location of the document itself. The use of this entry is parallel to that of the body element <BASE >, as described in the HTML 4.01 Specification
+    }
+    has URI $.URI is entry;                 #| (Optional; PDF 1.1) A URI dictionary containing document-level information for URI
 
     has PDF::AcroForm $.AcroForm is entry;               #| (Optional; PDF 1.2) The document’s interactive form (AcroForm) dictionary
 

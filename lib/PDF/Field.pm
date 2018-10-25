@@ -13,6 +13,8 @@ role PDF::Field
     use PDF::COS::Name;
 
     # see [PDF 1.7 TABLE 8.69 Entries common to all field dictionaries]
+    use ISO_32000::Field_common;
+    also does ISO_32000::Field_common;
 
     my subset FieldTypeName of PDF::COS::Name
 	where ( 'Btn' # Button
