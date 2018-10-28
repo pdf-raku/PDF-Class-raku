@@ -56,6 +56,7 @@ PDF::COS.loader = class PDF::Class::Loader
 		|'StrikeOut'|'Stamp'|'Caret'|'Ink'|'Popup'|'FileAttachment'
 		|'Sound'|'Movie'|'Widget'|'Screen'|'PrinterMark'|'TrapNet'
 		|'Watermark'    { 'Annot' }
+            when 'Markup3D' { 'ExData' }
             when '3D' { $subtype = 'ThreeD'; 'Annot' }
 	    when 'PS'|'Image'|'Form' { 'XObject' }
             when 'Type1C'|'CIDFontType0C'|'OpenType' {

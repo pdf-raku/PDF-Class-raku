@@ -87,7 +87,7 @@
     "PDF::Image" : "lib/PDF/Image.pm",
     "PDF::Info" : "lib/PDF/Info.pm",
     "PDF::MCR" : "lib/PDF/MCR.pm",
-    "PDF::Markup::Markup3D" : "lib/PDF/Markup/Markup3D.pm",
+    "PDF::ExData::Markup3D" : "lib/PDF/ExData/Markup3D.pm",
     "PDF::Mask" : "lib/PDF/Mask.pm",
     "PDF::Mask::Alpha" : "lib/PDF/Mask/Alpha.pm",
     "PDF::Mask::Luminosity" : "lib/PDF/Mask/Luminosity.pm",
@@ -129,5 +129,5 @@
     "pdf"
   ],
   "test-depends" : [ ],
-  "version" : "0.3.1"
+  "version" : "0.4.0"
 }

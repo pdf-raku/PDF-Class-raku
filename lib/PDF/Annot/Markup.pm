@@ -13,7 +13,7 @@ class PDF::Annot::Markup
     use PDF::COS::TextString;
     use PDF::Annot::Popup;
     use PDF::COS::Stream;
-    use PDF::Markup::Markup3D;
+    use PDF::ExData::Markup3D;
 
     use ISO_32000::Annotation_markup_additional;
     also does ISO_32000::Annotation_markup_additional;
@@ -52,6 +52,6 @@ class PDF::Annot::Markup
     has PDF::COS::Name $.IT is entry(:alias<intent>); #| (Optional; PDF 1.6) A name describing the intent of the markup annotation. Intents allow conforming readers to distinguish between different uses and behaviors of a single markup annotation type. If this entry is not present or its value is the same as the annotation type, the annotation shall have no explicit intent and should behave in a generic manner in a conforming reader.
     #| Free text annotations, line annotations, polygon annotations, and (PDF 1.7) polyline annotations (Table 178) have defined intents, whose values are enumerated in the corresponding tables.
 
-    has PDF::Markup::Markup3D $.ExData is entry(:alias<external-data>); #| (Optional; PDF 1.7) An external data dictionary specifying data that shall be associated with the annotation.
+    has PDF::ExData::Markup3D $.ExData is entry(:alias<external-data>); #| (Optional; PDF 1.7) An external data dictionary specifying data that shall be associated with the annotation.
 }
 

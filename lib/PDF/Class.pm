@@ -3,7 +3,7 @@ use v6;
 use PDF:ver(v0.3.2+);
 
 #| PDF entry-point. either a trailer dict or an XRef stream
-class PDF::Class:ver<0.3.1> #:api<PDF-1.7>
+class PDF::Class:ver<0.4.0>:api<PDF-1.7>
     is PDF {
     use ISO_32000::File_trailer;
     also does ISO_32000::File_trailer;
@@ -13,7 +13,7 @@ class PDF::Class:ver<0.3.1> #:api<PDF-1.7>
     use PDF::Class::Type;
     use PDF::Info;
     has PDF::Info $.Info is entry(:indirect);  #| (Optional; must be an indirect reference) The document’s information dictionary
-    my subset Catalog of PDF::Class::Type where { .type eq 'Catalog' };  # autoloaded PDF::Catalog
+    my subset Catalog of PDF::Class::Type where { .<Type> ~~ 'Catalog' };  # autoloaded PDF::Catalog
     has Catalog $.Root is entry(:required, :indirect, :alias<catalog>);
 
     method type { 'PDF' }
