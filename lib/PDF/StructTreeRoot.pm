@@ -9,6 +9,8 @@ class PDF::StructTreeRoot
     does PDF::Class::Type {
 
     # see [PDF 32000 14.7.2 Structure Hierarchy]
+    use ISO_32000::Structure_tree_root;
+    also does ISO_32000::Structure_tree_root;
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::StructElem :coerce-struct-kids, :StructElemChild;

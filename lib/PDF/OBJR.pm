@@ -9,6 +9,8 @@ class PDF::OBJR
     does PDF::Class::Type {
 
     # see [PDF 1.7 TABLE 10.12 Entries in an object reference dictionary]
+    use ISO_32000::Object_reference;
+    also does ISO_32000::Object_reference;
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::Page;

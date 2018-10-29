@@ -157,6 +157,8 @@ class PDF::Catalog
     role MarkInfoDict
 	does PDF::COS::Tie::Hash {
 	#| [See PDF 1.7 TABLE 10.8 Entries in the mark information dictionary]
+        use ISO_32000::Mark_information;
+        also does ISO_32000::Mark_information;
 	has Bool $.Marked is entry;          #| (Optional) A flag indicating whether the document conforms to Tagged PDF conventions. Default value: false.
 					     #| Note: If Suspects is true, the document may not completely conform to Tagged PDF conventions.
 	has Bool $.UserProperties is entry;  #| (Optional; PDF 1.6) A flag indicating the presence of structure elements that contain user properties attributes. Default value: false.
