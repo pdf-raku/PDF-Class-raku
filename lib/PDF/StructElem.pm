@@ -13,6 +13,7 @@ role PDF::StructElem
     use PDF::COS::TextString;
     use PDF::Page;
 
+    # See [PDF 32000 Table 323 - Entries in a structure element dictionary]
     use ISO_32000::Structure_tree_element;
     also does ISO_32000::Structure_tree_element;
     has PDF::COS::Name $.Type is entry where 'StructElem'; #| Optional) The type of PDF object that this dictionary describes; if present, shall be StructElem for a structure element.

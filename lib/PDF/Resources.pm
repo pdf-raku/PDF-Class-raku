@@ -12,7 +12,7 @@ role PDF::Resources
     use PDF::COS::Name;
     use PDF::COS::Stream;
 
-    # See [PDF 1.7 TABLE 3.30 Entries in a resource dictionary]
+    # See [PDF 32000 Table 33 - Entries in a resource dictionary]
     use ISO_32000::Resource;
     also does ISO_32000::Resource;
 

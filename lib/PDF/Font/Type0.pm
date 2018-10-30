@@ -9,7 +9,7 @@ class PDF::Font::Type0
     use PDF::COS::Stream;
     use PDF::Font::CIDFont;
 
-    # see [ PDF 1.7 TABLE 5.18 Entries in a Type 0 font dictionary]
+    # see [ PDF 32000 Table 121 - Entries in a Type 0 font dictionary]
     use ISO_32000::Type_0_Font;
     also does ISO_32000::Type_0_Font;
 

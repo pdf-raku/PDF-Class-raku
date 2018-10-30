@@ -9,7 +9,7 @@ class PDF::Shading::Axial
     is PDF::COS::Dict
     does PDF::Shading {
 
-    # see [PDF 1.7 TABLE 4.30 Additional entries specific to a type 2 shading dictionary]
+    # see [PDF 32000 Table 80 - Additional entries specific to a type 2 shading dictionary]
     use ISO_32000::Type_2_Shading;
     also does ISO_32000::Type_2_Shading;
 

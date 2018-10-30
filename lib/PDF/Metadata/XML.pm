@@ -7,9 +7,13 @@ class PDF::Metadata::XML
     is PDF::COS::Stream
     does PDF::Class::Type {
 
+    # See [PDF 32000 Table 315 - Additional entries in a metadata stream dictionary]
+    use ISO_32000::Metadata_stream_additional;
+    also does ISO_32000::Metadata_stream_additional;
+
     use PDF::COS::Tie;
     use PDF::COS::Name;
-    # See [PDF 1.7 TABLE 10.3 Additional entries in a metadata stream dictionary]
+
     has PDF::COS::Name $.Type is entry(:required) where 'Metadata';
     has PDF::COS::Name $.Subtype is entry(:required) where 'XML';
     has PDF::COS::Stream $.Metadata is entry; #| (Optional; PDF 1.4) A metadata stream containing metadata for the component.

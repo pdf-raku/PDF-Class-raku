@@ -8,7 +8,7 @@ class PDF::OBJR
     is PDF::COS::Dict
     does PDF::Class::Type {
 
-    # see [PDF 1.7 TABLE 10.12 Entries in an object reference dictionary]
+    # see [PDF 32000 table 325 - Entries in an object reference dictionary]
     use ISO_32000::Object_reference;
     also does ISO_32000::Object_reference;
     use PDF::COS::Tie;

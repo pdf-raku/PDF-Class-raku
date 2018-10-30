@@ -5,7 +5,7 @@ use PDF::Annot::Markup;
 class PDF::Annot::Link
     is PDF::Annot::Markup {
 
-    # See [PDF 1.7 TABLE 8.24 Additional entries specific to a link annotation]
+    # See [PDF 3200 Table 173 - Additional entries specific to a link annotation]
     use ISO_32000::Link_annotation_additional;
     also does ISO_32000::Link_annotation_additional;
 

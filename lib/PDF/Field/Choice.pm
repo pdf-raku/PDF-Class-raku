@@ -5,9 +5,9 @@ use PDF::Field;
 role PDF::Field::Choice
     does PDF::Field {
 
-    # [PDF 1.7 TABLE 8.76 Additional entry specific to check box and radio button fields]
-    use ISO_32000::Choice_field;
-    also does ISO_32000::Choice_field;
+    # See [PDF 32000 TABLE 231 - Additional entry specific to a choice field]
+    use ISO_32000::Choice_field_additional;
+    also does ISO_32000::Choice_field_additional;
  
     use PDF::COS::Tie;
     use PDF::COS::TextString;

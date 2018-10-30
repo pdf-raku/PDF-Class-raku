@@ -19,7 +19,7 @@ role PDF::Image
 
     use PDF::Content::Image::PNG :PNG-CS;
     use PDF::IO::Filter;
-    # See [PDF 1.7 TABLE 4.39 Additional entries specific to an image dictionary]
+    # See [PDF 32000 Table 89 - Additional Entries Specific to an Image Dictionary]
     use ISO_32000::Image;
     also does ISO_32000::Image;
     has PDF::COS::Name $.Type is entry where 'XObject';
@@ -37,7 +37,8 @@ role PDF::Image
     has Numeric @.Decode is entry;                #| (Optional) An array of numbers describing how to map image samples into the range of values appropriate for the image’s color space
     has Bool $.Interpolate is entry;              #| (Optional) A flag indicating whether image interpolation is to be performed
     my role Alternate_Image
-        does PDF::COS::Tie::Hash {
+    does PDF::COS::Tie::Hash {
+        # See [PDF 32000 Table 91 - Entries in an Alternate Image Dictionary]
         use ISO_32000::Alternate_Image;
         also does ISO_32000::Alternate_Image;
         has PDF::Image $.Image is entry(:required);

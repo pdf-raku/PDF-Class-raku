@@ -13,7 +13,7 @@ role PDF::Field
     use PDF::COS::Name;
 
     my role vanilla does PDF::Field {
-        # see [PDF 1.7 TABLE 8.69 Entries common to all field dictionaries]
+        # see [PDF 32000 Table 220 - Entries common to all field dictionaries]
         use ISO_32000::Field_common;
         also does ISO_32000::Field_common;
         ## type specific - see individual field definitions

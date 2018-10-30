@@ -50,7 +50,7 @@ PDF::COS.loader = class PDF::Class::Loader
 	my $subtype = from-ast $dict<Subtype>;
 
 	my $type = do given $subtype {
-	    # See [PDF 1.7 - TABLE 8.20 Annotation types]
+	    # See [PDF 32000 Table 169 - Annotation types]
 	    when 'Text'|'Link'|'FreeText'|'Line'|'Square'|'Circle'
 		|'Polygon'|'PolyLine'|'Highlight'|'Underline'|'Squiggly'
 		|'StrikeOut'|'Stamp'|'Caret'|'Ink'|'Popup'|'FileAttachment'

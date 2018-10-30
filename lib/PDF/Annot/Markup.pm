@@ -15,6 +15,7 @@ class PDF::Annot::Markup
     use PDF::COS::Stream;
     use PDF::ExData::Markup3D;
 
+    # See [PDF 32000 Table 170 - Additional entries specific to markup annotations]
     use ISO_32000::Annotation_markup_additional;
     also does ISO_32000::Annotation_markup_additional;
 

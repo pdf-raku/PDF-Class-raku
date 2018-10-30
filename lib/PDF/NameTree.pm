@@ -5,6 +5,7 @@ use PDF::COS::Tie::Hash;
 role PDF::NameTree
     does PDF::COS::Tie::Hash {
 
+    # See [PDF 32000 Table 36 - Entries in a name tree node dictionary]
     use ISO_32000::Name_tree_node;
     also does ISO_32000::Name_tree_node;
 

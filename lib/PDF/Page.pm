@@ -21,7 +21,7 @@ class PDF::Page
     use PDF::Field;
     use PDF::Action;
 
-    # see [PDF 1.7 TABLE 3.27 Entries in a page object]
+    # see [PDF 32000 Table 30 - Entries in a page object]
     use ISO_32000::Page;
     also does ISO_32000::Page;
 

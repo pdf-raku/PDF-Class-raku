@@ -14,7 +14,7 @@ class PDF::Font::Type3
     use PDF::Encoding;
     use PDF::Resources;
 
-    # see [PDF 1.7 TABLE 5.9 Entries in a Type 3 font dictionary]
+    # see [PDF 32000 TABLE 112 - Entries in a Type 3 font dictionary]
     use ISO_32000::Type_3_Font;
     also does ISO_32000::Type_3_Font;
 

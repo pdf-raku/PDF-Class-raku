@@ -17,7 +17,10 @@ class PDF::Pages
     use PDF::COS::Name;
     use PDF::Resources;
 
-    # see [PDF 1.7 TABLE 3.26 Required entries in a page tree node]
+    # see [PDF 30 Table 29 - Required entries in a page tree node]
+    use ISO_32000::Pages;
+    also does ISO_32000::Pages;
+
     has PDF::COS::Name $.Type is entry(:required) where 'Pages';
     has PDF::Pages $.Parent is entry(:indirect); #| (Required except in root node; must be an indirect reference) The page tree node that is the immediate parent of this one.
     has PDF::Content::PageNode @.Kids is entry(:required, :indirect);  #| (Required) An array of indirect references to the immediate children of this node. The children may be page objects or other page tree nodes.

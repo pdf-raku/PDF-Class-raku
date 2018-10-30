@@ -11,7 +11,7 @@ role PDF::ExtGState
     use PDF::COS::Name;
     use PDF::Mask;
 
-    # see [PDF .1.7 TABLE 4.8 Entries in a graphics state parameter dictionary]
+    # see [PDF 3200 Table 58 - Entries in a Graphics State Parameter Dictionary]
     use ISO_32000::Graphics_state;
     also does ISO_32000::Graphics_state;
     has PDF::COS::Name $.Type is entry where 'ExtGState';

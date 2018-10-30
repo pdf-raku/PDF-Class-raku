@@ -5,7 +5,7 @@ use PDF::COS::Array;
 class PDF::ColorSpace
     is PDF::COS::Array {
 
-    # See [PDF 1.7 Section 4.5 Color Spaces]
+    # See [PDF 32000 Section 8.6.3 Color Space Families]
 
     use PDF::COS::Name;
     use PDF::COS::Tie;

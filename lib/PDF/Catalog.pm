@@ -10,10 +10,10 @@ class PDF::Catalog
     is PDF::COS::Dict
     does PDF::Class::Type
     does PDF::Content::Resourced {
+    # see [PDF 32000 Table 28 - Entries in the catalog dictionary]
     use ISO_32000::Catalog;
     also does ISO_32000::Catalog;
 
-    # see [PDF 1.7 TABLE 3.25 Entries in the catalog dictionary]
     use PDF::COS::Tie;
     use PDF::COS::Tie::Hash;
     use PDF::COS::Name;
@@ -42,6 +42,10 @@ class PDF::Catalog
     has Pages $.Pages is entry(:required, :indirect);    #| (Required; must be an indirect reference) The page tree node that is the root of the document’s page tree
 
     role PageLabelNode does PDF::COS::Tie::Hash {
+        # see [PDF 32000 Table 159 - Entries in a page label dictionary
+        use ISO_32000::Page_label;
+        also does ISO_32000::Page_label;
+
         has PDF::COS::Name $.Type is entry where 'PageLabel'; #| (Optional) The type of PDF object that this dictionary describes; if present, shall be PageLabel for a page label dictionary.
         my subset NumberingStyle of PDF::COS::Name where 'D'|'R'|'r'|'A'|'a';
         has NumberingStyle $.S is entry(:alias<style>); #| (Optional) The numbering style that shall be used for the numeric portion of each page label:
@@ -91,7 +95,7 @@ class PDF::Catalog
     has PageLabels $.PageLabels is entry;           #| (Optional; PDF 1.3) A number tree defining the page labeling for the document.
 
     our role DestDict does PDF::COS::Tie::Hash {
-        # Intermediate Dictionary with a <D> entry
+        # Intermediate Dictionary with a /D entry
         has DestSpec $.D is entry(:required, :alias<destination>, :coerce(&coerce-dest));
     }
     my subset Dest where DestSpec|DestDict;
@@ -103,6 +107,7 @@ class PDF::Catalog
     }
 
     my role NameTrees does PDF::COS::Tie::Hash {
+        # see [PDF 32000 Table 31 - Entries in the name dictionary]
         use ISO_32000::Catalog_Name_tree;
         also does ISO_32000::Catalog_Name_tree;
         has PDF::NameTree[Dest, :&coerce] $.Dests is entry;                  #| (Optional; PDF 1.2) A name tree mapping name strings to destinations.
@@ -141,6 +146,7 @@ class PDF::Catalog
     has PDF::COS::Dict $.AA is entry(:alias<additional-actions>);                    #| (Optional; PDF 1.4) An additional-actions dictionary defining the actions to be taken in response to various trigger events affecting the document as a whole
 
     my role URI does PDF::COS::Tie::Hash {
+        # see [PDF 32000 Tabler 207 - Entry in a URI dictionary]
         use ISO_32000::URI;
         also does ISO_32000::URI;
         has PDF::COS::ByteString $.Base is entry;           #| (Optional) The base URI that shall be used in resolving relative URI references. URI actions within the document may specify URIs in partial form, to be interpreted relative to this base address. If no base URI is specified, such partial URIs shall be interpreted relative to the location of the document itself. The use of this entry is parallel to that of the body element <BASE >, as described in the HTML 4.01 Specification
@@ -156,7 +162,7 @@ class PDF::Catalog
 
     role MarkInfoDict
 	does PDF::COS::Tie::Hash {
-	#| [See PDF 1.7 TABLE 10.8 Entries in the mark information dictionary]
+	#| [See PDF 32000 TABLE 32000 - Entries in the mark information dictionary]
         use ISO_32000::Mark_information;
         also does ISO_32000::Mark_information;
 	has Bool $.Marked is entry;          #| (Optional) A flag indicating whether the document conforms to Tagged PDF conventions. Default value: false.
@@ -179,7 +185,9 @@ class PDF::Catalog
 
     role OCConfig
 	does PDF::COS::Tie::Hash {
-        #| Table Table 101 – Entries in an Optional Content Configuration Dictionary
+        #| See [PDF 32000 Table 101 – Entries in an Optional Content Configuration Dictionary]
+        use ISO_32000::Optional_Content_Configuration;
+        also does ISO_32000::Optional_Content_Configuration;
         has PDF::COS::TextString $.Name is entry; #| (Optional) A name for the configuration, suitable for presentation in a user interface.
         has PDF::COS::TextString $.Creator is entry; #| (Optional) Name of the application or feature that created thisconfiguration dictionary.
         my subset BaseState of PDF::COS::Name where 'ON'|'OFF'|'Unchanged';
@@ -197,7 +205,9 @@ class PDF::Catalog
 
     role OCProperties
 	does PDF::COS::Tie::Hash {
-        #| Table 100 – Entries in the Optional Content Properties Dictionary
+        #| See [PDF 32000 Table 100 – Entries in the Optional Content Properties Dictionary]
+        use ISO_32000::Optional_Content_Group_Properties;
+        also does ISO_32000::Optional_Content_Group_Properties;
         has OCG @.OCGs is entry(:indirect, :required, :alias<optional-content-groups>); #| (Required) An array of indirect references to all the optional content groups in the document, in any order. Every optional content group shall be included in this array
         has PDF::COS::Dict $.D is entry(:required, :alias<viewing-config>); #| (Required) The default viewing optional content configuration dictionary.
         has OCConfig @.Configs is entry;    #| (Optional) An array of alternate optional content configuration dictionaries.

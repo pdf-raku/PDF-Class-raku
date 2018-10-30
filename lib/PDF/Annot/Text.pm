@@ -3,7 +3,7 @@ use v6;
 use PDF::Annot::Markup;
 
 #| /Type Annot - Annonation subtypes
-#| See [PDF 1.7 Section 8.4 Annotations]
+#| See [PDF 32000 Section 12.5 Annotations]
 class PDF::Annot::Text
     is PDF::Annot::Markup {
 
@@ -11,7 +11,7 @@ class PDF::Annot::Text
     use PDF::COS::Name;
     use PDF::COS::TextString;
 
-    # See [PDF 1.7 TABLE 8.23 Additional entries specific to a text annotation]
+    # See [PDF 32000 Table 172 - Additional entries specific to a text annotation]
     use ISO_32000::Text_annotation_additional;
     also does ISO_32000::Text_annotation_additional;
     has Bool $.Open is entry;                        #| (Optional) A flag specifying whether the annotation should initially be displayed open. Default value: false (closed).

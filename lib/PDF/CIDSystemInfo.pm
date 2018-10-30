@@ -5,7 +5,7 @@ use PDF::COS::Tie::Hash;
 role PDF::CIDSystemInfo
     does PDF::COS::Tie::Hash {
 
-    # see [PDF 1.7 TABLE 5.13 Entries in a CIDSystemInfo dictionary]
+    # see [PDF 32000 Table 116 - Entries in a CIDSystemInfo dictionary]
     use ISO_32000::CIDSystemInfo;
     also does ISO_32000::CIDSystemInfo;
     use PDF::COS::Tie;

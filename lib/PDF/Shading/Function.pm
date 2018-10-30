@@ -9,7 +9,7 @@ class PDF::Shading::Function
     is PDF::COS::Dict
     does PDF::Shading {
 
-     # see [PDF 1.7 TABLE 4.29 Additional entries specific to a type 1 shading dictionary]
+     # see [PDF 32000 Table 79 - Additional Entries Specific to a Type 1 Shading Dictionary]
     use ISO_32000::Type_1_Shading;
     also does ISO_32000::Type_1_Shading;
     use PDF::COS::Tie;

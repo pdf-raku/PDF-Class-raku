@@ -11,7 +11,7 @@ class PDF::Font::Type1
     use PDF::FontDescriptor;
     use PDF::Encoding;
 
-    # see [PDF 1.7 TABLE 5.8 Entries in a Type 1 font dictionary]
+    # see [PDF 32000 TABLE 111 - Entries in a Type 1 font dictionary]
     use ISO_32000::Type_1_Font;
     also does ISO_32000::Type_1_Font;
 

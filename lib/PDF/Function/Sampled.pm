@@ -3,15 +3,15 @@ use v6;
 use PDF::Function;
 
 #| /FunctionType 0 - Sampled
-#| see [PDF 1.7 Section 3.9.1 Type 0 (Sampled) Functions]
+#| see [PDF 32000 Section 7.10.2 Type 0 (Sampled) Functions]
 class PDF::Function::Sampled
     is PDF::Function {
 
+    # see [PDF 32000 Table 39 - Additional entries specific to a type 0 function dictionary]
     use ISO_32000::Type_0_Function;
     also does ISO_32000::Type_0_Function;
 
     use PDF::COS::Tie;
-    # see [PDF 1.7 TABLE 3.36 Additional entries specific to a type 0 function dictionary]
 
     has UInt @.Size is entry(:required);  #| (Required) An array of m positive integers specifying the number of samples in each input dimension of the sample table.
 

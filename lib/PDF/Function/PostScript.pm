@@ -3,7 +3,7 @@ use v6;
 use PDF::Function;
 
 #| /FunctionType 4 - PostScript
-#| see [PDF 1.7 Section 3.9.4 Type 4 (PostScript Transform) Functions]
+#| see [PDF 32000 Section 7.10.5 Type 4 (PostScript Transform) Functions]
 class PDF::Function::PostScript
     is PDF::Function {
 

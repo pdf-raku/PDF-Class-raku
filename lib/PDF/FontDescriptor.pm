@@ -12,7 +12,7 @@ class PDF::FontDescriptor
     use PDF::FontStream;
     use PDF::FontFile;
 
-    # see [PDF 1.7 TABLE 5.19 Entries common to all font descriptors]
+    # see [PDF 32000 Table 122- Entries common to all font descriptors]
     use ISO_32000::Font_descriptor;
     also does ISO_32000::Font_descriptor;
     has PDF::COS::Name $.Type is entry(:required) where 'FontDescriptor';
@@ -23,7 +23,7 @@ class PDF::FontDescriptor
     my subset FontWeightValue of Int where 100|200|300|400|500|600|700|800|900;
     has FontWeightValue $.FontWeight is entry;         #| Optional; PDF 1.5; strongly recommended for Type 3 fonts in Tagged PDF documents) The weight (thickness) component of the fully-qualified font name or font specifier.
     my subset FontFlags of Int where 0 ..^ (2 +< 18);
-	#| See [PDF 1.7 TABLE 5.20 Font flags]
+	#| See [PDF 32000 table 123 - Font flags]
 	#|     BIT POSITION: NAME - MEANING
 	#|     1: FixedPitch - All glyphs have the same width (as opposed to proportional or variable-pitch fonts, which have different widths).
 	#|     2: Serif - Glyphs have serifs, which are short strokes drawn at an angle on the top and bottom of glyph stems. (Sans serif fonts do not have serifs.)
@@ -33,7 +33,7 @@ class PDF::FontDescriptor
 	#|     7: Italic - Glyphs have dominant vertical strokes that are slanted.
 	#|     17: AllCap - Font contains no lowercase letters; typically used for display purposes, such as for titles or headlines.
 	#|     18: SmallCap - Font contains both uppercase and lowercase letters. The uppercase letters are similar to those in the regular version of the same typeface family. The glyphs for the lowercase letters have the same shapes as the corresponding uppercase letters, but they are sized and their proportions adjusted so that they have the same size and stroke weight as lowercase glyphs in the same typeface family.
-	#|     19: ForceBold - See [PDF 1.7 Section 5.7.1 Font Descriptor Flags]
+	#|     19: ForceBold - The ForceBold flag (bit 19) shall determine whether bold glyphs shall be painted with extra pixels even at very small text sizes by a conforming reader. If the ForceBold flag is set, features of bold glyphs may be thickened at small text sizes.
     has FontFlags $.Flags is entry;                    #| (Required) A collection of flags defining various characteristics of the font
     has Numeric @.FontBBox is entry(:len(4));          #| (Required, except for Type 3 fonts) A rectangle, expressed in the glyph coordinate system, specifying the font bounding box.
     has Numeric $.ItalicAngle is entry;                #| (Required) The angle, expressed in degrees counterclockwise from the vertical, of the dominant vertical strokes of the font. (

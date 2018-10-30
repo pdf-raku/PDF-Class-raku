@@ -16,7 +16,7 @@ role PDF::Shading
     my subset ShadingTypeInt of Int where 1..7;
     has ShadingTypeInt $.ShadingType is entry(:required);
 
-    # see [PDF 1.7 TABLE 4.28 Entries common to all shading dictionaries]
+    # see [PDF 32000 Table 78 - Entries Common to All Shading Dictionaries]
     use ISO_32000::Shading_common;
     also does ISO_32000::Shading_common;
     my subset NameOrColorSpace of PDF::COS where PDF::COS::Name | PDF::ColorSpace;

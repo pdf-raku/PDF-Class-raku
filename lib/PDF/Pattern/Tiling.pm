@@ -18,9 +18,9 @@ class PDF::Pattern::Tiling
     use PDF::COS::Tie;
     use PDF::Resources;
 
-    # see [PDF 1.7 TABLE 4.25 Additional entries specific to a type 1 pattern dictionary]
-##    use ISO_32000::Type_1_Pattern;
-##    also does ISO_32000::Type_1_Pattern;
+    # see [PDF 32000 Table 75 - Additional Entries Specific to a Type 1 Pattern Dictionary]
+    use ISO_32000::Type_1_Pattern;
+    also does ISO_32000::Type_1_Pattern;
     subset PaintCode of Int where 1|2;
     has PaintCode $.PaintType is entry(:required);   #| (Required) A code that determines how the color of the pattern cell is to be specified:
                                                      #|  1: Colored tiling pattern.

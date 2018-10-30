@@ -8,7 +8,7 @@ class PDF::MCR
     is PDF::COS::Dict
     does PDF::Class::Type {
 
-    # see [PDF 32000 14.7.2 Structure Hierarchy]
+    # see [PDF 32000 Table 324 - Entries in a marked-content reference dictionary]
     use ISO_32000::Marked_content_reference;
     also does ISO_32000::Marked_content_reference;
     use PDF::COS::Tie;

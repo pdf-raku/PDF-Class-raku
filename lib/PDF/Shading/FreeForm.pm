@@ -8,7 +8,7 @@ use PDF::Shading;
 class PDF::Shading::FreeForm
     is PDF::COS::Stream
     does PDF::Shading {
-    # see [PDF 1.7 TABLE 4.32 Additional entries specific to a type 4 shading dictionary]
+    # see [PDF 32000 Table 82 - Additional Entries Specific to a type 4 Shading Dictionary]
     use ISO_32000::Type_4_Shading;
     also does ISO_32000::Type_4_Shading;
 

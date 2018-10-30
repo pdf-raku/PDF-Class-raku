@@ -5,6 +5,7 @@ use PDF:ver(v0.3.2+);
 #| PDF entry-point. either a trailer dict or an XRef stream
 class PDF::Class:ver<0.4.0>:api<PDF-1.7>
     is PDF {
+    # See [PDF 32000 Table 15 - Entries in the file trailer dictionary]
     use ISO_32000::File_trailer;
     also does ISO_32000::File_trailer;
 

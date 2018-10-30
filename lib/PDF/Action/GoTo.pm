@@ -9,7 +9,7 @@ class PDF::Action::GoTo
     is PDF::COS::Dict
     does PDF::Action {
 
-    # see [PDF 1.7 TABLE 8.49 Additional entries specific to a go-to action]
+    # see [PDF 32000 Table 199 - Additional entries specific to a go-to action]
     use ISO_32000::Goto_action_additional;
     also does ISO_32000::Goto_action_additional;
     use PDF::COS::Tie;

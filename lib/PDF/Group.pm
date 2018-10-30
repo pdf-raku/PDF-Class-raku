@@ -8,7 +8,7 @@ class PDF::Group
     is PDF::COS::Dict
     does PDF::Class::Type['Type','S'] {
 
-    # see [Table 96 – Entries Common to all Group Attributes Dictionaries]
+    # see [PDF 32000 Table 96 – Entries Common to all Group Attributes Dictionaries]
     use ISO_32000::Group_Attributes;
     also does ISO_32000::Group_Attributes;
     use PDF::COS::Tie;

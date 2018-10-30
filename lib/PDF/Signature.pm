@@ -11,6 +11,7 @@ role PDF::Signature
     use PDF::COS::DateString;
     use PDF::COS::TextString;
 
+    # See [PDF 32000 Table 252 - Entries in a signature dictionary]
     use ISO_32000::Signature;
     also does ISO_32000::Signature;
 

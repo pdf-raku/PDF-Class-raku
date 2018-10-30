@@ -8,6 +8,7 @@ role PDF::ICCProfile
     use PDF::ColorSpace;
     use PDF::Metadata::XML;
 
+    # See [PDF 32000 Table 66 - Additional Entries Specific to an ICC Profile Stream Dictionary]
     use ISO_32000::ICC_profile;
     also does ISO_32000::ICC_profile;
 

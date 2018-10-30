@@ -13,6 +13,7 @@ role PDF::Outlines
     use PDF::COS::Name;
     use PDF::Outline;
 
+    # See [PDF 32000 Table 152 - Entries in the outline dictionary]
     use ISO_32000::Outline;
     also does ISO_32000::Outline;
 

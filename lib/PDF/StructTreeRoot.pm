@@ -8,7 +8,7 @@ class PDF::StructTreeRoot
     is PDF::COS::Dict
     does PDF::Class::Type {
 
-    # see [PDF 32000 14.7.2 Structure Hierarchy]
+    # see [PDF 32000 Table 32000 Table 322 - Entries in the structure tree root]
     use ISO_32000::Structure_tree_root;
     also does ISO_32000::Structure_tree_root;
     use PDF::COS::Tie;

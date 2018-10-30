@@ -21,7 +21,7 @@ class PDF::XObject::Form
     use PDF::Group::Transparency;
     use PDF::OCG;
 
-    #|See [PDF Spec 1.7 Section 4.9.1 TABLE 4.45 Additional entries specific to a type 1 form dictionary]
+    #|See [PDF Spec 32000 Table 95 - Additional Entries Specific to a Type 1 Form Dictionary]
     use ISO_32000::Type_1_Form;
     also does ISO_32000::Type_1_Form;
     has Int $.FormType is entry where 1;    #| (Optional) A code identifying the type of form XObject that this dictionary describes. The only valid value is 1.

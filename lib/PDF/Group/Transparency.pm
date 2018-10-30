@@ -8,6 +8,7 @@ class PDF::Group::Transparency
     use PDF::COS::Name;
     use PDF::ColorSpace;
 
+    # See [PDF 32000 Table 147 - Additional entries specific to a transparency group attributes dictionary]
     use ISO_32000::Transparency_group_additional;
     also does ISO_32000::Transparency_group_additional;
     has PDF::COS::Name $.S is entry(:required) where 'Transparency';

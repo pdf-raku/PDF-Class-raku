@@ -17,7 +17,7 @@ class PDF::Annot
     use PDF::Border;
     use PDF::OCG;
 
-    #| See [PDF 1.7 Section 8.4.1 - Annotation Dictionaries ]
+    #| See [PDF 32000 Table 164 - Entries common to all annotation dictionaries]
     use ISO_32000::Annotation;
     also does ISO_32000::Annotation;
 
@@ -60,7 +60,6 @@ class PDF::Annot
     has UInt $.StructParent is entry;                           #| (Required if the annotation is a structural content item; PDF 1.3) The integer key of the annotation’s entry in the structural parent tree
     has PDF::OCG $.OC is entry(:alias<optional-content>);       #| (Optional; PDF 1.5) An optional content group or optional content membership dictionary specifying the optional content properties for the annotation.
 
-    # See [PDF 1.7 Section 8.6.2, “Field Dictionaries” (Variable Text)]
     has Hash $.DR is entry(:alias<default-resources>);          #| In PDF 1.2, an additional entry in the field dictionary, DR, was defined but was never implemented. Beginning with PDF 1.5, this entry is obsolete and should be ignored.
 
 }

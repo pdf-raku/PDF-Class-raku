@@ -5,7 +5,7 @@ use PDF::Image;
 
 #| XObjects
 #| /Type XObject /Subtype /Image
-#| See [PDF 1.7 Section 4.8 - Images ]
+#| See [PDF 32000 Section 8.9 - Images ]
 class PDF::XObject::Image
     is PDF::XObject
     does PDF::Image {

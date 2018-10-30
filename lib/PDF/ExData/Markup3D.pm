@@ -8,6 +8,7 @@ class PDF::ExData::Markup3D
     is PDF::COS::Dict
     does PDF::Class::Type
     does PDF::Class::ThreeD {
+    # See [PDF 32000 table 313 - Entries in an external data dictionary used to markup 3D annotations]
     use ISO_32000::Three-D_external_data;
     also does ISO_32000::Three-D_external_data;
     use PDF::COS::Tie;

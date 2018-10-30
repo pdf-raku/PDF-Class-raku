@@ -7,12 +7,11 @@ use PDF::COS::Tie::Hash;
 role PDF::Appearance
     does PDF::COS::Tie::Hash {
 
-# See [PDF 1.7 TABLE 8.19 Entries in an appearance dictionary]
-
     use PDF::COS;
     use PDF::COS::Tie;
     use PDF::COS::Stream;
 
+    # See [PDF 32000 Table 168 - Entries in an appearance dictionary]
     use ISO_32000::Appearance;
     also does ISO_32000::Appearance;
 

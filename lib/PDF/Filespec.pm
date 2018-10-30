@@ -13,7 +13,9 @@ role PDF::Filespec
     use PDF::COS::Dict;
     use PDF::COS::Stream;
 
-    # [See PDF 32000 7.11 File Specifications]
+    # [See PDF 32000 Table 44 - Entries in a file specification dictionary]
+    use ISO_32000::File_specification;
+    also does ISO_32000::File_specification;
     # file specifications may be either a dictionary or a simple text-string
     my subset file-spec is export(:file-spec) where PDF::COS::TextString|PDF::Filespec;
 

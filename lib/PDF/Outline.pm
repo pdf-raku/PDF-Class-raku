@@ -16,6 +16,7 @@ role PDF::Outline
     use PDF::Action;
     use PDF::StructElem;
 
+    # See [PDF 32000 Table 153 - Entries in an outline item dictionary]
     use ISO_32000::Outline_item;
     also does ISO_32000::Outline_item;
 

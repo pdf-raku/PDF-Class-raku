@@ -9,7 +9,7 @@ class PDF::Action::URI
     is PDF::COS::Dict
     does PDF::Action {
 
-    # see [PDF 32000-1:2008 TABLE 206 - Additional entries specific to a URI action]
+    # see [PDF 32000 - TABLE 206 - Additional entries specific to a URI action]
     use ISO_32000::URI_action_additional;
     also does ISO_32000::URI_action_additional;
     use PDF::COS::Tie;

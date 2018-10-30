@@ -9,7 +9,10 @@ class PDF::CMap
     is PDF::COS::Stream
     does PDF::Class::Type {
 
-    # set [PDF 1.7 TABLE 5.17 Additional entries in a CMap dictionary]
+    # see [PDF 32000 Table 120 - Additional entries in a CMap dictionary]
+    use ISO_32000::CMap_stream;
+    also does ISO_32000::CMap_stream;
+
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::CIDSystemInfo;

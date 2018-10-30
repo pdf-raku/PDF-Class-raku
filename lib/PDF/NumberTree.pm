@@ -8,6 +8,7 @@ role PDF::NumberTree
     use PDF::COS;
     use PDF::COS::Tie;
 
+    # See [PDF 32000 Table 37 - Entries in a number tree node dictionary]
     use ISO_32000::Number_tree_node;
     also does ISO_32000::Number_tree_node;
 

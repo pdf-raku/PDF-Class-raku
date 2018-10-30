@@ -10,13 +10,14 @@ role PDF::Field::Signature
     use PDF::COS::TextString;
     use PDF::Signature;
 
+    # See [PDF 32000 Table 252 - Additional entries specific to a signature field]
     use ISO_32000::Signature_field;
     also does ISO_32000::Signature_field;
     has PDF::Signature $.V is entry(:alias<value>);
 
     my role LockDict
 	does PDF::COS::Tie::Hash {
-	    # See [PDF 1.7 TABLE 8.82 Entries in a signature field lock dictionary]
+	    # See [PDF 32000 Table 233 - Entries in a signature field lock dictionary]
         use ISO_32000::Signature_field_lock;
         also does ISO_32000::Signature_field_lock;
  	has PDF::COS::Name $.Type is entry where 'SigFieldLock';     #| (Optional) The type of PDF object that this dictionary describes; if present, must be SigFieldLock for a signature field lock dictionary
@@ -25,12 +26,11 @@ role PDF::Field::Signature
 	has PDF::COS::TextString @.Fields is entry;                  #| (Required if the value of Action is Include or Exclude) An array of text strings containing field names.
     }
 
-    # [PDF 1.7 TABLE 8.81 Additional entries specific to a signature field]
     has LockDict $.Lock is entry(:indirect);   #| (Optional; must be an indirect reference; PDF 1.5) A signature field lock dictionary that specifies a set of form fields to be locked when this signature field is signed. Table 8.82lists the entries in this dictionary.
-##
+
     my role SeedValueDict
 	does PDF::COS::Tie::Hash {
-##	    # See [PDF 1.7 TABLE 8.83 Entries in a signature field seed value dictionary]
+	# See [PDF 32000 Table 234 - Entries in a signature field seed value dictionary]
         use ISO_32000::Signature_field_seed_value;
         also does ISO_32000::Signature_field_seed_value;
 	has PDF::COS::Name $.Type is entry where 'SV';                 #| (Optional) The type of PDF object that this dictionary describes; if present, must be SV for a seed value dictionary.
@@ -46,6 +46,7 @@ role PDF::Field::Signature
 
         my role CertificateSeedValueDict
 	    does PDF::COS::Tie::Hash {
+            # See [PDF 32000 Table 235 - Entries in a certificate seed value dictionary]
             use ISO_32000::Certificate_seed_value;
             also does ISO_32000::Certificate_seed_value;
             has PDF::COS::Name $.Type is entry where 'SVCert';	#| (Optional) The type of PDF object that this dictionary describes; if present, shall be SVCert for a certificate seed value dictionary.
