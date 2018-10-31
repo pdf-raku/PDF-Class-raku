@@ -31,10 +31,11 @@ role PDF::Thread does PDF::COS::Tie::Hash {
     also does ISO_32000::Thread;
     use PDF::COS::Tie;
     use PDF::COS::Name;
+    use PDF::Info;
 
     has PDF::COS::Name $.Type is entry where 'Thread';	#| [name] (Optional) The type of PDF object that this dictionary describes; if present, is Thread for a thread dictionary.
     has $.F is entry(:required, :alias<first>);	#| [dictionary] (Required; is an indirect reference) The first bead in the thread.
-    has PDF::Thread $.I is entry;	#| [dictionary] (Optional) A thread information dictionary containing information about the thread, such as its title, author, and creation date. The contents of this dictionary shall conform to the syntax for the document information dictionary (see Link 14.3.3, “Document Information Dictionary” ).
+    has PDF::Info $.I is entry(:alias<info>);	#| [dictionary] (Optional) A thread information dictionary containing information about the thread, such as its title, author, and creation date. The contents of this dictionary shall conform to the syntax for the document information dictionary (see Link 14.3.3, “Document Information Dictionary” ).
 
 }
 
