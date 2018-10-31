@@ -20,6 +20,7 @@ class PDF::Page
     use PDF::Resources;
     use PDF::Field;
     use PDF::Action;
+    use PDF::Bead-Thread; # Declares PDF::Bead & PDF::Thread
 
     # see [PDF 32000 Table 30 - Entries in a page object]
     use ISO_32000::Page;
@@ -42,7 +43,7 @@ class PDF::Page
     my subset TransGroup of Hash where .<S> ~~ 'Transparency'; # autoloaded PDF::Group::Transparency]
     has TransGroup $.Group is entry;                   #| (Optional; PDF 1.4) A group attributes dictionary specifying the attributes of the page’s page group for use in the transparent imaging model
     has PDF::Image $.Thumb is entry(:alias<thumbnail-image>);       #| (Optional) A stream object defining the page’s thumbnail image
-    has Hash @.B is entry(:indirect, :alias<beads>);                 #| (Optional; PDF 1.1; recommended if the page contains article beads) An array of indirect references to article beads appearing on the page
+    has PDF::Bead @.B is entry(:indirect, :alias<beads>);                 #| (Optional; PDF 1.1; recommended if the page contains article beads) An array of indirect references to article beads appearing on the page
     has Numeric $.Dur is entry(:alias<display-duration>);       #| (Optional; PDF 1.1) The page’s display duration (also called its advance timing): the maximum length of time, in seconds, that the page is displayed during presentations before the viewer application automatically advances to the next page
     has Hash $.Trans is entry(:alias<transition-effect>);       #| (Optional; PDF 1.1) A transition dictionary describing the transition effect to be used when displaying the page during presentations
     my subset Annot of Hash where { .<Subtype> && (! .<FT> || $_ ~~ PDF::Field) }

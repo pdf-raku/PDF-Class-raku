@@ -5,7 +5,7 @@ use PDF::Class::Type;
 use PDF::Content::Resourced;
 
 #| /Type /Catalog - usually the document root in a PDF
-#| See [PDF 1.7 Section 3.6.1 Document Catalog]
+#| See [PDF 32000 Section 7.7.2 Document Catalog]
 class PDF::Catalog
     is PDF::COS::Dict
     does PDF::Class::Type
@@ -31,6 +31,7 @@ class PDF::Catalog
     use PDF::OutputIntent;
     use PDF::Resources;
     use PDF::Metadata::XML;
+    use PDF::Bead-Thread; # Declares PDF::Bead & PDF::Thread
     use PDF::Class::Util :to-roman, :alpha-number, :decimal-number;
 
     has PDF::COS::Name $.Type is entry(:required) where 'Catalog';
@@ -48,7 +49,7 @@ class PDF::Catalog
 
         has PDF::COS::Name $.Type is entry where 'PageLabel'; #| (Optional) The type of PDF object that this dictionary describes; if present, shall be PageLabel for a page label dictionary.
         my subset NumberingStyle of PDF::COS::Name where 'D'|'R'|'r'|'A'|'a';
-        has NumberingStyle $.S is entry(:alias<style>); #| (Optional) The numbering style that shall be used for the numeric portion of each page label:
+        has NumberingStyle $.S is entry(:alias<numbering-style>); #| (Optional) The numbering style that shall be used for the numeric portion of each page label:
         #| D: Decimal arabic numerals
         #| R: Uppercase roman numerals
         #| r: Lowercase roman numerals
@@ -84,7 +85,7 @@ class PDF::Catalog
             my UInt $seq   = $page-idx + $start - $base;
             my $label      = $props.prefix // '';
             $label ~= page-num($_, $seq)
-                with $props.style;
+                with $props.numbering-style;
             $label;
         }
         #| page labels, starting at page 1
@@ -110,7 +111,7 @@ class PDF::Catalog
         # see [PDF 32000 Table 31 - Entries in the name dictionary]
         use ISO_32000::Catalog_Name_tree;
         also does ISO_32000::Catalog_Name_tree;
-        has PDF::NameTree[Dest, :&coerce] $.Dests is entry;                  #| (Optional; PDF 1.2) A name tree mapping name strings to destinations.
+        has PDF::NameTree[Dest, :&coerce] $.Dests is entry;  #| (Optional; PDF 1.2) A name tree mapping name strings to destinations.
         has PDF::NameTree $.AP is entry;                     #| (Optional; PDF 1.3) A name tree mapping name strings to annotation appearance streams.
         has PDF::NameTree $.JavaScript is entry;             #| (Optional; PDF 1.3) A name tree mapping name strings to document-level JavaScript actions.
         has PDF::NameTree $.Pages is entry;                  #| (Optional; PDF 1.3) A name tree mapping name strings to visible pages for use in interactive forms.
@@ -135,7 +136,7 @@ class PDF::Catalog
 
     has PDF::Outlines $.Outlines is entry(:indirect); #| (Optional; must be an indirect reference) The outline dictionary that is the root of the document’s outline hierarchy
 
-    has PDF::COS::Dict @.Threads is entry(:indirect);        #| (Optional; PDF 1.1; must be an indirect reference) An array of thread dictionaries representing the document’s article threads
+    has PDF::Thread @.Threads is entry(:indirect);        #| (Optional; PDF 1.1; must be an indirect reference) An array of thread dictionaries representing the document’s article threads
 
     my subset ActionOrDestSpec where PDF::Action|DestSpec;
     multi sub coerce(List $_ is rw, ActionOrDestSpec) is default {
