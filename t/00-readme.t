@@ -20,7 +20,7 @@ for @<code> {
 
             # ensure consistant document ID generation
             srand(123456);
-            lives-ok {EVAL $snippet}, 'code sample'
+            lives-ok {quietly EVAL $snippet}, 'code sample'
 		or warn "eval error: $snippet";
 	}
     }

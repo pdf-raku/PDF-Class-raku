@@ -13,6 +13,10 @@ class PDF::XObject::Form
     does PDF::Content::Graphics
     does PDF::Content::Resourced {
 
+    #|See [PDF Spec 32000 Table 95 - Additional Entries Specific to a Type 1 Form Dictionary]
+    use ISO_32000::Type_1_Form;
+    also does ISO_32000::Type_1_Form;
+
     use PDF::COS::Tie;
     use PDF::COS::DateString;
     use PDF::Resources;
@@ -21,9 +25,6 @@ class PDF::XObject::Form
     use PDF::Group::Transparency;
     use PDF::OCG;
 
-    #|See [PDF Spec 32000 Table 95 - Additional Entries Specific to a Type 1 Form Dictionary]
-    use ISO_32000::Type_1_Form;
-    also does ISO_32000::Type_1_Form;
     has Int $.FormType is entry where 1;    #| (Optional) A code identifying the type of form XObject that this dictionary describes. The only valid value is 1.
     has Numeric @.BBox is entry(:required,:len(4)); #| (Required) An array of four numbers in the form coordinate system (see above), giving the coordinates of the left, bottom, right, and top edges, respectively, of the form XObject’s bounding box.
     has Numeric @.Matrix is entry(:len(6));         #| (Optional) An array of six numbers specifying the form matrix, which maps form space into user space

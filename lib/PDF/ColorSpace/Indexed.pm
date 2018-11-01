@@ -13,7 +13,7 @@ class PDF::ColorSpace::Indexed
     my subset NameOrColorSpace where PDF::COS::Name|PDF::ColorSpace;
     has NameOrColorSpace $.Base is index(1);
     has UInt $.Hival is index(2);
-    my subset StreamOrByteString where PDF::COS::Stream | PDF::COS::ByteString;
+    my subset StreamOrByteString where PDF::COS::Stream|PDF::COS::ByteString;
     has StreamOrByteString $.Lookup is index(3);
 
 }

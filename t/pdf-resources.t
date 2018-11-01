@@ -172,9 +172,15 @@ is $gs-obj.fill-alpha, .7, 'transparency getter - alias';
 is $gs-obj.stroke-alpha, .5, 'transparency getter - alias';
 throws-like { $gs-obj.wtf }, X::Method::NotFound, 'ExtGState - unknown method';
 
-$gs-obj.black-generation = {};
-is-json-equiv $gs-obj.BG2, {}, 'BG2 accessor';
-is-json-equiv $gs-obj.black-generation, {}, 'black-generation accessor';
+$gs-obj.black-generation = { :FunctionType(2),
+                             :N(1),
+                             :C0[100, 0, 0],
+                             :C1[50, -30, -40],
+                             :Domain[0, 1],
+                             :Range[0, 100, -128, 127, -128, 127],
+                           };
+is $gs-obj.BG2.FunctionType, 2, 'BG2 accessor';
+is-json-equiv $gs-obj.black-generation.C1, [50, -30, -40], 'black-generation accessor';
 $gs-obj.black-generation = PDF::COS.coerce: :name<MyFunc>;
 is $gs-obj.BG2, 'MyFunc', 'BG2 accessor';
 ok !$gs-obj.BG.defined, 'BG accessor';

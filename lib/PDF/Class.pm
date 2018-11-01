@@ -6,10 +6,10 @@ use PDF:ver(v0.3.2+);
 class PDF::Class:ver<0.4.0>:api<PDF-1.7>
     is PDF {
     # See [PDF 32000 Table 15 - Entries in the file trailer dictionary]
+    # base class declares: $.Size, $.Encrypt, $.ID
     use ISO_32000::File_trailer;
     also does ISO_32000::File_trailer;
 
-    # base class declares: $.Size, $.Encrypt, $.ID
     use PDF::COS::Tie;
     use PDF::Class::Type;
     use PDF::Info;
@@ -21,7 +21,7 @@ class PDF::Class:ver<0.4.0>:api<PDF-1.7>
     method version is rw {
         Proxy.new(
             FETCH => {
-                Version.new: $.catalog<Version> // self.reader.?version // '1.4'
+                Version.new: $.catalog<Version> // self.?reader.?version // '1.4'
             },
             STORE => -> $, Version $_ {
                 my $name = .Str;

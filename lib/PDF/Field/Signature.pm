@@ -17,7 +17,7 @@ role PDF::Field::Signature
 
     my role LockDict
 	does PDF::COS::Tie::Hash {
-	    # See [PDF 32000 Table 233 - Entries in a signature field lock dictionary]
+	# See [PDF 32000 Table 233 - Entries in a signature field lock dictionary]
         use ISO_32000::Signature_field_lock;
         also does ISO_32000::Signature_field_lock;
  	has PDF::COS::Name $.Type is entry where 'SigFieldLock';     #| (Optional) The type of PDF object that this dictionary describes; if present, must be SigFieldLock for a signature field lock dictionary

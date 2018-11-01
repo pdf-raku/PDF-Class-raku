@@ -52,10 +52,11 @@ class PDF::OCG
             has PDF::COS::Name $.Preferred is entry(:default<OFF>) where 'ON'|'OFF';             #| name whose values shall be either ON or OFF. Default value: OFF.
         }
         has Language $.Language is entry; #| Optional) A dictionary specifying the language of the content controlled by this optional content group. I
+        my subset ON-or-OFF of PDF::COS::Name where 'ON'|'OFF';
 
         my role Export
         does PDF::COS::Tie::Hash {
-            has PDF::COS::Name $.ExportState is entry(:default<OFF>) where 'ON'|'OFF';             #| name whose values shall be either ON or OFF. Default value: OFF.
+            has ON-or-OFF $.ExportState is entry(:default<OFF>);             #| name whose values shall be either ON or OFF. Default value: OFF.
         }
         has Export $.Export is entry; #| This value shall indicate the recommended state for content in this group when the document (or part of it) is saved by a conforming reader to a format that does not support optional content (for example, a raster image format).
 
@@ -69,13 +70,13 @@ class PDF::OCG
         my role Print
             does PDF::COS::Tie::Hash {
             has PDF::COS::Name $.Subtype is entry; #| A name object specifying the kind of content controlled by the group; for example, Trapping, PrintersMarks and Watermark.
-            has PDF::COS::Name $.PrintState is entry where 'ON'|'OFF';             #| A name that shall be either ON or OFF, indicating that the group shall be set to that state when the document is printed from a conforming reader.
+            has ON-or-OFF $.PrintState is entry;             #| A name that shall be either ON or OFF, indicating that the group shall be set to that state when the document is printed from a conforming reader.
         }
         has Print $.Print is entry; #| Optional) A dictionary specifying that the content in this group is shall be used when printing.
 
         my role View
             does PDF::COS::Tie::Hash {
-            has PDF::COS::Name $.ViewState is entry(:default<OFF>) where 'ON'|'OFF';             #| name whose values shall be either ON or OFF. Default value: OFF.
+            has ON-or-OFF $.ViewState is entry(:default<OFF>);             #| name whose values shall be either ON or OFF. Default value: OFF.
         }
         has View $.View is entry; #| 
 

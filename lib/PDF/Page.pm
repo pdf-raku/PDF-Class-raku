@@ -63,7 +63,14 @@ class PDF::Page
     has UInt $.StructParents is entry(:alias<struct-parent>);           #| (Required if the page contains structural content items; PDF 1.3) The integer key of the page’s entry in the structural parent tree
     has Str $.ID is entry;                       #| (Optional; PDF 1.3; indirect reference preferred) The digital identifier of the page’s parent Web Capture content set
     has Numeric $.PZ is entry(:alias<preferred-zoom>); #| (Optional; PDF 1.3) The page’s preferred zoom (magnification) factor
-    has Hash $.SeparationInfo is entry;          #| (Optional; PDF 1.3) A separation dictionary containing information needed to generate color separations for the page
+    my role SeparationInfo does PDF::COS::Tie::Hash {
+        use ISO_32000::Separation;
+        also does ISO_32000::Separation;
+        has PDF::Page @.Pages is entry;
+        has Str $.DeviceColorant is entry;
+        has Array $.ColorSpace is entry;
+    }
+    has SeparationInfo $.SeparationInfo is entry;          #| (Optional; PDF 1.3) A separation dictionary containing information needed to generate color separations for the page
     has PDF::COS::Name $.Tabs is entry;          #| (Optional; PDF 1.5) A name specifying the tab order to be used for annotations on the page
     has PDF::COS::Name $.TemplateInstantiated is entry; #| (Required if this page was created from a named page object; PDF 1.5) The name of the originating page object
     has Hash $.PresSteps is entry;               #| (Optional; PDF 1.5) A navigation node dictionary representing the first node on the page

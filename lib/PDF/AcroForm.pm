@@ -12,6 +12,7 @@ role PDF::AcroForm
     use PDF::COS::Tie;
     use PDF::Field :coerce;
     use PDF::COS::Stream;
+    use PDF::Resources;
 
     has PDF::Field @.Fields is entry(:required, :&coerce);    #| (Required) An array of references to the document’s root fields (those with no ancestors in the field hierarchy).
     #| returns an inorder array of all descendant fields
@@ -24,9 +25,9 @@ role PDF::AcroForm
 	@fields;
     }
     #| return fields mapped to a hash. Default keys are $.T and $.TU field entries
-        method fields-hash( Array $fields-arr = self.fields,
-                            :$key where 'T'|'TU'|'TR' = 'T'
-			--> Hash) {
+    method fields-hash( Array $fields-arr = self.fields,
+                        :$key where 'T'|'TU'|'TR' = 'T'
+			  --> Hash) {
 	my %fields;
 
 	for $fields-arr.list -> $field {
@@ -48,7 +49,7 @@ role PDF::AcroForm
 
     has PDF::Field @.CO is entry(:indirect, :alias<calculation-order>);   #| (Required if any fields in the document have additional-actions dictionaries containing a C entry; PDF 1.3) An array of indirect references to field dictionaries with calculation actions, defining the calculation order in which their values will be recalculated when the value of any field changes
 
-    has Hash $.DR is entry(:alias<default-resources>);                    #| (Optional) A resource dictionary containing default resources (such as fonts, patterns, or color spaces) to be used by form field appearance streams. At a minimum, this dictionary must contain a Font entry specifying the resource name and font dictionary of the default font for displaying text.
+    has PDF::Resources $.DR is entry(:alias<default-resources>);                    #| (Optional) A resource dictionary containing default resources (such as fonts, patterns, or color spaces) to be used by form field appearance streams. At a minimum, this dictionary must contain a Font entry specifying the resource name and font dictionary of the default font for displaying text.
 
     has Str $.DA is entry(:alias<default-appearance>);                    #| (Optional) A document-wide default value for the DA attribute of variable text fields
 

@@ -1,13 +1,11 @@
 use v6;
 
-use PDF::Shading::FreeForm;
+use PDF::Shading::Coons;
 
 #| /ShadingType 7 - Tensor
 
 class PDF::Shading::Tensor
-    is PDF::Shading::FreeForm {
-    # See [PDF 32000 Table 84 - Additional Entries Specific to a Type 6 Shading Dictionary]
-    use ISO_32000::Type_6_Shading;
-    also does ISO_32000::Type_6_Shading;
+    is PDF::Shading::Coons {
+    # See [PDF 32000 Section 8.7.4.5.8 - Type 7 Shadings (Tensor-Product Patch Meshes)]
     # Tensor and FreeForm shading types have identical structure
 }

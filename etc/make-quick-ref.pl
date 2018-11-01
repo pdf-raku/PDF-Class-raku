@@ -18,14 +18,14 @@ sub scan-classes($path) {
             scan-classes($_);
         }
         else {
-            next unless /'.pm'$/;
+            next unless /'.pm''6'?$/;
             my @class = .Str.split('/');
             @class.shift;
             next if @class[*-2] eq 'Class';
             @class.tail ~~ s/'.pm'$//;
             my $name = @class.join: "::";
-            (require ::($name)).so;
-            %classes{$name} = ::($name);
+
+            %classes{$name} = True;
         }
     }
     # delete base clasess
@@ -38,7 +38,8 @@ sub scan-classes($path) {
 scan-classes('lib'.IO);
 
 for %classes.keys.sort({ when 'PDF::Class' {'A'}; when 'PDF::Catalog' {'B'}; default {$_}}) -> $name {
-    my $class = %classes{$name};
+    my $class = (require ::($name));
+
     my $type = do given $class {
         when PDF::COS::Array|PDF::COS::Tie::Array  {'array'}
         when PDF::COS::Stream|PDF::Content::XObject {'stream'}

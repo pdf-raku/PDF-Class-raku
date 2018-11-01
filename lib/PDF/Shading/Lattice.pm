@@ -16,6 +16,7 @@ class PDF::Shading::Lattice
     use ISO_32000::Type_5_Shading;
     also does ISO_32000::Type_5_Shading;
 
+    has UInt $.BitsPerCoordinate is entry(:required);	#| [integer] (Required) The number of bits used to represent each vertex coordinate. The value is 1, 2, 4, 8, 12, 16, 24, or 32.
     has UInt $.BitsPerComponent is entry(:required);  #| (Required) The number of bits used to represent each color component. Valid values are 1, 2, 4, 8, 12, and 16.
     has UInt $.VerticesPerRow is entry(:required);    #| (Required) The number of vertices in each row of the lattice; the value must be greater than or equal to 2.
     has Numeric @.Decode is entry(:required);         #| (Required) An array of numbers specifying how to map vertex coordinates and color components into the appropriate ranges of values

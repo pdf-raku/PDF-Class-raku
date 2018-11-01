@@ -16,6 +16,7 @@ role PDF::StructElem
     # See [PDF 32000 Table 323 - Entries in a structure element dictionary]
     use ISO_32000::Structure_tree_element;
     also does ISO_32000::Structure_tree_element;
+
     has PDF::COS::Name $.Type is entry where 'StructElem'; #| Optional) The type of PDF object that this dictionary describes; if present, shall be StructElem for a structure element.
 
     has PDF::COS::Name $.S is entry(:required, :alias<structure-type>); #| (Required) The structure type, a name object identifying the nature of the structure element and its role within the document, such as a chapter, paragraph, or footnote
