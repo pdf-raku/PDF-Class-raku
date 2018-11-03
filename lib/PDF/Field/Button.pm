@@ -14,6 +14,6 @@ role PDF::Field::Button
     has PDF::COS::Name $.V is entry(:inherit, :alias<value>);
     has PDF::COS::Name $.DV is entry(:inherit, :alias<default-value>);
 
-    has PDF::COS::TextString @.Opt is entry;    #| (Optional; inheritable; PDF 1.4) An array containing one entry for each widget annotation in the Kids array of the radio button or check box field. Each entry is a text string representing the on state of the corresponding widget annotation.
+    has PDF::COS::TextString @.Opt is entry;    # (Optional; inheritable; PDF 1.4) An array containing one entry for each widget annotation in the Kids array of the radio button or check box field. Each entry is a text string representing the on state of the corresponding widget annotation.
 
 }

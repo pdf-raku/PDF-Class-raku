@@ -14,8 +14,8 @@ class PDF::Annot::FileAttachment
     use ISO_32000::File_attachment_annotation_additional;
     also does ISO_32000::File_attachment_annotation_additional;
 
-    has file-spec $.FS is entry(:required, :alias<file-spec>, :coerce(&to-file-spec)); #| (Required) The file associated with this annotation.
-    has PDF::COS::Name $.Name is entry(:alias<icon-name>);    #| (Optional) The name of an icon that is used in displaying the annotation. Conforming readers shall provide predefined icon appearances for at least the following standard names: GraphPushPin, PaperclipTag
+    has file-spec $.FS is entry(:required, :alias<file-spec>, :coerce(&to-file-spec)); # (Required) The file associated with this annotation.
+    has PDF::COS::Name $.Name is entry(:alias<icon-name>);    # (Optional) The name of an icon that is used in displaying the annotation. Conforming readers shall provide predefined icon appearances for at least the following standard names: GraphPushPin, PaperclipTag
 }
 
 

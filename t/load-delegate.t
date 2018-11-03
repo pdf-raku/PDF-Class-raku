@@ -5,8 +5,8 @@ plan 17;
 use PDF::Class;
 use PDF::COS::Name;
 
-isa-ok PDF::Class.loader.load-delegate( :dict{ :Type<Page> }), ::('PDF::Page'), 'delegation sanity';
-isa-ok PDF::Class.loader.load-delegate( :dict{ :Type<XObject>, :Subtype<Image> }), ::('PDF::XObject::Image'), 'delegation to subclass';
+isa-ok PDF::Class.loader.load-delegate( :dict{ :Type<Page> }), (require ::('PDF::Page')), 'delegation sanity';
+isa-ok PDF::Class.loader.load-delegate( :dict{ :Type<XObject>, :Subtype<Image> }), (require ::('PDF::XObject::Image')), 'delegation to subclass';
 my $shading-class = PDF::Class.loader.load-delegate( :dict{ :ShadingType(2) });
 isa-ok $shading-class, (require ::('PDF::Shading::Axial')), 'delegation by ShadingType';
 isa-ok $shading-class, (require ::('PDF::COS::Dict')), 'delegation by ShadingType';

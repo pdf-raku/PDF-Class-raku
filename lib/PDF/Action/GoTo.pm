@@ -4,7 +4,6 @@ use PDF::Action;
 use PDF::COS::Dict;
 
 #| /Action Subtype - GoTo
-
 class PDF::Action::GoTo
     is PDF::COS::Dict
     does PDF::Action {
@@ -15,6 +14,6 @@ class PDF::Action::GoTo
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::Destination :DestSpec, :coerce-dest;
-    has DestSpec $.D is entry(:required, :alias<destination>, :coerce(&coerce-dest));    #| (Required) The destination to jump to
+    has DestSpec $.D is entry(:required, :alias<destination>, :coerce(&coerce-dest));    # (Required) The destination to jump to
 
 }

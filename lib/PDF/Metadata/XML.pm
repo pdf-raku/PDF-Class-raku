@@ -16,5 +16,5 @@ class PDF::Metadata::XML
 
     has PDF::COS::Name $.Type is entry(:required) where 'Metadata';
     has PDF::COS::Name $.Subtype is entry(:required) where 'XML';
-    has PDF::Metadata::XML $.Metadata is entry; #| (Optional; PDF 1.4) A metadata stream containing metadata for the component.
+    has PDF::Metadata::XML $.Metadata is entry; # (Optional; PDF 1.4) A metadata stream containing metadata for the component.
 }

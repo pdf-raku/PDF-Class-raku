@@ -18,13 +18,13 @@ class PDF::StructTreeRoot
     use PDF::NumberTree;
 
     has PDF::COS::Name $.Type is entry(:required) where 'StructTreeRoot';
-    has PDF::StructElem @.K is entry( :alias<kids>, :array-or-item );  #| The immediate child or children of the structure tree root in the structure hierarchy. The value may be either a dictionary representing a single structure element or an array of such dictionaries.
-    has PDF::NameTree[StructElemChild, :coerce(&coerce-struct-kids)] $.IDTree is entry;          #| (Required if any structure elements have element identifiers) A name tree that maps element identifiers to the structure elements they denote.
-    has PDF::NumberTree[StructElemChild, :coerce(&coerce-struct-kids)] $.ParentTree is entry;    #| (Required if any structure element contains content items) A number tree used in finding the structure elements to which content items belong. Each integer key in the number tree shall correspond to a single page of the document or to an individual object (such as an annotation or an XObject) that is a content item in its own right. The integer key shall be the value of the StructParent or StructParents entry in that object. The form of the associated value shall depend on the nature of the object:
-                                                  #| -- For an object that is a content item in its own right, the value shall be an indirect reference to the object’s parent element (the structure element that contains it as a content item).
-                                                  #| -- For a page object or content stream containing marked-content sequences that are content items, the value shall be an array of references to the parent elements of those marked-content sequences.
+    has PDF::StructElem @.K is entry( :alias<kids>, :array-or-item );  # The immediate child or children of the structure tree root in the structure hierarchy. The value may be either a dictionary representing a single structure element or an array of such dictionaries.
+    has PDF::NameTree[StructElemChild, :coerce(&coerce-struct-kids)] $.IDTree is entry;          # (Required if any structure elements have element identifiers) A name tree that maps element identifiers to the structure elements they denote.
+    has PDF::NumberTree[StructElemChild, :coerce(&coerce-struct-kids)] $.ParentTree is entry;    # (Required if any structure element contains content items) A number tree used in finding the structure elements to which content items belong. Each integer key in the number tree shall correspond to a single page of the document or to an individual object (such as an annotation or an XObject) that is a content item in its own right. The integer key shall be the value of the StructParent or StructParents entry in that object. The form of the associated value shall depend on the nature of the object:
+                                                  # -- For an object that is a content item in its own right, the value shall be an indirect reference to the object’s parent element (the structure element that contains it as a content item).
+                                                  # -- For a page object or content stream containing marked-content sequences that are content items, the value shall be an array of references to the parent elements of those marked-content sequences.
 
-    has UInt $.ParentTreeNextKey is entry;       #| (Optional) An integer greater than any key in the parent tree, shall be used as a key for the next entry added to the tree.
+    has UInt $.ParentTreeNextKey is entry;       # (Optional) An integer greater than any key in the parent tree, shall be used as a key for the next entry added to the tree.
     our subset StandardStructureType of PDF::COS::Name where
         # [PDF 32000 Table 333 – Standard structure types for grouping elements]
         'Document'     # (Document) A complete document. This is the root element of any structure tree containing multiple parts or multiple articles.
@@ -83,7 +83,7 @@ class PDF::StructTreeRoot
         | 'Form'      # (Form) A widget annotation representing an interactive form field
         ;
 
-    has StandardStructureType %.RoleMap  is entry;       #| A dictionary that shall map the names of structure types used in the document to their approximate equivalents in the set of standard structure types.
+    has StandardStructureType %.RoleMap  is entry;     # A dictionary that shall map the names of structure types used in the document to their approximate equivalents in the set of standard structure types.
 
-    has Hash %.ClassMap is entry;                      #| A dictionary that shall map name objects designating attribute classes to the corresponding attribute objects
+    has Hash %.ClassMap is entry;                      # A dictionary that shall map name objects designating attribute classes to the corresponding attribute objects
 }

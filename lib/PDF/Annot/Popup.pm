@@ -12,7 +12,7 @@ class PDF::Annot::Popup
     use ISO_32000::Popup_annotation_additional;
     also does ISO_32000::Popup_annotation_additional;
 
-    has PDF::Annot $.Parent is entry(:indirect); #| (Optional; shall be an indirect reference) The parent annotation with which this pop-up annotation shall be associated.
-    has Bool $.Open is entry; #| Optional) A flag specifying whether the pop-up annotation shall initially be displayed open. Default value: false (closed).
+    has PDF::Annot $.Parent is entry(:indirect); # (Optional; shall be an indirect reference) The parent annotation with which this pop-up annotation shall be associated.
+    has Bool $.Open is entry; # Optional) A flag specifying whether the pop-up annotation shall initially be displayed open. Default value: false (closed).
 
 }

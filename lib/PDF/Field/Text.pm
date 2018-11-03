@@ -14,8 +14,8 @@ role PDF::Field::Text
     use ISO_32000::Text_field_additional;
     also does ISO_32000::Text_field_additional;
     my subset TextOrStream of PDF::COS where PDF::COS::Stream | PDF::COS::TextString;
-    multi sub coerce(Str $s is rw, TextOrStream) {
-	PDF::COS.coerce($s, PDF::COS::TextString)
+    multi sub coerce(Str $_ is rw, TextOrStream) {
+	PDF::COS.coerce($_, PDF::COS::TextString)
     }
     multi sub coerce($_, TextOrStream) is default {
 	fail "unable to coerce {.perl} to Text or a Stream";
@@ -23,5 +23,5 @@ role PDF::Field::Text
     has TextOrStream $.V is entry(:&coerce, :inherit, :alias<value>);
     has TextOrStream $.DV is entry(:&coerce, :inherit, :alias<default-value>);
 
-    has UInt $.MaxLen is entry; #| (Optional; inheritable) The maximum length of the field’s text, in characters.
+    has UInt $.MaxLen is entry; # (Optional; inheritable) The maximum length of the field’s text, in characters.
 }

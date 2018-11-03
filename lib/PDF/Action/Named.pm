@@ -16,6 +16,6 @@ class PDF::Action::Named
     use PDF::COS::Name;
 
     my subset ActionName of PDF::COS::Name where 'NextPage'|'PrevPage'|'FirstPage'|'LastPage';
-    has ActionName $.N is entry(:required, :alias<action-name>); #| (Required) The name of the action that shall be performed.
+    has ActionName $.N is entry(:required, :alias<action-name>); # (Required) The name of the action that shall be performed.
 
 }

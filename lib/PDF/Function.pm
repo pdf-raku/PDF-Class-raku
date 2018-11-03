@@ -3,7 +3,6 @@ use v6;
 use PDF::COS::Stream;
 
 #| /FunctionType 1..7 - the Function dictionary delegates
-
 class PDF::Function
     is PDF::COS::Stream {
 
@@ -16,8 +15,8 @@ class PDF::Function
     subset FunctionTypeInt of UInt where 0|2|3|4;
 
     has FunctionTypeInt $.FunctionType is entry(:required);
-    has Numeric @.Domain is entry(:required);  #| (Required) An array of 2 × m numbers, where m is the number of input values. For each i from 0 to m − 1
-    has Numeric @.Range is entry;              #| (Required for type 0 and type 4 functions, optional otherwise; see below) An array of 2 × n numbers, where n is the number of output values.
+    has Numeric @.Domain is entry(:required);  # (Required) An array of 2 × m numbers, where m is the number of input values. For each i from 0 to m − 1
+    has Numeric @.Range is entry;              # (Required for type 0 and type 4 functions, optional otherwise; see below) An array of 2 × n numbers, where n is the number of output values.
 
     # from PDF Spec 1.7 table 3.35
     constant FunctionTypes = <Sampled n/a Exponential Stitching PostScript>;

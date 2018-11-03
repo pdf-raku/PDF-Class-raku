@@ -13,7 +13,7 @@ class PDF::Class:ver<0.4.0>:api<PDF-1.7>
     use PDF::COS::Tie;
     use PDF::Class::Type;
     use PDF::Info;
-    has PDF::Info $.Info is entry(:indirect);  #| (Optional; must be an indirect reference) The document’s information dictionary
+    has PDF::Info $.Info is entry(:indirect);  # (Optional; must be an indirect reference) The document’s information dictionary
     my subset Catalog of PDF::Class::Type where { .<Type> ~~ 'Catalog' };  # autoloaded PDF::Catalog
     has Catalog $.Root is entry(:required, :indirect, :alias<catalog>);
 
