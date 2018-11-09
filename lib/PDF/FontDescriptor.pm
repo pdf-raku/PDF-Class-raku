@@ -20,7 +20,7 @@ class PDF::FontDescriptor
     has Str $.FontFamily is entry;                     # (Optional; PDF 1.5; strongly recommended for Type 3 fonts in Tagged PDF documents) A byte string specifying the preferred font family name
     my subset FontStretchName of PDF::COS::Name where 'ExtraCondensed'|'Condensed'|'SemiCondensed'|'Normal'|'SemiExpanded'|'Expanded'|'ExtraExpanded'|'UltraExpanded';
     has FontStretchName $.FontStretch is entry;        # (Optional; PDF 1.5; strongly recommended for Type 3 fonts in Tagged PDF documents) The font stretch value
-    my subset FontWeightValue of Int where 100|200|300|400|500|600|700|800|900;
+    my subset FontWeightValue of Int where 0 <= * < 1000;
     has FontWeightValue $.FontWeight is entry;         # Optional; PDF 1.5; strongly recommended for Type 3 fonts in Tagged PDF documents) The weight (thickness) component of the fully-qualified font name or font specifier.
     my subset FontFlags of Int where 0 ..^ (2 +< 18);
 	# See [PDF 32000 table 123 - Font flags]

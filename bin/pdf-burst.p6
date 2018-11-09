@@ -38,7 +38,7 @@ sub MAIN(Str $infile,              #| input PDF
     my PDF::Catalog $catalog = $pdf.catalog;
     # just remove anything in the catalog that may
     # reference other pages or otherwise confuse things
-    $catalog<AcroForm MarkInfo Names OCProperties
+    $catalog<AcroForm MarkInfo Metadata Names OCProperties
              Outlines PageLabels StructTreeRoot>:delete;
 
     my UInt $page-count = $pdf.page-count;

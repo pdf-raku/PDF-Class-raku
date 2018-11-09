@@ -39,7 +39,7 @@ my $shading = ::('PDF::Shading::Radial').new( :dict{ :ColorSpace(:name<DeviceRGB
 							 } );
 is $shading.ShadingType, 3, '$.ShadingType init';
 
-require ::('PDF::Function::PostScript');
+require PDF::Function::PostScript;
 my $function;
-lives-ok { $function = ::('PDF::Function::PostScript').new( :dict{ :Domain[-1, 1, -1, 1] } )}, "PostScript require";
+lives-ok { $function = PDF::Function::PostScript.new( :dict{ :Domain[-1, 1, -1, 1] } )}, "PostScript require";
 lives-ok {$function.FunctionType}, 'FunctionType accessor';
