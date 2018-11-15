@@ -146,7 +146,7 @@ class PDF::Catalog
     has PDF::COS::Dict $.AA is entry(:alias<additional-actions>);                    # (Optional; PDF 1.4) An additional-actions dictionary defining the actions to be taken in response to various trigger events affecting the document as a whole
 
     my role URI does PDF::COS::Tie::Hash {
-        # see [PDF 32000 Tabler 207 - Entry in a URI dictionary]
+        # see [PDF 32000 Table 207 - Entry in a URI dictionary]
         use ISO_32000::URI;
         also does ISO_32000::URI;
         has PDF::COS::ByteString $.Base is entry;           # (Optional) The base URI that shall be used in resolving relative URI references. URI actions within the document may specify URIs in partial form, to be interpreted relative to this base address. If no base URI is specified, such partial URIs shall be interpreted relative to the location of the document itself. The use of this entry is parallel to that of the body element <BASE >, as described in the HTML 4.01 Specification
