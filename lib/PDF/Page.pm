@@ -23,8 +23,8 @@ class PDF::Page
     use PDF::Bead-Thread; # Declares PDF::Bead & PDF::Thread
 
     # see [PDF 32000 Table 30 - Entries in a page object]
-    use ISO_32000::Page;
-    also does ISO_32000::Page;
+    ## use ISO_32000::Page;
+    ## also does ISO_32000::Page;
 
     has PDF::COS::Name $.Type is entry(:required) where 'Page';
     my subset Pages of Hash where .<Type> ~~ 'Pages'; # autoloaded PDF::Pages
@@ -64,8 +64,8 @@ class PDF::Page
     has Str $.ID is entry;                       # (Optional; PDF 1.3; indirect reference preferred) The digital identifier of the page’s parent Web Capture content set
     has Numeric $.PZ is entry(:alias<preferred-zoom>); # (Optional; PDF 1.3) The page’s preferred zoom (magnification) factor
     my role SeparationInfo does PDF::COS::Tie::Hash {
-        use ISO_32000::Separation;
-        also does ISO_32000::Separation;
+        ## use ISO_32000::Separation;
+        ## also does ISO_32000::Separation;
         has PDF::Page @.Pages is entry;
         has Str $.DeviceColorant is entry;
         has Array $.ColorSpace is entry;

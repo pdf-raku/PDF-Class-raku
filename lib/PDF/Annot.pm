@@ -18,8 +18,8 @@ class PDF::Annot
     use PDF::OCG;
 
     # See [PDF 32000 Table 164 - Entries common to all annotation dictionaries]
-    use ISO_32000::Annotation_common;
-    also does ISO_32000::Annotation_common;
+    ## use ISO_32000::Annotation_common;
+    ## also does ISO_32000::Annotation_common;
 
     method cb-init {
         use PDF::Field :coerce, :FieldLike;

@@ -9,8 +9,8 @@ class PDF::OCMD
     does PDF::Class::Type {
 
     # see [PDF 32000 Table 99 - Entries in an Optional Content Membership Dictionary]
-    use ISO_32000::Optional_Content_Group_Membership;
-    also does ISO_32000::Optional_Content_Group_Membership;
+    ## use ISO_32000::Optional_Content_Group_Membership;
+    ## also does ISO_32000::Optional_Content_Group_Membership;
 
     use PDF::COS::Tie;
     use PDF::COS::Tie::Hash;

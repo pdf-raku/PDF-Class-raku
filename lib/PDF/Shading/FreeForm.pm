@@ -8,8 +8,8 @@ class PDF::Shading::FreeForm
     is PDF::COS::Stream
     does PDF::Shading {
     # see [PDF 32000 Table 82 - Additional Entries Specific to a type 4 Shading Dictionary]
-    use ISO_32000::Type_4_Shading;
-    also does ISO_32000::Type_4_Shading;
+    ## use ISO_32000::Type_4_Shading;
+    ## also does ISO_32000::Type_4_Shading;
 
     use PDF::COS::Tie;
     use PDF::Function;

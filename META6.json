@@ -8,8 +8,7 @@
   "depends" : [
     "PDF",
     "PDF::Grammar",
-    "PDF::Content",
-    "PDF::ISO_32000"
+    "PDF::Content"
   ],
   "description" : "PDF Document Object Model",
   "license" : "Artistic-2.0",

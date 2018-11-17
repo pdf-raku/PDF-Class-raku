@@ -9,8 +9,8 @@ class PDF::Function
     use PDF::COS::Tie;
 
     # see [PDF 32000 Table 38 - Entries common to all function dictionaries]
-    use ISO_32000::Function_common;
-    also does ISO_32000::Function_common;
+    ## use ISO_32000::Function_common;
+    ## also does ISO_32000::Function_common;
 
     subset FunctionTypeInt of UInt where 0|2|3|4;
 

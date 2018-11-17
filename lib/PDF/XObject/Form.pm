@@ -13,8 +13,8 @@ class PDF::XObject::Form
     does PDF::Content::Resourced {
 
     # See [PDF Spec 32000 Table 95 - Additional Entries Specific to a Type 1 Form Dictionary]
-    use ISO_32000::Type_1_Form;
-    also does ISO_32000::Type_1_Form;
+    ## use ISO_32000::Type_1_Form;
+    ## also does ISO_32000::Type_1_Form;
 
     use PDF::COS::Tie;
     use PDF::COS::DateString;

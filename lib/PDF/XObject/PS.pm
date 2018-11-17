@@ -10,8 +10,8 @@ class PDF::XObject::PS
     does PDF::Content::XObject['PS'] {
 
     # see [PDF 32000 Table 88 - Additional Entries Specific to a postscript xobject Dictionary]
-    use ISO_32000::Postscript_XObject;
-    also does ISO_32000::Postscript_XObject;
+    ## use ISO_32000::Postscript_XObject;
+    ## also does ISO_32000::Postscript_XObject;
 
     use PDF::COS::Tie;
     use PDF::COS::Stream;

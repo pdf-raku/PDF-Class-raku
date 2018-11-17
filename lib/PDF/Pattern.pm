@@ -8,7 +8,7 @@ role PDF::Pattern
     use PDF::COS::Tie;
     use PDF::COS::Name;
 
-    #| /Type entry is optional, but should be /Pattern when present
+    # /Type entry is optional, but should be /Pattern when present
     has PDF::COS::Name $.Type is entry where 'Pattern';
 
     my subset PatternTypeInt of Int where 1|2;

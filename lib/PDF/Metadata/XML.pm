@@ -8,8 +8,8 @@ class PDF::Metadata::XML
     does PDF::Class::Type {
 
     # See [PDF 32000 Table 315 - Additional entries in a metadata stream dictionary]
-    use ISO_32000::Metadata_stream_additional;
-    also does ISO_32000::Metadata_stream_additional;
+    ## use ISO_32000::Metadata_stream_additional;
+    ## also does ISO_32000::Metadata_stream_additional;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

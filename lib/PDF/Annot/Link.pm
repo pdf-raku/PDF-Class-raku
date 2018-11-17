@@ -6,8 +6,8 @@ class PDF::Annot::Link
     is PDF::Annot::Markup {
 
     # See [PDF 3200 Table 173 - Additional entries specific to a link annotation]
-    use ISO_32000::Link_annotation_additional;
-    also does ISO_32000::Link_annotation_additional;
+    ## use ISO_32000::Link_annotation_additional;
+    ## also does ISO_32000::Link_annotation_additional;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

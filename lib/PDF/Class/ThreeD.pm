@@ -16,8 +16,8 @@ role PDF::Class::ThreeD
     # • A name that indicates the first (F), last (L), or default (D) entries in the VA array.
 
     my role Activation is PDF::COS::Tie::Hash {
-        use ISO_32000::Three-D_activation;
-        also does ISO_32000::Three-D_activation;
+        ## use ISO_32000::Three-D_activation;
+        ## also does ISO_32000::Three-D_activation;
         my subset ActiviationCircumstances of PDF::COS::Name where 'PO'|'PV'|'XA';
         has $.A is entry(:alias<activation>);	# [name] (Optional) A name specifying the circumstances under which the annotation is activated. Valid values are:
             # PO The annotation is activated as soon as the page containing the annotation is opened.

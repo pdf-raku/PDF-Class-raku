@@ -17,8 +17,8 @@ class PDF::Pages
     use PDF::Resources;
 
     # see [PDF 30 Table 29 - Required entries in a page tree node]
-    use ISO_32000::Pages;
-    also does ISO_32000::Pages;
+    ## use ISO_32000::Pages;
+    ## also does ISO_32000::Pages;
 
     has PDF::COS::Name $.Type is entry(:required) where 'Pages';
     has PDF::Pages $.Parent is entry(:indirect); # (Required except in root node; must be an indirect reference) The page tree node that is the immediate parent of this one.

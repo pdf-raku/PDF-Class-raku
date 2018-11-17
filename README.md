@@ -289,7 +289,7 @@ The PDF::Class module is under construction and not yet functionally complete.
 
 ## See also
 
-- [PDF::Specification](https://github.com/p6-pdf/PDF-Specification-p6) - A set of interface roles that have
+- [PDF::ISO_32000](https://github.com/p6-pdf/PDF-ISO_32000-p6) - A set of interface roles that have
 been mined from the PDF 32000 specification, e.g. ISO_32000::Catalog.
 - [PDF::API6](https://github.com/p6-pdf/PDF-API6) - general purpose PDF manipulation (under construction)
 ## Classes Quick Reference

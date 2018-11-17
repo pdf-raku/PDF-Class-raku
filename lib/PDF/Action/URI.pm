@@ -10,8 +10,8 @@ class PDF::Action::URI
     does PDF::Action {
 
     # see [PDF 32000 - TABLE 206 - Additional entries specific to a URI action]
-    use ISO_32000::URI_action_additional;
-    also does ISO_32000::URI_action_additional;
+    ## use ISO_32000::URI_action_additional;
+    ## also does ISO_32000::URI_action_additional;
 
     use PDF::COS::Tie;
     use PDF::COS::ByteString;

@@ -20,8 +20,8 @@ role PDF::Image
     use PDF::Content::Image::PNG :PNG-CS;
     use PDF::IO::Filter;
     # See [PDF 32000 Table 89 - Additional Entries Specific to an Image Dictionary]
-    use ISO_32000::Image;
-    also does ISO_32000::Image;
+    ## use ISO_32000::Image;
+    ## also does ISO_32000::Image;
     has PDF::COS::Name $.Type is entry where 'XObject';
     has PDF::COS::Name $.Subtype is entry where 'Image';
     has Numeric $.Width is entry(:required);      # (Required) The width of the image, in samples.
@@ -39,8 +39,8 @@ role PDF::Image
     my role Alternate_Image
     does PDF::COS::Tie::Hash {
         # See [PDF 32000 Table 91 - Entries in an Alternate Image Dictionary]
-        use ISO_32000::Alternate_Image;
-        also does ISO_32000::Alternate_Image;
+        ## use ISO_32000::Alternate_Image;
+        ## also does ISO_32000::Alternate_Image;
         has PDF::Image $.Image is entry(:required);
         has Bool $.DefaultForPrinting is entry;
         has PDF::OCG $.OC is entry;

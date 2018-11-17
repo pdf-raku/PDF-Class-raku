@@ -11,8 +11,8 @@ role PDF::Field::Text
     use PDF::COS::TextString;
 
     # See [PDF 32000 TABLE 229 - Additional entry specific to a text field]
-    use ISO_32000::Text_field_additional;
-    also does ISO_32000::Text_field_additional;
+    ## use ISO_32000::Text_field_additional;
+    ## also does ISO_32000::Text_field_additional;
     my subset TextOrStream of PDF::COS where PDF::COS::Stream | PDF::COS::TextString;
     multi sub coerce(Str $_ is rw, TextOrStream) {
 	PDF::COS.coerce($_, PDF::COS::TextString)

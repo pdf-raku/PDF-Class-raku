@@ -12,8 +12,8 @@ role PDF::Signature
     use PDF::COS::TextString;
 
     # See [PDF 32000 Table 252 - Entries in a signature dictionary]
-    use ISO_32000::Signature;
-    also does ISO_32000::Signature;
+    ## use ISO_32000::Signature;
+    ## also does ISO_32000::Signature;
 
     has PDF::COS::Name $.Type is entry where 'Sig'; # (Optional) The type of PDF object that this dictionary describes; if present, shall be Sig for a signature dictionary.
     has PDF::COS::Name $.Filter is entry(:required); # (Required; inheritable) The name of the preferred signature handler to use when validating this signature. If the Prop_Build entry is not present, it shall be also the name of the signature handler that was used to create the signature. If Prop_Build is present, it may be used to determine the name of the handler that created the signature (which is typically the same as Filter but is not needed to be). A conforming reader may substitute a different handler when verifying the signature, as long as it supports the specified SubFilter format.

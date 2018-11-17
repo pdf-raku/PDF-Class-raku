@@ -14,8 +14,8 @@ role PDF::Field
 
     my role vanilla does PDF::Field {
         # see [PDF 32000 Table 220 - Entries common to all field dictionaries]
-        use ISO_32000::Field_common;
-        also does ISO_32000::Field_common;
+        ## use ISO_32000::Field_common;
+        ## also does ISO_32000::Field_common;
 
         ## type specific - see individual field definitions
         has Any $.V is entry(:inherit);           # (Optional; inheritable) The field’s value, whose format varies depending on the field type

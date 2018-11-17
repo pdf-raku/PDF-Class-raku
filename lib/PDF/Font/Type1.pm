@@ -12,8 +12,8 @@ class PDF::Font::Type1
     use PDF::Encoding;
 
     # see [PDF 32000 TABLE 111 - Entries in a Type 1 font dictionary]
-    use ISO_32000::Type_1_Font;
-    also does ISO_32000::Type_1_Font;
+    ## use ISO_32000::Type_1_Font;
+    ## also does ISO_32000::Type_1_Font;
 
     has PDF::COS::Name $.Name is entry;                 # (Required in PDF 1.0; optional otherwise) The name by which this font is referenced in the Font subdictionary of the current resource dictionary.
                                                         # Note: This entry is obsolescent and its use is no longer recommended.

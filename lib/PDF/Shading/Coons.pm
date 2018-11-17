@@ -7,8 +7,8 @@ use PDF::Shading;
 class PDF::Shading::Coons
     is PDF::COS::Stream
     does PDF::Shading {
-    use ISO_32000::Type_6_Shading;
-    also does ISO_32000::Type_6_Shading;
+    ## use ISO_32000::Type_6_Shading;
+    ## also does ISO_32000::Type_6_Shading;
     # see [PDF 32000 Table 84 - Additional Entries Specific to a Type 6 Shading Dictionary]
     use PDF::COS::Tie;
     use PDF::Function;

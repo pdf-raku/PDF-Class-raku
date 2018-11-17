@@ -12,8 +12,8 @@ role PDF::Appearance
     use PDF::COS::Stream;
 
     # See [PDF 32000 Table 168 - Entries in an appearance dictionary]
-    use ISO_32000::Appearance;
-    also does ISO_32000::Appearance;
+    ## use ISO_32000::Appearance;
+    ## also does ISO_32000::Appearance;
 
     my subset FormLike of PDF::COS::Stream where .<Subtype> ~~ 'Form'; # autoloaded PDF::XObject::Form
     my role AppearanceStatus

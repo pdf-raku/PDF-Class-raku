@@ -10,8 +10,8 @@ class PDF::Font::CIDFont
     use PDF::FontDescriptor::CID;
 
     # see [PDF 32000 Table 117 - Entries in a CIDFont dictionary]
-    use ISO_32000::CIDFont;
-    also does ISO_32000::CIDFont;
+    ## use ISO_32000::CIDFont;
+    ## also does ISO_32000::CIDFont;
 
     has PDF::COS::Name $.BaseFont is entry(:required);        # (Required) The PostScript name of the CIDFont. For Type 0 CIDFonts, this is usually the value of the CIDFontName entry in the CIDFont program. For Type 2 CIDFonts, it is derived the same way as for a simple TrueType font
     use PDF::CIDSystemInfo;

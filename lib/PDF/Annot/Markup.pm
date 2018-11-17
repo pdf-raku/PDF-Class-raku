@@ -16,8 +16,8 @@ class PDF::Annot::Markup
     use PDF::ExData::Markup3D;
 
     # See [PDF 32000 Table 170 - Additional entries specific to markup annotations]
-    use ISO_32000::Annotation_markup_additional;
-    also does ISO_32000::Annotation_markup_additional;
+    ## use ISO_32000::Annotation_markup_additional;
+    ## also does ISO_32000::Annotation_markup_additional;
 
     # This is the base class for Markup Annotations, as indicated in [PDF 32000 Table 169, Column 3].
     # I.e.: Text, FreeText, Line, Square, Circle, Polygon, PolyLine, Highlight Underline, Squiggly,

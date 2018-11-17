@@ -10,8 +10,8 @@ role PDF::OutputIntent
     does PDF::Class::Type['Type', 'S'] {
 
     # See [PDF 32000 Table 365 – Entries in an output intent dictionary]
-    use ISO_32000::Output_intent;
-    also does ISO_32000::Output_intent;
+    ## use ISO_32000::Output_intent;
+    ## also does ISO_32000::Output_intent;
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::COS::TextString;

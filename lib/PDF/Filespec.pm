@@ -15,8 +15,8 @@ role PDF::Filespec
     use PDF::COS::Stream;
 
     # [See PDF 32000 Table 44 - Entries in a file specification dictionary]
-    use ISO_32000::File_specification;
-    also does ISO_32000::File_specification;
+    ## use ISO_32000::File_specification;
+    ## also does ISO_32000::File_specification;
 
     # file specifications may be either a dictionary or a simple text-string
     my subset file-spec is export(:file-spec) where PDF::COS::TextString|PDF::Filespec;
@@ -43,14 +43,14 @@ role PDF::Filespec
     has Bool $.V is entry; # (Optional; PDF 1.2) A flag indicating whether the file referenced by the file specification is volatile (changes frequently with time). If the value is true, applications shall not cache a copy of the file. For example, a movie annotation referencing a URL to a live video camera could set this flag to true to notify the conforming reader that it should re-acquire the movie each time it is played. Default value: false.
     my role EmbeddedFile does PDF::COS::Tie::Hash {
         # See [PDF 3200 Table 45 - Additional entries in an embedded file stream dictionary]
-        use ISO_32000::Embedded_file_stream;
-        also does ISO_32000::Embedded_file_stream;
+        ## use ISO_32000::Embedded_file_stream;
+        ## also does ISO_32000::Embedded_file_stream;
         has PDF::COS::Name $.Type is entry where 'EmbeddedFile';
         has PDF::COS::Name $.Subtype;
         my role ParamsDict does PDF::COS::Tie::Hash {
             # See [PDF 3200 Table 46 - Entries in an embedded file parameter dictionary]
-            use ISO_32000::Embedded_file_parameter;
-            also does ISO_32000::Embedded_file_parameter;
+            ## use ISO_32000::Embedded_file_parameter;
+            ## also does ISO_32000::Embedded_file_parameter;
             has UInt $.Size is entry;
             has PDF::COS::DateString $.CreationDate is entry;
             has PDF::COS::DateString $.ModDate is entry;

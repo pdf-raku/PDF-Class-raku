@@ -17,8 +17,8 @@ role PDF::Outline
     use PDF::StructElem;
 
     # See [PDF 32000 Table 153 - Entries in an outline item dictionary]
-    use ISO_32000::Outline_item;
-    also does ISO_32000::Outline_item;
+    ## use ISO_32000::Outline_item;
+    ## also does ISO_32000::Outline_item;
 
     has PDF::COS::TextString $.Title is entry(:required);               # (Required) The text to be displayed on the screen for this item.
     has PDF::Class::OutlineNode $.Parent is entry(:required, :indirect);  # (Required; must be an indirect reference) The parent of this item in the outline hierarchy. The parent of a top-level item is the outline dictionary itself.

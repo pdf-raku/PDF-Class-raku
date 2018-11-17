@@ -8,8 +8,8 @@ class PDF::Function::Sampled
     is PDF::Function {
 
     # see [PDF 32000 Table 39 - Additional entries specific to a type 0 function dictionary]
-    use ISO_32000::Type_0_Function;
-    also does ISO_32000::Type_0_Function;
+    ## use ISO_32000::Type_0_Function;
+    ## also does ISO_32000::Type_0_Function;
 
     use PDF::COS::Tie;
 

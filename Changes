@@ -1,5 +1,6 @@
 Release 0.3.1
-- Use ISO_32000 roles (e.g. ISO_32000::Page)
+- Feedback from trial integration PDF::ISO_32000 package
+  (work in progress)
 Release 0.3.0
 - fixed pdf-toc.p6
 Release 0.2.9
