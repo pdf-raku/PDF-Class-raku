@@ -1,8 +1,7 @@
-Release 0.3.1
+Release 0.3.0
+- Fixed pdf-toc.p6
 - Feedback from trial integration PDF::ISO_32000 package
   (work in progress)
-Release 0.3.0
-- fixed pdf-toc.p6
 Release 0.2.9
 - Script fixes:
   -- pdf-burst.p6 to work with inherited page resources. added
