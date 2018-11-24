@@ -26,7 +26,7 @@ role PDF::ViewerPreferences
     has Bool $.DisplayDocTitle is entry;        # (Optional; PDF 1.4) A flag specifying whether the window’s title bar should display the document title taken from the Title entry of the document information dictionary. If false, the title bar should instead display the name of the PDF file containing the document. Default value: false.
 
     my subset PageModes of PDF::COS::Name where 'UseNone' | 'UseOutlines' | 'UseThumbs' | 'UseOC' | 'UseAttachments';
-    has PageModes $.NonFullScreenPageMode is entry(:default<UseNone>); # (Optional) The document’s page mode, specifying how to display the document on exiting full-screen mode:
+    has PageModes $.NonFullScreenPageMode is entry(:default<UseNone>, :alias<after-fullscreen>); # (Optional) The document’s page mode, specifying how to display the document on exiting full-screen mode:
                                                 #  - UseNone        : Neither document outline nor thumbnail images visible
                                                 #  - UseOutlines    : Document outline visible
                                                 #  - UseThumbs      : Thumbnail images visible
