@@ -12,11 +12,11 @@ class PDF::Font::CIDFont
     # see [PDF 32000 Table 117 - Entries in a CIDFont dictionary]
     ## use ISO_32000::CIDFont;
     ## also does ISO_32000::CIDFont;
+    use PDF::CIDSystemInfo;
+    use PDF::FontDescriptor::CID;
 
     has PDF::COS::Name $.BaseFont is entry(:required);        # (Required) The PostScript name of the CIDFont. For Type 0 CIDFonts, this is usually the value of the CIDFontName entry in the CIDFont program. For Type 2 CIDFonts, it is derived the same way as for a simple TrueType font
-    use PDF::CIDSystemInfo;
     has PDF::CIDSystemInfo $.CIDSystemInfo is entry(:required);             # (Required) A dictionary containing entries that define the character collection of the CIDFont.
-    use PDF::FontDescriptor::CID;
     has PDF::FontDescriptor::CID $.FontDescriptor is entry(:required, :indirect); # (Required; must be an indirect reference) A font descriptor describing the CIDFont’s default metrics other than its glyph widths
     has UInt $.DW is entry(:alias<default-width>);                                   # (Optional) The default width for glyphs in the CIDFont
     has @.W is entry(:alias<widths>);                                         # (Optional) A description of the widths for the glyphs in the CIDFont. The array’s elements have a variable format that can specify individual widths for consecutive CIDs or one width for a range of CIDs

@@ -15,7 +15,9 @@ role PDF::Image
     use PDF::ColorSpace;
     use PDF::ColorSpace::Indexed;
     use PDF::Metadata::XML;
-    use PDF::OCG;
+    use PDF::OCG;   # optional content group
+    use PDF::OCMD;  # optional content membership dict
+    my subset OCG-or-OCMD where PDF::OCG|PDF::OCMD;
 
     use PDF::Content::Image::PNG :PNG-CS;
     use PDF::IO::Filter;
@@ -43,7 +45,7 @@ role PDF::Image
         ## also does ISO_32000::Alternate_Image;
         has PDF::Image $.Image is entry(:required);
         has Bool $.DefaultForPrinting is entry;
-        has PDF::OCG $.OC is entry;
+        has OCG-or-OCMD $.OC is entry;
     }
     has Alternate_Image @.Alternates is entry;             # An array of alternate image dictionaries for this image
     my role SoftMask does PDF::COS::Tie::Hash {
@@ -63,7 +65,7 @@ role PDF::Image
     has Str $.ID is entry;                        # (Optional; PDF 1.3; indirect reference preferred) The digital identifier of the image’s parent Web Capture content set
     has Hash $.OPI is entry;                      # (Optional; PDF 1.2) An OPI version dictionary for the image. If ImageMask is true, this entry is ignored.
     has PDF::Metadata::XML $.Metadata is entry;     # (Optional; PDF 1.4) A metadata stream containing metadata for the image
-    has PDF::OCG $.OC is entry(:alias<optional-content>);   # (Optional; PDF 1.5) An optional content group or optional content membership dictionary
+    has OCG-or-OCMD $.OC is entry(:alias<optional-content>);   # (Optional; PDF 1.5) An optional content group or optional content membership dictionary
 
     my subset PNGPredictor of Int where 10 .. 15;
 

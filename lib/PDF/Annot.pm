@@ -15,7 +15,9 @@ class PDF::Annot
     use PDF::COS::TextString;
     use PDF::Appearance;
     use PDF::Border;
-    use PDF::OCG;
+    use PDF::OCG;   # optional content group
+    use PDF::OCMD;  # optional content membership dict
+    my subset OCG-or-OCMD where PDF::OCG|PDF::OCMD;
 
     # See [PDF 32000 Table 164 - Entries common to all annotation dictionaries]
     ## use ISO_32000::Annotation_common;
@@ -58,7 +60,7 @@ class PDF::Annot
     has Numeric @.Border is entry(:len(4));                     # (Optional) An array specifying the characteristics of the annotation’s border. The border is specified as a rounded rectangle.
     has Numeric @.C is entry(:alias<color>);                    # (Optional; PDF 1.1) An array of numbers in the range 0.0 to 1.0, representing a color used for (*) background, when closed, (*) title bar of pop-up window, (*) link border
     has UInt $.StructParent is entry;                           # (Required if the annotation is a structural content item; PDF 1.3) The integer key of the annotation’s entry in the structural parent tree
-    has PDF::OCG $.OC is entry(:alias<optional-content>);       # (Optional; PDF 1.5) An optional content group or optional content membership dictionary specifying the optional content properties for the annotation.
+    has OCG-or-OCMD $.OC is entry(:alias<optional-content>);       # (Optional; PDF 1.5) An optional content group or optional content membership dictionary specifying the optional content properties for the annotation.
 
     has Hash $.DR is entry(:alias<default-resources>);          # In PDF 1.2, an additional entry in the field dictionary, DR, was defined but was never implemented. Beginning with PDF 1.5, this entry is obsolete and should be ignored.
 

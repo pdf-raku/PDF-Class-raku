@@ -3,7 +3,7 @@ use v6;
 use PDF::COS::Dict;
 use PDF::Class::Type;
 
-# /Type /OCMD - Optional Content Marked Content
+# /Type /OCMD - Optional Content Membership Dictionary
 class PDF::OCMD
     is PDF::COS::Dict
     does PDF::Class::Type {

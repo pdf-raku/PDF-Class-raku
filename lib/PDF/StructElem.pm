@@ -26,7 +26,7 @@ role PDF::StructElem
     my subset StructElemLike of Hash where .<S>:exists; # autoloaded PDF::MCR, PDF::OBJR
     my subset StructRootLike of Hash where { .<Type> ~~ 'StructTreeRoot' }; # autoloaded PDF::StructTreeRoot
     my subset StructElemParent where StructRootLike|PDF::StructElem;
-    my subset StructElemChild is export(:StructElemChild) where { !.defined || $_ ~~ UInt|PDF::StructElem|ReferenceLike }
+    my subset StructElemChild is export(:StructElemChild) where { $_//UInt ~~ UInt|PDF::StructElem|ReferenceLike }
     sub coerce-struct-kids($obj, StructElemChild) is export(:coerce-struct-kids) {
         # /K can be a single element or an array of elements
         if $obj ~~ List {

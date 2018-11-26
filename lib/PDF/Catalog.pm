@@ -76,7 +76,7 @@ class PDF::Catalog
         }
 
         #| page indices, starting at zero
-        method AT-POS(Int(Cool) $page-idx) {
+        method AT-POS(Int() $page-idx) {
             my Pair $num = $.nums.grep(*.key <= $page-idx).tail;
             my UInt $base  = $num.key;
             my PageLabelNode $props = $num.value;
