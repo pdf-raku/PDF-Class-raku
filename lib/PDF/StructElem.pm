@@ -23,10 +23,10 @@ role PDF::StructElem
     has Str $.ID is entry;    # (Optional) The element identifier, a byte string designating this structure element. The string shall be unique among all elements in the document’s structure hierarchy. The IDTree entry in the structure tree root defines the correspondence between element identifiers and the structure elements they denote.
     has PDF::Page $.Pg is entry(:indirect, :alias<page>); #dictionary (Optional; shall be an indirect reference) A page object representing a page on which some or all of the content items designated by the K entry shall be rendered.
     my subset ReferenceLike of Hash where .<Type> ~~ 'MCR'|'OBJR'; # autoloaded PDF::MCR, PDF::OBJR
-    my subset StructElemLike of Hash where .<S>:exists; # autoloaded PDF::MCR, PDF::OBJR
+    my subset StructElemLike of Hash where .<S>:exists;
     my subset StructRootLike of Hash where { .<Type> ~~ 'StructTreeRoot' }; # autoloaded PDF::StructTreeRoot
     my subset StructElemParent where StructRootLike|PDF::StructElem;
-    my subset StructElemChild is export(:StructElemChild) where { $_//UInt ~~ UInt|PDF::StructElem|ReferenceLike }
+    my subset StructElemChild is export(:StructElemChild) where { ($_//UInt) ~~ UInt|PDF::StructElem|ReferenceLike }
     sub coerce-struct-kids($obj, StructElemChild) is export(:coerce-struct-kids) {
         # /K can be a single element or an array of elements
         if $obj ~~ List {
