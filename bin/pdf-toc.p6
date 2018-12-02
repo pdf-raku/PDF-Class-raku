@@ -17,16 +17,17 @@ sub ind-ref(IndRef $_ ) {
 my %*page-index;
 
 sub named-dest($_) {
-    state $named-dests = do with $pdf.catalog.Names {
+    state $named-dests = do with $*pdf.catalog.Names {
         .name-tree with .Dests;
-    } // $pdf.catalog.Dests // {};
+    } // $*pdf.catalog.Dests // {};
     $named-dests{$_};
 }
 
 sub MAIN(Str $infile,           #= input PDF
 	 Str :$password = '',   #= password for the input PDF, if encrypted
          Bool :$title = True,   #= display title, if present (True)
-         Bool :$labels = True   #= display page labels (True)
+         Bool :$labels = True,  #= display page labels (True)
+         Bool :$*closed = True  #= display closed annotations
     ) {
 
     my $input = PDF::IO.coerce(
@@ -35,12 +36,12 @@ sub MAIN(Str $infile,           #= input PDF
            !! $infile.IO
     );
 
-    my PDF::Class $pdf .= open( $input, :$password, );
+    my PDF::Class $*pdf .= open( $input, :$password, );
 
-    my $page-labels = $pdf.catalog.PageLabels
+    my $page-labels = $*pdf.catalog.PageLabels
         if $labels;
 
-    my @index = $pdf.catalog.Pages.page-index;
+    my @index = $*pdf.catalog.Pages.page-index;
     %*page-index = @index.pairs.map: {
         my $page-num = .key + 1;
         $page-num = .page-label($page-num)
@@ -51,7 +52,7 @@ sub MAIN(Str $infile,           #= input PDF
     my $nesting = 0;
 
     if $title {
-        with $pdf.Info {
+        with $*pdf.Info {
             with .Title {
                 given .trim {
                     unless $_ eq '' {
@@ -63,7 +64,7 @@ sub MAIN(Str $infile,           #= input PDF
         }
     }
 
-    with $pdf.catalog.Outlines {
+    with $*pdf.catalog.Outlines {
         toc($_, :$nesting) for .get-kids;
     }
     else {
@@ -99,8 +100,10 @@ sub toc(PDF::Class::OutlineNode $outline, :$nesting! is copy) {
     with $where {
         say( ('  ' x $nesting) ~ $outline.Title.trim ~ ' . . . ' ~ $_);
         $nesting++;
-        toc($_, :$nesting)
-            for $outline.get-kids;
+        if $*closed || $outline.is-open {
+            toc($_, :$nesting)
+                for $outline.get-kids;
+        }
     }
 }
 
@@ -114,6 +117,7 @@ Options:
    --password   password for an encrypted PDF
    --/title     disable printing of title (if present)
    --/labels    display raw page numbers
+   --/closed    disable printing of closed annotations
 
 =head1 DESCRIPTION
 

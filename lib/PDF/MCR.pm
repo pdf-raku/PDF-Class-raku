@@ -17,7 +17,7 @@ class PDF::MCR
     use PDF::COS::Stream;
     use PDF::Page;
 
-    has PDF::COS::Name $.Type is entry(:required) where 'MCR';
+    has PDF::COS::Name $.Type is entry(:required, :alias<type>) where 'MCR';
 
     has PDF::Page $.Pg is entry(:indirect, :alias<page>); # (Optional; shall be an indirect reference) The page object representing the page on which the graphics objects in the marked-content sequence shall be rendered. This entry overrides any Pg entry in the structure element containing the marked-content reference; it shall be required if the structure element has no such entry.
 

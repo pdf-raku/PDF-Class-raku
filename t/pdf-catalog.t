@@ -78,7 +78,7 @@ is-json-equiv $catalog.Lang, 'EN-US', '$catalog.Lang';
 # last modified is not listed as a property in [ PDF 1.7 TABLE 3.25 Entries in the catalog dictionary]
 is-json-equiv $catalog.Type, 'Catalog', '$catalog.Type';
 isa-ok $catalog.Type, Str, 'catalog $.Type';
-ok ! $catalog.subtype.defined, 'catalog $.subtype';
+ok ! $catalog.?subtype.defined, 'catalog $.subtype';
 is-json-equiv $catalog<LastModified>, 'D:20081012130709', '$catalog<LastModified>';
 is-json-equiv $catalog.MarkInfo, { :LetterspaceFlags(0), :Marked }, '$object.MarkInfo'; 
 is-json-equiv $catalog.Metadata, (:ind-ref[10, 0]), '$catalog.Metadata';

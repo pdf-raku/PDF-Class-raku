@@ -26,7 +26,7 @@ class PDF::Page
     ## use ISO_32000::Page;
     ## also does ISO_32000::Page;
 
-    has PDF::COS::Name $.Type is entry(:required) where 'Page';
+    has PDF::COS::Name $.Type is entry(:required, :alias<type>) where 'Page';
     my subset Pages of Hash where .<Type> ~~ 'Pages'; # autoloaded PDF::Pages
     has Pages $.Parent is entry(:indirect);       # (Required; must be an indirect reference) The page tree node that is the immediate parent of this page object.
     has Str $.LastModified is entry;             # (Required if PieceInfo is present; optional otherwise; PDF 1.3) The date and time when the page’s contents were most recently modified

@@ -1,9 +1,16 @@
 use v6;
 
-role PDF::Class::Type[$type-entry = 'Type', $subtype-entry = 'Subtype'] {
+role PDF::Class::Type {
 
     use PDF::Class::Loader;
-    method type    is rw { self{$_} with $type-entry }
-    method subtype is rw { self{$_} with $subtype-entry }
 
+    #| class/role must implement the 'type' method
+    #| probably as an alias of /Type or another type
+    #| descriminant field
+    method type {...}
+}
+
+role PDF::Class::Type::Subtyped does PDF::Class::Type {
+    #| class/role must also implement the .subtype method
+    method subtype {...}
 }

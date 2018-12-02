@@ -1,10 +1,12 @@
 use v6;
 use PDF::COS::Tie::Hash;
+use PDF::Class::Type;
 
 #| /Type /Action
 
 role PDF::Action
-    does PDF::COS::Tie::Hash {
+    does PDF::COS::Tie::Hash
+    does PDF::Class::Type::Subtyped {
 
     # set [PDF 32000 Table 193 - Entries common to all action dictionaries]
     ## use ISO_32000::Action_common;
@@ -13,7 +15,7 @@ role PDF::Action
     use PDF::COS::Tie;
     use PDF::COS::Name;
 
-    has PDF::COS::Name $.Type is entry where 'Action';
+    has PDF::COS::Name $.Type is entry(:alias<type>) where 'Action';
 
     my subset ActionType of PDF::COS::Name where
 	'GoTo'         #| Go to a destination in the current document.
@@ -36,7 +38,7 @@ role PDF::Action
 	|'GoTo3DView'  #| (PDF 1.6) Set the current view of a 3D annotation
 	;
 
-    has ActionType $.S is entry(:required);
+    has ActionType $.S is entry(:required, :alias<subtype>);
 
     has PDF::Action @.Next is entry(:array-or-item);
 }

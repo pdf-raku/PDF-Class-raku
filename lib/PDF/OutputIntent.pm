@@ -7,7 +7,7 @@ use PDF::Class::Type;
 
 role PDF::OutputIntent
     does PDF::COS::Tie::Hash
-    does PDF::Class::Type['Type', 'S'] {
+    does PDF::Class::Type::Subtyped {
 
     # See [PDF 32000 Table 365 – Entries in an output intent dictionary]
     ## use ISO_32000::Output_intent;
@@ -18,8 +18,8 @@ role PDF::OutputIntent
     use PDF::COS::Stream;
     use PDF::ICCProfile;
 
-    has PDF::COS::Name $.Type is entry where 'OutputIntent';
-    has PDF::COS::Name $.S is entry(:required); # Required) The output intent subtype; shall be either one of GTS_PDFX, GTS_PDFA1, ISO_PDFE1 or a key defined by an ISO 32000 extension.
+    has PDF::COS::Name $.Type is entry(:alias<type>) where 'OutputIntent';
+    has PDF::COS::Name $.S is entry(:required, :alias<subtype>); # Required) The output intent subtype; shall be either one of GTS_PDFX, GTS_PDFA1, ISO_PDFE1 or a key defined by an ISO 32000 extension.
 
     has Str $.OutputCondition is entry;                       # (Optional) An ASCII string concisely identifying the intended output device or production condition in human-readable form
     has Str $.OutputConditionIdentifier is entry(:required);  # (Required) An ASCII string identifying the intended output device or production condition in human- or machine-readable form.

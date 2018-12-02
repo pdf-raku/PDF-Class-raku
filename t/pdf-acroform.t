@@ -37,7 +37,7 @@ is @fields[0].Type, 'Annot', 'Type';
 is @fields[0].Subtype, 'Widget', 'Subtype';
 is @fields[0].F, 4, '.F';
 is @fields[0].FT, 'Tx', '.FT';
-is @fields[0].type, 'Tx', '.type';
+is @fields[0].subtype, 'Tx', '.subtype';
 isa-ok @fields[0]<P>, ::('PDF::Page'), '<P>';
 my $page = @fields[0].P;
 isa-ok $page, ::('PDF::Page'), '.P';

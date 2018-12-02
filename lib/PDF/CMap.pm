@@ -16,7 +16,7 @@ class PDF::CMap
     use PDF::COS::Name;
     use PDF::CIDSystemInfo;
 
-    has PDF::COS::Name $.Type is entry(:required) where 'CMap';
+    has PDF::COS::Name $.Type is entry(:required, :alias<type>) where 'CMap';
     has PDF::COS::Name $.CMapName is entry(:required); # (Required) The PostScript name of the CMap. It should be the same as the value of CMapName in the CMap file.
     has PDF::CIDSystemInfo $.CIDSystemInfo is entry(:required);         # (Required) A dictionary containing entries that define the character collection for the CIDFont or CIDFonts associated with the CMap
     my subset ZeroOrOne of UInt where 0|1;

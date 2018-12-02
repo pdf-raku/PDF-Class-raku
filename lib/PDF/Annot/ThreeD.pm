@@ -1,12 +1,10 @@
 use v6;
 
 use PDF::Annot;
-use PDF::Class::Type;
 use PDF::Class::ThreeD;
 
 class PDF::Annot::ThreeD
     is PDF::Annot
-    does PDF::Class::Type
     does PDF::Class::ThreeD {
 
     # See [PDF 32000 Table 298 – Additional entries specific to a 3D annotation]

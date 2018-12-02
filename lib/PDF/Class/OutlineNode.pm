@@ -57,5 +57,15 @@ role PDF::Class::OutlineNode {
                 self.add-kid($_) for @kids;
             });
     }
+    method count { .abs with $.Count }
+    method is-open is rw {
+        Proxy.new(
+            FETCH => -> $ { $_ >= 0 with $.Count },
+            STORE => -> $, Bool() $open {
+                $_ = $open ?? .abs !! - .abs
+                    with $.Count
+            }
+        )
+    }
 
 }

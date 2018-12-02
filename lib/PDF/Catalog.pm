@@ -33,7 +33,7 @@ class PDF::Catalog
     use PDF::Bead-Thread; # Declares PDF::Bead & PDF::Thread
     use PDF::Class::Util :to-roman, :alpha-number, :decimal-number;
 
-    has PDF::COS::Name $.Type is entry(:required) where 'Catalog';
+    has PDF::COS::Name $.Type is entry(:required, :alias<type>) where 'Catalog';
 
     has PDF::COS::Name $.Version is entry;               # (Optional; PDF 1.4) The version of the PDF specification to which the document conforms (for example, 1.4)
     has Hash $.Extensions is entry;
