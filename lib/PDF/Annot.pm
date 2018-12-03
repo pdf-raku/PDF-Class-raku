@@ -39,8 +39,8 @@ class PDF::Annot
         'Stamp'|'Caret'|'Ink'|'Popup'|'FileAttachment'|'Sound'|'Movie'|'Widget'|'Screen'|
         'PrinterMark'|'TrapNet'|'Watermark'|'3D'|'Redact';
     has AnnotName $.Subtype is entry(:required, :alias<subtype>);
-    has Numeric @.Rect is entry(:required, :len(4));            # (Required) The annotation rectangle, defining the location of the annotation on the page in default user space units.
-    has PDF::COS::TextString $.Contents is entry;               # (Optional) Text to be displayed for the annotation or, if this type of annotation does not display text, an alternate description of the annotation’s contents in human-readable form
+    has Numeric @.Rect is entry(:required, :len(4), :alias<rect>);            # (Required) The annotation rectangle, defining the location of the annotation on the page in default user space units.
+    has PDF::COS::TextString $.Contents is entry(:alias<text>);               # (Optional) Text to be displayed for the annotation or, if this type of annotation does not display text, an alternate description of the annotation’s contents in human-readable form
     has PDF::Page $.P is entry(:alias<page>);                   # (Optional; PDF 1.3; not used in FDF files) An indirect reference to the page object with which this annotation is associated.
     has PDF::COS::TextString $.NM is entry(:alias<annotation-name>);       # (Optional; PDF 1.4) The annotation name, a text string uniquely identifying it among all the annotations on its page.
     my subset DateOrTextString where PDF::COS::DateString | PDF::COS::TextString;

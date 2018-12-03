@@ -42,7 +42,7 @@ role PDF::Class::ThreeD
             # NOTE 5 If the value of this entry is L, uninstantiation of instantiated artwork is necessary unless it has been modified. Uninstantiation is never required in non-interactive conforming readers.
         has Bool $.TB is entry(:alias<tool-bar-display>);	# [boolean] (Optional; PDF 1.7) A flag indicating the default behavior of an interactive toolbar associated with this annotation. If true, a toolbar is displayed by default when the annotation is activated and given focus. If false, a toolbar shall not be displayed by default.
             # NOTE 6 Typically, a toolbar is positioned in proximity to the 3D annotation. Default value: true.
-        has Bool $.NP is entry(:alias<ui-display>, :default(False));	# [boolean] (Optional; PDF 1.7) A flag indicating the default behavior of the user interface for viewing or managing information about the 3D artwork. Such user interfaces can enable navigation to different views or can depict the hierarchy of the objects in the artwork (the model tree). If true, the user interface should be made visible when the annotation is activated. If false, the user interface should not be made visible by default.
+        has Bool $.NP is entry(:alias<ui-display>, :!default);	# [boolean] (Optional; PDF 1.7) A flag indicating the default behavior of the user interface for viewing or managing information about the 3D artwork. Such user interfaces can enable navigation to different views or can depict the hierarchy of the objects in the artwork (the model tree). If true, the user interface should be made visible when the annotation is activated. If false, the user interface should not be made visible by default.
             # Default value: false
     }
 

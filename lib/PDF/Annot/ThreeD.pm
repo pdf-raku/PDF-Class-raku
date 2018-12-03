@@ -18,5 +18,5 @@ class PDF::Annot::ThreeD
 
     has Hash $.artwork is entry(:key<3DD>);      # A 3D stream or 3D reference dictionary that specifies the 3D artwork to be shown.
 
-    has Bool $.interactive is entry(:key<3DI>, :default(True));  # (Optional) A flag indicating the primary use of the 3D annotation. If true, it is intended to be interactive; if false, it is intended to be manipulated programmatically, as with a JavaScript animation. Conforming readers may present different user interface controls for interactive 3D annotations (for example, to rotate, pan, or zoom the artwork) than for those managed by a script or other mechanism. Default value: true.
+    has Bool $.interactive is entry(:key<3DI>, :default);  # (Optional) A flag indicating the primary use of the 3D annotation. If true, it is intended to be interactive; if false, it is intended to be manipulated programmatically, as with a JavaScript animation. Conforming readers may present different user interface controls for interactive 3D annotations (for example, to rotate, pan, or zoom the artwork) than for those managed by a script or other mechanism. Default value: true.
 }

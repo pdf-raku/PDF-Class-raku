@@ -112,4 +112,6 @@ is-json-equiv $file-annot.Name, 'PushPin', '.Name';
 is $file-annot.Contents, "text", '.Contents';
 lives-ok {$file-annot.check}, '$file-annot.check lives';
 
+require PDF::Annot::Movie;
+
 done-testing;
