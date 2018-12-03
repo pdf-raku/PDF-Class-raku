@@ -10,8 +10,8 @@ role PDF::Movie
     use PDF::XObject::Image;
 
     # See [PDF 32000 Table 295 - Entries in a movie dictionary]
-    use ISO_32000::Movie;
-    also does ISO_32000::Movie;
+    ## use ISO_32000::Movie;
+    ## also does ISO_32000::Movie;
 
     has PDF::Filespec $.F is entry(:required, :alias<file-spec>); # (Required) A file specification identifying a self-describing movie file.
                 # NOTE The format of a self-describing movie file is left unspecified, and there is no guarantee of portability.

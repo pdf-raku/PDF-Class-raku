@@ -12,8 +12,8 @@ class PDF::Annot::Movie
     use PDF::MovieActivation;
 
     # See [PDF 32000 Table 186 - Additional entries specific a movie annotation]
-    use ISO_32000::Movie_annotation_additional;
-    also does ISO_32000::Movie_annotation_additional;
+    ## use ISO_32000::Movie_annotation_additional;
+    ## also does ISO_32000::Movie_annotation_additional;
 
     has PDF::COS::TextString $.T is entry(:alias<title>); # (Optional) The title of the movie annotation. Movie actions may use this title to reference the movie annotation.
 
@@ -21,7 +21,7 @@ class PDF::Annot::Movie
 
     my subset MovieActivationOrBool where PDF::MovieActivation|Bool;
     multi sub coerce-action(Hash $movie-action, MovieActivationOrBool) {
-        PDF::COS.coerce( $movie-action, MovieActivationOrBool);
+        PDF::COS.coerce( $movie-action, PDF::MovieActivation);
     }
     multi sub coerce-action($_, MovieActivationOrBool) is default {
         fail "expected a movie activation dict or flag, got: {.perl}";

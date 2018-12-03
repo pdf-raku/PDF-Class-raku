@@ -7,8 +7,8 @@ role PDF::MovieActivation
     use PDF::COS::Name;
 
     # See [PDF 32000 Table 296 - Entries in a movie activitation dictionary]
-    use ISO_32000::Movie_activation;
-    also does ISO_32000::Movie_activation;
+    ## use ISO_32000::Movie_activation;
+    ## also does ISO_32000::Movie_activation;
 
     has $.Start is entry; # (Optional) The starting time of the movie segment to be played. Movie time values is expressed in units of time based on a time scale, which defines the number of units per second. The default time scale is defined in the movie data. The starting time is nominally a non-negative 64-bit integer, specified as follows:
     # • If it is representable as an integer (subject to the implementation limit for integers, as described in Link Annex C ), it is specified as such.
