@@ -6,14 +6,14 @@ role PDF::Movie
     does PDF::COS::Tie::Hash {
 
     use PDF::COS::Tie;
-    use PDF::Filespec;
+    use PDF::Filespec :file-spec, :&to-file-spec;
     use PDF::XObject::Image;
 
     # See [PDF 32000 Table 295 - Entries in a movie dictionary]
     ## use ISO_32000::Movie;
     ## also does ISO_32000::Movie;
 
-    has PDF::Filespec $.F is entry(:required, :alias<file-spec>); # (Required) A file specification identifying a self-describing movie file.
+    has file-spec $.F is entry(:required, :alias<file-spec>, :coerce(&to-file-spec)); # (Required) A file specification identifying a self-describing movie file.
                 # NOTE The format of a self-describing movie file is left unspecified, and there is no guarantee of portability.
     has Numeric @.Aspect is entry(:len(2)); # (Optional) The width and height of the movie’s bounding box, in pixels, and is specified as [ width height ]. This entry should be omitted for a movie consisting entirely of sound with no visible images.
     my subset NinetyDegreeAngle of Int where { $_ %% 90}
