@@ -19,17 +19,17 @@ role PDF::Filespec
     ## also does ISO_32000::File_specification;
 
     # file specifications may be either a dictionary or a simple text-string
-    my subset file-spec is export(:file-spec) where PDF::COS::TextString|PDF::Filespec;
+    my subset Filespec is export(:Filespec) where PDF::COS::TextString|PDF::Filespec;
 
-    proto sub to-file-spec($, file-spec) is export(:to-file-spec) {*};
-    multi sub to-file-spec(Str $value is rw, file-spec) {
+    proto sub to-filespec($, Filespec) is export(:to-filespec) {*};
+    multi sub to-filespec(Str $value is rw, Filespec) {
         PDF::COS.coerce( $value, PDF::COS::TextString );
     }
-    multi sub to-file-spec(Hash $value is rw, file-spec) {
+    multi sub to-filespec(Hash $value is rw, Filespec) {
         PDF::COS.coerce( $value, PDF::Filespec );
     }
-    multi sub to-file-spec($_, file-spec) is default {
-        fail "unable to coerce to a file-spec: {.perl}";
+    multi sub to-filespec($_, Filespec) is default {
+        fail "unable to coerce to a Filespec: {.perl}";
     }
 
     has PDF::COS::Name $.Type is entry(:alias<type>) where 'Filespec'; # (Required if an EF or RF entry is present; recommended always) The type of PDF object that this dictionary describes; shall be Filespec for a file specification dictionary.

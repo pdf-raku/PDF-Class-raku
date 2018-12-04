@@ -13,10 +13,10 @@ class PDF::Action::Thread
     use PDF::COS;
     use PDF::COS::Tie;
     use PDF::Bead-Thread; # Declares PDF::Bead & PDF::Thread
-    use PDF::Filespec :file-spec, :&to-file-spec;
+    use PDF::Filespec :Filespec, :&to-filespec;
     use PDF::COS::TextString;
 
-    has file-spec $.F is entry(:alias<file-spec>, :coerce(&to-file-spec));	# [file specification] (Optional) The file containing the thread. If this entry is absent, the thread is in the current file.
+    has Filespec $.F is entry(:alias<Filespec>, :coerce(&to-filespec));	# [file specification] (Optional) The file containing the thread. If this entry is absent, the thread is in the current file.
     my subset ThreadOrIndexOrTitle where PDF::Thread|PDF::COS::TextString|UInt;
     multi sub coerce(Hash $_, ThreadOrIndexOrTitle) { PDF::COS.coerce($_, PDF::Thread) }
     multi sub coerce(Str  $_, ThreadOrIndexOrTitle) { PDF::COS.coerce($_, PDF::COS::TextString) }
