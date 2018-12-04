@@ -2,11 +2,12 @@ Release 0.3.1
 - Fix StructElem coercement (broken in 0.3.0)
 - Fix PDF::Field .type() method to return 'Field', for
   consistancy, and .subtype() to return the field type.
-- Added PDF::Movie, PDF::MovieActivation and PDF::Annot::Movie
+
 Release 0.3.0
 - Fixed pdf-toc.p6
 - Feedback from trial integration PDF::ISO_32000 package
   (work in progress)
+
 Release 0.2.9
 - Script fixes:
   -- pdf-burst.p6 to work with inherited page resources. added
