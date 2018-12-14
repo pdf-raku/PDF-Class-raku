@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 41;
+plan 46;
 
 use PDF::IO::IndObj;
 use PDF::Class;
@@ -75,12 +75,18 @@ is-json-equiv $page.media-box, [0, 0, 150, 200], 'media-box - list setter';
 
 $page.media-box = [-10,-10,260,310];
 $page.crop-box = [0,0,250,300];
+is-json-equiv $page.bleed, (0, 0, 0, 0), '$.bleed original';
 $page.bleed-box = [-3,-3,253,303];
 is-json-equiv $page.media-box, [-10, -10, 260, 310], 'media-box - 4 arg setter';
 is-json-equiv $page.MediaBox, [-10, -10, 260, 310], '.MediaBox accessor';
 is-json-equiv $page<MediaBox>, [-10, -10, 260, 310], '<MediaBox> accessor';
 is-json-equiv $page.crop-box, [0, 0, 250, 300], '$.crop-box - updated';
 is-json-equiv $page.bleed-box, [-3, -3, 253, 303], '$.bleed-box - updated';
+is-json-equiv $page.bleed, (3, 3, 3, 3), '$.bleed';
+$page.bleed = 4;
+is-json-equiv $page.bleed-box, [-4, -4, 254, 304], '$.bleed-box - updated';
+$page.bleed = 3,4,5,6;
+is-json-equiv $page.bleed-box, [-3,-4,255,306], 'bleed setter';
 is-json-equiv $page.trim-box, $page.crop-box, '$trim-box - get';
 is-json-equiv $page.art-box, $page.crop-box, '$.art-box - get';
 $page.ArtBox = [10,10,240,290];
@@ -89,6 +95,7 @@ use PDF::Content::Page :PageSizes;
 $page.media-box = PageSizes::A3;
 is-json-equiv $page.media-box, [0,0,842,1190], 'media-box page-name setter';
 $page.media-box = $page.to-landscape( PageSizes::A3 );
+is-json-equiv $page.media-box, [0,0,1190,842], 'media-box page-name setter :landscape';
 is-json-equiv $page.media-box, [0,0,1190,842], 'media-box page-name setter :landscape';
 
 $page.gfx.ops(['BT', :Tj[ :literal('Hello, world!') ], 'ET']);

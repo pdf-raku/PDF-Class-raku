@@ -17,8 +17,12 @@ role PDF::Border
 
     has Numeric $.W is entry(:alias<width>, :default(1));           # (Optional) The border width in points. If this value is 0, no border is drawn. Default value: 1.
 
-    my subset BorderStyle of PDF::COS::Name where 'S' | 'D' | 'B' | 'I' | 'U';
-    has BorderStyle $.S is entry(:alias<style>, :default<S>);       # (Optional) The border style:
+    my enum BorderStyle is export(:BorderStyle) «
+       :Solid<S> :Dashed<D> :Beveled<B>
+       :Inset<I> :Underline<U>
+    »;
+    my subset BorderStyleName of PDF::COS::Name where BorderStyle($_);
+    has BorderStyleName $.S is entry(:alias<style>, :default<S>);       # (Optional) The border style:
     # S(Solid) A solid rectangle surrounding the annotation.
     # D(Dashed) A dashed rectangle surrounding the annotation. The dash pattern is specified by the D entry (see below).
     # B(Beveled) A simulated embossed rectangle that appears to be raised above the surface of the page.

@@ -62,9 +62,8 @@ role PDF::StructElem
     # If the value of K is a dictionary containing no Type entry, it shall be assumed to be a structure element dictionary.
     has @.A is entry(:alias<attributes>, :array-or-item);    # (Optional) A single attribute object or array of attribute objects associated with this structure element. Each attribute object shall be either a dictionary or a stream. If the value of this entry is an array, each attribute object in the array may be followed by an integer representing its revision number.
     method attribute-dicts {
-        with self<A> -> $a {
-            my $elems = $a.isa(List) ?? $a.elems !! 1;
-            (0 ..^ $elems).map({$a[$_]}).grep(Hash);
+        with self<A> -> List() $a {
+            (0 ..^ $a.elems).map({$a[$_]}).grep(Hash);
         }
         else { () }
     }
@@ -73,9 +72,8 @@ role PDF::StructElem
 # specified by both, the one specified by the A entry shall take
     # precedence.
     method class-map-keys {
-        with self<C> -> $c {
-            my $elems = $c.isa(List) ?? $c.elems !! 1;
-            (0 ..^ $elems).map({$c[$_]}).grep(Str);
+        with self<C> -> List() $c {
+            (0 ..^ $.elems).map({$c[$_]}).grep(Str);
         }
         else { () }
     }

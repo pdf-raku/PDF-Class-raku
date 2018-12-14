@@ -89,6 +89,7 @@ $ind-obj = PDF::IO::IndObj.new( :$input, |%ast, :$reader );
 my $link-annot = $ind-obj.object;
 isa-ok $link-annot, (require ::('PDF::Annot::Link'));
 is-json-equiv $link-annot.Border, [ 16, 16, 1 ], '.Border';
+is $link-annot.Border.vertical-radius, 16, '.Border.vertical-radius';
 is-json-equiv $link-annot.Dest, [ { :Type<Page> }, 'FitR', -4, 399, 199, 533], '.Dest';
 lives-ok {$link-annot.check}, '$link-annot.check lives';
 

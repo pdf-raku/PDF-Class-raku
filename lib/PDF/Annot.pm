@@ -10,6 +10,7 @@ class PDF::Annot
     does PDF::Class::Type {
 
     use PDF::COS::Tie;
+    use PDF::COS::Tie::Array;
     use PDF::COS::Name;
     use PDF::COS::DateString;
     use PDF::COS::TextString;
@@ -57,7 +58,13 @@ class PDF::Annot
     has AnnotFlagsInt $.F is entry(:alias<flags>);              # (Optional; PDF 1.1) A set of flags specifying various characteristics of the annotation
     has PDF::Appearance $.AP is entry(:alias<appearance>);      # (Optional; PDF 1.2) An appearance dictionary specifying how the annotation is presented visually on the page
     has PDF::COS::Name $.AS is entry(:alias<appearance-state>); # (Required if the appearance dictionary AP contains one or more subdictionaries; PDF 1.2) The annotation’s appearance state, which selects the applicable appearance stream from an appearance subdictionary
-    has Numeric @.Border is entry(:len(4));                     # (Optional) An array specifying the characteristics of the annotation’s border. The border is specified as a rounded rectangle.
+    role Border does PDF::COS::Tie::Array {
+        has Numeric $.horizontal-radius is index(0, :required);
+        has Numeric $.vertical-radius is index(1, :required);
+        has Numeric $.width is index(2, :required);
+        has Numeric @.dash-pattern is index(3);
+    }
+    has Border $.Border is entry(:default[0, 0, 1]);                     # (Optional) An array specifying the characteristics of the annotation’s border. The border is specified as a rounded rectangle.
     has Numeric @.C is entry(:alias<color>);                    # (Optional; PDF 1.1) An array of numbers in the range 0.0 to 1.0, representing a color used for (*) background, when closed, (*) title bar of pop-up window, (*) link border
     has UInt $.StructParent is entry;                           # (Required if the annotation is a structural content item; PDF 1.3) The integer key of the annotation’s entry in the structural parent tree
     has OCG-or-OCMD $.OC is entry(:alias<optional-content>);       # (Optional; PDF 1.5) An optional content group or optional content membership dictionary specifying the optional content properties for the annotation.

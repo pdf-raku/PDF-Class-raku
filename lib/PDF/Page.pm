@@ -74,7 +74,7 @@ class PDF::Page
     has PDF::COS::Name $.Tabs is entry;          # (Optional; PDF 1.5) A name specifying the tab order to be used for annotations on the page
     has PDF::COS::Name $.TemplateInstantiated is entry; # (Required if this page was created from a named page object; PDF 1.5) The name of the originating page object
     has Hash $.PresSteps is entry;               # (Optional; PDF 1.5) A navigation node dictionary representing the first node on the page
-    has Numeric $.UserUnit is entry;             # (Optional; PDF 1.6) A positive number giving the size of default user space units, in multiples of 1 ⁄ 72 inch
+    has Numeric $.UserUnit is entry(:default(1.0));             # (Optional; PDF 1.6) A positive number giving the size of default user space units, in multiples of 1 ⁄ 72 inch
     has Hash @.VP is entry(:alias<view-ports>);  # Optional; PDF 1.6) An array of viewport dictionaries
 
     method fields {

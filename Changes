@@ -1,3 +1,6 @@
+Release 0.3.2
+- Fix PDF::Border /S (border-style entry)
+
 Release 0.3.1
 - Fix StructElem coercement (broken in 0.3.0)
 - Fix PDF::Field .type() method to return 'Field', for
