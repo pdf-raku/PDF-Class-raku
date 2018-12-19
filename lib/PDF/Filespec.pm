@@ -21,7 +21,7 @@ role PDF::Filespec
     # file specifications may be either a dictionary or a simple text-string
     my subset Filespec is export(:Filespec) where PDF::COS::TextString|PDF::Filespec;
 
-    proto sub to-filespec($, Filespec) is export(:to-filespec) {*};
+    proto sub to-filespec(|c) is export(:to-filespec) {*};
     multi sub to-filespec(Str $value is rw, Filespec) {
         PDF::COS.coerce( $value, PDF::COS::TextString );
     }
@@ -31,10 +31,11 @@ role PDF::Filespec
     multi sub to-filespec($_, Filespec) is default {
         fail "unable to coerce to a Filespec: {.perl}";
     }
+    multi sub to-filespec($_ is copy) { to-filespec($_, Filespec) }
 
     has PDF::COS::Name $.Type is entry(:alias<type>) where 'Filespec'; # (Required if an EF or RF entry is present; recommended always) The type of PDF object that this dictionary describes; shall be Filespec for a file specification dictionary.
     has PDF::COS::Name $.FS is entry; # (Optional) The name of the file system that shall be used to interpret this file specification. If this entry is present, all other entries in the dictionary shall be interpreted by the designated file system. PDF shall define only one standard file system name, URL; an application can register other names. This entry shall be independent of the F, UF, DOS, Mac, and Unix entries.
-    has PDF::COS::ByteString $.F is entry; # (Required if the DOS, Mac, and Unix entries are all absent; amended with the UF entry for PDF 1.7) A file specification string of the form described in 7.11.2, "File Specification Strings," or (if the file system is URL) a uniform resource locator, as described in 7.11.5, "URL Specifications."
+    has PDF::COS::ByteString $.F is entry(:alias<file-name>); # (Required if the DOS, Mac, and Unix entries are all absent; amended with the UF entry for PDF 1.7) A file specification string of the form described in 7.11.2, "File Specification Strings," or (if the file system is URL) a uniform resource locator, as described in 7.11.5, "URL Specifications."
     has PDF::COS::TextString $.UF is entry; # (Optional, but recommended if the F entry exists in the dictionary; PDF 1.7) A Unicode text string that provides file specification of the form described in 7.11.2, "File Specification Strings." This is a text string encoded using PDFDocEncoding or UTF-16BE with a leading byte-order marker (as defined in 7.9.2.2, "Text String Type"). The F entry should be included along with this entry for backwards compatibility reasons.
     has PDF::COS::ByteString $.DOS is entry; # (Optional) A file specification string representing a DOS file name. This entry is obsolescent and should not be used by conforming writers.
     has PDF::COS::ByteString $.Mac is entry; # (Optional) A file specification string representing a Mac OS file name. This entry is obsolescent and should not be used by conforming writers.

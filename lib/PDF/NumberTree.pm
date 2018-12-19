@@ -17,7 +17,7 @@ role PDF::NumberTree
                          # [ key 1 value 1 key 2 value 2 ... key n value n ]
                          # where each key i is an integer and the corresponding value i shall be the object associated with that key. The keys are sorted in numerical order
     my class NumberTree is export(:NumberTree) {
-        has %!nums{Int};
+        has %!values{Int};
         has PDF::NumberTree $.root;
         has Bool %!fetched{Any};
         has Bool $!realized;
@@ -28,21 +28,21 @@ role PDF::NumberTree
                        my $val = $kv[$_ + 1];
                        $!root.coerce-node($val)
                            if $!root.coerce-nodes;
-                       %!nums{$kv[$_] + 0} = $val;
+                       %!values{$kv[$_] + 0} = $val;
                     }
                 }
             }
             else {
                 given $node.Kids -> $kids {
                     for 0 ..^ +$kids {
-                        given $kids[$_] {
-                            if $key.defined {
-                                my @limits[2] = .Limits;
-                                return self!fetch($_, $key)
-                                    if @limits[0] <= $key <= @limits[1];
+                        given $kids[$_] -> $kid {
+                            with $key {
+                                my @limits[2] = $kid.Limits;
+                                return self!fetch($kid, $_)
+                                    if @limits[0] <= $_ <= @limits[1];
                             }
                             else {
-                                self!fetch($_);
+                                self!fetch($kid);
                             }
                         }
                     }
@@ -52,12 +52,12 @@ role PDF::NumberTree
         method Hash handles <keys values pairs perl> {
             self!fetch($!root)
                 unless $!realized++;
-            %!nums;
+            %!values;
         }
         method AT-KEY(Int() $key) {
             self!fetch($!root, $key)
-                unless $!realized || (%!nums{$key}:exists);
-            %!nums{$key};
+                unless $!realized || (%!values{$key}:exists);
+            %!values{$key};
         }
         method AT-POS(Int() $key) {
             $.AT-KEY($key);

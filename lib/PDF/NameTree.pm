@@ -14,7 +14,7 @@ role PDF::NameTree
     use PDF::COS::Tie;
 
     my class NameTree is export(:NameTree) {
-        has %!names;
+        has %!values;
         has PDF::NameTree $.root;
         has Bool %!fetched{Any};
         has Bool $!realized;
@@ -25,21 +25,21 @@ role PDF::NameTree
                         my $val = $kv[$_ + 1];
                         $!root.coerce-node($val)
                             if $!root.coerce-nodes;
-                        %!names{ $kv[$_] } = $val;
+                        %!values{ $kv[$_] } = $val;
                     }
                 }
             }
             else {
                 given $node.Kids -> $kids {
                     for 0 ..^ +$kids {
-                        given $kids[$_] {
-                            if $key.defined {
-                                my @limits[2] = .Limits;
-                                return self!fetch($_, $key)
-                                    if @limits[0] le $key le @limits[1];
+                        given $kids[$_] -> $kid {
+                            with $key {
+                                my @limits[2] = $kid.Limits;
+                                return self!fetch($kid, $_)
+                                    if @limits[0] le $_ le @limits[1];
                             }
                             else {
-                                self!fetch($_);
+                                self!fetch($kid);
                             }
                         }
                     }
@@ -50,12 +50,12 @@ role PDF::NameTree
         method Hash handles <keys values pairs perl> {
             self!fetch($!root)
                 unless $!realized++;
-            %!names;
+            %!values;
         }
         method AT-KEY(Str() $key) {
             self!fetch($!root, $key)
-               unless $!realized || (%!names{$key}:exists);
-            %!names{$key};
+               unless $!realized || (%!values{$key}:exists);
+            %!values{$key};
         }
     }
 
