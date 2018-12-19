@@ -106,7 +106,7 @@ class PDF::Catalog
         coerce-dest($dest, DestSpec);
     }
 
-    my role NameTrees does PDF::COS::Tie::Hash {
+    role Names does PDF::COS::Tie::Hash {
         # see [PDF 32000 Table 31 - Entries in the name dictionary]
         ## use ISO_32000::Catalog_Name_tree;
         ## also does ISO_32000::Catalog_Name_tree;
@@ -117,11 +117,12 @@ class PDF::Catalog
         has PDF::NameTree $.Templates is entry;              # (Optional; PDF 1.3) A name tree mapping name strings to invisible (template) pages for use in interactive forms.
         has PDF::NameTree $.IDS is entry;                    # (Optional; PDF 1.3) A name tree mapping digital identifiers to Web Capture content sets.
         has PDF::NameTree $.URLS is entry;                   # (Optional; PDF 1.3) A name tree mapping uniform resource locators (URLs) to Web Capture content sets10.4, "Content Sets").
-        has PDF::NameTree $.EmbeddedFiles is entry;          # (Optional; PDF 1.4) A name tree mapping name strings to file specifications for embedded file streams.
+        use PDF::Filespec :to-filespec;
+        has PDF::NameTree[PDF::Filespec, :coerce(&to-filespec)] $.EmbeddedFiles is entry;          # (Optional; PDF 1.4) A name tree mapping name strings to file specifications for embedded file streams.
         has PDF::NameTree $.AlternatePresentations is entry; # (Optional; PDF 1.4) A name tree mapping name strings to alternate presentations.
         has PDF::NameTree $.Renditions is entry;             # (Optional; PDF 1.5) A name tree mapping name strings (which shall have Unicode encoding) to rendition objects.
     }
-    has NameTrees $.Names is entry;         # (Optional; PDF 1.2) The document’s name dictionary
+    has Names $.Names is entry;         # (Optional; PDF 1.2) The document’s name dictionary
 
     has Dest %.Dests is entry(:&coerce);    # (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
 
@@ -145,7 +146,7 @@ class PDF::Catalog
 
     has PDF::COS::Dict $.AA is entry(:alias<additional-actions>);                    # (Optional; PDF 1.4) An additional-actions dictionary defining the actions to be taken in response to various trigger events affecting the document as a whole
 
-    my role URI does PDF::COS::Tie::Hash {
+    role URI does PDF::COS::Tie::Hash {
         # see [PDF 32000 Table 207 - Entry in a URI dictionary]
         ## use ISO_32000::URI;
         ## also does ISO_32000::URI;
