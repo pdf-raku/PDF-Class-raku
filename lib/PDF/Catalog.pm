@@ -117,8 +117,8 @@ class PDF::Catalog
         has PDF::NameTree $.Templates is entry;              # (Optional; PDF 1.3) A name tree mapping name strings to invisible (template) pages for use in interactive forms.
         has PDF::NameTree $.IDS is entry;                    # (Optional; PDF 1.3) A name tree mapping digital identifiers to Web Capture content sets.
         has PDF::NameTree $.URLS is entry;                   # (Optional; PDF 1.3) A name tree mapping uniform resource locators (URLs) to Web Capture content sets10.4, "Content Sets").
-        use PDF::Filespec :to-filespec;
-        has PDF::NameTree[PDF::Filespec, :coerce(&to-filespec)] $.EmbeddedFiles is entry;          # (Optional; PDF 1.4) A name tree mapping name strings to file specifications for embedded file streams.
+        use PDF::Filespec :File, :to-file;
+        has PDF::NameTree[File, :coerce(&to-file)] $.EmbeddedFiles is entry;          # (Optional; PDF 1.4) A name tree mapping name strings to file specifications for embedded file streams.
         has PDF::NameTree $.AlternatePresentations is entry; # (Optional; PDF 1.4) A name tree mapping name strings to alternate presentations.
         has PDF::NameTree $.Renditions is entry;             # (Optional; PDF 1.5) A name tree mapping name strings (which shall have Unicode encoding) to rendition objects.
     }
@@ -139,8 +139,11 @@ class PDF::Catalog
     has PDF::Thread @.Threads is entry(:indirect);        # (Optional; PDF 1.1; must be an indirect reference) An array of thread dictionaries representing the document’s article threads
 
     my subset ActionOrDestSpec where PDF::Action|DestSpec;
-    multi sub coerce(List $_ is rw, ActionOrDestSpec) is default {
+    multi sub coerce(List $_ is rw, ActionOrDestSpec) {
         coerce-dest($_, DestSpec);
+    }
+    multi sub coerce($_, ActionOrDestSpec) is default {
+        fail "unable to coerce {.perl} to an open action";
     }
     has ActionOrDestSpec $.OpenAction is entry(:&coerce);    # (Optional; PDF 1.1) A value specifying a destination to be displayed or an action to be performed when the document is opened.
 

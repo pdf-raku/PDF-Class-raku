@@ -13,9 +13,9 @@ class PDF::Action::Launch
     ## also does ISO_32000::Launch_action_additional;
     use PDF::COS::Tie;
     use PDF::COS::Name;
-    use PDF::Filespec :Filespec, :&to-filespec;
+    use PDF::Filespec :File, :&to-file;
 
-    has Filespec $.F is entry(:alias<file>, :coerce(&to-filespec)); # (Required if none of the entries Win, Mac, or Unix is present) The application that shall be launched or the document that shall be opened or printed. If this entry is absent and the conforming reader does not understand any of the alternative entries, it shall do nothing.
+    has File $.F is entry(:alias<file>, :coerce(&to-file)); # (Required if none of the entries Win, Mac, or Unix is present) The application that shall be launched or the document that shall be opened or printed. If this entry is absent and the conforming reader does not understand any of the alternative entries, it shall do nothing.
     has Hash $.Win is entry; # (Optional) A dictionary containing parameters.
     has $.Mac is entry; # (Optional) Mac OS–specific launch parameters; not yet defined.
     has $.Unix is entry; # (Optional) UNIX-specific launch parameters; not yet defined.

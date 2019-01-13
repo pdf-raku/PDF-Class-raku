@@ -1,5 +1,6 @@
 Release 0.3.4
 - Remove questionable "use lib '.'" from test suite
+- Rename export subset PDF::Filespec :Filespec -> :File
 
 Release 0.3.3
 - Add coercements for Catalog EmbeddedFile name-tree/

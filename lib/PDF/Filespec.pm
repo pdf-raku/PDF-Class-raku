@@ -19,19 +19,19 @@ role PDF::Filespec
     ## also does ISO_32000::File_specification;
 
     # file specifications may be either a dictionary or a simple text-string
-    my subset Filespec is export(:Filespec) where PDF::COS::TextString|PDF::Filespec;
+    my subset File is export(:File) where PDF::COS::TextString|PDF::Filespec;
 
-    proto sub to-filespec(|c) is export(:to-filespec) {*};
-    multi sub to-filespec(Str $value is rw, Filespec) {
+    proto sub to-file(|c) is export(:to-file) {*};
+    multi sub to-file(Str $value is rw, File) {
         PDF::COS.coerce( $value, PDF::COS::TextString );
     }
-    multi sub to-filespec(Hash $value is rw, Filespec) {
+    multi sub to-file(Hash $value is rw, File) {
         PDF::COS.coerce( $value, PDF::Filespec );
     }
-    multi sub to-filespec($_, Filespec) is default {
-        fail "unable to coerce to a Filespec: {.perl}";
+    multi sub to-file($_, File) is default {
+        fail "unable to coerce to a File: {.perl}";
     }
-    multi sub to-filespec($_ is copy) { to-filespec($_, Filespec) }
+    multi sub to-file($_ is copy) { to-file($_, File) }
 
     has PDF::COS::Name $.Type is entry(:alias<type>) where 'Filespec'; # (Required if an EF or RF entry is present; recommended always) The type of PDF object that this dictionary describes; shall be Filespec for a file specification dictionary.
     has PDF::COS::Name $.FS is entry; # (Optional) The name of the file system that shall be used to interpret this file specification. If this entry is present, all other entries in the dictionary shall be interpreted by the designated file system. PDF shall define only one standard file system name, URL; an application can register other names. This entry shall be independent of the F, UF, DOS, Mac, and Unix entries.
