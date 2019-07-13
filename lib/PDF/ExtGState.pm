@@ -55,13 +55,13 @@ role PDF::ExtGState
     # This is a convenience method setting proper values for stroke-alpha and fill-alpha.
     method transparency is rw {
 	Proxy.new(
-	    FETCH => sub (\p) {
+	    FETCH => {
 		my \fill-alpha = self.ca;
 		fill-alpha eqv self.CA
 		    ?? fill-alpha
 		    !! Mu
 	    },
-	    STORE => sub (\p, Alpha \val) {
+	    STORE => -> $, Alpha \val {
 		self.ca = self.CA = val;
 	    });
     }

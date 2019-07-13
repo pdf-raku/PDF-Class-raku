@@ -39,7 +39,7 @@ class PDF::Page
     has Hash $.BoxColorInfo is entry;            # (Optional; PDF 1.4) A box color information dictionary specifying the colors and other visual characteristics to be used in displaying guidelines on the screen for the various page boundaries
     has PDF::COS::Stream @.Contents is entry(:array-or-item);       # (Optional) A content stream describing the contents of this page. If this entry is absent, the page is empty
     subset NinetyDegreeAngle of Int where { $_ %% 90}
-    has NinetyDegreeAngle $.Rotate is entry(:inherit);     # (Optional; inheritable) The number of degrees by which the page should be rotated clockwise when displayed or printed
+    has NinetyDegreeAngle $.Rotate is entry(:inherit, :alias<rotate>);     # (Optional; inheritable) The number of degrees by which the page should be rotated clockwise when displayed or printed
     my subset TransGroup of Hash where .<S> ~~ 'Transparency'; # autoloaded PDF::Group::Transparency]
     has TransGroup $.Group is entry;                   # (Optional; PDF 1.4) A group attributes dictionary specifying the attributes of the page’s page group for use in the transparent imaging model
     has PDF::Image $.Thumb is entry(:alias<thumbnail-image>);       # (Optional) A stream object defining the page’s thumbnail image
