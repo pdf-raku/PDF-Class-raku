@@ -1,5 +1,9 @@
-Release 0.3.5
+Release 0.3.6
 - Fixed load of PDF::Group::Transparency class
+- Adjust META6 source_url (see perl6/ecosystem-unbitrot#492)
+
+Release 0.3.5
+- renamed exported class Filespec -> File
 
 Release 0.3.4
 - Remove questionable "use lib '.'" from test suite
