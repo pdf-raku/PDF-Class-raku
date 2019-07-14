@@ -88,6 +88,7 @@ PDF::COS.loader = class PDF::Class::Loader
             when 'GoTo'|'GoToR'|'GoToE'|'Launch'|'Thread'|'URI'|'Sound'|'Movie'
                 |'Hide'|'Named'|'SubmitForm'|'ResetForm'|'ImportData'|'JavaScript'
                 |'SetOCGState'|'Rendition'|'Trans'|'GoTo3DView' { 'Action' }
+            when 'Transparency' { 'Group' }
             default { Nil }
 	};
 
