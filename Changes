@@ -1,3 +1,6 @@
+Release 0.3.7
+- Populate Info /Creator with Perl and tool-chain versions, and /Producer with actual producer class
+
 Release 0.3.6
 - Fixed load of PDF::Group::Transparency class
 - Adjust META6 source_url (see perl6/ecosystem-unbitrot#492)

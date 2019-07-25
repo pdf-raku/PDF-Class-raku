@@ -3,13 +3,14 @@ use v6;
 use PDF:ver(v0.3.2+);
 
 #| PDF entry-point. either a trailer dict or an XRef stream
-class PDF::Class:ver<0.3.6>#:api<PDF-1.7>
+class PDF::Class:ver<0.3.7>:api<PDF-1.7>
     is PDF {
     # See [PDF 32000 Table 15 - Entries in the file trailer dictionary]
     # base class declares: $.Size, $.Encrypt, $.ID
     ## use ISO_32000::File_trailer;
     ## also does ISO_32000::File_trailer;
 
+    use PDF::Content;
     use PDF::COS::Tie;
     use PDF::Class::Type;
     use PDF::Info;
@@ -42,13 +43,14 @@ class PDF::Class:ver<0.3.6>#:api<PDF-1.7>
         if $info {
             my $now = DateTime.now;
             my $Info = self.Info //= {};
-            $Info.Producer //= "Perl 6 PDF::Class {self.^ver}";
             with self.reader {
                 # updating
                 $Info.ModDate = $now;
             }
             else {
                 # creating
+                $Info.Producer  //= "{self.WHAT.perl}{with self.^ver { ":v$_" } else { '' }}";
+                $Info.Creator   //= "{$*PERL}:v{$*PERL.version}, PDF::Class:v{self.^ver}, PDF::Content:v{PDF::Content.^ver}, PDF:v{PDF.^ver}";
                 $Info.CreationDate //= $now
             }
         }

@@ -7,11 +7,13 @@ use PDF::Content::Ops :OpName;
 
 use PDF::IO;
 
-sub MAIN(Str $infile,           #= input PDF
-	 Str :$password = '',   #= password for the input PDF, if encrypted
-         Int :$page,            #= page-number to dump
-         Bool :$perl,           #= dump in a Perl-like notation
-         Bool :$strict = False, #= enable extra rendering warnings
+sub MAIN(Str $infile,            #= input PDF
+	 Str :$password = '',    #= password for the input PDF, if encrypted
+         Int :$page,             #= page-number to dump
+         Bool :$perl,            #= dump in a Perl-like notation
+         Bool :$debug,           #= debug dump (to stderr)
+         Bool :$repair = False,  #= bypass index; recompute stream lengths
+         Bool :$strict = False,  #= enable extra rendering warnings
     ) {
 
     my $input = PDF::IO.coerce(
@@ -20,7 +22,7 @@ sub MAIN(Str $infile,           #= input PDF
            !! $infile.IO
     );
 
-    my PDF::Class $pdf .= open( $input, :$password );
+    my PDF::Class $pdf .= open( $input, :$password, :$repair );
 
     for 1 .. $pdf.page-count {
         next if $page && $_ != $page;
@@ -41,6 +43,11 @@ sub MAIN(Str $infile,           #= input PDF
             say "# **** Page $_ ****";
             $p.render(:&callback);
         }
+        elsif $debug {
+            temp $*ERR = $*OUT;
+            say "# **** Page $_ ****";
+            $p.render(:debug);
+        }
         else {
             say "% **** Page $_ ****";
             say $p.render(:comment-ops).Str;
@@ -56,8 +63,9 @@ pdf-content-dump.p6 [options] --page=number file.pdf
 
 Options:
    --password   password for an encrypted PDF
-   --page=num   dump a single page
-   --perl       dump in a Perl-like notation
+   --page=num   dump a single page (stdout)
+   --perl       dump in a Perl-like notation (stdout)
+   --debug      dump of operations and graphics state
 
 =head1 DESCRIPTION
 
