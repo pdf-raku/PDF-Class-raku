@@ -7,6 +7,8 @@ my subset NumNull where { ($_ // Numeric) ~~ Numeric };  #| UInt value or null
 role PDF::Destination
     does PDF::COS::Tie::Array {
 
+    # See [PDF 32000 Table 151 - Destination syntax]
+
     my enum Fit is export(:Fit) «
         :FitXYZoom<XYZ>     :FitWindow<Fit>
         :FitHoriz<FitH>     :FitVert<FitV>
