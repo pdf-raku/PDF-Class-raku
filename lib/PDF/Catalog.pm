@@ -30,6 +30,7 @@ class PDF::Catalog
     use PDF::OutputIntent;
     use PDF::Resources;
     use PDF::Metadata::XML;
+    use PDF::Signature;
     use PDF::Bead-Thread; # Declares PDF::Bead & PDF::Thread
     use PDF::Class::Util :to-roman, :alpha-number, :decimal-number;
 
@@ -218,7 +219,15 @@ class PDF::Catalog
     }
     has OCProperties $.OCProperties is entry;   # (Optional; PDF 1.5; required if a document contains optional content) The document’s optional content properties dictionary
 
-    has PDF::COS::Dict $.Perms is entry;        # (Optional; PDF 1.5) A permissions dictionary that specifies user access permissions for the document.
+    role Permissions
+	does PDF::COS::Tie::Hash {
+        # See [PDF 32000-1:2008 Table 258 – Entries in a permissions dictionary
+        ## use ISO_32000::Permissions;
+        ## also does ISO_32000::Permissions;
+        has PDF::Signature $.DocMDP is entry(:indirect); # (Optional) An indirect reference to a signature dictionary (see Table 252). This dictionary shall contain a Reference entry that is a signature reference dictionary (see Table 252) that has a DocMDP transform method (see 12.8.2.2, “DocMDP”) and corresponding transform parameters.
+        has PDF::Signature $.UR3 is entry; # (Optional) A signature dictionary that is used to specify and validate additional capabilities (usage rights) granted for this document; that is, the enabling of interactive features of the conforming reader that are not available by default.
+    }
+    has Permissions $.Perms is entry;           # (Optional; PDF 1.5) A permissions dictionary that specifies user access permissions for the document.
 
     has PDF::COS::Dict $.Legal is entry;        # (Optional; PDF 1.5) A dictionary containing attestations regarding the content of a PDF document, as it relates to the legality of digital signatures
 
