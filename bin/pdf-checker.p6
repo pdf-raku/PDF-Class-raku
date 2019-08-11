@@ -53,10 +53,17 @@ sub display-item($_) {
 }
 
 multi sub display(List $obj) {
+    my $n = $obj.elems;
+    my $etc = '';
+    if ($n > 100) {
+        $n = 80;
+        $etc = ' ...';
+    }
+
     '[ ' ~ (
-        $obj.keys.map({ $obj[$_] })
+        (0 ..^ $n).map({ $obj[$_] })
             .map({display-item($_)})
-            .join: ' ')
+            .join: ' ') ~ $etc ~
         ~ ' ]';
 }
 
@@ -143,7 +150,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 	    }
 	}
 
-	@unknown-entries.push: '/' ~ $k
+	@unknown-entries.push: $k
 	    if $*strict && +$entries && !($entries{$k}:exists);
     }
 
@@ -160,8 +167,11 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
             }
         }
     }
-    warning("Unknown entries {ref($obj)} ({show-type($obj)}) struct: @unknown-entries[]")
-        if @unknown-entries;
+    
+    if @unknown-entries {
+        @unknown-entries = suggest($obj, $entries, @unknown-entries);
+        warning("Unknown entries {ref($obj)} ({show-type($obj)}) struct: @unknown-entries[]");
+    }
 
     check-contents($obj, :$depth)
 	if $*render && $obj.does(PDF::Content::Graphics);
@@ -260,6 +270,21 @@ sub check-contents( $obj, :$depth ) {
 	default {
 	    error("Unable to render {ref($obj)} contents: $_");
 	}
+    }
+}
+
+sub suggest(Hash $obj, Hash $entries, @unknown) {
+
+    my @possible = $entries.keys.grep({.chars > 2 && !($obj{$_}:exists)}).sort;
+    @unknown.map: -> $k {
+        my $disp = '/' ~ $k;
+        if $k.chars > 2 {
+            my $n = $k.chars > 6 ?? 2 !! 1;
+            my @close = @possible.grep({my $d = +StrDistance.new: :before($k), :after($_); $d <= $n;});
+            $disp ~= '(' ~ @close.map({'?' ~ $_}).join(' ') ~ ')'
+                if @close;
+        }
+        $disp;
     }
 }
 

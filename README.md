@@ -190,7 +190,7 @@ xobject images.
     -- unexpected operation 'w' (SetLineWidth) used in Path context, following 'm' (MoveTo)
     Rendering warning(s) in 30 0 R  (PDF::XObject::Form):
     -- unexpected operation 'w' (SetLineWidth) used in Path context, following 'm' (MoveTo)
-    Unknown entries 1 0 R (PDF::Catalog) struct: /ViewPreferences
+    Unknown entries 1 0 R (PDF::Catalog) struct: /ViewPreferences(?ViewerPreferences)
     Checking of /home/david/Documents/test-pdf/000025.pdf completed with 5 warnings and 0 errors
 
 In this example:
