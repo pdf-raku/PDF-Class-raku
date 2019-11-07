@@ -55,8 +55,8 @@ sub display-item($_) {
 multi sub display(List $obj) {
     my $n = $obj.elems;
     my $etc = '';
-    if ($n > 100) {
-        $n = 80;
+    if ($n > 50) {
+        $n = 40;
         $etc = ' ...';
     }
 

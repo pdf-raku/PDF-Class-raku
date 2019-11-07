@@ -76,7 +76,7 @@ $input = q:to"--END--";
   %%  /Type /Annot   % Type is optional
   /Subtype /Link
   /Rect [ 71 717 190 734 ]
-  /Border [ 16 16 1 ]
+  /Border [ 16 16 1 [3 2]]
   /Dest [ << /Type /Page >> /FitR -4 399 199 533 ]
 >> endobj
 --END--
@@ -88,8 +88,10 @@ PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
 $ind-obj = PDF::IO::IndObj.new( :$input, |%ast, :$reader );
 my $link-annot = $ind-obj.object;
 isa-ok $link-annot, (require ::('PDF::Annot::Link'));
-is-json-equiv $link-annot.Border, [ 16, 16, 1 ], '.Border';
+is-json-equiv $link-annot.Border, [ 16, 16, 1, [3, 2] ], '.Border';
 is $link-annot.Border.vertical-radius, 16, '.Border.vertical-radius';
+is $link-annot.Border[1], 16;
+is-json-equiv $link-annot.Border.dash-pattern, [3, 2];
 is-json-equiv $link-annot.Dest, [ { :Type<Page> }, 'FitR', -4, 399, 199, 533], '.Dest';
 lives-ok {$link-annot.check}, '$link-annot.check lives';
 

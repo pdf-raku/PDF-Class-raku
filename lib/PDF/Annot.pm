@@ -31,7 +31,7 @@ class PDF::Annot
             if self ~~ FieldLike && self !~~ PDF::Field;
     }
 
-    has PDF::COS::Name $.FT is entry(:inherit, :alias<field-type>); # Include this, just to help discover if we're a field
+    has PDF::COS::Name $.FT is entry(:inherit, :alias<field-type>);   # Include this, just to help discover if we're a field
 
     # See [PDF Spec 1.7 table 8.15 - Entries common to all annotation dictionaries ]
     has PDF::COS::Name $.Type is entry(:alias<type>) where 'Annot';
@@ -40,10 +40,10 @@ class PDF::Annot
         'Stamp'|'Caret'|'Ink'|'Popup'|'FileAttachment'|'Sound'|'Movie'|'Widget'|'Screen'|
         'PrinterMark'|'TrapNet'|'Watermark'|'3D'|'Redact';
     has AnnotName $.Subtype is entry(:required, :alias<subtype>);
-    has Numeric @.Rect is entry(:required, :len(4), :alias<rect>);            # (Required) The annotation rectangle, defining the location of the annotation on the page in default user space units.
-    has PDF::COS::TextString $.Contents is entry(:alias<content>);               # (Optional) Text to be displayed for the annotation or, if this type of annotation does not display text, an alternate description of the annotation’s contents in human-readable form
-    has PDF::Page $.P is entry(:alias<page>);                   # (Optional; PDF 1.3; not used in FDF files) An indirect reference to the page object with which this annotation is associated.
-    has PDF::COS::TextString $.NM is entry(:alias<annotation-name>);       # (Optional; PDF 1.4) The annotation name, a text string uniquely identifying it among all the annotations on its page.
+    has Numeric @.Rect is entry(:required, :len(4), :alias<rect>);    # (Required) The annotation rectangle, defining the location of the annotation on the page in default user space units.
+    has PDF::COS::TextString $.Contents is entry(:alias<content>);    # (Optional) Text to be displayed for the annotation or, if this type of annotation does not display text, an alternate description of the annotation’s contents in human-readable form
+    has PDF::Page $.P is entry(:alias<page>);                         # (Optional; PDF 1.3; not used in FDF files) An indirect reference to the page object with which this annotation is associated.
+    has PDF::COS::TextString $.NM is entry(:alias<annotation-name>);  # (Optional; PDF 1.4) The annotation name, a text string uniquely identifying it among all the annotations on its page.
     my subset DateOrTextString where PDF::COS::DateString | PDF::COS::TextString;
     sub coerce-mod-time(Str $s is rw, DateOrTextString) {
 	my \target-type = $s ~~ PDF::COS::DateString::DateRegex
@@ -62,12 +62,12 @@ class PDF::Annot
         has Numeric $.horizontal-radius is index(0, :required);
         has Numeric $.vertical-radius is index(1, :required);
         has Numeric $.width is index(2, :required);
-        has Numeric @.dash-pattern is index(3);
+        has Numeric @.dash-pattern is index(3, :array-or-item);
     }
-    has Border $.Border is entry(:default[0, 0, 1]);                     # (Optional) An array specifying the characteristics of the annotation’s border. The border is specified as a rounded rectangle.
+    has Border $.Border is entry(:default[0, 0, 1]);            # (Optional) An array specifying the characteristics of the annotation’s border. The border is specified as a rounded rectangle.
     has Numeric @.C is entry(:alias<color>);                    # (Optional; PDF 1.1) An array of numbers in the range 0.0 to 1.0, representing a color used for (*) background, when closed, (*) title bar of pop-up window, (*) link border
     has UInt $.StructParent is entry;                           # (Required if the annotation is a structural content item; PDF 1.3) The integer key of the annotation’s entry in the structural parent tree
-    has OCG-or-OCMD $.OC is entry(:alias<optional-content>);       # (Optional; PDF 1.5) An optional content group or optional content membership dictionary specifying the optional content properties for the annotation.
+    has OCG-or-OCMD $.OC is entry(:alias<optional-content>);    # (Optional; PDF 1.5) An optional content group or optional content membership dictionary specifying the optional content properties for the annotation.
 
     has Hash $.DR is entry(:alias<default-resources>);          # In PDF 1.2, an additional entry in the field dictionary, DR, was defined but was never implemented. Beginning with PDF 1.5, this entry is obsolete and should be ignored.
 
