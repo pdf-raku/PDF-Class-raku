@@ -1,6 +1,8 @@
 Release 0.3.8
 - Add Catalog Permissions and PDF::Signature::Reference roles
-- Fixed PDF::ExtGState handling of named transfer functions, based on pdf-checker.p6 stillhq.com/000390.pdf
+- More forgiving PDF::ExtGState and PDF::Annot.Border[3] (dash entry)
+- Make PDF::FontDescriptor into a role; missing /Type is quite common, e.g. in
+  older Ghostscript PDF files.
 
 Release 0.3.7
 - Populate Info /Creator with Perl and tool-chain versions, and /Producer with actual producer class

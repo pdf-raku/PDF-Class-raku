@@ -1,6 +1,6 @@
-use PDF::COS::Tie::Hash;
+use PDF::FontDescriptor;
 role PDF::FontDescriptor::CID
-    does PDF::COS::Tie::Hash {
+    does PDF::FontDescriptor {
 
     use PDF::COS::Tie;
     use PDF::COS::Name;
