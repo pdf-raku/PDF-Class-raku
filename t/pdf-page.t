@@ -33,7 +33,7 @@ my PDF::IO::IndObj $ind-obj .= new( |%ast, :$reader);
 is $ind-obj.obj-num, 4, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $page = $ind-obj.object;
-isa-ok $page, (require ::('PDF::Page'));
+isa-ok $page, 'PDF::Page';
 is $page.Type, 'Page', '$.Type accessor';
 my  PDF::COS::Stream $dummy-stream .= new( :decoded('%dummy stream') );
 is $page<Parent>, (:ind-ref[3, 0]), '$page<Parent>';
@@ -49,7 +49,7 @@ lives-ok {$page.Thumb = PDF::Image.open: "t/images/dna.small.gif"}, '$page.Thumb
 lives-ok {$page.Thumb.data-uri}, '$page.Thumb.data-uri - lives';
 
 my $font = $page.core-font( 'Helvetica' );
-isa-ok $font, (require ::('PDF::Font::Type1'));
+isa-ok $font, 'PDF::Font::Type1';
 is $font.font-obj.font-name, 'Helvetica', '.font-name';
 my $font-again = $page.core-font( 'Helvetica' );
 is-deeply $font-again, $font, 'core font caching';
@@ -103,7 +103,7 @@ is-deeply [$page.gfx.content-dump], ['BT', '(Hello, world!) Tj', 'ET'], 'finishe
 lives-ok {$page.check}, '$page.check lives';
 
 my $xobject = $page.to-xobject;
-isa-ok $xobject, ::('PDF::XObject::Form');
+isa-ok $xobject, 'PDF::XObject::Form';
 is-deeply $xobject.BBox, $page.trim-box, 'xobject copied trim-box';
 
 

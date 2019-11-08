@@ -33,7 +33,7 @@ $page.graphics: -> $gfx {
 
 	    $txt.font = [$font, $font-size];
 	    my $text-block = $txt.say( $para, :$width, :$align, :kern);
-	    isa-ok $text-block, (require ::('PDF::Content::Text::Block'));
+	    isa-ok $text-block, 'PDF::Content::Text::Block';
 	    $x += 275;
         }
 
@@ -117,7 +117,7 @@ throws-like { $pdf.wtf }, X::Method::NotFound;
 lives-ok {$pdf .= open: 't/helloworld-compressed.pdf'}, 'pdf reload lives';
 isa-ok $pdf.reader.trailer, PDF, 'trailer type';
 $page = $pdf.page: 1;
-isa-ok $page, (require ::('PDF::Page')), 'first pages';
+isa-ok $page, 'PDF::Page', 'first pages';
 is $page.Contents.Filter, 'FlateDecode', 'page stream is compressed';
 is $pdf.Info.Author, 't/helloworld.t', '$pdf.Info.Author reload';
 

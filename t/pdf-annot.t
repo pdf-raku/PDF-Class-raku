@@ -27,11 +27,11 @@ my $reader = class { has $.auto-deref = False }.new;
 
 my PDF::IO::IndObj $ind-obj .= new( :$input, |%ast, :$reader );
 my $text-annot = $ind-obj.object;
-isa-ok $text-annot, (require ::('PDF::Annot::Text'));
+isa-ok $text-annot, 'PDF::Annot::Text';
 is-json-equiv $text-annot.Rect, [ 100, 100, 300, 200 ], '.Rect';
 is $text-annot.Contents, "This is an open annotation. You'll need acro-reader...", '.Contents';
 
-my $open-text-annot = ::('PDF::Annot::Text').new(:dict{
+my $open-text-annot = (require ::('PDF::Annot::Text')).new(:dict{
     :Rect[ 120, 120, 200, 200],
     :Contents("...xpdf doesn't display annotations. This annotation is closed, btw"),
     :!Open,
@@ -53,7 +53,7 @@ my $field-annot = (require ::('PDF::Annot::Widget')).new(
     }
 );
 
-isa-ok $field-annot, ::('PDF::Annot::Widget');
+isa-ok $field-annot, 'PDF::Annot::Widget';
 does-ok $field-annot, (require ::('PDF::Field::Text'));
 lives-ok { $field-annot.check }, "field-annot check";
 
@@ -87,7 +87,7 @@ PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
 
 $ind-obj = PDF::IO::IndObj.new( :$input, |%ast, :$reader );
 my $link-annot = $ind-obj.object;
-isa-ok $link-annot, (require ::('PDF::Annot::Link'));
+isa-ok $link-annot, 'PDF::Annot::Link';
 is-json-equiv $link-annot.Border, [ 16, 16, 1, [3, 2] ], '.Border';
 is $link-annot.Border.vertical-radius, 16, '.Border.vertical-radius';
 is $link-annot.Border[1], 16;
@@ -107,7 +107,7 @@ PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
 
 $ind-obj = PDF::IO::IndObj.new( :$input, |%ast, :$reader );
 my $file-annot = $ind-obj.object;
-isa-ok $file-annot, (require ::('PDF::Annot::FileAttachment'));
+isa-ok $file-annot, 'PDF::Annot::FileAttachment';
 is $file-annot.Type, 'Annot', 'Annot with /Type defaulted';
 is-json-equiv $file-annot.Border, [ 0, 0, 0 ], '.Border';
 is-json-equiv $file-annot.FS, "/etc/passwd", '.FS';

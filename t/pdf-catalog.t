@@ -101,7 +101,7 @@ does-ok $acroform, (require ::('PDF::AcroForm')), '$.AcroForm role';
 is-json-equiv $acroform.Fields, [], '$.AcroForm.Fields';
 
 my $struct-tree-root = $catalog.StructTreeRoot;
-isa-ok $struct-tree-root, (require ::('PDF::StructTreeRoot')), '$.StructTreeRootClass';
+isa-ok $struct-tree-root, 'PDF::StructTreeRoot', '$.StructTreeRootClass';
 is $struct-tree-root.ParentTreeNextKey, 4, 'structTreeRoot.ParentTreeNextKey';
 lives-ok {$struct-tree-root.check}, 'StructTreeRoot.check'; 
 

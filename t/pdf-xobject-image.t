@@ -36,7 +36,7 @@ my PDF::IO::IndObj $ind-obj .= new( |%ast, :$input);
 is $ind-obj.obj-num, 14, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $ximage-obj = $ind-obj.object;
-isa-ok $ximage-obj, (require ::('PDF')::('XObject::Image'));
+isa-ok $ximage-obj, 'PDF::XObject::Image';
 is $ximage-obj.Type, 'XObject', '$.Type accessor';
 is $ximage-obj.Subtype, 'Image', '$.Subtype accessor';
 is-json-equiv $ximage-obj.ColorSpace, 'DeviceGray', '$.ColorSpace accessor';

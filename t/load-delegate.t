@@ -5,19 +5,19 @@ plan 17;
 use PDF::Class;
 use PDF::COS::Name;
 
-isa-ok PDF::Class.loader.load-delegate( :dict{ :Type<Page> }), (require ::('PDF::Page')), 'delegation sanity';
-isa-ok PDF::Class.loader.load-delegate( :dict{ :Type<XObject>, :Subtype<Image> }), (require ::('PDF::XObject::Image')), 'delegation to subclass';
+isa-ok PDF::Class.loader.load-delegate( :dict{ :Type<Page> }), 'PDF::Page', 'delegation sanity';
+isa-ok PDF::Class.loader.load-delegate( :dict{ :Type<XObject>, :Subtype<Image> }), 'PDF::XObject::Image', 'delegation to subclass';
 my $shading-class = PDF::Class.loader.load-delegate( :dict{ :ShadingType(2) });
-isa-ok $shading-class, (require ::('PDF::Shading::Axial')), 'delegation by ShadingType';
-isa-ok $shading-class, (require ::('PDF::COS::Dict')), 'delegation by ShadingType';
+isa-ok $shading-class, 'PDF::Shading::Axial', 'delegation by ShadingType';
+isa-ok $shading-class, 'PDF::COS::Dict', 'delegation by ShadingType';
 
 $shading-class = PDF::Class.loader.load-delegate( :dict{ :ShadingType(7) });
-isa-ok $shading-class, (require ::('PDF::Shading::Tensor')), 'delegation by ShadingType';
-isa-ok $shading-class, (require ::('PDF::COS::Stream')), 'delegation by ShadingType';
+isa-ok $shading-class, 'PDF::Shading::Tensor', 'delegation by ShadingType';
+isa-ok $shading-class, 'PDF::COS::Stream', 'delegation by ShadingType';
 
 does-ok PDF::Class.loader.load-delegate( :dict{ :ShadingType(42) }), (require ::('PDF::Shading')), 'delegation by ShadingType (unknown)';
 isa-ok PDF::Class.loader.load-delegate( :dict{ :Type<Unknown> }, :base-class(Hash)), Hash, 'delegation base-class';
-isa-ok PDF::Class.loader.load-delegate( :dict{ :FunctionType(3) }, :base-class(Hash)), ::('PDF::Function::Stitching'), 'delegation by FunctionType';
+isa-ok PDF::Class.loader.load-delegate( :dict{ :FunctionType(3) }, :base-class(Hash)), 'PDF::Function::Stitching', 'delegation by FunctionType';
 
 does-ok PDF::Class.loader.load-delegate( :dict{ :Subtype<Link> }, :base-class(Hash)),  (require ::('PDF::Annot::Link')), 'annot defaulted /Type - implemented';
 does-ok PDF::Class.loader.load-delegate( :dict{ :Subtype<Caret> }, :base-class(Hash)),  (require ::('PDF::Annot')), 'annot defaulted /Type - unimplemented';

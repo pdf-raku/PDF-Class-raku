@@ -50,13 +50,13 @@ does-ok $viewer-preferences, (require ::('TestDoc::ViewerPreferences')), '$Catal
 ok { $viewer-preferences.HideToolBar }, '$Catalog.ViewerPreferences.HideToolBar';
 is $viewer-preferences.some-custom-method, 'howdy', '$Catalog.ViewerPreferences.some-custom-method';
 
-isa-ok try { $Catalog.Pages }, (require ::('TestDoc::Pages'));
+isa-ok try { $Catalog.Pages }, 'TestDoc::Pages';
 
 # should autoload from t/Doc/Page.pm
 my $page = try { $Catalog.Pages.add-page };
 
-isa-ok $page, (require ::('TestDoc::Page'));
+isa-ok $page, 'TestDoc::Page';
 
 my $form = try { $page.to-xobject };
-isa-ok $form, (require ::('PDF::XObject::Form')), 'unextended class';
+isa-ok $form, 'PDF::XObject::Form', 'unextended class';
 
