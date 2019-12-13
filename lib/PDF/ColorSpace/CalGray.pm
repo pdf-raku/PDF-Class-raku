@@ -11,8 +11,8 @@ class PDF::ColorSpace::CalGray
     role CalGrayDict
         does PDF::COS::Tie::Hash {
 
-        use ISO_32000::Table_63-Entries_in_a_CalGray_Colour_Space_Dictionary;
-        also does ISO_32000::Table_63-Entries_in_a_CalGray_Colour_Space_Dictionary;
+        # use ISO_32000::Table_63-Entries_in_a_CalGray_Colour_Space_Dictionary;
+        # also does ISO_32000::Table_63-Entries_in_a_CalGray_Colour_Space_Dictionary;
 
 	has Numeric @.WhitePoint is entry(:len(3), :required); # (Required) An array of three numbers [ XW YW ZW ] specifying the tristimulus value, in the CIE 1931 XYZ space, of the diffuse white point. The numbers XW and ZW must be positive, and YW must be equal to 1.0.
 

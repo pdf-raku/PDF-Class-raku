@@ -8,8 +8,8 @@ role PDF::Image
     does PDF::Content::XObject['Image']
     does PDF::COS::Tie::Hash {
 
-    use ISO_32000::Table_89-Additional_Entries_Specific_to_an_Image_Dictionary;
-    also does ISO_32000::Table_89-Additional_Entries_Specific_to_an_Image_Dictionary;
+    # use ISO_32000::Table_89-Additional_Entries_Specific_to_an_Image_Dictionary;
+    # also does ISO_32000::Table_89-Additional_Entries_Specific_to_an_Image_Dictionary;
 
     use PDF::COS::Tie;
     use PDF::COS::Stream;
@@ -40,8 +40,8 @@ role PDF::Image
     has Bool $.Interpolate is entry;              # (Optional) A flag indicating whether image interpolation is to be performed
     my role Alternate_Image
     does PDF::COS::Tie::Hash {
-        use ISO_32000::Table_91-Entries_in_an_Alternate_Image_Dictionary;
-        also does ISO_32000::Table_91-Entries_in_an_Alternate_Image_Dictionary;
+        # use ISO_32000::Table_91-Entries_in_an_Alternate_Image_Dictionary;
+        # also does ISO_32000::Table_91-Entries_in_an_Alternate_Image_Dictionary;
         has PDF::Image $.Image is entry(:required);
         has Bool $.DefaultForPrinting is entry;
         has OCG-or-OCMD $.OC is entry;

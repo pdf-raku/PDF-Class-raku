@@ -8,8 +8,8 @@ role PDF::ICCProfile
     use PDF::ColorSpace;
     use PDF::Metadata::XML;
 
-    use ISO_32000::Table_66-Additional_Entries_Specific_to_an_ICC_Profile_Stream_Dictionary;
-    also does ISO_32000::Table_66-Additional_Entries_Specific_to_an_ICC_Profile_Stream_Dictionary;
+    # use ISO_32000::Table_66-Additional_Entries_Specific_to_an_ICC_Profile_Stream_Dictionary;
+    # also does ISO_32000::Table_66-Additional_Entries_Specific_to_an_ICC_Profile_Stream_Dictionary;
 
     has UInt $.N is entry(:required, :alias<num-colors>);          # (Required) The number of color components in the color space described by the ICC profile data. This number must match the number of components actually in the ICC profile. As of PDF 1.4, N must be 1, 3, or 4.
     my subset NameOrColorSpace where PDF::COS::Name|PDF::ColorSpace;

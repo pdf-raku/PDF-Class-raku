@@ -5,8 +5,8 @@ use PDF::COS::Tie::Hash;
 role PDF::NameTree
     does PDF::COS::Tie::Hash {
 
-    use ISO_32000::Table_36-Entries_in_a_name_tree_node_dictionary;
-    also does ISO_32000::Table_36-Entries_in_a_name_tree_node_dictionary;
+    # use ISO_32000::Table_36-Entries_in_a_name_tree_node_dictionary;
+    # also does ISO_32000::Table_36-Entries_in_a_name_tree_node_dictionary;
 
     use PDF::COS;
     #| a lightweight tied hash to fetch objects from a Name Tree

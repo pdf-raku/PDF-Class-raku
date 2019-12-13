@@ -8,8 +8,8 @@ class PDF::Action::Launch
     is PDF::COS::Dict
     does PDF::Action {
 
-    use ISO_32000::Table_203-Additional_entries_specific_to_a_launch_action;
-    also does ISO_32000::Table_203-Additional_entries_specific_to_a_launch_action;
+    # use ISO_32000::Table_203-Additional_entries_specific_to_a_launch_action;
+    # also does ISO_32000::Table_203-Additional_entries_specific_to_a_launch_action;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

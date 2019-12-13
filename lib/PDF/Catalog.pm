@@ -10,8 +10,8 @@ class PDF::Catalog
     does PDF::Class::Type
     does PDF::Content::Resourced {
 
-    use ISO_32000::Table_28-Entries_in_the_catalog_dictionary;
-    also does ISO_32000::Table_28-Entries_in_the_catalog_dictionary;
+    # use ISO_32000::Table_28-Entries_in_the_catalog_dictionary;
+    # also does ISO_32000::Table_28-Entries_in_the_catalog_dictionary;
 
     use PDF::COS::Tie;
     use PDF::COS::Tie::Hash;
@@ -43,8 +43,8 @@ class PDF::Catalog
     has Pages $.Pages is entry(:required, :indirect);    # (Required; must be an indirect reference) The page tree node that is the root of the document’s page tree
 
     role PageLabelNode does PDF::COS::Tie::Hash {
-        use ISO_32000::Table_159-Entries_in_a_page_label_dictionary;
-        also does ISO_32000::Table_159-Entries_in_a_page_label_dictionary;
+        # use ISO_32000::Table_159-Entries_in_a_page_label_dictionary;
+        # also does ISO_32000::Table_159-Entries_in_a_page_label_dictionary;
 
         has PDF::COS::Name $.Type is entry where 'PageLabel'; # (Optional) The type of PDF object that this dictionary describes; if present, shall be PageLabel for a page label dictionary.
         my subset NumberingStyle of PDF::COS::Name where 'D'|'R'|'r'|'A'|'a';
@@ -107,8 +107,8 @@ class PDF::Catalog
     }
 
     role Names does PDF::COS::Tie::Hash {
-        use ISO_32000::Table_31-Entries_in_the_name_dictionary;
-        also does ISO_32000::Table_31-Entries_in_the_name_dictionary;
+        # use ISO_32000::Table_31-Entries_in_the_name_dictionary;
+        # also does ISO_32000::Table_31-Entries_in_the_name_dictionary;
         has PDF::NameTree[Dest, :&coerce] $.Dests is entry;  # (Optional; PDF 1.2) A name tree mapping name strings to destinations.
         has PDF::NameTree $.AP is entry;                     # (Optional; PDF 1.3) A name tree mapping name strings to annotation appearance streams.
         has PDF::NameTree $.JavaScript is entry;             # (Optional; PDF 1.3) A name tree mapping name strings to document-level JavaScript actions.
@@ -149,8 +149,8 @@ class PDF::Catalog
     has PDF::COS::Dict $.AA is entry(:alias<additional-actions>);                    # (Optional; PDF 1.4) An additional-actions dictionary defining the actions to be taken in response to various trigger events affecting the document as a whole
 
     role URI does PDF::COS::Tie::Hash {
-        use ISO_32000::Table_207-Entry_in_a_URI_dictionary;
-        also does ISO_32000::Table_207-Entry_in_a_URI_dictionary;
+        # use ISO_32000::Table_207-Entry_in_a_URI_dictionary;
+        # also does ISO_32000::Table_207-Entry_in_a_URI_dictionary;
         has PDF::COS::ByteString $.Base is entry;           # (Optional) The base URI that shall be used in resolving relative URI references. URI actions within the document may specify URIs in partial form, to be interpreted relative to this base address. If no base URI is specified, such partial URIs shall be interpreted relative to the location of the document itself. The use of this entry is parallel to that of the body element <BASE >, as described in the HTML 4.01 Specification
     }
     has URI $.URI is entry;                 # (Optional; PDF 1.1) A URI dictionary containing document-level information for URI
@@ -165,8 +165,8 @@ class PDF::Catalog
     role MarkInfoDict
 	does PDF::COS::Tie::Hash {
 
-        use ISO_32000::Table_321-Entries_in_the_mark_information_dictionary;
-        also does ISO_32000::Table_321-Entries_in_the_mark_information_dictionary;
+        # use ISO_32000::Table_321-Entries_in_the_mark_information_dictionary;
+        # also does ISO_32000::Table_321-Entries_in_the_mark_information_dictionary;
 	has Bool $.Marked is entry;          # (Optional) A flag indicating whether the document conforms to Tagged PDF conventions. Default value: false.
 					     # Note: If Suspects is true, the document may not completely conform to Tagged PDF conventions.
 	has Bool $.UserProperties is entry;  # (Optional; PDF 1.6) A flag indicating the presence of structure elements that contain user properties attributes. Default value: false.
@@ -187,8 +187,8 @@ class PDF::Catalog
 
     role OCConfig
 	does PDF::COS::Tie::Hash {
-        use ISO_32000::Table_101-Entries_in_an_Optional_Content_Configuration_Dictionary;
-        also does ISO_32000::Table_101-Entries_in_an_Optional_Content_Configuration_Dictionary;
+        # use ISO_32000::Table_101-Entries_in_an_Optional_Content_Configuration_Dictionary;
+        # also does ISO_32000::Table_101-Entries_in_an_Optional_Content_Configuration_Dictionary;
         has PDF::COS::TextString $.Name is entry; # (Optional) A name for the configuration, suitable for presentation in a user interface.
         has PDF::COS::TextString $.Creator is entry; # (Optional) Name of the application or feature that created thisconfiguration dictionary.
         my subset BaseState of PDF::COS::Name where 'ON'|'OFF'|'Unchanged';
@@ -206,8 +206,8 @@ class PDF::Catalog
 
     role OCProperties
 	does PDF::COS::Tie::Hash {
-        use ISO_32000::Table_100-Entries_in_the_Optional_Content_Properties_Dictionary;
-        also does ISO_32000::Table_100-Entries_in_the_Optional_Content_Properties_Dictionary;
+        # use ISO_32000::Table_100-Entries_in_the_Optional_Content_Properties_Dictionary;
+        # also does ISO_32000::Table_100-Entries_in_the_Optional_Content_Properties_Dictionary;
         has OCG @.OCGs is entry(:indirect, :required, :alias<optional-content-groups>); # (Required) An array of indirect references to all the optional content groups in the document, in any order. Every optional content group shall be included in this array
         has PDF::COS::Dict $.D is entry(:required, :alias<viewing-config>); # (Required) The default viewing optional content configuration dictionary.
         has OCConfig @.Configs is entry;    # (Optional) An array of alternate optional content configuration dictionaries.
@@ -216,8 +216,8 @@ class PDF::Catalog
 
     role Permissions
 	does PDF::COS::Tie::Hash {
-        use ISO_32000::Table_258-Entries_in_a_permissions_dictionary;
-        also does ISO_32000::Table_258-Entries_in_a_permissions_dictionary;
+        # use ISO_32000::Table_258-Entries_in_a_permissions_dictionary;
+        # also does ISO_32000::Table_258-Entries_in_a_permissions_dictionary;
         has PDF::Signature $.DocMDP is entry(:indirect); # (Optional) An indirect reference to a signature dictionary (see Table 252). This dictionary shall contain a Reference entry that is a signature reference dictionary (see Table 252) that has a DocMDP transform method (see 12.8.2.2, “DocMDP”) and corresponding transform parameters.
         has PDF::Signature $.UR3 is entry; # (Optional) A signature dictionary that is used to specify and validate additional capabilities (usage rights) granted for this document; that is, the enabling of interactive features of the conforming reader that are not available by default.
     }

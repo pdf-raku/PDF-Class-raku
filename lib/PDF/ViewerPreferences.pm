@@ -9,8 +9,8 @@ role PDF::ViewerPreferences
     use PDF::COS::Tie;
     use PDF::COS::Name;
 
-    use ISO_32000::Table_150-Entries_in_a_viewer_preferences_dictionary;
-    also does ISO_32000::Table_150-Entries_in_a_viewer_preferences_dictionary;
+    # use ISO_32000::Table_150-Entries_in_a_viewer_preferences_dictionary;
+    # also does ISO_32000::Table_150-Entries_in_a_viewer_preferences_dictionary;
 
     has Bool $.HideToolbar is entry;            # (Optional) A flag specifying whether to hide the viewer application’s tool bars when the document is active. Default value: false.
 

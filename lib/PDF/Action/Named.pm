@@ -9,8 +9,8 @@ class PDF::Action::Named
     is PDF::COS::Dict
     does PDF::Action {
 
-    use ISO_32000::Table_212-Additional_entries_specific_to_named_actions;
-    also does ISO_32000::Table_212-Additional_entries_specific_to_named_actions;
+    # use ISO_32000::Table_212-Additional_entries_specific_to_named_actions;
+    # also does ISO_32000::Table_212-Additional_entries_specific_to_named_actions;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

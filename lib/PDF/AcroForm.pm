@@ -6,8 +6,8 @@ use PDF::COS::Tie::Hash;
 role PDF::AcroForm
     does PDF::COS::Tie::Hash {
 
-    use ISO_32000::Table_218-Entries_in_the_interactive_form_dictionary;
-    also does ISO_32000::Table_218-Entries_in_the_interactive_form_dictionary;
+    # use ISO_32000::Table_218-Entries_in_the_interactive_form_dictionary;
+    # also does ISO_32000::Table_218-Entries_in_the_interactive_form_dictionary;
 
     use PDF::COS::Tie;
     use PDF::Field :coerce;

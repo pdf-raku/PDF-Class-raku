@@ -12,8 +12,8 @@ class PDF::XObject::Form
     does PDF::Content::Graphics
     does PDF::Content::Resourced {
 
-    use ISO_32000::Table_95-Additional_Entries_Specific_to_a_Type_1_Form_Dictionary;
-    also does ISO_32000::Table_95-Additional_Entries_Specific_to_a_Type_1_Form_Dictionary;
+    # use ISO_32000::Table_95-Additional_Entries_Specific_to_a_Type_1_Form_Dictionary;
+    # also does ISO_32000::Table_95-Additional_Entries_Specific_to_a_Type_1_Form_Dictionary;
 
     use PDF::COS::Tie;
     use PDF::COS::DateString;

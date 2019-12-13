@@ -6,8 +6,8 @@ use PDF:ver(v0.3.2+);
 class PDF::Class:ver<0.3.8>#:api<PDF-1.7>
     is PDF {
     # base class declares: $.Size, $.Encrypt, $.ID
-    use ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
-    also does ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
+    # use ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
+    # also does ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
 
     use PDF::Content;
     use PDF::COS::Tie;

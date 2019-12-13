@@ -8,8 +8,8 @@ class PDF::StructTreeRoot
     is PDF::COS::Dict
     does PDF::Class::Type {
 
-    use ISO_32000::Table_322-Entries_in_the_structure_tree_root;
-    also does ISO_32000::Table_322-Entries_in_the_structure_tree_root;
+    # use ISO_32000::Table_322-Entries_in_the_structure_tree_root;
+    # also does ISO_32000::Table_322-Entries_in_the_structure_tree_root;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

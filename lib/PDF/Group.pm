@@ -8,8 +8,8 @@ class PDF::Group
     is PDF::COS::Dict
     does PDF::Class::Type::Subtyped {
 
-    use ISO_32000::Table_96-Entries_Common_to_all_Group_Attributes_Dictionaries;
-    also does ISO_32000::Table_96-Entries_Common_to_all_Group_Attributes_Dictionaries;
+    # use ISO_32000::Table_96-Entries_Common_to_all_Group_Attributes_Dictionaries;
+    # also does ISO_32000::Table_96-Entries_Common_to_all_Group_Attributes_Dictionaries;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

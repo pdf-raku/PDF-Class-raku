@@ -18,8 +18,8 @@ class PDF::Pattern::Tiling
     use PDF::COS::Tie;
     use PDF::Resources;
 
-    use ISO_32000::Table_75-Additional_Entries_Specific_to_a_Type_1_Pattern_Dictionary;
-    also does ISO_32000::Table_75-Additional_Entries_Specific_to_a_Type_1_Pattern_Dictionary;
+    # use ISO_32000::Table_75-Additional_Entries_Specific_to_a_Type_1_Pattern_Dictionary;
+    # also does ISO_32000::Table_75-Additional_Entries_Specific_to_a_Type_1_Pattern_Dictionary;
 
     subset PaintCode of Int where 1|2;
     has PaintCode $.PaintType is entry(:required);   # (Required) A code that determines how the color of the pattern cell is to be specified:

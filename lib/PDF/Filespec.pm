@@ -14,8 +14,8 @@ role PDF::Filespec
     use PDF::COS::Dict;
     use PDF::COS::Stream;
 
-    use ISO_32000::Table_44-Entries_in_a_file_specification_dictionary;
-    also does ISO_32000::Table_44-Entries_in_a_file_specification_dictionary;
+    # use ISO_32000::Table_44-Entries_in_a_file_specification_dictionary;
+    # also does ISO_32000::Table_44-Entries_in_a_file_specification_dictionary;
 
     # file specifications may be either a dictionary or a simple text-string
     my subset File is export(:File) where PDF::COS::TextString|PDF::Filespec;
@@ -42,13 +42,13 @@ role PDF::Filespec
     has PDF::COS::ByteString @.ID is entry(:len(2)); # (Optional) An array of two byte strings constituting a file identifier that should be included in the referenced file.
     has Bool $.V is entry(:alias<volatile>); # (Optional; PDF 1.2) A flag indicating whether the file referenced by the file specification is volatile (changes frequently with time). If the value is true, applications shall not cache a copy of the file. For example, a movie annotation referencing a URL to a live video camera could set this flag to true to notify the conforming reader that it should re-acquire the movie each time it is played. Default value: false.
     my role EmbeddedFile does PDF::COS::Tie::Hash {
-        use ISO_32000::Table_45-Additional_entries_in_an_embedded_file_stream_dictionary;
-        also does ISO_32000::Table_45-Additional_entries_in_an_embedded_file_stream_dictionary;
+        # use ISO_32000::Table_45-Additional_entries_in_an_embedded_file_stream_dictionary;
+        # also does ISO_32000::Table_45-Additional_entries_in_an_embedded_file_stream_dictionary;
         has PDF::COS::Name $.Type is entry where 'EmbeddedFile';
         has PDF::COS::Name $.Subtype;
         my role ParamsDict does PDF::COS::Tie::Hash {
-            use ISO_32000::Table_46-Entries_in_an_embedded_file_parameter_dictionary;
-            also does ISO_32000::Table_46-Entries_in_an_embedded_file_parameter_dictionary;
+            # use ISO_32000::Table_46-Entries_in_an_embedded_file_parameter_dictionary;
+            # also does ISO_32000::Table_46-Entries_in_an_embedded_file_parameter_dictionary;
             has UInt $.Size is entry;
             has PDF::COS::DateString $.CreationDate is entry;
             has PDF::COS::DateString $.ModDate is entry;
