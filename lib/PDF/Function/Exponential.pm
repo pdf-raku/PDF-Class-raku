@@ -6,9 +6,8 @@ use PDF::Function;
 class PDF::Function::Exponential
     is PDF::Function {
 
-    # see [PDF 32000 table 40 - Additional entries specific to a type 2 function dictionary]
-    ## use ISO_32000::Type_2_Function;
-    ## also does ISO_32000::Type_2_Function;
+    use ISO_32000::Table_40-Additional_entries_specific_to_a_type_2_function_dictionary;
+    also does ISO_32000::Table_40-Additional_entries_specific_to_a_type_2_function_dictionary;
 
     use PDF::COS::Tie;
     has Numeric @.C0 is entry(:default[0.0]);          # (Optional) An array of n numbers defining the function result when x = 0.0. Default value: [ 0.0 ].

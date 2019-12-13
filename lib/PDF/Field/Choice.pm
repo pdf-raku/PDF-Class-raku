@@ -5,9 +5,8 @@ use PDF::Field;
 role PDF::Field::Choice
     does PDF::Field {
 
-    # See [PDF 32000 TABLE 231 - Additional entry specific to a choice field]
-    ## use ISO_32000::Choice_field_additional;
-    ## also does ISO_32000::Choice_field_additional;
+    use ISO_32000::Table_231-Additional_entries_specific_to_a_choice_field;
+    also does ISO_32000::Table_231-Additional_entries_specific_to_a_choice_field;
  
     use PDF::COS::Tie;
     use PDF::COS::TextString;

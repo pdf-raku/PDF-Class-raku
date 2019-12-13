@@ -9,9 +9,9 @@ role PDF::OutputIntent
     does PDF::COS::Tie::Hash
     does PDF::Class::Type::Subtyped {
 
-    # See [PDF 32000 Table 365 – Entries in an output intent dictionary]
-    ## use ISO_32000::Output_intent;
-    ## also does ISO_32000::Output_intent;
+    use ISO_32000::Table_365-Entries_in_an_output_intent_dictionary;
+    also does ISO_32000::Table_365-Entries_in_an_output_intent_dictionary;
+
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::COS::TextString;

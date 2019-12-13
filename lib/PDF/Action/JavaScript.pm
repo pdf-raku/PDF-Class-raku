@@ -9,9 +9,8 @@ class PDF::Action::JavaScript
     is PDF::COS::Dict
     does PDF::Action {
 
-    # see [PDF 32000 Table 212 – Additional entries specific to named actions]
-    ## use ISO_32000::JavaScript_action_additional;
-    ## also does ISO_32000::JavaScript_action_additional;
+    use ISO_32000::Table_217-Additional_entries_specific_to_a_JavaScript_action;
+    also does ISO_32000::Table_217-Additional_entries_specific_to_a_JavaScript_action;
 
     use PDF::COS::Tie;
     use PDF::COS::Stream;

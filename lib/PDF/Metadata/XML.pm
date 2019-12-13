@@ -7,9 +7,8 @@ class PDF::Metadata::XML
     is PDF::COS::Stream
     does PDF::Class::Type::Subtyped {
 
-    # See [PDF 32000 Table 315 - Additional entries in a metadata stream dictionary]
-    ## use ISO_32000::Metadata_stream_additional;
-    ## also does ISO_32000::Metadata_stream_additional;
+    use ISO_32000::Table_315-Additional_entries_in_a_metadata_stream_dictionary;
+    also does ISO_32000::Table_315-Additional_entries_in_a_metadata_stream_dictionary;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

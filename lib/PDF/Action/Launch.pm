@@ -8,9 +8,9 @@ class PDF::Action::Launch
     is PDF::COS::Dict
     does PDF::Action {
 
-    # see [PDF 32000 Table 203 – Additional entries specific to a launch action]
-    ## use ISO_32000::Launch_action_additional;
-    ## also does ISO_32000::Launch_action_additional;
+    use ISO_32000::Table_203-Additional_entries_specific_to_a_launch_action;
+    also does ISO_32000::Table_203-Additional_entries_specific_to_a_launch_action;
+
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::Filespec :File, :&to-file;

@@ -7,9 +7,9 @@ class PDF::Annot::ThreeD
     is PDF::Annot
     does PDF::Class::ThreeD {
 
-    # See [PDF 32000 Table 298 – Additional entries specific to a 3D annotation]
-    ## use ISO_32000::Three-D_annotation;
-    ## also does ISO_32000::Three-D_annotation;
+    use ISO_32000::Table_298-Additional_entries_specific_to_a_ThreeD_annotation
+    also does ISO_32000::Table_298-Additional_entries_specific_to_a_ThreeD_annotation;
+
     use PDF::COS::Tie;
 
     has Numeric @.view-box  is entry(:key<3DB>, :len(4)); # rectangle (Optional) The 3D view box, which is the rectangular area in which the 3D artwork shall be drawn. It shall be within the rectangle specified by the annotation’s Rect entry and shall be expressed in the annotation’s target coordinate system (see discussion following this Table).

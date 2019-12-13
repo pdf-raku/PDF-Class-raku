@@ -11,9 +11,8 @@ class PDF::Annot::Widget
     use PDF::Border;
     use PDF::Field;
 
-    # See [PDF 32000 Table 188 - Additional entries specific to a widget annotation]
-    ## use ISO_32000::Widget_annotation_additional;
-    ## also does ISO_32000::Widget_annotation_additional;
+    use ISO_32000::Table_188-Additional_entries_specific_to_a_widget_annotation;
+    also does ISO_32000::Table_188-Additional_entries_specific_to_a_widget_annotation;
 
     my subset HName of PDF::COS::Name where 'N'|'I'|'O'|'P'|'T';
     has HName $.H is entry(:alias<highlight-mode>);            # (Optional; PDF 1.2) The annotation’s highlighting mode, the visual effect to be used when the mouse button is pressed or held down inside its active area:

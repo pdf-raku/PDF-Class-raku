@@ -7,9 +7,8 @@ use PDF::Function;
 class PDF::Function::Stitching
     is PDF::Function {
 
-    # see [PDF 32000 Table 41 -  Additional entries specific to a type 3 function dictionary]
-    ## use ISO_32000::Type_3_Function;
-    ## also does ISO_32000::Type_3_Function;
+    use ISO_32000::Table_41-Additional_entries_specific_to_a_type_3_function_dictionary;
+    also does ISO_32000::Table_41-Additional_entries_specific_to_a_type_3_function_dictionary;
 
     use PDF::COS::Tie;
 

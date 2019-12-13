@@ -12,9 +12,9 @@ role PDF::FontDescriptor
     use PDF::FontStream;
     use PDF::FontFile;
 
-    # see [PDF 32000 Table 122- Entries common to all font descriptors]
-    ## use ISO_32000::Font_descriptor_common;
-    ## also does ISO_32000::Font_descriptor_common;
+    use ISO_32000::Table_122-Entries_common_to_all_font_descriptors;
+    also does ISO_32000::Table_122-Entries_common_to_all_font_descriptors;
+
     has PDF::COS::Name $.Type is entry(:required) where 'FontDescriptor';
     has PDF::COS::Name $.FontName is entry(:required); # (Required) The PostScript name of the font.
     has Str $.FontFamily is entry;                     # (Optional; PDF 1.5; strongly recommended for Type 3 fonts in Tagged PDF documents) A byte string specifying the preferred font family name

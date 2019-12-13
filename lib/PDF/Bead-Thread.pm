@@ -7,9 +7,10 @@ use PDF::COS::Tie::Hash;
 role PDF::Thread {...};
 
 role PDF::Bead does PDF::COS::Tie::Hash {
-    # See [PDF 32000 table 161 - Entries in a bead dictionary]
-    ## use ISO_32000::Bead;
-    ## also does ISO_32000::Bead;
+
+    use ISO_32000::Table_161-Entries_in_a_bead_dictionary;
+    also does ISO_32000::Table_161-Entries_in_a_bead_dictionary;
+
     use PDF::COS::Tie;
     use PDF::COS::Name;
 
@@ -26,9 +27,8 @@ role PDF::Bead does PDF::COS::Tie::Hash {
 }
 
 role PDF::Thread does PDF::COS::Tie::Hash {
-    # See [PDF 32000 table 160 - Entries in a thread dictionary]
-    ## use ISO_32000::Thread;
-    ## also does ISO_32000::Thread;
+    use ISO_32000::Table_160-Entries_in_a_thread_dictionary;
+    also does ISO_32000::Table_160-Entries_in_a_thread_dictionary;
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::Info;

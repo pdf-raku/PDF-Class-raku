@@ -11,9 +11,8 @@ role PDF::Signature
     use PDF::COS::DateString;
     use PDF::COS::TextString;
 
-    # See [PDF 32000 Table 252 - Entries in a signature dictionary]
-    ## use ISO_32000::Signature;
-    ## also does ISO_32000::Signature;
+    use ISO_32000::Table_252-Entries_in_a_signature_dictionary;
+    also does ISO_32000::Table_252-Entries_in_a_signature_dictionary;
 
     has PDF::COS::Name $.Type is entry where 'Sig'; # (Optional) The type of PDF object that this dictionary describes; if present, shall be Sig for a signature dictionary.
     has PDF::COS::Name $.Filter is entry(:required); # (Required; inheritable) The name of the preferred signature handler to use when validating this signature. If the Prop_Build entry is not present, it shall be also the name of the signature handler that was used to create the signature. If Prop_Build is present, it may be used to determine the name of the handler that created the signature (which is typically the same as Filter but is not needed to be). A conforming reader may substitute a different handler when verifying the signature, as long as it supports the specified SubFilter format.
@@ -23,6 +22,8 @@ role PDF::Signature
     has PDF::COS::ByteString @.Cert is entry(:array-or-item); # (Required when SubFilter is adbe.x509.rsa_sha1) An array of byte strings that shall represent the X.509 certificate chain used when signing and verifying signatures that use public-key cryptography, or a byte string if the chain has only one entry. The signing certificate shall appear first in the array; it shall be used to verify the signature value in Contents, and the other certificates shall be used to verify the authenticity of the signing certificate.
     has UInt @.ByteRange is entry; # (Required for all signatures that are part of a signature field and usage rights signatures referenced from the UR3 entry in the permissions dictionary) An array of pairs of integers (starting byte offset, length in bytes) that shall describe the exact byte range for the digest calculation. Multiple discontiguous byte ranges shall be used to describe a digest that does not include the signature value (the Contents entry) itself.
     my role Reference does PDF::COS::Tie::Hash {
+        use ISO_32000::Table_253-Entries_in_a_signature_reference_dictionary;
+        also does ISO_32000::Table_253-Entries_in_a_signature_reference_dictionary;
         has PDF::COS::Name $.Type is entry where 'SigRef'; # (Optional) The type of PDF object that this dictionary describes; if present, shall be SigRef for a signature reference dictionary.
         my subset TransformMethod of PDF::COS::Name where 'DocMDP'|'R'|'UR'|'FieldMPD';
         has TransformMethod $.TransformMethod is entry(:required); # The name of the transform method (see Section that shall guide the modification analysis that takes place when the signature is validated.

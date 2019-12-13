@@ -8,8 +8,10 @@ use PDF::COS::Dict;
 class PDF::Action::Thread
     is PDF::COS::Dict
     does PDF::Action {
-    ## use ISO_32000::Thread_action_additional;
-    ## also does ISO_32000::Thread_action_additional;
+
+    use ISO_32000::Table_205-Additional_entries_specific_to_a_thread_action;
+    also does ISO_32000::Table_205-Additional_entries_specific_to_a_thread_action;
+
     use PDF::COS;
     use PDF::COS::Tie;
     use PDF::Bead-Thread; # Declares PDF::Bead & PDF::Thread

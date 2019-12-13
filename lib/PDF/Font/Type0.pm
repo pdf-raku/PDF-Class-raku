@@ -9,9 +9,8 @@ class PDF::Font::Type0
     use PDF::COS::Stream;
     use PDF::Font::CIDFont;
 
-    # see [ PDF 32000 Table 121 - Entries in a Type 0 font dictionary]
-    ## use ISO_32000::Type_0_Font;
-    ## also does ISO_32000::Type_0_Font;
+    use ISO_32000::Table_121-Entries_in_a_Type_0_font_dictionary;
+    also does ISO_32000::Table_121-Entries_in_a_Type_0_font_dictionary;
 
     has PDF::COS::Name $.BaseFont is entry(:required); # (Required) The PostScript name of the font. In principle, this is an arbitrary name, since there is no font program associated directly with a Type 0 font dictionary.
     subset NameOrStream of PDF::COS where PDF::COS::Name | PDF::COS::Stream;

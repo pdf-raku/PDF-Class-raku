@@ -8,9 +8,8 @@ role PDF::Action
     does PDF::COS::Tie::Hash
     does PDF::Class::Type::Subtyped {
 
-    # set [PDF 32000 Table 193 - Entries common to all action dictionaries]
-    ## use ISO_32000::Action_common;
-    ## also does ISO_32000::Action_common;
+    use ISO_32000::Table_193-Entries_common_to_all_action_dictionaries;
+    also does ISO_32000::Table_193-Entries_common_to_all_action_dictionaries;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

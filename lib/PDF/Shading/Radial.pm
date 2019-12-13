@@ -8,9 +8,8 @@ class PDF::Shading::Radial
     is PDF::COS::Dict
     does PDF::Shading {
 
-    # see [PDF 32000 Table 81 - Additional Entries Specific to a Type 3 Shading Dictionary]
-    ## use ISO_32000::Type_3_Shading;
-    ## also does ISO_32000::Type_3_Shading;
+    use ISO_32000::Table_81-Additional_Entries_Specific_to_a_Type_3_Shading_Dictionary;
+    also does ISO_32000::Table_81-Additional_Entries_Specific_to_a_Type_3_Shading_Dictionary;
 
     use PDF::COS::Tie;
     use PDF::Function;

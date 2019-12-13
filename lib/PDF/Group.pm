@@ -8,9 +8,9 @@ class PDF::Group
     is PDF::COS::Dict
     does PDF::Class::Type::Subtyped {
 
-    # see [PDF 32000 Table 96 – Entries Common to all Group Attributes Dictionaries]
-    ## use ISO_32000::Group_Attributes_common;
-    ## also does ISO_32000::Group_Attributes_common;
+    use ISO_32000::Table_96-Entries_Common_to_all_Group_Attributes_Dictionaries;
+    also does ISO_32000::Table_96-Entries_Common_to_all_Group_Attributes_Dictionaries;
+
     use PDF::COS::Tie;
     use PDF::COS::Name;
 

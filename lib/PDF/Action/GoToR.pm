@@ -8,9 +8,8 @@ class PDF::Action::GoToR
     is PDF::COS::Dict
     does PDF::Action {
 
-    # see [PDF 32000 - Table 200 – Additional entries specific to a remote go-to action]
-    ## use ISO_32000::Remote_goto_action_additional;
-    ## also does ISO_32000::Remote_goto_action_additional;
+    use ISO_32000::Table_200-Additional_entries_specific_to_a_remote_go-to_action;
+    also does ISO_32000::Table_200-Additional_entries_specific_to_a_remote_go-to_action;
 
     use PDF::COS::Tie;
     use PDF::Destination :DestSpecRemote, :coerce-dest;

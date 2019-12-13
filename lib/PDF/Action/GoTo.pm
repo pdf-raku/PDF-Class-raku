@@ -8,9 +8,9 @@ class PDF::Action::GoTo
     is PDF::COS::Dict
     does PDF::Action {
 
-    # see [PDF 32000 Table 199 - Additional entries specific to a go-to action]
-    ## use ISO_32000::Goto_action_additional;
-    ## also does ISO_32000::Goto_action_additional;
+    use ISO_32000::Table_199-Additional_entries_specific_to_a_go-to_action;
+    also does ISO_32000::Table_199-Additional_entries_specific_to_a_go-to_action;
+
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::Destination :DestSpec, :coerce-dest;

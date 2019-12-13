@@ -8,6 +8,9 @@ role PDF::Image
     does PDF::Content::XObject['Image']
     does PDF::COS::Tie::Hash {
 
+    use ISO_32000::Table_89-Additional_Entries_Specific_to_an_Image_Dictionary;
+    also does ISO_32000::Table_89-Additional_Entries_Specific_to_an_Image_Dictionary;
+
     use PDF::COS::Tie;
     use PDF::COS::Stream;
     use PDF::COS::Array;
@@ -21,9 +24,6 @@ role PDF::Image
 
     use PDF::Content::Image::PNG :PNG-CS;
     use PDF::IO::Filter;
-    # See [PDF 32000 Table 89 - Additional Entries Specific to an Image Dictionary]
-    ## use ISO_32000::Image;
-    ## also does ISO_32000::Image;
     has PDF::COS::Name $.Type is entry where 'XObject';
     has PDF::COS::Name $.Subtype is entry where 'Image';
     has Numeric $.Width is entry(:required);      # (Required) The width of the image, in samples.
@@ -40,9 +40,8 @@ role PDF::Image
     has Bool $.Interpolate is entry;              # (Optional) A flag indicating whether image interpolation is to be performed
     my role Alternate_Image
     does PDF::COS::Tie::Hash {
-        # See [PDF 32000 Table 91 - Entries in an Alternate Image Dictionary]
-        ## use ISO_32000::Alternate_Image;
-        ## also does ISO_32000::Alternate_Image;
+        use ISO_32000::Table_91-Entries_in_an_Alternate_Image_Dictionary;
+        also does ISO_32000::Table_91-Entries_in_an_Alternate_Image_Dictionary;
         has PDF::Image $.Image is entry(:required);
         has Bool $.DefaultForPrinting is entry;
         has OCG-or-OCMD $.OC is entry;
@@ -135,7 +134,9 @@ role PDF::Image
             $stream //= self.encoded.encode: "latin-1";
         }
         else {
-            X::NYI.new(:feature("PNG Image Conversion")).throw;
+            # not working yet...
+            X::NYI.new(:feature("PNG Image Conversion"))
+                .throw();
             my $Colors = $hdr.color-type == PNG-CS::RGB ?? 3 !! 1;
             my %dict = %(
                 :Filter<FlateDecode>,

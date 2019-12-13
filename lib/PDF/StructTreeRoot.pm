@@ -8,9 +8,9 @@ class PDF::StructTreeRoot
     is PDF::COS::Dict
     does PDF::Class::Type {
 
-    # see [PDF 32000 Table 32000 Table 322 - Entries in the structure tree root]
-    ## use ISO_32000::Structure_tree_root;
-    ## also does ISO_32000::Structure_tree_root;
+    use ISO_32000::Table_322-Entries_in_the_structure_tree_root;
+    also does ISO_32000::Table_322-Entries_in_the_structure_tree_root;
+
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::StructElem :coerce-struct-kids, :StructElemChild;
@@ -26,7 +26,7 @@ class PDF::StructTreeRoot
 
     has UInt $.ParentTreeNextKey is entry;       # (Optional) An integer greater than any key in the parent tree, shall be used as a key for the next entry added to the tree.
     our subset StandardStructureType of PDF::COS::Name where
-        # [PDF 32000 Table 333 – Standard structure types for grouping elements]
+        # [See PDF 32000 Table 333 – Standard structure types for grouping elements]
         'Document'     # (Document) A complete document. This is the root element of any structure tree containing multiple parts or multiple articles.
         | 'Part'       # (Part) A large-scale division of a document. This type of element is appropriate for grouping articles or sections.
         | 'Art'        # (Article) A relatively self-contained body of text constituting a single narrative or exposition. Articles should be disjoint; that is, they should not contain other articles as constituent elements.
@@ -77,7 +77,7 @@ class PDF::StructTreeRoot
         | 'WT'        # (Warichu text) The smaller-size text of a warichu comment that is formatted into two lines and placed between surrounding WP elements.
         | 'WP'        # (Warichu punctuation) The punctuation that surrounds the WT text. It contains text
         #               (usually a single LEFT or RIGHT PARENTHESIS or similar bracketing character).
-        # [PDF 32000 Table 340 – Standard structure types for illustration elements]
+        # [See PDF 32000 Table 340 – Standard structure types for illustration elements]
         | 'Figure'    # (Figure) An item of graphical content. Its placement may be specified with the Placement layout attribute.
         | 'Formula'   # (Formula) A mathematical formula.
         | 'Form'      # (Form) A widget annotation representing an interactive form field

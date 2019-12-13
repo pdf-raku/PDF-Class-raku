@@ -8,9 +8,8 @@ class PDF::CMap
     is PDF::COS::Stream
     does PDF::Class::Type {
 
-    # see [PDF 32000 Table 120 - Additional entries in a CMap dictionary]
-    ## use ISO_32000::CMap_stream;
-    ## also does ISO_32000::CMap_stream;
+    use ISO_32000::Table_120-Additional_entries_in_a_CMap_stream_dictionary;
+    also does ISO_32000::Table_120-Additional_entries_in_a_CMap_stream_dictionary;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

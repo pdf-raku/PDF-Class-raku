@@ -12,9 +12,8 @@ role PDF::Resources
     use PDF::COS::Name;
     use PDF::COS::Stream;
 
-    # See [PDF 32000 Table 33 - Entries in a resource dictionary]
-    ## use ISO_32000::Resource;
-    ## also does ISO_32000::Resource;
+    use ISO_32000::Table_33-Entries_in_a_resource_dictionary;
+    also does ISO_32000::Table_33-Entries_in_a_resource_dictionary;
 
     has Hash %.ExtGState  is entry;  # (Optional) A dictionary that maps resource names to graphics state parameter dictionaries
 

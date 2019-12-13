@@ -9,9 +9,9 @@ class PDF::Annot::Square
     use PDF::COS::Name;
     use PDF::Border;
 
-    # See [PDF 32000 Table 177 - Additional entries specific to a widget annotation]
-    ## use ISO_32000::Square_or_circle_annotation_additional;
-    ## also does ISO_32000::Square_or_circle_annotation_additional;
+    use ISO_32000::Table_177-Additional_entries_specific_to_a_square_or_circle_annotation;
+    also does ISO_32000::Table_177-Additional_entries_specific_to_a_square_or_circle_annotation;
+
     has PDF::Border $.BS is entry(:alias<border-style>);       # (Optional) A border style dictionary specifying the line width and dash pattern to be used in drawing the rectangle or ellipse.
                                          # Note: The annotation dictionary’s AP entry, if present, takes precedence over the Land BS entries
 

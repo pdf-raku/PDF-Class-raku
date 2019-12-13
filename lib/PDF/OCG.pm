@@ -8,9 +8,8 @@ class PDF::OCG
     is PDF::COS::Dict
     does PDF::Class::Type {
 
-    # see [PDF 32000 14.7.2 Structure Hierarchy]
-    ## use ISO_32000::Optional_Content_Group;
-    ## also does ISO_32000::Optional_Content_Group;
+    use ISO_32000::Table_98-Entries_in_an_Optional_Content_Group_Dictionary;
+    also does ISO_32000::Table_98-Entries_in_an_Optional_Content_Group_Dictionary;
 
     use PDF::COS::Tie;
     use PDF::COS::Tie::Hash;
@@ -26,8 +25,8 @@ class PDF::OCG
 
     role Usage
         does PDF::COS::Tie::Hash {
-        ## use ISO_32000::Optional_Content_Group_Usage;
-        ## also does ISO_32000::Optional_Content_Group_Usage;
+        use ISO_32000::Table_102-Entries_in_an_Optional_Content_Usage_Dictionary;
+        also does ISO_32000::Table_102-Entries_in_an_Optional_Content_Usage_Dictionary;
 
         my role CreatorInfo
             does PDF::COS::Tie::Hash {

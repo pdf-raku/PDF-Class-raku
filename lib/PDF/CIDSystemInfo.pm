@@ -5,9 +5,9 @@ use PDF::COS::Tie::Hash;
 role PDF::CIDSystemInfo
     does PDF::COS::Tie::Hash {
 
-    # see [PDF 32000 Table 116 - Entries in a CIDSystemInfo dictionary]
-    ## use ISO_32000::CIDSystemInfo;
-    ## also does ISO_32000::CIDSystemInfo;
+    use ISO_32000::Table_116-Entries_in_a_CIDSystemInfo_dictionary;
+    also does ISO_32000::Table_116-Entries_in_a_CIDSystemInfo_dictionary;
+
     use PDF::COS::Tie;
 
     has Str $.Registry is entry(:required);    # A string identifying the issuer of the character collection—for example, Adobe.
