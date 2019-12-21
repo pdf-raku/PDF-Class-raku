@@ -30,12 +30,8 @@ class PDF::Class:ver<0.3.8>#:api<PDF-1.7>
         );
     }
 
-    method open(|c) {
-	my $doc = callsame;
-	die "PDF file has wrong type: " ~ $doc.reader.type
-	    unless $doc.reader.type eq 'PDF';
-	$doc;
-    }
+    # make sure it really is a PDF, not an FDF file etc
+    method open(|c) { nextwith( :type<PDF>, |c); }
 
     method save-as($spec, Bool :$info = True, |c) {
 
