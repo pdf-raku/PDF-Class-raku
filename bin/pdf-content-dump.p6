@@ -10,8 +10,8 @@ use PDF::IO;
 sub MAIN(Str $infile,            #= input PDF
 	 Str :$password = '',    #= password for the input PDF, if encrypted
          Int :$page,             #= page-number to dump
-         Bool :$perl,            #= dump in a Perl-like notation
-         Bool :$debug,           #= debug dump (to stderr)
+         Bool :$raku,            #= dump in a Raku-like notation
+         Bool :$trace,           #= trace graphics (to stderr)
          Bool :$repair = False,  #= bypass index; recompute stream lengths
          Bool :$strict = False,  #= enable extra rendering warnings
     ) {
@@ -27,7 +27,7 @@ sub MAIN(Str $infile,            #= input PDF
     for 1 .. $pdf.page-count {
         next if $page && $_ != $page;
         my PDF::Page $p = $pdf.page($_);
-        if $perl {
+        if $raku {
 	    my constant Openers = 'q'|'BT'|'BMC'|'BDC'|'BX';
 	    my constant Closers = 'Q'|'ET'|'EMC'|'EX';
             my $nesting = 0;
@@ -38,15 +38,15 @@ sub MAIN(Str $infile,            #= input PDF
                 say sprintf '%s.%s(%s);',
                     $pad,
                     %OpName{$op},
-                    @args.map(*.perl).join(", ");
+                    @args.map(*.raku).join(", ");
             }
             say "# **** Page $_ ****";
             $p.render(:&callback);
         }
-        elsif $debug {
+        elsif $trace {
             temp $*ERR = $*OUT;
             say "# **** Page $_ ****";
-            $p.render(:debug);
+            $p.render(:trace);
         }
         else {
             say "% **** Page $_ ****";
@@ -64,8 +64,8 @@ pdf-content-dump.p6 [options] --page=number file.pdf
 Options:
    --password   password for an encrypted PDF
    --page=num   dump a single page (stdout)
-   --perl       dump in a Perl-like notation (stdout)
-   --debug      dump of operations and graphics state
+   --raku       dump in a Raku-like notation (stdout)
+   --trace      trace graphics state (to stderr)
 
 =head1 DESCRIPTION
 
