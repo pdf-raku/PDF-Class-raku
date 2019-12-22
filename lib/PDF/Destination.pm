@@ -16,13 +16,16 @@ role PDF::Destination
         :FitBoxHoriz<FitBH> :FitBoxVert<FitBV>
         »;
 
-    use PDF::Page;
     use PDF::COS::Name;
+    use PDF::COS::Tie::Hash;
 
-    my subset PageRef where PDF::Page|UInt|Pair;
-    method is-page-ref { self.[0] ~~ PDF::Page }
+    my subset Page of Hash where { .<Type> ~~ 'Page' }; # autoloaded PDF::Page
+    my subset PageRef where Page|UInt|Pair;
+
     has PageRef $.page is index(0);
     has PDF::COS::Name $.fit is index(1);
+    method is-page-ref { self[0] ~~ Page }
+
     # See [PDF 32000 Table 151 - Destination syntax]
     multi sub is-dest-like(PageRef $page, 'XYZ', NumNull $left?,
                            NumNull $top?, NumNull $zoom?)          { True }
@@ -75,7 +78,7 @@ role PDF::Destination
     proto sub coerce-dest($,$) is export(:coerce-dest) {*};
 
     # assume an array is a simple destination
-    multi sub coerce-dest(List $_, DestSpec) {
+    multi sub coerce-dest(DestinationLike $_, DestSpec) {
         PDF::COS.coerce( $_, $?ROLE.delegate-destination($_) );
     }
 

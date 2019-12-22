@@ -120,7 +120,7 @@ class PDF::Catalog
     }
     has ActionOrDestSpec $.OpenAction is entry(:coerce(&coerce-action));    # (Optional; PDF 1.1) A value specifying a destination to be displayed or an action to be performed when the document is opened.
 
-    has PDF::COS::Dict $.AA is entry(:alias<additional-actions>);                    # (Optional; PDF 1.4) An additional-actions dictionary defining the actions to be taken in response to various trigger events affecting the document as a whole
+    has PDF::COS::Dict $.AA is entry(:alias<additional-actions>);           # (Optional; PDF 1.4) An additional-actions dictionary defining the actions to be taken in response to various trigger events affecting the document as a whole
 
     role URI does PDF::COS::Tie::Hash {
         # use ISO_32000::Table_207-Entry_in_a_URI_dictionary;
@@ -129,12 +129,12 @@ class PDF::Catalog
     }
     has URI $.URI is entry;                 # (Optional; PDF 1.1) A URI dictionary containing document-level information for URI
 
-    has PDF::AcroForm $.AcroForm is entry;               # (Optional; PDF 1.2) The document’s interactive form (AcroForm) dictionary
+    has PDF::AcroForm $.AcroForm is entry;                  # (Optional; PDF 1.2) The document’s interactive form (AcroForm) dictionary
 
-    has PDF::Metadata::XML $.Metadata is entry(:indirect);         # (Optional; PDF 1.4; must be an indirect reference) A metadata stream containing metadata for the document
+    has PDF::Metadata::XML $.Metadata is entry(:indirect);  # (Optional; PDF 1.4; must be an indirect reference) A metadata stream containing metadata for the document
 
     my subset StructTreeRoot of PDF::Class::Type where { .<Type> ~~ 'StructTreeRoot' }; # autoloaded PDF::StructTreeRoot
-    has StructTreeRoot $.StructTreeRoot is entry;        # (Optional; PDF 1.3) The document’s structure tree root dictionary
+    has StructTreeRoot $.StructTreeRoot is entry;           # (Optional; PDF 1.3) The document’s structure tree root dictionary
 
     role MarkInfoDict
 	does PDF::COS::Tie::Hash {
