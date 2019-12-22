@@ -22,7 +22,7 @@ class PDF::Catalog
 
     use PDF::NumberTree;
     use PDF::NameTree;
-    use PDF::Destination :DestSpec, :coerce-dest;
+    use PDF::Destination :DestSpec, :DestNamed, :coerce-dest;
     use PDF::ViewerPreferences;
     use PDF::Outlines;
     use PDF::Action;
@@ -30,6 +30,7 @@ class PDF::Catalog
     use PDF::OutputIntent;
     use PDF::Resources;
     use PDF::Metadata::XML;
+    use PDF::Names;
     use PDF::Signature;
     use PDF::Bead-Thread; # Declares PDF::Bead & PDF::Thread
     use PDF::Class::Util :to-roman, :alpha-number, :decimal-number;
@@ -94,36 +95,9 @@ class PDF::Catalog
     }
     has PageLabels $.PageLabels is entry;           # (Optional; PDF 1.3) A number tree defining the page labeling for the document.
 
-    our role DestDict does PDF::COS::Tie::Hash {
-        # Intermediate Dictionary with a /D entry
-        has DestSpec $.D is entry(:required, :alias<destination>, :coerce(&coerce-dest));
-    }
-    my subset Dest where DestSpec|DestDict;
-    multi sub coerce(Hash $dict, Dest) {
-        PDF::COS.coerce($dict, DestDict);
-    }
-    multi sub coerce($dest, Dest) is default {
-        coerce-dest($dest, DestSpec);
-    }
+    has PDF::Names $.Names is entry;        # (Optional; PDF 1.2) The document’s name dictionary
 
-    role Names does PDF::COS::Tie::Hash {
-        # use ISO_32000::Table_31-Entries_in_the_name_dictionary;
-        # also does ISO_32000::Table_31-Entries_in_the_name_dictionary;
-        has PDF::NameTree[Dest, :&coerce] $.Dests is entry;  # (Optional; PDF 1.2) A name tree mapping name strings to destinations.
-        has PDF::NameTree $.AP is entry;                     # (Optional; PDF 1.3) A name tree mapping name strings to annotation appearance streams.
-        has PDF::NameTree $.JavaScript is entry;             # (Optional; PDF 1.3) A name tree mapping name strings to document-level JavaScript actions.
-        has PDF::NameTree $.Pages is entry;                  # (Optional; PDF 1.3) A name tree mapping name strings to visible pages for use in interactive forms.
-        has PDF::NameTree $.Templates is entry;              # (Optional; PDF 1.3) A name tree mapping name strings to invisible (template) pages for use in interactive forms.
-        has PDF::NameTree $.IDS is entry;                    # (Optional; PDF 1.3) A name tree mapping digital identifiers to Web Capture content sets.
-        has PDF::NameTree $.URLS is entry;                   # (Optional; PDF 1.3) A name tree mapping uniform resource locators (URLs) to Web Capture content sets10.4, "Content Sets").
-        use PDF::Filespec :File, :to-file;
-        has PDF::NameTree[File, :coerce(&to-file)] $.EmbeddedFiles is entry;          # (Optional; PDF 1.4) A name tree mapping name strings to file specifications for embedded file streams.
-        has PDF::NameTree $.AlternatePresentations is entry; # (Optional; PDF 1.4) A name tree mapping name strings to alternate presentations.
-        has PDF::NameTree $.Renditions is entry;             # (Optional; PDF 1.5) A name tree mapping name strings (which shall have Unicode encoding) to rendition objects.
-    }
-    has Names $.Names is entry;         # (Optional; PDF 1.2) The document’s name dictionary
-
-    has Dest %.Dests is entry(:&coerce);    # (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
+    has DestNamed %.Dests is entry(:coerce(&coerce-dest));    # (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
 
     has PDF::ViewerPreferences $.ViewerPreferences is entry; # (Optional; PDF 1.2) A viewer preferences dictionary specifying the way the document is to be displayed on the screen.
 
@@ -138,13 +112,13 @@ class PDF::Catalog
     has PDF::Thread @.Threads is entry(:indirect);        # (Optional; PDF 1.1; must be an indirect reference) An array of thread dictionaries representing the document’s article threads
 
     my subset ActionOrDestSpec where PDF::Action|DestSpec;
-    multi sub coerce(List $_ is rw, ActionOrDestSpec) {
+    multi sub coerce-action(List $_ is rw, ActionOrDestSpec) {
         coerce-dest($_, DestSpec);
     }
-    multi sub coerce($_, ActionOrDestSpec) is default {
+    multi sub coerce-action($_, ActionOrDestSpec) is default {
         fail "unable to coerce {.perl} to an open action";
     }
-    has ActionOrDestSpec $.OpenAction is entry(:&coerce);    # (Optional; PDF 1.1) A value specifying a destination to be displayed or an action to be performed when the document is opened.
+    has ActionOrDestSpec $.OpenAction is entry(:coerce(&coerce-action));    # (Optional; PDF 1.1) A value specifying a destination to be displayed or an action to be performed when the document is opened.
 
     has PDF::COS::Dict $.AA is entry(:alias<additional-actions>);                    # (Optional; PDF 1.4) An additional-actions dictionary defining the actions to be taken in response to various trigger events affecting the document as a whole
 

@@ -23,7 +23,7 @@ role PDF::Destination
     method is-page-ref { self.[0] ~~ PDF::Page }
     has PageRef $.page is index(0);
     has PDF::COS::Name $.fit is index(1);
-    # See [PDF 3200 Table 151 - Destination syntax]
+    # See [PDF 32000 Table 151 - Destination syntax]
     multi sub is-dest-like(PageRef $page, 'XYZ', NumNull $left?,
                            NumNull $top?, NumNull $zoom?)          { True }
     multi sub is-dest-like(PageRef $page,)                         { True }
@@ -72,20 +72,28 @@ role PDF::Destination
     # Coercions for explicit and named destinations
     # a named destination may be either a byte-string or name object
     my subset DestSpec is export(:DestSpec) where PDF::Destination|Str;
-    my subset DestPageRefLike of DestinationLike where .[0] ~~ PDF::Page;
     proto sub coerce-dest($,$) is export(:coerce-dest) {*};
-    multi sub coerce-dest(DestPageRefLike $_, DestSpec) {
+
+    # assume an array is a simple destination
+    multi sub coerce-dest(List $_, DestSpec) {
         PDF::COS.coerce( $_, $?ROLE.delegate-destination($_) );
     }
 
-    my subset DestSpecRemote is export(:DestSpecRemote) where PDF::Destination|Str;
-    my subset DestPageNumLike of DestinationLike where .[0] ~~ UInt;
-    multi sub coerce-dest(DestPageNumLike $_, DestSpecRemote) {
-        PDF::COS.coerce( $_, $?ROLE.delegate-destination($_) );
-    }
-
-    multi sub coerce-dest($_, $) is default {
+    multi sub coerce-dest($_, DestSpec) is default {
         fail "Unable to handle destination: {.perl}";
+    }
+
+    # DestNamed coercement also allows an intermediate dictionary with a /D entry
+    my role DestDict does PDF::COS::Tie::Hash {
+        has DestSpec $.D is entry(:required, :alias<destination>, :coerce(&coerce-dest));
+    }
+
+    my subset DestNamed is export(:DestNamed) where DestDict|DestSpec;
+    multi sub coerce-dest(Hash $dict, DestNamed) {
+        PDF::COS.coerce($dict, DestDict);
+    }
+    multi sub coerce-dest($_, DestNamed) {
+        coerce-dest($_, DestSpec);
     }
 
 }

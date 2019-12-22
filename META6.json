@@ -94,6 +94,7 @@
     "PDF::Mask::Alpha" : "lib/PDF/Mask/Alpha.pm",
     "PDF::Mask::Luminosity" : "lib/PDF/Mask/Luminosity.pm",
     "PDF::Metadata::XML" : "lib/PDF/Metadata/XML.pm",
+    "PDF::Names" : "lib/PDF/Names.pm",
     "PDF::NameTree" : "lib/PDF/NameTree.pm",
     "PDF::NumberTree" : "lib/PDF/NumberTree.pm",
     "PDF::OBJR" : "lib/PDF/OBJR.pm",
@@ -131,5 +132,5 @@
     "pdf"
   ],
   "test-depends" : [ ],
-  "version" : "0.3.8"
+  "version" : "0.3.9"
 }

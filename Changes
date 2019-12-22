@@ -1,3 +1,6 @@
+Release 0.3.9
+- Minor refactor of destination coercements. Add PDF::Names; extracted from PDF::Catalog.
+
 Release 0.3.8
 - Add Catalog Permissions and PDF::Signature::Reference roles
 - More forgiving PDF::ExtGState and PDF::Annot.Border[3] (dash entry)
