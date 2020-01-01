@@ -23,9 +23,9 @@ role PDF::NameTree
                 unless %!fetched{$node}++ {
                     for 0, 2 ...^ +$kv {
                         my $val = $kv[$_ + 1];
-                        $!root.coerce-node($val)
-                            if $!root.coerce-nodes;
-                        %!values{ $kv[$_] } = $val;
+                      .($val, $!root.of)
+                           with $!root.coercer;
+                         %!values{ $kv[$_] } = $val;
                     }
                 }
             }
@@ -70,7 +70,7 @@ role PDF::NameTree
 
     has Str @.Limits is entry(:len(2)); # Intermediate and leaf nodes only; required) Shall be an array of two strings, that shall specify the (lexically) least and greatest keys included in the Names array of a leaf node or in the Names arrays of any leaf nodes that are descendants of an intermediate node.
 
-    method coerce-nodes {False}
+    method coercer {Mu}
 }
 
 role PDF::NameTree[
@@ -80,9 +80,6 @@ role PDF::NameTree[
     },
 ] does PDF::NameTree {
     method of {$type}
-    method coerce-nodes {True}
-    method coerce-node($node is rw) {
-        &coerce($node, $type);
-    }
+    method coercer { &coerce; }
 }
 

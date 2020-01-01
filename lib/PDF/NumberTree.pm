@@ -26,8 +26,8 @@ role PDF::NumberTree
                 unless %!fetched{$node}++ {
                     for 0, 2 ...^ +$kv {
                        my $val = $kv[$_ + 1];
-                       $!root.coerce-node($val)
-                           if $!root.coerce-nodes;
+                       .($val, $!root.of)
+                           with $!root.coercer;
                        %!values{$kv[$_] + 0} = $val;
                     }
                 }
@@ -75,7 +75,7 @@ role PDF::NumberTree
         die "Number Tree has neither a /Kids or /Nums entry"
             unless (self<Kids>:exists) or (self<Nums>:exists);
     }
-    method coerce-nodes {False}
+    method coercer {Mu}
 }
 
 role PDF::NumberTree[
@@ -85,8 +85,5 @@ role PDF::NumberTree[
     },
 ] does PDF::NumberTree {
     method of {$type}
-    method coerce-nodes {True}
-    method coerce-node($node is rw) {
-        &coerce($node, $type);
-    }
+    method coercer { &coerce; }
 }
