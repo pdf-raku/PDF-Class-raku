@@ -43,14 +43,14 @@ class PDF::Annot
     has PDF::COS::TextString $.Contents is entry(:alias<content>);    # (Optional) Text to be displayed for the annotation or, if this type of annotation does not display text, an alternate description of the annotation’s contents in human-readable form
     has PDF::Page $.P is entry(:alias<page>);                         # (Optional; PDF 1.3; not used in FDF files) An indirect reference to the page object with which this annotation is associated.
     has PDF::COS::TextString $.NM is entry(:alias<annotation-name>);  # (Optional; PDF 1.4) The annotation name, a text string uniquely identifying it among all the annotations on its page.
-    my subset DateOrTextString where PDF::COS::DateString | PDF::COS::TextString;
-    sub coerce-mod-time(Str $s is rw, DateOrTextString) {
+    my subset ModTime where PDF::COS::DateString | PDF::COS::TextString;
+    sub coerce-mod-time(Str $s is rw, ModTime) {
 	my \target-type = $s ~~ PDF::COS::DateString::DateRegex
 	    ?? PDF::COS::DateString
 	    !! PDF::COS::TextString;
 	PDF::COS.coerce($s, target-type);
     }
-    has DateOrTextString $.M is entry(:coerce(&coerce-mod-time), :alias<mod-time>);                # (Optional; PDF 1.1) The date and time when the annotation was most recently modified.
+    has ModTime $.M is entry(:coerce(&coerce-mod-time), :alias<mod-time>);                # (Optional; PDF 1.1) The date and time when the annotation was most recently modified.
                                                                 # The preferred format is a date string, but viewer applications should be prepared to accept and display a string in any format.
 ##    my UInt enum AnnotsFlag is export(:AnnotsFlag) « :Invisable(1) :Hidden(2) :Print(3) :NoZoom(4) :NoRotate(5) :NoView(6) :ReadOnly(7) :Locked(8) :ToggleNoView(9) :LockedContents(10) »;
     my subset AnnotFlagsInt of UInt where 0 ..^ 2 +< 9;

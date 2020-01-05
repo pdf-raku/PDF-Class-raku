@@ -40,8 +40,8 @@ class PDF::Catalog
     has PDF::COS::Name $.Version is entry;               # (Optional; PDF 1.4) The version of the PDF specification to which the document conforms (for example, 1.4)
     has Hash $.Extensions is entry;
 
-    my subset Pages of PDF::Class::Type where { .<Type> ~~ 'Pages' }; # autoloaded PDF::Pages
-    has Pages $.Pages is entry(:required, :indirect);    # (Required; must be an indirect reference) The page tree node that is the root of the document’s page tree
+    my subset PagesLike of PDF::Class::Type where { .<Type> ~~ 'Pages' }; # autoloaded PDF::Pages
+    has PagesLike $.Pages is entry(:required, :indirect);    # (Required; must be an indirect reference) The page tree node that is the root of the document’s page tree
 
     role PageLabelNode does PDF::COS::Tie::Hash {
         # use ISO_32000::Table_159-Entries_in_a_page_label_dictionary;
@@ -111,14 +111,14 @@ class PDF::Catalog
 
     has PDF::Thread @.Threads is entry(:indirect);        # (Optional; PDF 1.1; must be an indirect reference) An array of thread dictionaries representing the document’s article threads
 
-    my subset ActionOrDestSpec where PDF::Action|DestSpec;
-    multi sub coerce-action(List $_ is rw, ActionOrDestSpec) {
+    my subset OpenAction where PDF::Action|DestSpec;
+    multi sub coerce-action(List $_ is rw, OpenAction) {
         coerce-dest($_, DestSpec);
     }
-    multi sub coerce-action($_, ActionOrDestSpec) is default {
+    multi sub coerce-action($_, OpenAction) is default {
         fail "unable to coerce {.perl} to an open action";
     }
-    has ActionOrDestSpec $.OpenAction is entry(:coerce(&coerce-action));    # (Optional; PDF 1.1) A value specifying a destination to be displayed or an action to be performed when the document is opened.
+    has OpenAction $.OpenAction is entry(:coerce(&coerce-action));    # (Optional; PDF 1.1) A value specifying a destination to be displayed or an action to be performed when the document is opened.
 
     has PDF::COS::Dict $.AA is entry(:alias<additional-actions>);           # (Optional; PDF 1.4) An additional-actions dictionary defining the actions to be taken in response to various trigger events affecting the document as a whole
 
@@ -133,8 +133,8 @@ class PDF::Catalog
 
     has PDF::Metadata::XML $.Metadata is entry(:indirect);  # (Optional; PDF 1.4; must be an indirect reference) A metadata stream containing metadata for the document
 
-    my subset StructTreeRoot of PDF::Class::Type where { .<Type> ~~ 'StructTreeRoot' }; # autoloaded PDF::StructTreeRoot
-    has StructTreeRoot $.StructTreeRoot is entry;           # (Optional; PDF 1.3) The document’s structure tree root dictionary
+    my subset StructTreeLike of PDF::Class::Type where { .<Type> ~~ 'StructTreeRoot' }; # autoloaded PDF::StructTreeRoot
+    has StructTreeLike $.StructTreeRoot is entry;           # (Optional; PDF 1.3) The document’s structure tree root dictionary
 
     role MarkInfoDict
 	does PDF::COS::Tie::Hash {
@@ -157,7 +157,7 @@ class PDF::Catalog
 
     has PDF::COS::Dict $.PieceInfo is entry;             # (Optional; PDF 1.4) A page-piece dictionary associated with the document
 
-    my subset OCG of PDF::Class::Type where { .<Type> ~~ 'OCG' }; # autoloaded PDF::OCG (Optional Content Group)
+    my subset OCGLike of PDF::Class::Type where { .<Type> ~~ 'OCG' }; # autoloaded PDF::OCG (Optional Content Group)
 
     role OCConfig
 	does PDF::COS::Tie::Hash {
@@ -167,22 +167,22 @@ class PDF::Catalog
         has PDF::COS::TextString $.Creator is entry; # (Optional) Name of the application or feature that created thisconfiguration dictionary.
         my subset BaseState of PDF::COS::Name where 'ON'|'OFF'|'Unchanged';
         has BaseState $.BaseState is entry; # (Optional) Used to initialize the states of all the optional content groups in a document when this configuration is applied. The value of this entry shall be one of the following names:
-        has OCG @.ON is entry;  # (Optional) An array of optional content groups whose state shall be set to ON when this configuration is applied. If the BaseState entry is ON, this entry is redundant.
-        has OCG @.OFF is entry; # (Optional) An array of optional content groups whose state shall be set to OFF when this configuration is applied. If the BaseState entry is OFF, this entry is redundant.
+        has OCGLike @.ON is entry;  # (Optional) An array of optional content groups whose state shall be set to ON when this configuration is applied. If the BaseState entry is ON, this entry is redundant.
+        has OCGLike @.OFF is entry; # (Optional) An array of optional content groups whose state shall be set to OFF when this configuration is applied. If the BaseState entry is OFF, this entry is redundant.
         has PDF::COS::Name @.Intent is entry(:array-or-item); # name or array (Optional) A single intent name or an array containing any combination of names.
         has @.AS is entry; # (Optional) An array of usage application dictionaries.
         has @.Order is entry; # array (Optional) An array specifying the order for presentation of optional content groups in a conforming reader’s user interface.
         my subset ListMode of PDF::COS::Name where 'AllPages'|'VisiblePages';
         has ListMode $.ListMode is entry; # (Optional) A name specifying which optional content groups in the Order array shall be displayed to the user.
         has @.RBGroups is entry; # (Optional) An array consisting of one or more arrays, each of which represents a collection of optional content groups whose states shall be intended to follow a radio button paradigm. That is, the state of at most one optional content group in each array shall be ON at a time. If one group is turned ON, all others shall be turned OFF.
-       has OCG @.Locked is entry; # (Optional; PDF 1.6) An array of optional content groups that shall be locked when this configuration is applied.
+       has OCGLike @.Locked is entry; # (Optional; PDF 1.6) An array of optional content groups that shall be locked when this configuration is applied.
 }
 
     role OCProperties
 	does PDF::COS::Tie::Hash {
         # use ISO_32000::Table_100-Entries_in_the_Optional_Content_Properties_Dictionary;
         # also does ISO_32000::Table_100-Entries_in_the_Optional_Content_Properties_Dictionary;
-        has OCG @.OCGs is entry(:indirect, :required, :alias<optional-content-groups>); # (Required) An array of indirect references to all the optional content groups in the document, in any order. Every optional content group shall be included in this array
+        has OCGLike @.OCGs is entry(:indirect, :required, :alias<optional-content-groups>); # (Required) An array of indirect references to all the optional content groups in the document, in any order. Every optional content group shall be included in this array
         has PDF::COS::Dict $.D is entry(:required, :alias<viewing-config>); # (Required) The default viewing optional content configuration dictionary.
         has OCConfig @.Configs is entry;    # (Optional) An array of alternate optional content configuration dictionaries.
     }
@@ -193,7 +193,7 @@ class PDF::Catalog
         # use ISO_32000::Table_258-Entries_in_a_permissions_dictionary;
         # also does ISO_32000::Table_258-Entries_in_a_permissions_dictionary;
         has PDF::Signature $.DocMDP is entry(:indirect); # (Optional) An indirect reference to a signature dictionary (see Table 252). This dictionary shall contain a Reference entry that is a signature reference dictionary (see Table 252) that has a DocMDP transform method (see 12.8.2.2, “DocMDP”) and corresponding transform parameters.
-        has PDF::Signature $.UR3 is entry; # (Optional) A signature dictionary that is used to specify and validate additional capabilities (usage rights) granted for this document; that is, the enabling of interactive features of the conforming reader that are not available by default.
+        has PDF::Signature $.UR3 is entry;               # (Optional) A signature dictionary that is used to specify and validate additional capabilities (usage rights) granted for this document; that is, the enabling of interactive features of the conforming reader that are not available by default.
     }
     has Permissions $.Perms is entry;           # (Optional; PDF 1.5) A permissions dictionary that specifies user access permissions for the document.
 

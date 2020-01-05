@@ -13,20 +13,17 @@ class PDF::Font::Type3
     use PDF::FontDescriptor;
     use PDF::Encoding;
     use PDF::Resources;
+    use PDF::CMap;
 
     # use ISO_32000::Table_112-Entries_in_a_Type_3_font_dictionary;
     # also does ISO_32000::Table_112-Entries_in_a_Type_3_font_dictionary;
 
-    has PDF::COS::Name $.Name is entry;                         # (Required in PDF 1.0; optional otherwise) See Table 5.8 on page 413
+    has PDF::COS::Name $.Name is entry;                          # (Required in PDF 1.0; optional otherwise) See Table 5.8 on page 413
     has Numeric @.FontBBox is entry(:required, :len(4));         # (Required) A rectangle expressed in the glyph coordinate system, specifying the font bounding box.
     has Numeric @.FontMatrix is entry(:required, :len(6));       # (Required) An array of six numbers specifying the font matrix, mapping glyph space to text space
     has PDF::COS::Stream %.CharProcs is entry(:required);        # (Required) A dictionary in which each key is a character name and the value associated with that key is a content stream that constructs and paints the glyph for that character.
 
-    my subset NameOrEncoding where PDF::COS::Name | PDF::Encoding;
-    multi sub coerce(Hash $dict, NameOrEncoding) {
-        PDF::COS.coerce($dict, PDF::Encoding);
-    }
-    has NameOrEncoding $.Encoding is entry(:required, :&coerce); # (Required) An encoding dictionary whose Differences array specifies the complete character encoding for this font
+    has PDF::Encoding $.Encoding is entry(:required);  # (Required) An encoding dictionary whose Differences array specifies the complete character encoding for this font
 
     has UInt $.FirstChar is entry(:required);          # (Required) The first character code defined in the font’s Widths array
 
@@ -38,5 +35,5 @@ class PDF::Font::Type3
 
     has PDF::Resources $.Resources is entry;   # (Optional but strongly recommended; PDF 1.2) A list of the named resources, such as fonts and images, required by the glyph descriptions in this font
 
-    has PDF::COS::Stream $.ToUnicode is entry;        # (Optional; PDF 1.2) A stream containing a CMap file that maps character codes to Unicode values
+    has PDF::CMap $.ToUnicode is entry;         # (Optional; PDF 1.2) A stream containing a CMap file that maps character codes to Unicode values
 }

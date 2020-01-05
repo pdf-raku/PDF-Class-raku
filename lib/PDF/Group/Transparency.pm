@@ -13,8 +13,8 @@ class PDF::Group::Transparency
 
     has PDF::COS::Name $.S is entry(:required) where 'Transparency';
 
-    my subset NameOrColorSpace where PDF::COS::Name|PDF::ColorSpace;
-    has NameOrColorSpace  $.CS is entry(:alias<color-space>); # (Sometimes required) The group colour space, which is used for the following purposes:
+    my subset ColorSpaceLike where PDF::COS::Name|PDF::ColorSpace;
+    has ColorSpaceLike  $.CS is entry(:alias<color-space>); # (Sometimes required) The group colour space, which is used for the following purposes:
     # • As the colour space into which colours shall be converted when painted into the group
     # • As the blending colour space in which objects shall be composited within the group
     # • As the colour space of the group as a whole when it in turn is painted as an object onto its backdrop

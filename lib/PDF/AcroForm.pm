@@ -55,8 +55,8 @@ role PDF::AcroForm
 
     has UInt $.Q is entry(:alias<quadding>);                              # (Optional) A document-wide default value for the Q attribute of variable text fields
 
-    my subset StreamOrArray where PDF::COS::Stream | Array;
-    has StreamOrArray $.XFA is entry;          # (Optional; PDF 1.5) A stream or array containing an XFA resource, whose format is described by the Data Package (XDP) Specification.
+    my subset XFALike where PDF::COS::Stream | Array;
+    has XFALike $.XFA is entry;          # (Optional; PDF 1.5) A stream or array containing an XFA resource, whose format is described by the Data Package (XDP) Specification.
                                                # The value of this entry must be either a stream representing the entire contents of the XML Data Package or an array of text string and stream pairs representing the individual packets comprising the XML Data Package
 
 }

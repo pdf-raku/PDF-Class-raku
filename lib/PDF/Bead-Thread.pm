@@ -20,8 +20,8 @@ role PDF::Bead does PDF::COS::Tie::Hash {
         # (PDF 1.2) It is permitted for any bead but required only for the first.
     has PDF::Bead $.N is entry(:required, :alias<next>);	# [dictionary] (Required; is an indirect reference) The next bead in the thread. In the last bead, this entry shall refer to the first bead.
     has PDF::Bead $.V is entry(:required, :alias<previous>);	# [dictionary] (Required; is an indirect reference) The previous bead in the thread. In the first bead, this entry shall refer to the last bead.
-    my subset Page of Hash where { .<Type> ~~ 'Page' }; # autoloaded PDF::Page
-    has Page $.P is entry(:alias<page>, :required, :indirect);	# [dictionary] (Required; is an indirect reference) The page object representing the page on which this bead appears.
+    my subset PageLike of Hash where { .<Type> ~~ 'Page' }; # autoloaded PDF::Page
+    has PageLike $.P is entry(:alias<page>, :required, :indirect);	# [dictionary] (Required; is an indirect reference) The page object representing the page on which this bead appears.
     has Numeric @.R is entry(:len(4));	# [rectangle] (Required) A rectangle specifying the location of this bead on the page.
 
 }

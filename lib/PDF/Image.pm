@@ -28,17 +28,17 @@ role PDF::Image
     has PDF::COS::Name $.Subtype is entry where 'Image';
     has Numeric $.Width is entry(:required);      # (Required) The width of the image, in samples.
     has Numeric $.Height is entry(:required);     # (Required) The height of the image, in samples.
-    my subset NameOrColorSpace of PDF::COS where PDF::COS::Name | PDF::ColorSpace;
-    has NameOrColorSpace $.ColorSpace is entry;   # (Required for images, except those that use the JPXDecode filter; not allowed for image masks) The color space in which image samples are specified; it can be any type of color space except Pattern.
+    my subset ColorSpaceLike where PDF::COS::Name | PDF::ColorSpace;
+    has ColorSpaceLike $.ColorSpace is entry;   # (Required for images, except those that use the JPXDecode filter; not allowed for image masks) The color space in which image samples are specified; it can be any type of color space except Pattern.
     has UInt $.BitsPerComponent is entry;         # (Required except for image masks and images that use the JPXDecode filter)The number of bits used to represent each color component.
     has PDF::COS::Name $.Intent is entry;         # (Optional; PDF 1.1) The name of a color rendering intent to be used in rendering the image
     has Bool $.ImageMask is entry;                # (Optional) A flag indicating whether the image is to be treated as an image mask. If this flag is true, the value of BitsPerComponent must be 1 and Mask and ColorSpace should not be specified;
 
-    my subset StreamOrArray of PDF::COS where PDF::COS::Stream | PDF::COS::Array;
-    has StreamOrArray $.Mask is entry;            # (Optional except for image masks; not allowed for image masks; PDF 1.3) An image XObject defining an image mask to be applied to this image, or an array specifying a range of colours to be applied to it as a colour key mask. If ImageMask is true, this entry shall not be present.
+    my subset MaskLike of PDF::COS where PDF::COS::Stream | PDF::COS::Array;
+    has MaskLike $.Mask is entry;                 # (Optional except for image masks; not allowed for image masks; PDF 1.3) An image XObject defining an image mask to be applied to this image, or an array specifying a range of colours to be applied to it as a colour key mask. If ImageMask is true, this entry shall not be present.
     has Numeric @.Decode is entry;                # (Optional) An array of numbers describing how to map image samples into the range of values appropriate for the image’s color space
     has Bool $.Interpolate is entry;              # (Optional) A flag indicating whether image interpolation is to be performed
-    my role Alternate_Image
+    my role AlternateImage
     does PDF::COS::Tie::Hash {
         # use ISO_32000::Table_91-Entries_in_an_Alternate_Image_Dictionary;
         # also does ISO_32000::Table_91-Entries_in_an_Alternate_Image_Dictionary;
@@ -46,7 +46,7 @@ role PDF::Image
         has Bool $.DefaultForPrinting is entry;
         has OCG-or-OCMD $.OC is entry;
     }
-    has Alternate_Image @.Alternates is entry;             # An array of alternate image dictionaries for this image
+    has AlternateImage @.Alternates is entry;     # An array of alternate image dictionaries for this image
     my role SoftMask does PDF::COS::Tie::Hash {
         has Numeric @.Matte is entry; # (Optional; PDF 1.4) An array of component values specifying the matte colour with which the image data in the parent image shall have been preblended. The array shall consist of n numbers, where n is the number of components in the colour space specified by the ColorSpace entry in the parent image’s image dictionary; the numbers shall be valid colour components in that colour space. If this entry is absent, the image data shall not be preblended.
     }

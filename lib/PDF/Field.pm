@@ -50,9 +50,6 @@ role PDF::Field
         }
     }
 
-    my subset AnnotLike of Hash where .<Type> ~~ 'Annot';
-    my subset FieldLike is export(:FieldLike) of Hash where { (.<FT>:exists) || (.<Kids>:exists) }
-
     proto sub coerce( $, $ ) is export(:coerce) {*}
     multi sub coerce( PDF::COS::Dict $dict, PDF::Field $field ) {
 	# refuse to coerce an annotation as a field
@@ -62,6 +59,9 @@ role PDF::Field
     method type { 'Field' }
     has FieldTypeName $.FT is entry(:inherit, :alias<subtype>);  # Required for terminal fields; inheritable) The type of field that this dictionary describes
     has PDF::Field $.Parent is entry(:indirect);      # (Required if this field is the child of another in the field hierarchy; absent otherwise) The field that is the immediate parent of this one (the field, if any, whose Kids array includes this field). A field can have at most one parent; that is, it can be included in the Kids array of at most one other field.
+
+    my subset AnnotLike of Hash where .<Type> ~~ 'Annot';
+    my subset FieldLike is export(:FieldLike) of Hash where { (.<FT>:exists) || (.<Kids>:exists) }
 
     my subset AnnotOrField of Hash where AnnotLike|PDF::Field;
     multi sub coerce( FieldLike $dict, AnnotOrField) {

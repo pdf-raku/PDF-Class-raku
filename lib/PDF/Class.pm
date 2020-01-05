@@ -14,8 +14,8 @@ class PDF::Class:ver<0.3.9>#:api<PDF-1.7>
     use PDF::Class::Type;
     use PDF::Info;
     has PDF::Info $.Info is entry(:indirect);  # (Optional; must be an indirect reference) The document’s information dictionary
-    my subset Catalog of PDF::Class::Type where { .<Type> ~~ 'Catalog' };  # autoloaded PDF::Catalog
-    has Catalog $.Root is entry(:required, :indirect, :alias<catalog>);
+    my subset CatalogLike of PDF::Class::Type where { .<Type> ~~ 'Catalog' };  # autoloaded PDF::Catalog
+    has CatalogLike $.Root is entry(:required, :indirect, :alias<catalog>);
 
     method type { 'PDF' }
     method version is rw {
@@ -45,7 +45,7 @@ class PDF::Class:ver<0.3.9>#:api<PDF-1.7>
             else {
                 # creating
                 $Info.Producer  //= "{self.WHAT.perl}{with self.^ver { ":v$_" } else { '' }}";
-                $Info.Creator   //= "{$*PERL}:v{$*PERL.version}, PDF::Class:v{self.^ver}, PDF::Content:v{PDF::Content.^ver}, PDF:v{PDF.^ver}";
+                $Info.Creator   //= "Raku:v{$*PERL.version}, PDF::Class:v{self.^ver}, PDF::Content:v{PDF::Content.^ver}, PDF:v{PDF.^ver}";
                 $Info.CreationDate //= $now
             }
         }
@@ -81,7 +81,7 @@ class PDF::Class:ver<0.3.9>#:api<PDF-1.7>
         }
     }
 
-    my subset Pages of PDF::Class::Type where { .<Type> ~~ 'Pages' }; # autoloaded PDF::Pages
-    method Pages returns Pages handles <page pages add-page delete-page insert-page page-count page-index media-box crop-box bleed-box trim-box art-box core-font use-font rotate> { self.Root.Pages }
+    my subset PagesLike of PDF::Class::Type where { .<Type> ~~ 'Pages' }; # autoloaded PDF::Pages
+    method Pages returns PagesLike handles <page pages add-page delete-page insert-page page-count page-index media-box crop-box bleed-box trim-box art-box core-font use-font rotate> { self.Root.Pages }
 
 }

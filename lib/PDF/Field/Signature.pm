@@ -20,8 +20,8 @@ role PDF::Field::Signature
         # use ISO_32000::Table_233-Entries_in_a_signature_field_lock_dictionary;
         # also does ISO_32000::Table_233-Entries_in_a_signature_field_lock_dictionary;
  	has PDF::COS::Name $.Type is entry where 'SigFieldLock';     # (Optional) The type of PDF object that this dictionary describes; if present, must be SigFieldLock for a signature field lock dictionary
-	my subset ActionName of PDF::COS::Name where 'All'|'Include'|'Exclude';
-	has ActionName $.Actions is entry(:required);   # (Required) A name which, in conjunction with Fields, indicates the set of fields that should be locked
+	my subset ActionSet of PDF::COS::Name where 'All'|'Include'|'Exclude';
+	has ActionSet $.Actions is entry(:required);   # (Required) A name which, in conjunction with Fields, indicates the set of fields that should be locked
 	has PDF::COS::TextString @.Fields is entry;                  # (Required if the value of Action is Include or Exclude) An array of text strings containing field names.
     }
 

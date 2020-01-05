@@ -19,12 +19,12 @@ role PDF::Destination
     use PDF::COS::Name;
     use PDF::COS::Tie::Hash;
 
-    my subset Page of Hash where { .<Type> ~~ 'Page' }; # autoloaded PDF::Page
-    my subset PageRef where Page|UInt|Pair;
+    my subset PageLike of Hash where { .<Type> ~~ 'Page' }; # autoloaded PDF::Page
+    my subset PageRef where PageLike|UInt|Pair;
 
     has PageRef $.page is index(0);
     has PDF::COS::Name $.fit is index(1);
-    method is-page-ref { self[0] ~~ Page }
+    method is-page-ref { self[0] ~~ PageLike }
 
     # See [PDF 32000 Table 151 - Destination syntax]
     multi sub is-dest-like(PageRef $page, 'XYZ', NumNull $left?,

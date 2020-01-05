@@ -7,9 +7,10 @@ class PDF::Font::Type1
     use PDF::COS::Tie;
     use PDF::COS::Dict;
     use PDF::COS::Name;
-    use PDF::COS::Stream;
-    use PDF::FontDescriptor;
+
+    use PDF::CMap;
     use PDF::Encoding;
+    use PDF::FontDescriptor;
 
     # use ISO_32000::Table_111-Entries_in_a_Type_1_font_dictionary;
     # also does ISO_32000::Table_111-Entries_in_a_Type_1_font_dictionary;
@@ -26,12 +27,12 @@ class PDF::Font::Type1
 
     has PDF::FontDescriptor $.FontDescriptor is entry(:indirect);      # (Required except for the standard 14 fonts; must be an indirect reference) A font descriptor describing the font’s metrics other than its glyph widths
 
-    my subset NameOrEncoding where PDF::COS::Name | PDF::Encoding;
-    multi sub coerce(Hash $dict, NameOrEncoding) {
+    my subset EncodingLike where PDF::COS::Name | PDF::Encoding;
+    multi sub coerce(Hash $dict, EncodingLike) {
         PDF::COS.coerce($dict, PDF::Encoding);
     }
-    has NameOrEncoding $.Encoding is entry(:&coerce);          # (Optional) A specification of the font’s character encoding if different from its built-in encoding. The value of Encoding is either the name of a predefined encoding (MacRomanEncoding, MacExpertEncoding, or WinAnsiEncoding, as described in Appendix D) or an encoding dictionary that specifies differences from the font’s built-in encoding or from a specified predefined encoding
+    has EncodingLike $.Encoding is entry(:&coerce);     # (Optional) A specification of the font’s character encoding if different from its built-in encoding. The value of Encoding is either the name of a predefined encoding (MacRomanEncoding, MacExpertEncoding, or WinAnsiEncoding, as described in Appendix D) or an encoding dictionary that specifies differences from the font’s built-in encoding or from a specified predefined encoding
 
-    has PDF::COS::Stream $.ToUnicode is entry;                 # (Optional; PDF 1.2) A stream containing a CMap file that maps character codes to Unicode values
+    has PDF::CMap $.ToUnicode is entry;          # (Optional; PDF 1.2) A stream containing a CMap file that maps character codes to Unicode values
 
 }

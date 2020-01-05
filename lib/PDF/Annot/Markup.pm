@@ -29,17 +29,17 @@ class PDF::Annot::Markup
     # The specified value shall not used if the annotation has an appearance stream; in that case, the appearance stream shall specify any transparency. (However, if the compliant viewer regenerates the annotation’s appearance stream, it may incorporate the CA value into the stream’s content.)
     # The implicit blend mode is Normal. Default value: 1.0.
     # If no explicit appearance stream is defined for the annotation, it may be painted by implementation-dependent means that do not necessarily conform to the PDF imaging model; in this case, the effect of this entry is implementation-dependent as well.
-    my subset TextOrStream where PDF::COS::TextString | PDF::COS::Stream;
-    multi sub coerce(Str $value is rw, TextOrStream) {
+    my subset RichTextLike where PDF::COS::TextString | PDF::COS::Stream;
+    multi sub coerce(Str $value is rw, RichTextLike) {
 	PDF::COS.coerce( $value, PDF::COS::TextString );
     }
-    has TextOrStream $.RC is entry(:alias<rich-text>, :&coerce); # (Optional; PDF 1.5) A rich text string that shall be displayed in the pop-up window when the annotation is opened.
+    has RichTextLike $.RC is entry(:alias<rich-text>, :&coerce); # (Optional; PDF 1.5) A rich text string that shall be displayed in the pop-up window when the annotation is opened.
     has PDF::COS::DateString $.CreationDate is entry; # (Optional; PDF 1.5) The date and time when the annotation was created.
-    my subset TextOrDict where PDF::COS::TextString | PDF::COS::Dict;
-    multi sub coerce(Str $value is rw, TextOrDict) {
+    my subset ReplyToLike where PDF::COS::TextString | PDF::COS::Dict;
+    multi sub coerce(Str $value is rw, ReplyToLike) {
 	$value = PDF::COS.coerce( $value, PDF::COS::TextString );
     }
-    has TextOrDict $.IRT is entry(:alias<reply-to-ref>, :&coerce); # (Required if an RT entry is present, otherwise optional; PDF 1.5) A reference to the annotation that this annotation is “in reply to.” Both annotations shall be on the same page of the document. The relationship between the two annotations shall be specified by the RT entry.
+    has ReplyToLike $.IRT is entry(:alias<reply-to-ref>, :&coerce); # (Required if an RT entry is present, otherwise optional; PDF 1.5) A reference to the annotation that this annotation is “in reply to.” Both annotations shall be on the same page of the document. The relationship between the two annotations shall be specified by the RT entry.
     # If this entry is present in an FDF file, its type shall not be a dictionary but a text string containing the contents of the NM entry of the annotation being replied to, to allow for a situation where the annotation being replied to is not in the same FDF file. Subj text string (Optional; PDF 1.5) Text representing a short description of the subject being addressed by the annotation.
     has PDF::COS::TextString $.Subj is entry; # text representing a short description of the subject being addressed by the annotation.
     my subset RelationshipType of PDF::COS::Name where 'R'|'Group';
