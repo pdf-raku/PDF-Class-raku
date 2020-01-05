@@ -52,7 +52,7 @@ role PDF::StructElem
     }
 
     has StructElemParent $.P is entry(:required, :alias<struct-parent>, :coerce(&coerce-parent)); # (Required; shall be an indirect reference) The structure element that is the immediate parent of this one in the structure hierarchy.
-    has StructElemChild @.K is entry(:array-or-item, :alias<kids>, :coerce(&coerce-child));      # (Optional) The children of this structure element. The value of this entry may be one of the following objects or an array consisting of one or more of the following objects:
+    has StructElemChild @.K is entry(:array-or-item, :alias<kids>, :coerce(&coerce-child));       # (Optional) The children of this structure element. The value of this entry may be one of the following objects or an array consisting of one or more of the following objects:
     # • A structure element dictionary denoting another structure element
     # • An integer marked-content identifier denoting a marked-content sequence
     # • A marked-content reference dictionary denoting a marked-content sequence
@@ -60,24 +60,30 @@ role PDF::StructElem
     # Each of these objects other than the first shall be considered to be a content item;
     # If the value of K is a dictionary containing no Type entry, it shall be assumed to be a structure element dictionary.
     has @.A is entry(:alias<attributes>, :array-or-item);    # (Optional) A single attribute object or array of attribute objects associated with this structure element. Each attribute object shall be either a dictionary or a stream. If the value of this entry is an array, each attribute object in the array may be followed by an integer representing its revision number.
-    method attribute-dicts {
-        with self<A> -> List() $a {
-            (0 ..^ $a.elems).map({$a[$_]}).grep(Hash);
+    method attribute-dicts(--> List) {
+        given self<A> {
+            when Hash { ($_,) }
+            when List {
+                (0, 2 ...^ .elems).map(-> $i {.[$i]});
+            }
+            default { () }
         }
-        else { () }
     }
     has @.C is entry(:array-or-item);                             # (Optional) An attribute class name or array of class names associated with this structure element. If the value of this entry is an array, each class name in the array may be followed by an integer representing its revision number.
 # If both the A and C entries are present and a given attribute is
 # specified by both, the one specified by the A entry shall take
     # precedence.
-    method class-map-keys {
-        with self<C> -> List() $c {
-            (0 ..^ $.elems).map({$c[$_]}).grep(Str);
+    method class-map-keys(--> List) {
+        given self<C> {
+            when Str { ($_,) }
+            when List {
+                (0, 2 ...^ .elems).map(-> $i {.[$i]});
+            }
+            default { () }
         }
-        else { () }
     }
 
-    has UInt $.R is entry(:alias<revision>, :default(0));                      # (Optional) The current revision number of this structure element. The value shall be a non-negative integer. Default value: 0.
+    has UInt $.R is entry(:alias<revision>, :default(0));         # (Optional) The current revision number of this structure element. The value shall be a non-negative integer. Default value: 0.
     has PDF::COS::TextString $.T  is entry(:alias<title>);        # (Optional) The title of the structure element, a text string representing it in human-readable form. The title should characterize the specific structure element, such as 'Chapter 1', rather than merely a generic element type, such as 'Chapter'.
     has PDF::COS::TextString $.Lang is entry;  # (Optional; PDF 1.4) A language identifier specifying the natural language for all text in the structure element except where overridden by language specifications for nested structure elements or marked content. If this entry is absent, the language (if any) specified in the document catalogue applies.
     has PDF::COS::TextString $.Alt is entry(:alias<alternative-description>); # (Optional) An alternate description of the structure element and its children in human-readable form, which is useful when extracting the document’s contents in support of accessibility to users with.
