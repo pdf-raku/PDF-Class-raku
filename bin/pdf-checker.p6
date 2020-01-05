@@ -137,9 +137,11 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 	my $kid;
 
 	do {
-	    $kid = $entries{$k}:exists
+            my Attribute $att = $_ with $entries{$k};
+	    $kid = $att.defined
 		?? $obj."$k"()   # entry has an accessor. use it
 		!! $obj{$k};     # dereferece hash entry
+
 
             check($kid, :ent("/$k"), :$depth) if $kid ~~ Array | Hash;
 
@@ -190,8 +192,9 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 
     my Array $index = $obj.index;
     for $obj.keys.sort -> $i {
+        my Attribute $att = $_ with $index[$i];
 	my Str $accessor = .tied.accessor-name
-	    with $index[$i];
+	    with $att;
 	my $kid;
 	do {
 	    $kid = $accessor
@@ -200,7 +203,6 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 
             check($kid, :ent("\[$i\]"), :$depth)  if $kid ~~ Array | Hash
                 && !($i == 0 && $accessor ~~ 'page'); # avoid recursing to page destinations
-
 	    CATCH {
 		default {
 		    error("error in {ref($obj)}\[$i\] ({show-type($obj)}) $ent: $_");
