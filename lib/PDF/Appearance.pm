@@ -22,16 +22,16 @@ role PDF::Appearance
 	has FormLike $.Yes is entry;
     }
 
-    my subset AppearanceLike where FormLike | AppearanceStatus;
-    multi sub coerce(PDF::COS::Stream $dict is rw, AppearanceLike) {
+    my subset Appearance where FormLike | AppearanceStatus;
+    multi sub coerce(PDF::COS::Stream $dict is rw, Appearance) {
         fail "Stream not of /Subtype /Form"
     }
-    multi sub coerce(Hash $dict is rw, AppearanceLike) {
+    multi sub coerce(Hash $dict is rw, Appearance) {
 	PDF::COS.coerce($dict,  AppearanceStatus)
     }
 
-    has AppearanceLike $.N is entry(:&coerce, :alias<normal>, :required); # (Required) The annotation’s normal appearance.
-    has AppearanceLike $.R is entry(:&coerce, :alias<rollover>);          # (Optional) The annotation’s rollover appearance. Default value: the value of the N entry.
-    has AppearanceLike $.D is entry(:&coerce, :alias<down>);              # (Optional) The annotation’s down appearance. Default value: the value of the N entry.
+    has Appearance $.N is entry(:&coerce, :alias<normal>, :required); # (Required) The annotation’s normal appearance.
+    has Appearance $.R is entry(:&coerce, :alias<rollover>);          # (Optional) The annotation’s rollover appearance. Default value: the value of the N entry.
+    has Appearance $.D is entry(:&coerce, :alias<down>);              # (Optional) The annotation’s down appearance. Default value: the value of the N entry.
 
 }

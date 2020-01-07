@@ -26,7 +26,6 @@ role PDF::Destination
     has PDF::COS::Name $.fit is index(1);
     method is-page-ref { self[0] ~~ PageLike }
 
-    # See [PDF 32000 Table 151 - Destination syntax]
     multi sub is-dest-like(PageRef $page, 'XYZ', NumNull $left?,
                            NumNull $top?, NumNull $zoom?)          { True }
     multi sub is-dest-like(PageRef $page,)                         { True }

@@ -44,14 +44,15 @@ class PDF::OCG
         }
         has CreatorInfo $.CreatorInfo is entry; # Optional) A dictionary used by the creating application to store application-specific data associated with this optional content group.
 
+        my subset ON-or-OFF of PDF::COS::Name where 'ON'|'OFF';
+
         my role Language
             does PDF::COS::Tie::Hash {
 
-            has PDF::COS::TextString $.Lang is entry(:required); # A text string that specifies a language and possibly. For example, es-MX represents Mexican Spanish
-            has PDF::COS::Name $.Preferred is entry(:default<OFF>) where 'ON'|'OFF';             # name whose values shall be either ON or OFF. Default value: OFF.
+            has PDF::COS::TextString $.Lang is entry(:required);  # A text string that specifies a language and possibly. For example, es-MX represents Mexican Spanish
+            has ON-or-OFF $.Preferred is entry(:default<OFF>);    # name whose values shall be either ON or OFF. Default value: OFF.
         }
         has Language $.Language is entry; # Optional) A dictionary specifying the language of the content controlled by this optional content group. I
-        my subset ON-or-OFF of PDF::COS::Name where 'ON'|'OFF';
 
         my role Export
         does PDF::COS::Tie::Hash {
@@ -82,7 +83,7 @@ class PDF::OCG
         my role User
             does PDF::COS::Tie::Hash {
             has PDF::COS::Name $.Type is entry; # A name object that shall be either Ind (individual), Ttl (title), or Org (organization).
-            has PDF::COS::TextString @.Name is entry;              # A text string or array of text strings representing the name(s) of the individual, position or organization.
+            has PDF::COS::TextString @.Name is entry(:array-or-item);      # A text string or array of text strings representing the name(s) of the individual, position or organization.
         }
         has User $.User is entry; # Optional) A dictionary specifying one or more users for whom this optional content group is primarily intended
 
