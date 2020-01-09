@@ -127,7 +127,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     my Hash $entries = $obj.entries;
     my Str @unknown-entries;
 
-     my %required = $entries.pairs.grep(*.value.tied.is-required);
+     my %required = $entries.pairs.grep(*.value.cos.is-required);
 
     for $obj.keys.sort -> $k {
         %required{$k}:delete;
@@ -193,7 +193,7 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     my Array $index = $obj.index;
     for $obj.keys.sort -> $i {
         my Attribute $att = $_ with $index[$i];
-	my Str $accessor = .tied.accessor-name
+	my Str $accessor = .cos.accessor-name
 	    with $att;
 	my $kid;
 	do {

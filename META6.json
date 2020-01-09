@@ -6,7 +6,7 @@
   ],
   "build-depends" : [ ],
   "depends" : [
-    "PDF",
+    "PDF:ver<0.3.8+>",
     "PDF::Grammar",
     "PDF::Content"
   ],
@@ -22,6 +22,7 @@
     "PDF::Action::JavaScript" : "lib/PDF/Action/JavaScript.pm",
     "PDF::Action::Launch" : "lib/PDF/Action/Launch.pm",
     "PDF::Action::Named" : "lib/PDF/Action/Named.pm",
+    "PDF::Action::Sound" : "lib/PDF/Action/Sound.pm",
     "PDF::Action::Thread" : "lib/PDF/Action/Thread.pm",
     "PDF::Action::URI" : "lib/PDF/Action/URI.pm",
     "PDF::Annot" : "lib/PDF/Annot.pm",
@@ -118,6 +119,7 @@
     "PDF::Shading::Radial" : "lib/PDF/Shading/Radial.pm",
     "PDF::Shading::Tensor" : "lib/PDF/Shading/Tensor.pm",
     "PDF::Signature" : "lib/PDF/Signature.pm",
+    "PDF::Sound" : "lib/PDF/Sound.pm",
     "PDF::StructElem" : "lib/PDF/StructElem.pm",
     "PDF::StructTreeRoot" : "lib/PDF/StructTreeRoot.pm",
     "PDF::ViewerPreferences" : "lib/PDF/ViewerPreferences.pm",
