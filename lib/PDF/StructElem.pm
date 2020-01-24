@@ -18,7 +18,7 @@ role PDF::StructElem
 
     has PDF::COS::Name $.Type is entry where 'StructElem'; # (Optional) The type of PDF object that this dictionary describes; if present, shall be StructElem for a structure element.
 
-    has PDF::COS::Name $.S is entry(:required, :alias<structure-type>); # (Required) The structure type, a name object identifying the nature of the structure element and its role within the document, such as a chapter, paragraph, or footnote
+    has PDF::COS::Name $.S is entry(:required, :alias<tag>); # (Required) The structure type, a name object identifying the nature of the structure element and its role within the document, such as a chapter, paragraph, or footnote
     has Str $.ID is entry;    # (Optional) The element identifier, a byte string designating this structure element. The string shall be unique among all elements in the document’s structure hierarchy. The IDTree entry in the structure tree root defines the correspondence between element identifiers and the structure elements they denote.
     has PDF::Page $.Pg is entry(:indirect, :alias<page>); # (Optional; shall be an indirect reference) A page object representing a page on which some or all of the content items designated by the K entry shall be rendered.
     my subset ReferenceLike of Hash where .<Type> ~~ 'MCR'|'OBJR'; # autoloaded PDF::MCR, PDF::OBJR

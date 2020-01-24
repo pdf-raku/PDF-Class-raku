@@ -19,10 +19,11 @@ role PDF::Pattern
     has Numeric @.Matrix is entry(:len(6), :default[1, 0, 0, 1, 0, 0]);                # (Optional) An array of six numbers specifying the pattern matrix. Default value: the identity matrix [ 1 0 0 1 0 0 ].
 
     my enum PatternTypes is export(:PatternTypes) « :Tiling(1) :Shading(2) »;
-    my constant PatternNames = %( PatternTypes.enums.invert );
+    my constant %PatternTypes = %( PatternTypes.enums.Hash );
+    my constant %PatternNames = %( PatternTypes.enums.invert.Hash );
 
     method type    { 'Pattern' }
-    method subtype { PatternNames[ self<PatternType> ] }
+    method subtype { %PatternNames[ self<PatternType> ] }
 
     method cb-init {
 
@@ -40,13 +41,18 @@ role PDF::Pattern
 
                 if $1 {
                     my Str $subtype = ~$1;
+                    my $mro-pattern-type := %PatternTypes{$subtype};
 		    die "$class-name has unknown subtype $subtype"
-			unless PatternTypes.enums{$subtype}:exists;
+			unless $mro-pattern-type.defined;
 
-		    self<PatternType> //= PatternTypes.enums{$subtype};
+                    with self<PatternType> {
+		        die "conflict between class-name $class-name ($subtype) and /PatternType /{self<PatternType>.value}"
+			    unless $_ == $mro-pattern-type;
+                    }
+                    else {
+		        $_ = $mro-pattern-type;
+                    }
 
-		    die "conflict between class-name $class-name ($subtype) and /PatternType /{self<PatternType>.value}"
-			unless self<PatternType> == PatternTypes.enums{$subtype};
                 }
 
                 last;

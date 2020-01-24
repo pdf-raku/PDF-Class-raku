@@ -71,8 +71,8 @@ lives-ok {$pattern-obj.check}, '$pattern-obj.check lives';
 
 my $contents = $pattern-obj.decoded;
 my @lines = $contents.lines;
-is-deeply [ @lines[0..2] ], ['q', '  BT', '    /F1 1 Tf'], 'first three lines of content';
-is-deeply [ @lines[*-4..*] ], ['    0 0 0 rg', '    (¨) Tj', '  ET', 'Q'], 'last 5 lines of content';
+is-deeply [ @lines.head(3) ], ['q', '  BT', '    /F1 1 Tf'], 'first three lines of content';
+is-deeply [ @lines.tail(4) ], ['    0 0 0 rg', '    (¨) Tj', '  ET', 'Q'], 'last 5 lines of content';
 
 my PDF::Class $pdf .= new;
 my $page = $pdf.Pages.add-page;

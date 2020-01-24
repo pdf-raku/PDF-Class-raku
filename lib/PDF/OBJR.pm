@@ -16,6 +16,6 @@ class PDF::OBJR
 
     has PDF::COS::Name $.Type is entry(:required, :alias<type>) where 'OBJR';
     has PDF::Page $.Pg is entry(:indirect, :alias<page>);       # (Optional; must be an indirect reference) The page object representing the page on which the object is rendered. This entry overrides any Pg entry in the structure element containing the object reference; it is required if the structure element has no such entry.
-    has $.Obj is entry(:required,:indirect); # (Required; must be an indirect reference) The referenced object.
+    has $.Obj is entry(:required,:indirect,:alias<object>); # (Required; must be an indirect reference) The referenced object.
 
 }
