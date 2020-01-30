@@ -99,7 +99,7 @@ with my PDF::AcroForm $acroform = $doc.catalog.AcroForm {
 
 In theory, we should always be able to use PDF::Class accessors for structured access and updating of PDF objects.
 
-In reality, a fair percentage of PDF files contain at least some conformance issues (as reported by `pdf-checker.p6`) and PDF::Class itself
+In reality, a fair percentage of PDF files contain at least some conformance issues (as reported by `pdf-checker.raku`) and PDF::Class itself
 is under development.
 
 For these reasons it possible to bypass PDF::Class accessors; instead accessing hashes and arrays directly, giving raw access to the PDF data.
@@ -125,15 +125,15 @@ in the out put stream `:name<UseToes>`, rather than a string `'UseToes'`.
 
 ## Scripts in this Distribution
 
-#### `pdf-append.p6 --save-as=output.pdf in1.pdf in2.pdf ...`
+#### `pdf-append.raku --save-as=output.pdf in1.pdf in2.pdf ...`
 
 appends PDF files.
 
-#### `pdf-burst.p6 --save-as=basename-%03d.pdf --password=pass in.pdf`
+#### `pdf-burst.raku --save-as=basename-%03d.pdf --password=pass in.pdf`
 
 bursts a multi-page PDF into single page PDF files
 
-#### `pdf-checker.p6 --trace --render --strict --exclude=Entry1,Entry2 --repair input-pdf`
+#### `pdf-checker.raku --trace --render --strict --exclude=Entry1,Entry2 --repair input-pdf`
 
 This is a low-level tool for PDF authors and users. It traverses a PDF, checking it's internal structure against
 PDF:Class definitions as derived from the [PDF 32000-1:2008 1.7](http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/pdfs/PDF32000_2008.pdf) specification.
@@ -145,10 +145,10 @@ PDF:Class definitions as derived from the [PDF 32000-1:2008 1.7](http://www.adob
 
 #### Example 1: Dump a simple PDF
 
-    % pdf-checker.p6 --trace t/helloworld.pdf
+    % pdf-checker.raku --trace t/helloworld.pdf
     xref:   << /ID ... /Info 1 0 R /Root 2 0 R >>   % PDF::Class
       /ID:  [ "×C¨\x[86]üÜø\{iÃeH!\x[9E]©A" "×C¨\x[86]üÜø\{iÃeH!\x[9E]©A" ] % PDF::COS::Array[Str]
-      /Info:        << /Author "t/helloworld.t" /CreationDate (D:20151225000000Z00'00') /Creator "PDF::Class" /Producer "Perl 6 PDF::Class 0.2.5" >>        % PDF::COS::Dict+{PDF::Info}
+      /Info:        << /Author "t/helloworld.t" /CreationDate (D:20151225000000Z00'00') /Creator "PDF::Class" /Producer "Raku PDF::Class 0.2.5" >>        % PDF::COS::Dict+{PDF::Info}
       /Root:        << /Type /Catalog /Pages 3 0 R >>       % PDF::Catalog
         /Pages:     << /Type /Pages /Count 1 /Kids ... /Resources ... >>    % PDF::Pages
           /Kids:    [ 4 0 R ]       % PDF::COS::Array[PDF::Content::PageNode]
@@ -182,7 +182,7 @@ xobject images.
 #### Example 2: Check a sample PDF
 
     % wget http://www.stillhq.com/pdfdb/000025/data.pdf
-    % pdf-checker.p6 --strict --render data.pdf
+    % pdf-checker.raku --strict --render data.pdf
     Warning: Error processing indirect object 27 0 R at byte offset 976986:
     Ignoring 1 bytes before 'endstream' marker
     Rendering warning(s) in 28 0 R (PDF::Page):
@@ -205,12 +205,12 @@ In this example:
 
 - A message such as `No handler class PDF::Filespec`, usually indicates the the object has not yet been implemented in PDF::Class.
 
-#### `pdf-content-dump.p6 --perl in.pdf`
+#### `pdf-content-dump.raku --raku in.pdf`
 
 Displays the content streams for PDF pages, commented,
 and in a human-readable format:
 
-    % pdf-content-dump.p6 t/example.pdf 
+    % pdf-content-dump.raku t/example.pdf 
     % **** Page 1 ****
     BT % BeginText
       1 0 0 1 100 150 Tm % SetTextMatrix
@@ -220,9 +220,9 @@ and in a human-readable format:
       T* % TextNextLine
     ET % EndText
 
-The `--perl` option dumps using a Perl-like notation:
+The `--raku` option dumps using a Raku-like notation:
 
-    pdf-content-dump.p6 --perl t/example.pdf 
+    pdf-content-dump.raku --perl t/example.pdf 
     # **** Page 1 ****
     .BeginText();
       .SetTextMatrix(1, 0, 0, 1, 100, 150);
@@ -232,11 +232,11 @@ The `--perl` option dumps using a Perl-like notation:
       .TextNextLine();
     .EndText();
 
-#### `pdf-info.p6 in.pdf`
+#### `pdf-info.raku in.pdf`
 
 Prints various PDF properties. For example:
 
-    % pdf-info.p6 ~/Documents/test-pdfs/stillhq.com/000056.pdf 
+    % pdf-info.raku ~/Documents/test-pdfs/stillhq.com/000056.pdf 
     File:         /home/david/Documents/test-pdfs/stillhq.com/000056.pdf
     File Size:    63175 bytes
     Pages:        2
@@ -255,16 +255,16 @@ Prints various PDF properties. For example:
     Revisions:    1
     Encryption:   no
 
-#### `pdf-revert.p6 --password=pass --save-as=out.pdf in.pdf`
+#### `pdf-revert.raku --password=pass --save-as=out.pdf in.pdf`
 
 undoes the last revision of an incrementally saved PDF file.
 
-#### `pdf-toc.p6 --password=pass --/title --/labels in.pdf`
+#### `pdf-toc.raku --password=pass --/title --/labels in.pdf`
 
 prints a table of contents, showing titles and page-numbers, using PDF outlines.
 
     % wget http://www.stillhq.com/pdfdb/000432/data.pdf
-    % pdf-toc.p6 data.pdf
+    % pdf-toc.raku data.pdf
     Linux Kernel Modules Installation HOWTO
       Table of Contents . . . i
       1. Purpose of this Document . . . 1
@@ -275,10 +275,10 @@ prints a table of contents, showing titles and page-numbers, using PDF outlines.
         5.2. Configuring Slackware for Modules . . . 5
         5.3. Configuring Other Distributions for Modules . . . 6
 
-Note that outlines are an optional PDF feature. `pdf-info.p6` can be
+Note that outlines are an optional PDF feature. `pdf-info.raku` can be
 used to check if a PDF has them:
 
-    % pdf-info.p6 my-doc.pdf | grep Outlines:
+    % pdf-info.raku my-doc.pdf | grep Outlines:
 
 ## Development Status
 
