@@ -111,7 +111,7 @@ sub toc(PDF::Class::OutlineNode $outline, :$nesting! is copy) {
 
 =head1 SYNOPSIS
 
-pdf-toc.p6 [options] file.pdf
+pdf-toc.raku [options] file.pdf
 
 Options:
    --password   password for an encrypted PDF
@@ -123,9 +123,9 @@ Options:
 
 Prints a table of contents for a given PDF, using the outlines, names and page-labels contained in the PDF.
 
-Note that not every PDF contains contains a table of contents. C<pdf-info.p6> can be used to check this:
+Note that not every PDF contains contains a table of contents. C<pdf-info.raku> can be used to check this:
 
-    % pdf-info.p6 my-doc.pdf | grep Outlines:
+    % pdf-info.raku my-doc.pdf | grep Outlines:
     Outlines:     yes
 
 If C<Outlines> is C<yes>, the PDF probably has a table of contents.

@@ -294,11 +294,11 @@ sub suggest(Hash $obj, Hash $entries, @unknown) {
 
 =head1 NAME
 
-pdf-checker.p6 - Check PDF structure and values
+pdf-checker.raku - Check PDF structure and values
 
 =head1 SYNOPSIS
 
- pdf-checker.p6 [options] file.pdf
+ pdf-checker.raku [options] file.pdf
 
  Options:
    --password          password for an encrypted PDF

@@ -41,11 +41,11 @@ sub MAIN(*@files, Str :$save-as, Bool :$drm = True)  {
 
 =head1 NAME
 
-pdf-append.p6 - Append one PDF to another
+pdf-append.raku - Append one PDF to another
 
 =head1 SYNOPSIS
 
- pdf-append.p6 [options] --save-as=output.pdf file1.pdf file2.pdf ...
+ pdf-append.raku [options] --save-as=output.pdf file1.pdf file2.pdf ...
 
  Options:
    --save-as=file     save as a new PDF

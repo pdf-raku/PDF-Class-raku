@@ -55,11 +55,11 @@ warn :@xrefs.perl;
 
 =head1 NAME
 
-pdf-revert.p6 - Remove the last edits to a PDF document
+pdf-revert.raku - Remove the last edits to a PDF document
 
 =head1 SYNOPSIS
 
- pdf-revert.p6 [options] --save-as=outfile.pdf infile.pdf
+ pdf-revert.raku [options] --save-as=outfile.pdf infile.pdf
 
  Options:
    -c --count          just print the number of revisions and exits

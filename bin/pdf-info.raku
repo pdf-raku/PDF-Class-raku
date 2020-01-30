@@ -112,11 +112,11 @@ multi sub MAIN(Str $infile,           #| input PDF
 
 =head1 NAME
 
-pdf-info.p6 - Print information about PDF file(s)
+pdf-info.raku - Print information about PDF file(s)
 
 =head1 SYNOPSIS
 
-pdf-info.p6 [options] file.pdf
+pdf-info.raku [options] file.pdf
 
 Options:
    --password   password for an encrypted PDF

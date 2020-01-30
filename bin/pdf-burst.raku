@@ -78,11 +78,11 @@ sub MAIN(Str $infile,              #| input PDF
 
 =head1 NAME
 
-pdf-burst.p6 - Burst a PDF into individual pages
+pdf-burst.raku - Burst a PDF into individual pages
 
 =head1 SYNOPSIS
 
- pdf-burst.p6 [options] --save-as=outspec.pdf infile.pdf
+ pdf-burst.raku [options] --save-as=outspec.pdf infile.pdf
 
  Options:
    --save-as=outspec.pdf  # e.g. --save-as=myout-%02d.pdf

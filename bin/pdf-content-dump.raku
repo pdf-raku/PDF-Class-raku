@@ -59,7 +59,7 @@ sub MAIN(Str $infile,            #= input PDF
 
 =head1 SYNOPSIS
 
-pdf-content-dump.p6 [options] --page=number file.pdf
+pdf-content-dump.raku [options] --page=number file.pdf
 
 Options:
    --password   password for an encrypted PDF
