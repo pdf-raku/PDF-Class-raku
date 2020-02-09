@@ -1,9 +1,9 @@
 use v6;
 
-use PDF::Annot::Markup;
+use PDF::Annot::_Markup;
 
 class PDF::Annot::Link
-    is PDF::Annot::Markup {
+    is PDF::Annot::_Markup {
 
     # use ISO_32000::Table_173-Additional_entries_specific_to_a_link_annotation;
     # also does ISO_32000::Table_173-Additional_entries_specific_to_a_link_annotation;

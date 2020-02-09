@@ -32,8 +32,7 @@ $page.graphics: -> $gfx {
 	    --ENOUGH!!--
 
 	    $txt.font = [$font, $font-size];
-	    my $text-block = $txt.say( $para, :$width, :$align, :kern);
-	    isa-ok $text-block, 'PDF::Content::Text::Block';
+	    $txt.say( $para, :$width, :$align, :kern);
 	    $x += 275;
         }
 

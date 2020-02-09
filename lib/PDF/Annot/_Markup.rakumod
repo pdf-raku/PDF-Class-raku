@@ -2,7 +2,7 @@ use v6;
 
 use PDF::Annot;
 
-class PDF::Annot::Markup
+class PDF::Annot::_Markup
     is PDF::Annot {
 
     use PDF::COS::Tie;
