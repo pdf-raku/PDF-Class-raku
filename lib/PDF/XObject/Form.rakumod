@@ -1,6 +1,7 @@
 use v6;
 
 use PDF::XObject;
+use PDF::Class::StructItem;
 use PDF::Content::XObject;
 use PDF::Content::Resourced;
 use PDF::Content::Graphics;
@@ -8,6 +9,7 @@ use PDF::Content::Graphics;
 #| XObject Forms - /Type /XObject /Subtype Form
 class PDF::XObject::Form
     is PDF::XObject
+    does PDF::Class::StructItem
     does PDF::Content::XObject['Form']
     does PDF::Content::Graphics
     does PDF::Content::Resourced {

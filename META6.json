@@ -53,6 +53,7 @@
     "PDF::Class::OutlineNode": "lib/PDF/Class/OutlineNode.rakumod",
     "PDF::Class::ThreeD": "lib/PDF/Class/ThreeD.rakumod",
     "PDF::Class::Type": "lib/PDF/Class/Type.rakumod",
+    "PDF::Class::StructItem": "lib/PDF/Class/StructItem.rakumod",
     "PDF::Class::Util": "lib/PDF/Class/Util.rakumod",
     "PDF::ColorSpace": "lib/PDF/ColorSpace.rakumod",
     "PDF::ColorSpace::CalGray": "lib/PDF/ColorSpace/CalGray.rakumod",
@@ -142,5 +143,5 @@
   ],
   "test-depends": [
   ],
-  "version": "0.4.0"
+  "version": "0.4.1"
 }

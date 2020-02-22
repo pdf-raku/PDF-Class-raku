@@ -21,6 +21,7 @@ The top level of a PDF document is of type `PDF::Class`, which corresponds to th
     # vivify Info entry; set title
     given $pdf.Info //= {} -> PDF::Info $_ {
         .Title = 'Hello World!';
+        .ModDate = DateTime.now; # PDF::Class sets this anyway...
     }
 
     # modify Viewer Preferences
@@ -34,7 +35,7 @@ The top level of a PDF document is of type `PDF::Class`, which corresponds to th
     $new-page.gfx.say: "New last page!";
 
     # save the updated pdf
-    $pdf.save-as: "tmp/pdf-updated.pdf";
+    $pdf.save-as: "tmp/pdf-updated.pdf", :!info;
 ```
 
 - This module contains definitions for many other standard PDF objects, such as Pages, Fonts and Images, as listed below.

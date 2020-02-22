@@ -1,10 +1,12 @@
 use v6;
 
+use PDF::Class::StructItem;
 use PDF::Content:ver(v0.2.3+);
 use PDF::Content::XObject;
 use PDF::COS::Tie::Hash;
 
 role PDF::Image
+    does PDF::Class::StructItem
     does PDF::Content::XObject['Image']
     does PDF::COS::Tie::Hash {
 

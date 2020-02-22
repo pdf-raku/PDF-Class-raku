@@ -1,12 +1,12 @@
 use v6;
 
-use PDF::COS::Tie::Hash;
+use PDF::Class::StructItem;
 use PDF::Class::Type;
-use PDF::Page;
 
 #| /Type /Annot Annotations
 class PDF::Annot
     is PDF::COS::Dict
+    does PDF::Class::StructItem
     does PDF::Class::Type {
 
     use PDF::COS::Tie;
@@ -19,6 +19,7 @@ class PDF::Annot
     use PDF::OCG;   # optional content group
     use PDF::OCMD;  # optional content membership dict
     my subset OCG-or-OCMD where PDF::OCG|PDF::OCMD;
+    use PDF::Page;
 
     # use ISO_32000::Table_164-Entries_common_to_all_annotation_dictionaries;
     # also does ISO_32000::Table_164-Entries_common_to_all_annotation_dictionaries;

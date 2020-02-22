@@ -1,5 +1,6 @@
 use v6;
 use Test;
+use PDF::Content;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Class;
 use PDF::Page;
@@ -109,7 +110,7 @@ skip '$pdf.Info<Author> - not completing';
 # ensure consistant document ID generation
 srand(123456);
 
-ok $pdf.save-as('t/helloworld.pdf'), '.save-as';
+ok $pdf.save-as('t/helloworld.pdf', :!info), '.save-as';
 ok $pdf.save-as('t/helloworld-compressed.pdf', :compress, :!info), '.save-as( :compress )';
 throws-like { $pdf.wtf }, X::Method::NotFound;
 
@@ -128,8 +129,10 @@ is-deeply $contents-ast[0], (:q[]), '.contents first elem';
 is-deeply $contents-ast[*-1], (:ET[]), '.contents last elem';
 
 my $gfx = $page.render;
-is-json-equiv $gfx.ops[*-4 .. *], $(:Tj[{:literal("Hello, world!")}], :TL[:real(26.4)], "T*" => [], :ET[]), '$page.gfx.ops (tail)';
+todo "PDF::Content v0.4.1+ required to pass this test"
+    unless PDF::Content.^ver >= v0.4.1;
+is-json-equiv $gfx.ops.tail(5).list, $(:Tj[{:literal("Hello, world!")}], :TL[:real(26.4)], "T*" => [], :EMC[], :ET[]), '$page.gfx.ops (tail)';
 
-lives-ok { PDF::Class.new.save-as: "t/pdf/no-pages.pdf", :!info }, 'create empty PDF';
+lives-ok { PDF::Class.new.save-as: "t/no-pages.pdf", :!info }, 'create empty PDF';
 
 done-testing;

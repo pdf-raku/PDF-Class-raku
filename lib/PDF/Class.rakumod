@@ -3,7 +3,7 @@ use v6;
 use PDF:ver(v0.3.8+);
 
 #| PDF entry-point. either a trailer dict or an XRef stream
-class PDF::Class:ver<0.4.0>#:api<PDF-1.7>
+class PDF::Class:ver<0.4.1>#:api<PDF-1.7>
     is PDF {
     # base class declares: $.Size, $.Encrypt, $.ID
     # use ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
@@ -44,8 +44,9 @@ class PDF::Class:ver<0.4.0>#:api<PDF-1.7>
             }
             else {
                 # creating
-                $Info.Producer  //= "{self.WHAT.perl}{with self.^ver { ":v$_" } else { '' }}";
-                $Info.Creator   //= "Raku:v{$*PERL.version}, PDF::Class:v{self.^ver}, PDF::Content:v{PDF::Content.^ver}, PDF:v{PDF.^ver}";
+                my @creator = "PDF::Class-{PDF::Class.^ver}", "PDF::Content-{PDF::Content.^ver}", "PDF-{PDF.^ver}", "Raku-{$*PERL.version}";
+                $Info.Producer  //= "{self.WHAT.perl}{with self.^ver { "-$_" } else { '' }}";
+                $Info.Creator   //= @creator.join: ', ';
                 $Info.CreationDate //= $now
             }
         }

@@ -43,6 +43,7 @@ is $xform.Subtype, 'Form', '$.Subtype accessor';
 is-json-equiv $xform.Resources, { :ProcSet( [ <PDF> ] ) }, '$.Resources accessor';
 is-json-equiv $xform.BBox, [ 0, 0, 200, 200 ], '$.BBox accessor';
 is $xform.encoded, "0 0 m\n0 200 l\n200 200 l\n200 0 l\nf", '$.encoded accessor';
+$xform.gfx.BeginMarkedContent('P');
 $xform.gfx.Save;
 $xform.gfx.BeginText;
 $xform.gfx.TextMove(50, 50);
@@ -52,6 +53,7 @@ $xform.gfx.set-font($font);
 $xform.gfx.say('Hello, again!');
 $xform.gfx.EndText;
 $xform.gfx.Restore;
+$xform.gfx.EndMarkedContent;
 $xform.cb-finish;
 lives-ok {$xform.check}, '$xform.check lives';
 
@@ -60,16 +62,18 @@ is-deeply [$contents.lines], [
     'q',
     '0 0 m', '0 200 l', '200 200 l', '200 0 l', 'f',
     'Q',
-    'q',
-    '  BT',
-    '    50 50 Td',
-    '    0.5 0.95 0.5 rg',
-    '    /F1 16 Tf',
-    '    (Hello, again!) Tj',
-    '    17.6 TL', 
-    '    T*',
-    '  ET',
-    'Q',
+    '/P BMC',
+    '  q',
+    '    BT',
+    '      50 50 Td',
+    '      0.5 0.95 0.5 rg',
+    '      /F1 16 Tf',
+    '      (Hello, again!) Tj',
+    '      17.6 TL', 
+    '      T*',
+    '    ET',
+    '  Q',
+    'EMC',
     ], 'finished contents';
 
 my PDF::Class $pdf .= new;

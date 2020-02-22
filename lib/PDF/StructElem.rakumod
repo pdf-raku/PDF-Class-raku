@@ -36,14 +36,19 @@ role PDF::StructElem
         }
         else {
             coerce-child($obj, StructElemChild)
-                unless $obj ~~ StructElemChild
         }
         $obj;
     }
 
-    sub coerce-parent(StructElemLike $obj, StructElemParent) {
+    multi sub coerce-parent(StructElemParent $obj, StructElemParent) { $obj }
+    multi sub coerce-parent(StructElemLike $obj, StructElemParent) {
         PDF::COS.coerce($obj, PDF::StructElem);
     }
+    multi sub coerce-parent($_, StructElemParent) is default {
+        fail "Unable to coerce {.perl} to a PDF::StructElem.P (parent) element";
+    }
+
+    multi sub coerce-child(StructElemChild $obj, StructElemChild) { $obj }
     multi sub coerce-child(StructElemLike $obj, StructElemChild) {
         PDF::COS.coerce($obj, PDF::StructElem);
     }
