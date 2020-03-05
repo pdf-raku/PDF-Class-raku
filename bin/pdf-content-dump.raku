@@ -8,8 +8,8 @@ use PDF::Content::Ops :OpName;
 use PDF::IO;
 
 sub MAIN(Str $infile,            #= input PDF
-	 Str :$password = '',    #= password for the input PDF, if encrypted
-         Int :$page,             #= page-number to dump
+	 Str  :$password = '',   #= password for the input PDF, if encrypted
+         Int  :$page,            #= page-number to dump
          Bool :$raku,            #= dump in a Raku-like notation
          Bool :$trace,           #= trace graphics (to stderr)
          Bool :$repair = False,  #= bypass index; recompute stream lengths

@@ -129,9 +129,9 @@ is-deeply $contents-ast[0], (:q[]), '.contents first elem';
 is-deeply $contents-ast[*-1], (:ET[]), '.contents last elem';
 
 my $gfx = $page.render;
-todo "PDF::Content v0.4.1+ required to pass this test"
-    unless PDF::Content.^ver >= v0.4.1;
-is-json-equiv $gfx.ops.tail(5).list, $(:Tj[{:literal("Hello, world!")}], :TL[:real(26.4)], "T*" => [], :EMC[], :ET[]), '$page.gfx.ops (tail)';
+todo "PDF::Content v0.4.2+ required to pass this test"
+    unless PDF::Content.^ver >= v0.4.2;
+is-json-equiv $gfx.ops.tail(4).list, $(:Tj[{:literal("Hello, world!")}], :TL[:real(26.4)], "T*" => [], :ET[]), '$page.gfx.ops (tail)';
 
 lives-ok { PDF::Class.new.save-as: "t/no-pages.pdf", :!info }, 'create empty PDF';
 

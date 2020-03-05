@@ -37,8 +37,9 @@ class PDF::XObject::Form
     has PDF::Metadata::XML $.Metadata is entry;        # (Optional; PDF 1.4) A metadata stream containing metadata for the form XObject
     has Hash $.PieceInfo is entry;                     # (Optional; PDF 1.3) A page-piece dictionary associated with the form XObject
     has PDF::COS::DateString $.LastModified is entry;  # (Required if PieceInfo is present; optional otherwise; PDF 1.3) The date and time when the form XObject’s contents were most recently modified
-    has UInt $.StructParent is entry(:alias<struct-parent>);                  # (Required if the form XObject is a structural content item; PDF 1.3) The integer key of the form XObject’s entry in the structural parent tree
+    has UInt $.StructParent is entry;                  # (Required if the form XObject is a structural content item; PDF 1.3) The integer key of the form XObject’s entry in the structural parent tree
     has UInt $.StructParents is entry;                 # (Required if the form XObject contains marked-content sequences that are structural content items; PDF 1.3) The integer key of the form XObject’s entry in the structural parent tree
+    method struct-parent { self.StructParents // self.StructParent }
     has Hash $.OPI is entry;                           # (Optional; PDF 1.2) An OPI version dictionary for the form XObject
 
     has OCG-or-OCMD $.OC is entry(:alias<optional-content-group>);                 # (Optional; PDF 1.5) An optional content group or optional content membership dictionary
@@ -46,6 +47,8 @@ class PDF::XObject::Form
     has PDF::COS::Name $.Name is entry;                # (Required in PDF 1.0; optional otherwise) The name by which this form XObject is referenced in the XObject subdictionary of the current resource dictionary.
 
     method cb-check {
+        die "only one of /StructParent or /StructParents should be present"
+            if (self<StructParent>:exists) && (self<StructParents>:exists);
         die "/LastModified is required when /PieceInfo is present"
             if (self<PieceInfo>:exists) && !(self<LastModified>:exists);
     }
