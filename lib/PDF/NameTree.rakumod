@@ -70,6 +70,13 @@ role PDF::NameTree
 
     has Str @.Limits is entry(:len(2)); # Intermediate and leaf nodes only; required) Shall be an array of two strings, that shall specify the (lexically) least and greatest keys included in the Names array of a leaf node or in the Names arrays of any leaf nodes that are descendants of an intermediate node.
 
+    method cb-check {
+        die "Number Tree has neither a /Kids or /Names entry"
+            unless (self<Kids>:exists) or (self<Names>:exists);
+        # realize it to check for errors.
+        self.name-tree.Hash;
+    }
+
     method coercer {Mu}
 }
 

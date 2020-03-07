@@ -74,6 +74,8 @@ role PDF::NumberTree
     method cb-check {
         die "Number Tree has neither a /Kids or /Nums entry"
             unless (self<Kids>:exists) or (self<Nums>:exists);
+        # realize it to check for errors.
+        self.number-tree.Hash;
     }
     method coercer {Mu}
 }
