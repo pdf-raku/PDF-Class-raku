@@ -76,6 +76,10 @@ class PDF::Function
                 last;
             }
         }
+    }
 
+    method cb-check {
+        # check we can stantiate a calculator
+        self.calculator();
     }
 }

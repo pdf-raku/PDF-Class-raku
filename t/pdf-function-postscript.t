@@ -49,7 +49,13 @@ is-json-equiv $function-obj.Length, 56, '$.Length accessor (corrected)';
 lives-ok {$function-obj.check}, '$function-obj.check lives';
 
 my $ast = $function-obj.parse;
-is-json-equiv $ast, {:expr([:int(360), :op<mul>, :op<sin>, :int(2), :op<div>, :op<exch>, :int(360), :op<mul>, :op<sin>, :int(2), :op<div>, :op<add>])}, '$.parse accessor';
+is-json-equiv $ast, {
+    :expr[ :int(360), :op<mul>, :op<sin>,
+           :int(2), :op<div>,
+           :op<exch>, :int(360), :op<mul>, :op<sin>,
+           :int(2), :op<div>,
+           :op<add>,
+         ] }, '$.parse accessor';
 
 sub calc(Str $expr, @stack) {
     use PDF::Grammar::Function;

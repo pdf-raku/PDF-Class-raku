@@ -7,7 +7,7 @@ use PDF::Function;
 class PDF::Function::PostScript
     is PDF::Function {
 
-    method parse(Str $decoded = $.decoded) {
+    method parse(Str() $decoded = $.decoded) {
 	state $actions //= (require ::('PDF::Grammar::Function::Actions')).new;
 	(require ::('PDF::Grammar::Function')).parse($decoded, :$actions)
 	    or die "unable to parse postscript function: $decoded";

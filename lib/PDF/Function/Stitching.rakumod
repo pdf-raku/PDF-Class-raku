@@ -53,7 +53,8 @@ class PDF::Function::Stitching
             .keys.map: -> $k1, $k2 { .[$k1] .. .[$k2] }
         }
         my Range @bounds;
-        my PDF::Function::Transform @functions = @.Functions.map: { .calculator };
+        my @funcs := @.Functions;
+        my PDF::Function::Transform @functions = @funcs.keys.map: { @funcs[$_].calculator };
         my $k = @functions.elems;
         my @Bounds = @.Bounds;
         die "Bounds array length error: {@Bounds.elems} != {$k-1}"
