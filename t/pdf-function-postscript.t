@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 64;
+plan 65;
 
 use PDF::Class;
 use PDF::Function::PostScript;
@@ -126,6 +126,7 @@ is-deeply calc('2 1 1 add ne { 6 7 mul } { 69 } ifelse', []), [69,], 'ifelse (fa
 
 is-deeply calc('exch', [12, 2]), [2,12], 'exch op';
 is-deeply calc('dup', [10, 20]), [10,20,20], 'dup';
+is-deeply calc('pop', [10, 20, 30]), [10,20], 'pop';
 is-deeply calc('2 copy', [10, 20, 30]), [10,20,30, 20,30], 'copy';
 is-deeply calc('1 index', [10, 20, 30]), [10,20,30, 20], 'index';
 is-deeply calc('2 1 roll', [10, 20, 30]), [10,30,20], 'roll';
