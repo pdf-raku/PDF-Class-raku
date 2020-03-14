@@ -223,6 +223,15 @@ class PDF::Catalog
     method cb-finish {
         .is-indirect ||= True with self<Dests>;
         self<Pages>.?cb-finish;
+
+        # flush any name/number tree updates
+        .cb-finish() with .<Names>;
+        .cb-finish() with .<PageLabels>;
+
+        with self<StructTreeRoot> {
+            .cb-finish() with .<IDTree>;
+            .cb-finish() with .<ParentTree>;
+        }
     }
 }
 

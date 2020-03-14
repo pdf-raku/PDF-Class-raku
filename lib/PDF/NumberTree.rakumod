@@ -7,6 +7,7 @@ role PDF::NumberTree
 
     use PDF::COS;
     use PDF::COS::Tie;
+    use Method::Also;
 
     # use ISO_32000::Table_37-Entries_in_a_number_tree_node_dictionary;
     # also does ISO_32000::Table_37-Entries_in_a_number_tree_node_dictionary;
@@ -20,6 +21,8 @@ role PDF::NumberTree
         has PDF::NumberTree $.root;
         has Bool %!fetched{Any};
         has Bool $!realized;
+        has Bool $.updated is rw;
+
         method !fetch($node, Int $key?) {
             with $node.Nums -> $kv {
                 # leaf node
@@ -50,23 +53,35 @@ role PDF::NumberTree
                 }
            }
         }
+
         method Hash handles <keys values pairs perl> {
             self!fetch($!root)
                 unless $!realized++;
             %!values;
         }
-        method AT-KEY(Int() $key) {
+
+        method AT-KEY(Int() $key) is also<AT-POS> {
             self!fetch($!root, $key)
                 unless $!realized || (%!values{$key}:exists);
             %!values{$key};
         }
-        method AT-POS(Int() $key) {
-            $.AT-KEY($key);
+
+        method ASSIGN-KEY(Int() $key, $val is copy) is also<ASSIGN-POS> {
+            .($val, $!root.of)
+                with $!root.coercer;
+            $!updated = True;
+            self.Hash{$key} = $val;
+        }
+
+        method DELETE-KEY(Int() $key) is also<DELETE-POS> {
+            $!updated = True;
+            self.Hash{$key}:delete;
         }
     }
 
+    has NumberTree $!number-tree;
     method number-tree {
-        NumberTree.new: :root(self);
+        $!number-tree //= NumberTree.new: :root(self);
     }
 
     has Numeric @.Limits is entry(:len(2)); # (Shall be present in Intermediate and leaf nodes only) Shall be an array of two integers, that shall specify the (numerically) least and greatest keys included in the Nums array of a leaf node or in the Nums arrays of any leaf nodes that are descendants of an intermediate node.
@@ -77,6 +92,20 @@ role PDF::NumberTree
         # realize it to check for errors.
         self.number-tree.Hash;
     }
+
+    method cb-finish {
+        with $!number-tree {
+            if .updated {
+                self<Kids>:delete;
+                my @nums;
+                @nums.append: .key, .value
+                    for .Hash.pairs.sort;
+                self<Nums> = @nums;
+                .updated = False;
+            }
+        }
+    }
+
     method coercer {Mu}
 }
 

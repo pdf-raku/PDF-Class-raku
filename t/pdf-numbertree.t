@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 9;
+plan 10;
 
 use PDF::Class;
 use PDF::IO::IndObj;
@@ -38,4 +38,9 @@ is-json-equiv $nums{30}, 42, '.nums deref';
 is-json-equiv $nums.Hash, { 20 => 'Xxx', 30 => 42 }, '$obj.nums';
 is-json-equiv $nametree-obj.Limits, [20, 30], '$obj.Limits';
 lives-ok {$nametree-obj.check}, '$nametree-obj.check lives';
+
+$nums[50] = 99;
+$nametree-obj.cb-finish();
+is-json-equiv $nametree-obj.Nums, [ 20, 'Xxx', 30, 42, 50, 99], '$obj.Nums after update';
+
 

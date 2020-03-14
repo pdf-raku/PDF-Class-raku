@@ -21,4 +21,10 @@ role PDF::Names does PDF::COS::Tie::Hash {
     has PDF::NameTree[File, :coerce(&to-file)] $.EmbeddedFiles is entry;          # (Optional; PDF 1.4) A name tree mapping name strings to file specifications for embedded file streams.
     has PDF::NameTree $.AlternatePresentations is entry; # (Optional; PDF 1.4) A name tree mapping name strings to alternate presentations.
     has PDF::NameTree $.Renditions is entry;             # (Optional; PDF 1.5) A name tree mapping name strings (which shall have Unicode encoding) to rendition objects.
+
+    method cb-finish {
+        # flush any updated name trees
+        self{$_}.cb-finish() for self.keys
+    }
+    
 }

@@ -1,3 +1,8 @@
+Release 0.4.3
+- Enable update of name-trees (via .name-tree()) and number-trees
+  (via .nimber-tree()). Added calls to .cb-finish() which now must
+  be called to publish the updates.
+
 Release 0.4.2
 - Improved checking of name and number trees (pdf-checker.raku)
 - Fixes to .calculator() method in PDF::Function::Stitching

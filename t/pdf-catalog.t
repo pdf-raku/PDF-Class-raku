@@ -27,7 +27,7 @@ my $input = q:to"--END-OBJ--";
   /StructTreeRoot <<
     /Type /StructTreeRoot
     /K 12 0 R
-    /ParentTree 13 0 R
+    /ParentTree << /Nums [] >>
     /ParentTreeNextKey 4
   >>
   /AcroForm << /Fields [] >>
