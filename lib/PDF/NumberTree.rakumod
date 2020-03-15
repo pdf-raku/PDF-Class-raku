@@ -22,6 +22,11 @@ role PDF::NumberTree
         has Bool %!fetched{Any};
         has Bool $!realized;
         has Bool $.updated is rw;
+        has Int  $.max-key is built;
+
+        method max-key {
+            $!max-key //= max(self.Hash.keys.max, -1); 
+        }
 
         method !fetch($node, Int $key?) {
             with $node.Nums -> $kv {
@@ -69,11 +74,17 @@ role PDF::NumberTree
         method ASSIGN-KEY(Int() $key, $val is copy) is also<ASSIGN-POS> {
             .($val, $!root.of)
                 with $!root.coercer;
+            with $!max-key {
+                $_ = $key if $key > $_;
+            }
             $!updated = True;
             self.Hash{$key} = $val;
         }
 
         method DELETE-KEY(Int() $key) is also<DELETE-POS> {
+            with $!max-key {
+                $_ = Nil if $key == $_;
+            }
             $!updated = True;
             self.Hash{$key}:delete;
         }
