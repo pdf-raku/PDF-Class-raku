@@ -22,7 +22,7 @@ role PDF::NumberTree
         has Bool %!fetched{Any};
         has Bool $!realized;
         has Bool $.updated is rw;
-        has Int  $.max-key is built;
+        has Int  $!max-key;
 
         method max-key {
             $!max-key //= max(self.Hash.keys.max, -1); 
