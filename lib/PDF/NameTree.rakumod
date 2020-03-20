@@ -54,10 +54,18 @@ role PDF::NameTree
                 unless $!realized++;
             %!values;
         }
-        method AT-KEY(Str() $key) {
-            self!fetch($!root, $key)
-                unless $!realized || (%!values{$key}:exists);
-            %!values{$key};
+
+        method AT-KEY(Str() $key) is rw {
+            Proxy.new(
+                FETCH => {
+                    self!fetch($!root, $key)
+                        unless $!realized || (%!values{$key}:exists);
+                    %!values{$key};
+                },
+                STORE => -> $, $val {
+                    self.ASSIGN-KEY($key, $val)
+                }
+            )
         }
 
         method ASSIGN-KEY(Str() $key, $val is copy) {

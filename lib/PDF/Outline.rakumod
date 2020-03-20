@@ -35,7 +35,7 @@ role PDF::Outline
     has UInt $.F is entry(:alias<flags>, :default(0));              # (Optional; PDF 1.4) A set of flags specifying style characteristics for displaying the outline item’s text. Default value: 0.
 
     method cb-check {
-        die "An Outline should not have both /A and Dest entries"
+        die "An Outline should not have both /A and /Dest entries"
             if (self<A>:exists) && (self<Dest>:exists);
     }
 

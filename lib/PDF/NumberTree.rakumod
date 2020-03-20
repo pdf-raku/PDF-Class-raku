@@ -65,10 +65,17 @@ role PDF::NumberTree
             %!values;
         }
 
-        method AT-KEY(Int() $key) is also<AT-POS> {
-            self!fetch($!root, $key)
-                unless $!realized || (%!values{$key}:exists);
-            %!values{$key};
+        method AT-KEY(Int() $key) is rw is also<AT-POS> {
+            Proxy.new(
+                FETCH => {
+                    self!fetch($!root, $key)
+                        unless $!realized || (%!values{$key}:exists);
+                    %!values{$key};
+                },
+                STORE => -> $, $val {
+                    self.ASSIGN-KEY($key, $val)
+                }
+            )
         }
 
         method ASSIGN-KEY(Int() $key, $val is copy) is also<ASSIGN-POS> {

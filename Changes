@@ -1,7 +1,8 @@
 Release 0.4.3
 - Enable update of name-trees (via .name-tree()) and number-trees
-  (via .nimber-tree()). Added calls to .cb-finish() which now must
+  (via .number-tree()). Added calls to .cb-finish() which now must
   be called to publish the updates.
+- Also support name/number-tree vivication
 
 Release 0.4.2
 - Improved checking of name and number trees (pdf-checker.raku)
