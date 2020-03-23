@@ -33,6 +33,8 @@ class PDF::Class:ver<0.4.3>#:api<PDF-1.7>
     # make sure it really is a PDF, not an FDF file etc
     method open(|c) { nextwith( :type<PDF>, |c); }
 
+     has Str @.creator = "PDF::Class-{PDF::Class.^ver}", "PDF::Content-{PDF::Content.^ver}", "PDF-{PDF.^ver}", "Raku-{$*PERL.version}";
+
     method save-as($spec, Bool :$info = True, |c) {
 
         if $info {
@@ -44,9 +46,8 @@ class PDF::Class:ver<0.4.3>#:api<PDF-1.7>
             }
             else {
                 # creating
-                my @creator = "PDF::Class-{PDF::Class.^ver}", "PDF::Content-{PDF::Content.^ver}", "PDF-{PDF.^ver}", "Raku-{$*PERL.version}";
                 $Info.Producer  //= "{self.WHAT.perl}{with self.^ver { "-$_" } else { '' }}";
-                $Info.Creator   //= @creator.join: ', ';
+                $Info.Creator   //= @!creator.join: '; ';
                 $Info.CreationDate //= $now
             }
         }
