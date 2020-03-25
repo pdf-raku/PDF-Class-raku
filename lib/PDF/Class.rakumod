@@ -33,7 +33,7 @@ class PDF::Class:ver<0.4.3>#:api<PDF-1.7>
     # make sure it really is a PDF, not an FDF file etc
     method open(|c) { nextwith( :type<PDF>, |c); }
 
-     has Str @.creator = "PDF::Class-{PDF::Class.^ver}", "PDF::Content-{PDF::Content.^ver}", "PDF-{PDF.^ver}", "Raku-{$*PERL.version}";
+    has Str @.creator = "PDF::Class-{PDF::Class.^ver}", "PDF::Content-{PDF::Content.^ver}", "PDF-{PDF.^ver}", "Raku-{$*PERL.version}";
 
     method save-as($spec, Bool :$info = True, |c) {
 
