@@ -1,13 +1,17 @@
 Release 0.4.3
+PDF::Tags support:
 - Enable update of name-trees (via .name-tree()) and number-trees
   (via .number-tree()). Added calls to .cb-finish() which now must
   be called to publish the updates.
 - Also support name/number-tree vivication
+- Add PDF::Class.creator() method - editable list of creators. Also
+  seperate creators with '; ' when writing to PDF::Info.Creator; seems
+  to be the convention.
 
 Release 0.4.2
 - Improved checking of name and number trees (pdf-checker.raku)
 - Fixes to .calculator() method in PDF::Function::Stitching
- and PDF::Function::Postscript
+  and PDF::Function::Postscript
 
 Release 0.4.1
 - Add role PDF::Class::StructItem

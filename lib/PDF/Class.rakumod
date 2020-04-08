@@ -66,14 +66,12 @@ class PDF::Class:ver<0.4.3>#:api<PDF-1.7>
 
     # permissions check, e.g: $doc.permitted( PermissionsFlag::Modify )
     method permitted(UInt $flag --> Bool) {
+	my Int $perms = .P
+           with self.Encrypt;
 
-	my Int $perms = self.Encrypt.?P
-	    // return True;
-
-	return True
-	    if $.crypt.?is-owner;
-
-	return $perms.flag-is-set( $flag );
+	!$perms.defined || $.crypt.?is-owner
+            ?? True
+	    !! $perms.flag-is-set( $flag );
     }
 
     method cb-init {
