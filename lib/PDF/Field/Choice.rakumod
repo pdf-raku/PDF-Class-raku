@@ -11,7 +11,7 @@ role PDF::Field::Choice
     use PDF::COS::Tie;
     use PDF::COS::TextString;
 
-    has PDF::COS::TextString @.V is entry(:inherit, :array-or-item, :alias<value>);
+    has PDF::COS::TextString @.V is entry(:inherit, :array-or-item);
     has PDF::COS::TextString @.DV is entry(:inherit, :array-or-item, :alias<default-value>);
 
     my subset FieldOptions where { .[0] ~~ PDF::COS::TextString && ($_ ~~ Str || .[1] ~~ PDF::COS::TextString) }

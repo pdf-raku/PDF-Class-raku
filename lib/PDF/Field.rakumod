@@ -74,29 +74,45 @@ role PDF::Field
     has AnnotOrField @.Kids is entry(:indirect, :&coerce); # (Sometimes required, as described below) An array of indirect references to the immediate children of this field.
                                                 # In a non-terminal field, the Kids array is required to refer to field dictionaries that are immediate descendants of this field. In a terminal field, the Kids array ordinarily must refer to one or more separate widget annotations that are associated with this field. However, if there is only one associated widget annotation, and its contents have been merged into the field dictionary, Kids must be omitted.
 
-    method is-terminal returns Bool {
-	with $.Kids {
-            ! .keys.first: -> $k {.[$k] ~~ FieldLike }
-        }
-        else {
-            True;
-        }
+    #| return any terminal descendants, or self
+    method fields {
+        my PDF::Field @fields;
+        with self.Kids -> $kids {
+	    for $kids.keys {
+	        my $kid := $kids[$_];
+	        if $kid ~~ FieldLike {
+                    @fields.append: $kid.fields;
+                }
+            }
+	}
+        @fields.push(self) unless @fields;
+        @fields;
     }
 
-    #| return ourself, if terminal, any children otherwise
-    method fields {
-	my @fields;
-	if self.is-terminal {
-	    @fields.push: self
-	}
-	else {
-	    for self.Kids.keys {
-		my $kid = self.Kids[$_];
-		@fields.append: $kid.fields
-		    if $kid ~~ FieldLike;
-	    }
-	}
-	flat @fields;
+    #| take terminal fields
+    method take-fields {
+        my Bool $taken;
+        with self.Kids -> $kids {
+	    for $kids.keys {
+	        my $kid := $kids[$_];
+	        if $kid ~~ FieldLike {
+                    $taken = True;
+                    $kid.take-fields;
+                }
+            }
+        }
+        take self unless $taken;
+    }
+
+    method value is rw {
+        Proxy.new(
+            FETCH => {
+                self.V // self.DV; # actual value or default value
+            },
+            STORE => -> $, $v {
+                self.ASSIGN-KEY('V', $v, :check);
+            }
+        );
     }
 
     #| return immediate annotations only. return ourself, if we're an annotation,

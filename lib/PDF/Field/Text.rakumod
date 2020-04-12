@@ -20,8 +20,9 @@ role PDF::Field::Text
     multi sub coerce($_, Value) is default {
 	fail "unable to coerce {.perl} to Text or a Stream";
     }
-    has Value $.V is entry(:&coerce, :inherit, :alias<value>);
+    has Value $.V is entry(:&coerce, :inherit);
     has Value $.DV is entry(:&coerce, :inherit, :alias<default-value>);
 
     has UInt $.MaxLen is entry; # (Optional; inheritable) The maximum length of the field’s text, in characters.
+
 }

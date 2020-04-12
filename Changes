@@ -1,5 +1,8 @@
 Release 0.4.3
-PDF::Tags support:
+- [PDF::Fields]
+  -- fix fields() and fields-hash() methods to return only terminal fields
+  -- .value() method now returns .V // .DV (value or default-value)
+- Provide top level fields() and field-hash(); (similar to FDF)
 - Enable update of name-trees (via .name-tree()) and number-trees
   (via .number-tree()). Added calls to .cb-finish() which now must
   be called to publish the updates.

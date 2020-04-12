@@ -9,7 +9,7 @@ my $pdf;
 
 lives-ok {$pdf = PDF::Class.open("t/pdf/samples/OoPdfFormExample.pdf")}, "open form example  lives";
 my $annots = $pdf.page(1).Annots;
-does-ok $annots[0], PDF::Annot::Widget, 'page annot isa Annot';
+does-ok $annots[0], PDF::Annot::Widget, 'page annot does Annot';
 does-ok $annots[0], PDF::Field, 'page annot does PDF::Field';
 
 does-ok $pdf.page(1).fields[0], PDF::Field, 'page fields accessor';
@@ -29,9 +29,13 @@ is $doc.OpenAction.zoom, 0, 'OpenAction.zoom';
 
 my @fields = $acroform.fields;
 isa-ok @fields, Array, '.Fields';
-is +@fields, 17, 'fields count';
-does-ok @fields[0], (require ::('PDF::Field')), '.Fields';
-does-ok @fields[0], (require ::('PDF::Annot::Widget')), 'field type';
+is +@fields, 17, 'acroform fields count';
+my @pdf-fields = $pdf.fields;
+is +@pdf-fields, 17, 'pdf fields count';
+ok @fields[3] === @pdf-fields[3], 'acroform/pdf field equivalence';
+
+does-ok @fields[0], PDF::Field, '.Fields';
+does-ok @fields[0], PDF::Annot::Widget, 'field type';
 
 is @fields[0].Type, 'Annot', 'Type';
 is @fields[0].Subtype, 'Widget', 'Subtype';

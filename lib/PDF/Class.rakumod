@@ -84,4 +84,10 @@ class PDF::Class:ver<0.4.3>#:api<PDF-1.7>
     my subset PagesLike of PDF::Class::Type where { .<Type> ~~ 'Pages' }; # autoloaded PDF::Pages
     method Pages returns PagesLike handles <page pages add-page delete-page insert-page page-count page-index media-box crop-box bleed-box trim-box art-box core-font use-font rotate> { self.Root.Pages }
 
+    method fields {
+        do with self.Root.AcroForm { .fields } // [];
+    }
+    method fields-hash(|c) {
+        do with self.Root.AcroForm { .fields-hash(|c) } // %();
+    }
 }

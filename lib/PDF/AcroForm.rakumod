@@ -24,6 +24,11 @@ role PDF::AcroForm
 	}
 	@fields;
     }
+    method take-fields returns Array {
+        my $flds = $.Fields;
+	$flds[$_].take-fields
+            for $flds.keys;
+    }
     #| return fields mapped to a hash. Default keys are $.T and $.TU field entries
     method fields-hash( Array $fields-arr = self.fields,
                         :$key where 'T'|'TU'|'TR' = 'T'

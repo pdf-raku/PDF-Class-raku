@@ -77,8 +77,10 @@ class PDF::Page
     has Hash @.VP is entry(:alias<view-ports>);  # Optional; PDF 1.6) An array of viewport dictionaries
 
     method fields {
-        my $annots = self.Annots;
-        $annots.keys.map({$annots[$_]}).grep(PDF::Field)
+        with self.Annots -> $annots {
+            $annots.keys.map({$annots[$_]}).grep(PDF::Field);
+        }
+        else { [] }
     }
 
     method fields-hash( Array $fields-arr = self.fields,
