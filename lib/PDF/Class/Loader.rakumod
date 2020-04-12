@@ -5,6 +5,7 @@ use PDF::COS::Loader;
 PDF::COS.loader = class PDF::Class::Loader
     is PDF::COS::Loader {
 
+    use PDF::Class::Defs :ActionName, :AnnotName;
     use PDF::COS::Util :from-ast;
     use PDF::COS::Name;
     use PDF::COS::Dict;
@@ -51,14 +52,9 @@ PDF::COS.loader = class PDF::Class::Loader
 	my $subtype = from-ast $dict<Subtype>;
 
 	my $type = do given $subtype {
-	    # See [PDF 32000 Table 169 - Annotation types]
-	    when 'Text'|'Link'|'FreeText'|'Line'|'Square'|'Circle'
-		|'Polygon'|'PolyLine'|'Highlight'|'Underline'|'Squiggly'
-		|'StrikeOut'|'Stamp'|'Caret'|'Ink'|'Popup'|'FileAttachment'
-		|'Sound'|'Movie'|'Widget'|'Screen'|'PrinterMark'|'TrapNet'
-		|'Watermark'    { 'Annot' }
-            when 'Markup3D' { 'ExData' }
             when '3D' { $subtype = 'ThreeD'; 'Annot' }
+	    when AnnotName  { 'Annot' }
+            when 'Markup3D' { 'ExData' }
 	    when 'PS'|'Image'|'Form' { 'XObject' }
             when 'Type1C'|'CIDFontType0C'|'OpenType' {
                 $subtype = Nil; # not currently subclassed
@@ -85,9 +81,7 @@ PDF::COS.loader = class PDF::Class::Loader
                     $subtype = Nil; # not subclassed
                     'OutputIntent';
                  }
-            when 'GoTo'|'GoToR'|'GoToE'|'Launch'|'Thread'|'URI'|'Sound'|'Movie'
-                |'Hide'|'Named'|'SubmitForm'|'ResetForm'|'ImportData'|'JavaScript'
-                |'SetOCGState'|'Rendition'|'Trans'|'GoTo3DView' { 'Action' }
+            when ActionName     { 'Action' }
             when 'Transparency' { 'Group' }
             default { Nil }
 	};
@@ -100,17 +94,14 @@ PDF::COS.loader = class PDF::Class::Loader
         }
     }
 
-    subset ColorSpace-Array of List where {
-        my $elems := .elems;
-
-        2 <= $elems <= 5
-            && ((my $t = from-ast .[0]) ~~ PDF::COS::Name)
-            && ($elems == 2
-                ?? $t ~~ 'CalGray'|'CalRGB'|'Lab'|'ICCBased'|'Pattern' #| PDF Spec 1.7 Section 4.5.4 CIE-Based Color Spaces
-                !! $t ~~ 'Indexed'|'Separation'|'DeviceN'); #| PDF Spec 1.7 Section 4.5.5 Special Color Spaces
+    my subset ColorSpaceName of PDF::COS::Name
+        where ('CalGray'|'CalRGB'|'Lab'|'ICCBased'|'Pattern' #| PDF Spec 1.7 Section 4.5.4 CIE-Based Color Spaces
+               |'Indexed'|'Separation'|'DeviceN'); #| PDF Spec 1.7 Section 4.5.5 Special Color Spaces)
+    my subset ColorSpace of List where {
+        2 <= .elems <= 5 && from-ast(.[0]) ~~ ColorSpaceName
     }
 
-    multi method load-delegate(ColorSpace-Array :$array!, :$base-class!) {
+    multi method load-delegate(ColorSpace :$array!, :$base-class!) {
 	my $color-type = from-ast $array[0];
 	$.find-delegate('ColorSpace', $color-type, :$base-class);
     }

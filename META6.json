@@ -49,6 +49,7 @@
     "PDF::CMap": "lib/PDF/CMap.rakumod",
     "PDF::Catalog": "lib/PDF/Catalog.rakumod",
     "PDF::Class": "lib/PDF/Class.rakumod",
+    "PDF::Class::Defs": "lib/PDF/Class/Defs.rakumod",
     "PDF::Class::Loader": "lib/PDF/Class/Loader.rakumod",
     "PDF::Class::OutlineNode": "lib/PDF/Class/OutlineNode.rakumod",
     "PDF::Class::ThreeD": "lib/PDF/Class/ThreeD.rakumod",
@@ -143,5 +144,5 @@
   ],
   "test-depends": [
   ],
-  "version": "0.4.3"
+  "version": "0.4.4"
 }

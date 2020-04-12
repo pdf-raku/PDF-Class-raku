@@ -35,10 +35,7 @@ class PDF::Annot
 
     # See [PDF Spec 1.7 table 8.15 - Entries common to all annotation dictionaries ]
     has PDF::COS::Name $.Type is entry(:alias<type>) where 'Annot';
-    my subset AnnotName of PDF::COS::Name where 'Text'|'Link'|'FreeText'|'Line'|'Square'|
-        'Circle'|'Polygon'|'PolyLine'|'Highlight'|'Underline'|'Squiggly'|'StrikeOut'|
-        'Stamp'|'Caret'|'Ink'|'Popup'|'FileAttachment'|'Sound'|'Movie'|'Widget'|'Screen'|
-        'PrinterMark'|'TrapNet'|'Watermark'|'3D'|'Redact';
+    use PDF::Class::Defs :AnnotName;
     has AnnotName $.Subtype is entry(:required, :alias<subtype>);
     has Numeric @.Rect is entry(:required, :len(4), :alias<rect>);    # (Required) The annotation rectangle, defining the location of the annotation on the page in default user space units.
     has PDF::COS::TextString $.Contents is entry(:alias<content>);    # (Optional) Text to be displayed for the annotation or, if this type of annotation does not display text, an alternate description of the annotation’s contents in human-readable form
@@ -70,5 +67,11 @@ class PDF::Annot
     has OCG-or-OCMD $.OC is entry(:alias<optional-content>);    # (Optional; PDF 1.5) An optional content group or optional content membership dictionary specifying the optional content properties for the annotation.
 
     has Hash $.DR is entry(:alias<default-resources>);          # In PDF 1.2, an additional entry in the field dictionary, DR, was defined but was never implemented. Beginning with PDF 1.5, this entry is obsolete and should be ignored.
+
+    method annots {
+        my @annots;
+        @annots.push: self;
+        @annots;
+    }
 
 }

@@ -7,6 +7,7 @@ role PDF::Field
     does PDF::COS::Tie::Hash
     does PDF::Class::Type::Subtyped {
 
+    use PDF::Class::Defs :AnnotName;
     use PDF::COS::Tie;
     use PDF::COS::TextString;
     use PDF::COS::Dict;
@@ -60,7 +61,7 @@ role PDF::Field
     has FieldTypeName $.FT is entry(:inherit, :alias<subtype>);  # Required for terminal fields; inheritable) The type of field that this dictionary describes
     has PDF::Field $.Parent is entry(:indirect);      # (Required if this field is the child of another in the field hierarchy; absent otherwise) The field that is the immediate parent of this one (the field, if any, whose Kids array includes this field). A field can have at most one parent; that is, it can be included in the Kids array of at most one other field.
 
-    my subset AnnotLike of Hash where .<Type> ~~ 'Annot';
+    my subset AnnotLike of Hash where .<Subype> ~~ AnnotName;
     my subset FieldLike is export(:FieldLike) of Hash where { (.<FT>:exists) || (.<Kids>:exists) }
 
     my subset AnnotOrField of Hash where AnnotLike|PDF::Field;
@@ -116,7 +117,7 @@ role PDF::Field
     }
 
     #| return immediate annotations only. return ourself, if we're an annotation,
-    #| otherwise return any annots from out immediate kids
+    #| otherwise return any annots from our immediate kids
     method annots {
 	my @annots;
 	if self ~~ AnnotLike {
@@ -125,7 +126,7 @@ role PDF::Field
 	elsif  self.Kids.defined {
 	    for self.Kids.keys {
 		my $kid = self.Kids[$_];
-		@annots.append: $kid.fields
+		@annots.append: $kid.annots
 		    if $kid ~~ AnnotLike && $kid !~~ FieldLike;
 	    }
 	}
