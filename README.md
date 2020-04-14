@@ -262,7 +262,7 @@ Prints various PDF properties. For example:
    - --list [--labels]                 % list fields and current values
    - --fill [--labels] key value ...   % fill fields from keys and values
    - --slice=i value value ...         % set consecutive fields from values
-   - --reformat                        % reset field formatting
+   - --reset [-/reformat] [-triggers]  % reset fields. Defaults: remove formats, keep triggers
 
 ##### General Options:
    - --page=n             select nth page

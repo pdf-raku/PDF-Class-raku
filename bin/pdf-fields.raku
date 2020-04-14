@@ -32,24 +32,35 @@ multi sub MAIN(
 #| remove field formatting
 multi sub MAIN(
     Str $infile,            #| input PDF
-    Bool :reformat($)! where .so,
+    Bool :reset($)! where .so,
+    Bool :$reformat = True,
+    Bool :$triggers = True,
     Str  :$save-as,
     Str  :$password = '',   #| password for the PDF/FDF, if encrypted
     ) {
-    my PDF::Class $pdf .= open($infile, :$password);
-    with $pdf.Root.AcroForm {
-        .NeedAppearances = True;
-        .<AP>:delete for .fields;
+    if !$reformat && $triggers {
+        note "nothing to do";
     }
     else {
-	warn "this {$pdf.type} has no form fields";
-    }
+        my PDF::Class $pdf .= open($infile, :$password);
+        with $pdf.Root.AcroForm {
+            .NeedAppearances = True
+                if $reformat;
+            for .fields {
+                .<AP>:delete if $reformat;
+                .<AA>:delete unless $triggers;
+            }
+        }
+        else {
+	    warn "this {$pdf.type} has no form fields";
+        }
 
-    with $save-as {
-        $pdf.save-as( $_ );
-    }
-    else {
-        $pdf.update;
+        with $save-as {
+            $pdf.save-as( $_ );
+        }
+        else {
+            $pdf.update;
+        }
     }
 }
 
@@ -142,7 +153,7 @@ pdf-fields.raku - Manipulate PDF fields
    --list [--labels]                 % list fields and current values
    --fill [--labels] key value ...   % fill fields from keys and values
    --slice=i value value ...         % set consecutive fields from values
-   --reformat                        % reset field formatting
+   --reset [-/reformat] [-triggers]  % reset fields. Defaults: remove format, keep triggers
 
  General Options:
    --page=n             select nth page
