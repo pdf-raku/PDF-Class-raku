@@ -256,6 +256,21 @@ Prints various PDF properties. For example:
     Revisions:    1
     Encryption:   no
 
+#### `pdf-fields.raku --password=pass --page=n  --save-as=out.pdf [options] in.pdf`
+
+##### Modes
+   - --list [--labels]                 % list fields and current values
+   - --fill [--labels] key value ...   % fill fields from keys and values
+   - --slice=i value value ...         % set consecutive fields from values
+   - --reformat                        % reset field formatting
+
+##### General Options:
+   - --page=n             select nth page
+   - --save-as=out.pdf    save to a file
+   - --password           provide user/owner password for an encrypted PDF
+
+List, reformat or set PDF form fields.
+
 #### `pdf-revert.raku --password=pass --save-as=out.pdf in.pdf`
 
 undoes the last revision of an incrementally saved PDF file.
