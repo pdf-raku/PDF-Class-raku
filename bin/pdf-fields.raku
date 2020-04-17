@@ -25,7 +25,7 @@ multi sub MAIN(
         }
     }
     else {
-	warn "this {$pdf.type} has no form fields";
+	warn "this {$pdf.type} file has no form fields";
     }
 }
 

@@ -1,6 +1,8 @@
 Release 0.4.4
 - Add PDF::Class::Defs. Fix annot detection in PDF::Field
-- Add script pdf-fields.raku
+- rename methods PDF::Field.flags -> PDF::Field.field-flags and
+  PDF::Annots.flags -> PDF::Annots.annot-flags. Keep these distinct
+  as the PDF::Field role is commonly mixed into PDF::Annot.
 
 Release 0.4.3
 - [PDF::Field]

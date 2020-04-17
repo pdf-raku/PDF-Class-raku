@@ -14,6 +14,7 @@ class PDF::Annot::_Markup
     use PDF::Annot::Popup;
     use PDF::COS::Stream;
     use PDF::ExData::Markup3D;
+    use PDF::Class::Defs :TextOrStream;
 
     # use ISO_32000::Table_170-Additional_entries_specific_to_markup_annotations;
     # also does ISO_32000::Table_170-Additional_entries_specific_to_markup_annotations;
@@ -29,11 +30,7 @@ class PDF::Annot::_Markup
     # The specified value shall not used if the annotation has an appearance stream; in that case, the appearance stream shall specify any transparency. (However, if the compliant viewer regenerates the annotation’s appearance stream, it may incorporate the CA value into the stream’s content.)
     # The implicit blend mode is Normal. Default value: 1.0.
     # If no explicit appearance stream is defined for the annotation, it may be painted by implementation-dependent means that do not necessarily conform to the PDF imaging model; in this case, the effect of this entry is implementation-dependent as well.
-    my subset RichTextLike where PDF::COS::TextString | PDF::COS::Stream;
-    multi sub coerce(Str $value is rw, RichTextLike) {
-	PDF::COS.coerce( $value, PDF::COS::TextString );
-    }
-    has RichTextLike $.RC is entry(:alias<rich-text>, :&coerce); # (Optional; PDF 1.5) A rich text string that shall be displayed in the pop-up window when the annotation is opened.
+    has TextOrStream $.RC is entry(:alias<rich-text>, :coerce(&coerce-text-or-stream)); # (Optional; PDF 1.5) A rich text string that shall be displayed in the pop-up window when the annotation is opened.
     has PDF::COS::DateString $.CreationDate is entry; # (Optional; PDF 1.5) The date and time when the annotation was created.
     my subset ReplyToLike where PDF::COS::TextString | PDF::COS::Dict;
     multi sub coerce(Str $value is rw, ReplyToLike) {

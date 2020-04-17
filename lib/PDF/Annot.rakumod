@@ -52,7 +52,7 @@ class PDF::Annot
                                                                 # The preferred format is a date string, but viewer applications should be prepared to accept and display a string in any format.
 ##    my UInt enum AnnotsFlag is export(:AnnotsFlag) « :Invisable(1) :Hidden(2) :Print(3) :NoZoom(4) :NoRotate(5) :NoView(6) :ReadOnly(7) :Locked(8) :ToggleNoView(9) :LockedContents(10) »;
     my subset AnnotFlagsInt of UInt where 0 ..^ 2 +< 9;
-    has AnnotFlagsInt $.F is entry(:alias<flags>);              # (Optional; PDF 1.1) A set of flags specifying various characteristics of the annotation
+    has AnnotFlagsInt $.F is entry(:alias<annot-flags>);              # (Optional; PDF 1.1) A set of flags specifying various characteristics of the annotation
     has PDF::Appearance $.AP is entry(:alias<appearance>);      # (Optional; PDF 1.2) An appearance dictionary specifying how the annotation is presented visually on the page
     has PDF::COS::Name $.AS is entry(:alias<appearance-state>); # (Required if the appearance dictionary AP contains one or more subdictionaries; PDF 1.2) The annotation’s appearance state, which selects the applicable appearance stream from an appearance subdictionary
     role Border does PDF::COS::Tie::Array {

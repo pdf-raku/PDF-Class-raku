@@ -6,12 +6,12 @@ use PDF::Class::Type;
 role PDF::Field
     does PDF::COS::Tie::Hash
     does PDF::Class::Type::Subtyped {
-
-    use PDF::Class::Defs :AnnotName;
+BEGIN note "compiling {$?ROLE.^name}";
     use PDF::COS::Tie;
     use PDF::COS::TextString;
     use PDF::COS::Dict;
     use PDF::COS::Name;
+    use PDF::Class::Defs :AnnotName, :TextOrStream;
 
     my role vanilla does PDF::Field {
         # use ISO_32000::Table_220-Entries_common_to_all_field_dictionaries;
@@ -139,7 +139,7 @@ role PDF::Field
 
     has PDF::COS::TextString $.TM is entry(:alias<tag>);     # (Optional; PDF 1.3) The mapping name to be used when exporting interactive form field data from the document.
 
-    has UInt $.Ff is entry(:inherit, :alias<flags>);           # Optional; inheritable) A set of flags specifying various characteristics of the field
+    has UInt $.Ff is entry(:inherit, :alias<field-flags>);           # Optional; inheritable) A set of flags specifying various characteristics of the field
 
     has Hash $.AA is entry(:alias<additional-actions>);                     # (Optional; PDF 1.2) An additional-actions dictionary defining the field’s behavior in response to various trigger events. This entry has exactly the same meaning as the AA entry in an annotation dictionary
 
@@ -155,12 +155,7 @@ role PDF::Field
 
     has PDF::COS::TextString $.DS is entry(:alias<default-style>);     # Optional; PDF 1.5) A default style string
 
-    use PDF::COS::Stream;
-    my subset TextOrStream where PDF::COS::TextString | PDF::COS::Stream;
-    multi sub coerce(Str $value is rw, TextOrStream) {
-	$value = PDF::COS.coerce( $value, PDF::COS::TextString );
-    }
-    has TextOrStream $.RV is entry( :&coerce, :alias<rich-text> );  # (Optional; PDF 1.5) A rich text string
+    has TextOrStream $.RV is entry(:coerce(&coerce-text-or-stream), :alias<rich-text>);  # (Optional; PDF 1.5) A rich text string
 
     method cb-check {
         die "Fields should have an /FT or /Kids entry"
