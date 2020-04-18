@@ -1,8 +1,10 @@
 Release 0.4.4
 - Add PDF::Class::Defs. Fix annot detection in PDF::Field
-- rename methods PDF::Field.flags -> PDF::Field.field-flags and
+- Rename methods PDF::Field.flags -> PDF::Field.field-flags and
   PDF::Annots.flags -> PDF::Annots.annot-flags. Keep these distinct
   as the PDF::Field role is commonly mixed into PDF::Annot.
+- Add enumerations PDF::Annot :AnnotFlag and PDF::Field :FieldFlag,
+  :BtnFieldFllag, :TextFieldFlag, ChoiceFieldFlag
 
 Release 0.4.3
 - [PDF::Field]
