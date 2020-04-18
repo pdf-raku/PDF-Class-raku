@@ -6,7 +6,7 @@ use PDF::Class::Type;
 role PDF::Field
     does PDF::COS::Tie::Hash
     does PDF::Class::Type::Subtyped {
-BEGIN note "compiling {$?ROLE.^name}";
+
     use PDF::COS::Tie;
     use PDF::COS::TextString;
     use PDF::COS::Dict;
@@ -55,6 +55,9 @@ BEGIN note "compiling {$?ROLE.^name}";
     multi sub coerce( PDF::COS::Dict $dict, PDF::Field $field ) {
 	# refuse to coerce an annotation as a field
 	PDF::COS.coerce( $dict, $field.field-delegate( $dict ) );
+    }
+    method coerce(Hash $dict) {
+        coerce( PDF::COS.coerce(:$dict), self.WHAT);
     }
 
     method type { 'Field' }
@@ -139,7 +142,26 @@ BEGIN note "compiling {$?ROLE.^name}";
 
     has PDF::COS::TextString $.TM is entry(:alias<tag>);     # (Optional; PDF 1.3) The mapping name to be used when exporting interactive form field data from the document.
 
-    has UInt $.Ff is entry(:inherit, :alias<field-flags>);           # Optional; inheritable) A set of flags specifying various characteristics of the field
+    # See [ISO-32000 Table 221 - Field flags common to all field types]
+    my Int enum FieldFlag is export(:FieldFlag) « :FieldReadonly(1) :FieldRequired(2) :FieldNoExport(3)»;
+
+    # See [ISO-32000 Table 226 - Field flags common to button fields]
+    my Int enum BtnFieldFlag is export(:BtnFieldFlag) « :BtnFieldNoToggleToOff(15) :BtnFieldRadio(16) :BtnFieldPushButton(17) :BtnFieldRadiosInUnison(26) »;
+
+    # See [ISO-32000 Table 228 - Field flags common to text fields]
+    my Int enum TextFieldFlag is export(:TextFieldFlag) «
+        :TextFieldMultiline(13)  :TextFieldPassword(14)
+        :TextFieldFileSelect(21) :TextFieldDoNotSpellCheck(23)
+        :TextFieldDoNotScroll(24) :TextFieldComb(25) :TextFieldRichText(26) »;
+
+    # See [ISO-32000 Table 230 - Field flags common to choice fields]
+    my Int enum ChoiceFieldFlag is export(:ChoiceFieldFlag) «
+      :ChoiceFieldCombo(18) :ChoiceFieldEdit(19)
+      :ChoiceFieldDoNotSpellCheck(23) :ChoiceFieldCommitOnSelChange(24)
+    »;
+
+    my subset FeildFlagsInt of UInt where 0 ..^ 2 +< 27;
+    has UInt $.Ff is entry(:inherit, :alias<field-flags>, :default(0));           # Optional; inheritable) A set of flags specifying various characteristics of the field
 
     has Hash $.AA is entry(:alias<additional-actions>);                     # (Optional; PDF 1.2) An additional-actions dictionary defining the field’s behavior in response to various trigger events. This entry has exactly the same meaning as the AA entry in an annotation dictionary
 
