@@ -76,7 +76,7 @@ multi sub MAIN(
     Str  :$password = '',
     UInt :$page,            #| selected page
     *@field-values) {
-
+    $slice--; # 1 offset to 0 offset
     my PDF::Class $pdf .= open($infile, :$password);
     die "$infile has no fields defined"
 	unless $pdf.Root.AcroForm;
@@ -153,7 +153,7 @@ pdf-fields.raku - Manipulate PDF fields
  Options
    --list [--labels]                 % list fields and current values
    --edit [--labels] :key=value ...  % set fields from keys and values
-   --slice=i value value ...         % set consecutive fields from values
+   --slice[=n] value value ...       % set consecutive fields starting at n (first=1)
    --reset [-/reformat] [-triggers]  % reset fields. Defaults: remove format, keep triggers
 
  General Options:
