@@ -2,6 +2,10 @@
 use v6;
 use PDF::Class;
 
+my %*SUB-MAIN-OPTS =
+  :named-anywhere,    # allow named variables at any location 
+;
+
 #| list all fields and current values
 multi sub MAIN(
     Str $infile,            #| input PDF
@@ -101,12 +105,12 @@ multi sub MAIN(
 #| update PDF, setting specified fields from name-value pairs
 multi sub MAIN(
     Str $infile,
-    Bool :fill($)! where .so,
+    Bool :edit($)! where .so,
     Str  :$save-as,
     Bool :$labels,          #| display labels, rather than keys
     Str  :$password = '',
     UInt :$page,            #| selected page
-    *@field-list) {
+    *%edits) {
 
     enum ( :Keys<T>, :Labels<TU> );
     my Str $key = $labels ?? Labels !! Keys;
@@ -115,20 +119,17 @@ multi sub MAIN(
     die "$infile has no fields defined"
 	unless $pdf.Root.AcroForm;
 
-    die "please provide field-value pairs or --list to display fields"
-	unless @field-list;
-
-    die "last field not paired with a value: {@field-list.tail}"
-	unless +@field-list %% 2;
+    die "please provide field-values or --list to display fields"
+	unless %edits;
 
     my %fields = ($page ?? $pdf.page($page) !! $pdf).fields-hash: :$key;
 
-    for @field-list -> $key, $val {
-	if %fields{$key}:exists {
-	    %fields{$key}.V = $val;
+    for %edits.sort {
+	if %fields{.key}:exists {
+	    %fields{.key}.V = .value;
 	}
 	else {
-	    warn "no such field: $key. Use --list to display fields";
+	    warn "no such field: {.key}. Use --list to display fields";
 	}
     }
 
@@ -151,7 +152,7 @@ pdf-fields.raku - Manipulate PDF fields
  pdf-fields.raku --password=pass --page=n --save-as=out.pdf [options] in.pdf
  Options
    --list [--labels]                 % list fields and current values
-   --fill [--labels] key value ...   % fill fields from keys and values
+   --edit [--labels] :key=value ...  % set fields from keys and values
    --slice=i value value ...         % set consecutive fields from values
    --reset [-/reformat] [-triggers]  % reset fields. Defaults: remove format, keep triggers
 
@@ -162,7 +163,7 @@ pdf-fields.raku - Manipulate PDF fields
 
 =head1 DESCRIPTION
 
-List, reformat or set PDF form fields.
+List, edit or reset PDF form fields.
 
 =head1 SEE ALSO
 
