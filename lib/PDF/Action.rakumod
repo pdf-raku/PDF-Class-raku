@@ -13,11 +13,11 @@ role PDF::Action
 
     use PDF::COS::Tie;
     use PDF::COS::Name;
-    use PDF::Class::Defs :ActionName;
+    use PDF::Class::Defs :ActionSubtype;
 
     has PDF::COS::Name $.Type is entry(:alias<type>) where 'Action';
 
-    has ActionName $.S is entry(:required, :alias<subtype>);
+    has PDF::COS::Name $.S is entry(:required, :alias<subtype>) where ActionSubtype;
 
     has PDF::Action @.Next is entry(:array-or-item);
 }

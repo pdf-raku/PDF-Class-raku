@@ -35,8 +35,8 @@ class PDF::Annot
 
     # See [PDF Spec 1.7 table 8.15 - Entries common to all annotation dictionaries ]
     has PDF::COS::Name $.Type is entry(:alias<type>) where 'Annot';
-    use PDF::Class::Defs :AnnotName;
-    has AnnotName $.Subtype is entry(:required, :alias<subtype>);
+    use PDF::Class::Defs :AnnotSubtype;
+    has PDF::COS::Name $.Subtype is entry(:required, :alias<subtype>) where AnnotSubtype;
     has Numeric @.Rect is entry(:required, :len(4), :alias<rect>);    # (Required) The annotation rectangle, defining the location of the annotation on the page in default user space units.
     has PDF::COS::TextString $.Contents is entry(:alias<content>);    # (Optional) Text to be displayed for the annotation or, if this type of annotation does not display text, an alternate description of the annotation’s contents in human-readable form
     has PDF::Page $.P is entry(:alias<page>);                         # (Optional; PDF 1.3; not used in FDF files) An indirect reference to the page object with which this annotation is associated.

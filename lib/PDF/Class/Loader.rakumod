@@ -5,7 +5,7 @@ use PDF::COS::Loader;
 PDF::COS.loader = class PDF::Class::Loader
     is PDF::COS::Loader {
 
-    use PDF::Class::Defs :ActionName, :AnnotName;
+    use PDF::Class::Defs :ActionSubtype, :AnnotSubtype;
     use PDF::COS::Util :from-ast;
     use PDF::COS::Name;
     use PDF::COS::Dict;
@@ -53,8 +53,8 @@ PDF::COS.loader = class PDF::Class::Loader
 
 	my $type = do given $subtype {
             when '3D' { $subtype = 'ThreeD'; 'Annot' }
-	    when AnnotName  { 'Annot' }
-            when 'Markup3D' { 'ExData' }
+	    when AnnotSubtype  { 'Annot' }
+            when 'Markup3D'    { 'ExData' }
 	    when 'PS'|'Image'|'Form' { 'XObject' }
             when 'Type1C'|'CIDFontType0C'|'OpenType' {
                 $subtype = Nil; # not currently subclassed
@@ -81,7 +81,7 @@ PDF::COS.loader = class PDF::Class::Loader
                     $subtype = Nil; # not subclassed
                     'OutputIntent';
                  }
-            when ActionName     { 'Action' }
+            when ActionSubtype  { 'Action' }
             when 'Transparency' { 'Group' }
             default { Nil }
 	};

@@ -11,7 +11,7 @@ role PDF::Field
     use PDF::COS::TextString;
     use PDF::COS::Dict;
     use PDF::COS::Name;
-    use PDF::Class::Defs :AnnotName, :TextOrStream;
+    use PDF::Class::Defs :AnnotLike, :TextOrStream;
 
     my role vanilla does PDF::Field {
         # use ISO_32000::Table_220-Entries_common_to_all_field_dictionaries;
@@ -23,7 +23,7 @@ role PDF::Field
         has Any $.DV is entry(:inherit);          # (Optional; inheritable) The default value to which the field reverts when a reset-form action is executed. The format of this value is the same as that of V.
     }
 
-    my subset FieldTypeName of PDF::COS::Name
+    my subset FieldSubtypeName of PDF::COS::Name
 	where ( 'Btn' # Button
 	      | 'Tx'  # Text
               | 'Ch'  # Choice
@@ -61,10 +61,9 @@ role PDF::Field
     }
 
     method type { 'Field' }
-    has FieldTypeName $.FT is entry(:inherit, :alias<subtype>);  # Required for terminal fields; inheritable) The type of field that this dictionary describes
+    has FieldSubtypeName $.FT is entry(:inherit, :alias<subtype>);  # Required for terminal fields; inheritable) The type of field that this dictionary describes
     has PDF::Field $.Parent is entry(:indirect);      # (Required if this field is the child of another in the field hierarchy; absent otherwise) The field that is the immediate parent of this one (the field, if any, whose Kids array includes this field). A field can have at most one parent; that is, it can be included in the Kids array of at most one other field.
 
-    my subset AnnotLike of Hash where .<Subype> ~~ AnnotName;
     my subset FieldLike is export(:FieldLike) of Hash where { (.<FT>:exists) || (.<Kids>:exists) }
 
     my subset AnnotOrField of Hash where AnnotLike|PDF::Field;

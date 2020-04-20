@@ -5,16 +5,18 @@ use PDF::COS::Stream;
 use PDF::COS::TextString;
 
 # See [PDF 32000 Table 169 - Annotation types]
-my subset AnnotName of PDF::COS::Name
-    is export(:AnnotName)
+my subset AnnotSubtype of Str
+    is export(:AnnotSubtype)
     where 'Text'|'Link'|'FreeText'|'Line'|'Square'|
     'Circle'|'Polygon'|'PolyLine'|'Highlight'|'Underline'|'Squiggly'|'StrikeOut'|
     'Stamp'|'Caret'|'Ink'|'Popup'|'FileAttachment'|'Sound'|'Movie'|'Widget'|'Screen'|
     'PrinterMark'|'TrapNet'|'Watermark'|'3D'|'Redact';
 
+my subset AnnotLike is export(:AnnotLike) of Hash where .<Subtype> ~~ AnnotSubtype;
+
 # See [PDF 32000 Table 198 – Action types]
-my subset ActionName of PDF::COS::Name
-    is export(:ActionName)
+my subset ActionSubtype of Str
+    is export(:ActionSubtype)
     where
     'GoTo'         #| Go to a destination in the current document.
     |'GoToR'       #| (“Go-to remote”) Go to a destination in another document.
