@@ -9,11 +9,11 @@ class PDF::ColorSpace::Indexed
     use PDF::COS::Name;
     use PDF::COS::Stream;
     use PDF::COS::ByteString;
+    use PDF::Class::Defs :ColorSpace;
 
     # see [PDF 32000 Section 8.6.6.3 Indexed Color Spaces]
 
-    my subset ColorSpaceLike where PDF::COS::Name|PDF::ColorSpace;
-    has ColorSpaceLike $.Base is index(1);
+    has ColorSpace $.Base is index(1);
 
     has UInt $.Hival is index(2);
 

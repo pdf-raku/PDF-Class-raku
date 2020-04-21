@@ -11,7 +11,7 @@ role PDF::Shading
     use PDF::COS::Array;
     use PDF::COS::Name;
     use PDF::COS::Dict;
-    use PDF::ColorSpace;
+    use PDF::Class::Defs :ColorSpace;
 
     my subset ShadingTypeInt of Int where 1..7;
     has ShadingTypeInt $.ShadingType is entry(:required);
@@ -19,9 +19,7 @@ role PDF::Shading
     # use ISO_32000::Table_78-Entries_Common_to_All_Shading_Dictionaries;
     # also does ISO_32000::Table_78-Entries_Common_to_All_Shading_Dictionaries;
 
-    my subset ColorSpaceLike of PDF::COS where PDF::COS::Name | PDF::ColorSpace;
-    has ColorSpaceLike
-    $.ColorSpace is entry(:required); # (Required) The color space in which color values are expressed.
+    has ColorSpace $.ColorSpace is entry(:required); # (Required) The color space in which color values are expressed.
     has @.Background is entry;                        # (Optional) An array of color components appropriate to the color space, specifying a single background color value.
     has Numeric @.BBox is entry(:len(4));             # (Optional) An array of four numbers giving the left, bottom, right, and top coordinates, respectively, of the shading’s bounding box
     has Bool $.AntiAlias is entry;                    # (Optional) A flag indicating whether to filter the shading function to prevent aliasing artifacts.

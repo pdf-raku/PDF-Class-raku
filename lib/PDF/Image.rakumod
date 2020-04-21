@@ -17,7 +17,7 @@ role PDF::Image
     use PDF::COS::Stream;
     use PDF::COS::Array;
     use PDF::COS::Name;
-    use PDF::ColorSpace;
+    use PDF::Class::Defs :ColorSpace;
     use PDF::ColorSpace::Indexed;
     use PDF::Metadata::XML;
     use PDF::OCG;   # optional content group
@@ -30,8 +30,7 @@ role PDF::Image
     has PDF::COS::Name $.Subtype is entry where 'Image';
     has Numeric $.Width is entry(:required);      # (Required) The width of the image, in samples.
     has Numeric $.Height is entry(:required);     # (Required) The height of the image, in samples.
-    my subset ColorSpaceLike where PDF::COS::Name | PDF::ColorSpace;
-    has ColorSpaceLike $.ColorSpace is entry;   # (Required for images, except those that use the JPXDecode filter; not allowed for image masks) The color space in which image samples are specified; it can be any type of color space except Pattern.
+    has ColorSpace $.ColorSpace is entry;   # (Required for images, except those that use the JPXDecode filter; not allowed for image masks) The color space in which image samples are specified; it can be any type of color space except Pattern.
     has UInt $.BitsPerComponent is entry;         # (Required except for image masks and images that use the JPXDecode filter)The number of bits used to represent each color component.
     has PDF::COS::Name $.Intent is entry;         # (Optional; PDF 1.1) The name of a color rendering intent to be used in rendering the image
     has Bool $.ImageMask is entry;                # (Optional) A flag indicating whether the image is to be treated as an image mask. If this flag is true, the value of BitsPerComponent must be 1 and Mask and ColorSpace should not be specified;

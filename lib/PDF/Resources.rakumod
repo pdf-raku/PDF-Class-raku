@@ -11,14 +11,14 @@ role PDF::Resources
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::COS::Stream;
+    use PDF::Class::Defs :ColorSpace;
 
     # use ISO_32000::Table_33-Entries_in_a_resource_dictionary;
     # also does ISO_32000::Table_33-Entries_in_a_resource_dictionary;
 
     has Hash %.ExtGState  is entry;  # (Optional) A dictionary that maps resource names to graphics state parameter dictionaries
 
-    my subset ColorSpaceLike of PDF::COS where PDF::COS::Name | List; # autoloaded PDF::ColorSpace
-    has ColorSpaceLike %.ColorSpace is entry;  # (Optional) A dictionary that maps each resource name to either the name of a device-dependent color space or an array describing a color space
+    has ColorSpace %.ColorSpace is entry;  # (Optional) A dictionary that maps each resource name to either the name of a device-dependent color space or an array describing a color space
 
     my subset PatternLike of Hash where .<PatternType> ~~ UInt; # autoloaded PDF::Pattern
     has PatternLike %.Pattern is entry;  # (Optional) A dictionary that maps resource names to pattern objects

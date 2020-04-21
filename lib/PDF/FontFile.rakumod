@@ -10,7 +10,7 @@ class PDF::FontFile
 
     use PDF::COS::Name;
     use PDF::COS::Tie;
+    use PDF::Class::Defs :FontFileType;
 
-    my subset FontType of PDF::COS::Name where 'Type1C'|'CIDFontType0C'|'OpenType';
-    has FontType $.Subtype is entry(:required);
+    has PDF::COS::Name $.Subtype is entry(:required) where FontFileType;
 }

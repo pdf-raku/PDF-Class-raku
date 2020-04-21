@@ -5,7 +5,7 @@ use PDF::COS::Loader;
 PDF::COS.loader = class PDF::Class::Loader
     is PDF::COS::Loader {
 
-    use PDF::Class::Defs :ActionSubtype, :AnnotSubtype;
+    use PDF::Class::Defs :ActionSubtype, :AnnotSubtype, :FontFileType;
     use PDF::COS::Util :from-ast;
     use PDF::COS::Name;
     use PDF::COS::Dict;
@@ -47,7 +47,7 @@ PDF::COS.loader = class PDF::Class::Loader
             !! $.find-delegate( $type, $subtype, :$base-class );
     }
 
-    #| Reverse lookup for classes when /Subtype is required but optional /Type is absent
+    #| Reverse lookup for classes when /Subtype is required but /Type is optional
     multi method load-delegate(Hash :$dict! where {.<Subtype>:exists }, :$base-class!) {
 	my $subtype = from-ast $dict<Subtype>;
 
@@ -56,7 +56,7 @@ PDF::COS.loader = class PDF::Class::Loader
 	    when AnnotSubtype  { 'Annot' }
             when 'Markup3D'    { 'ExData' }
 	    when 'PS'|'Image'|'Form' { 'XObject' }
-            when 'Type1C'|'CIDFontType0C'|'OpenType' {
+            when FontFileType {
                 $subtype = Nil; # not currently subclassed
                 'FontFile'
             }

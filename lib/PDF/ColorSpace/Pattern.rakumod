@@ -7,7 +7,7 @@ class PDF::ColorSpace::Pattern
 
     use PDF::COS::Tie;
     use PDF::COS::Name;
+    use PDF::Class::Defs :ColorSpace;
     # see [PDF 32000 Section 8.6.6.2 - Pattern Color Spaces]
-    my subset ColorSpaceLike where PDF::COS::Name|PDF::ColorSpace;
-    has ColorSpaceLike $.Colorspace is index(1);
+    has ColorSpace $.Colorspace is index(1);
 }

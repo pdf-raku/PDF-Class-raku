@@ -1,8 +1,10 @@
 unit module PDF::Class::Defs;
 
+use PDF::COS;
 use PDF::COS::Name;
 use PDF::COS::Stream;
 use PDF::COS::TextString;
+use PDF::ColorSpace;
 
 # See [PDF 32000 Table 169 - Annotation types]
 my subset AnnotSubtype of Str
@@ -38,7 +40,11 @@ my subset ActionSubtype of Str
     |'GoTo3DView'  #| (PDF 1.6) Set the current view of a 3D annotation
 ;
 
+my subset FontFileType of Str is export(:FontFileType) where 'Type1C'|'CIDFontType0C'|'OpenType';
+
 my subset TextOrStream is export(:TextOrStream) where PDF::COS::TextString | PDF::COS::Stream;
 multi sub coerce-text-or-stream(Str $value is rw, TextOrStream) is export(:TextOrStream) {
     $value = PDF::COS.coerce( $value, PDF::COS::TextString );
 }
+
+my subset ColorSpace of PDF::COS is export(:ColorSpace) where PDF::COS::Name | PDF::ColorSpace;
