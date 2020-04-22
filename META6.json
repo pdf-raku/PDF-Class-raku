@@ -26,6 +26,7 @@
     "PDF::Action::Sound": "lib/PDF/Action/Sound.rakumod",
     "PDF::Action::Thread": "lib/PDF/Action/Thread.rakumod",
     "PDF::Action::URI": "lib/PDF/Action/URI.rakumod",
+    "PDF::AdditionalActions": "lib/PDF/AdditionalActions.rakumod",
     "PDF::Annot": "lib/PDF/Annot.rakumod",
     "PDF::Annot::_Markup": "lib/PDF/Annot/_Markup.rakumod",
     "PDF::Annot::_TextMarkup": "lib/PDF/Annot/_TextMarkup.rakumod",

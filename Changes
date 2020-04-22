@@ -5,6 +5,7 @@ Release 0.4.4
   as the PDF::Field role is commonly mixed into PDF::Annot.
 - Add enumerations PDF::Annot :AnnotFlag and PDF::Field :FieldFlag,
   :BtnFieldFllag, :TextFieldFlag, ChoiceFieldFlag
+- Add role PDF::AdditionalActions
 
 Release 0.4.3
 - [PDF::Field]

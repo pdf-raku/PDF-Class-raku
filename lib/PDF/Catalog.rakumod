@@ -20,6 +20,7 @@ class PDF::Catalog
     use PDF::COS::Stream;
     use PDF::COS::TextString;
 
+    use PDF::AdditionalActions;
     use PDF::NumberTree;
     use PDF::NameTree;
     use PDF::Destination :DestSpec, :DestNamed, :coerce-dest;
@@ -120,7 +121,7 @@ class PDF::Catalog
     }
     has OpenAction $.OpenAction is entry(:coerce(&coerce-action));    # (Optional; PDF 1.1) A value specifying a destination to be displayed or an action to be performed when the document is opened.
 
-    has PDF::COS::Dict $.AA is entry(:alias<additional-actions>);           # (Optional; PDF 1.4) An additional-actions dictionary defining the actions to be taken in response to various trigger events affecting the document as a whole
+    has PDF::AdditionalActions $.AA is entry(:alias<additional-actions>);           # (Optional; PDF 1.4) An additional-actions dictionary defining the actions to be taken in response to various trigger events affecting the document as a whole
 
     role URI does PDF::COS::Tie::Hash {
         # use ISO_32000::Table_207-Entry_in_a_URI_dictionary;
