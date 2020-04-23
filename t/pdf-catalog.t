@@ -156,4 +156,4 @@ is $catalog.Type, 'Catalog', 'catalog $.Type';
 
 $dict<Type> = :name<Wtf>;
 todo "type-check on new";
-dies-ok {PDF::Catalog.new( :$dict )}, 'catalog .new with invalid /Type - dies';
+quietly dies-ok {PDF::Catalog.new( :$dict )}, 'catalog .new with invalid /Type - dies';
