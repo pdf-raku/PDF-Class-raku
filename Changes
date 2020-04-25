@@ -6,6 +6,7 @@ Release 0.4.4
 - Add enumerations PDF::Annot :AnnotFlag and PDF::Field :FieldFlag,
   :BtnFieldFllag, :TextFieldFlag, ChoiceFieldFlag
 - Add role PDF::AdditionalActions
+- Renamed github project and repository p6-pdf/PDF-Class-p6 -> pdf-raku/PDF-Class-raku
 
 Release 0.4.3
 - [PDF::Field]

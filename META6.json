@@ -139,7 +139,7 @@
   },
   "resources": [
   ],
-  "source-url": "https://github.com/p6-pdf/PDF-Class-p6.git",
+  "source-url": "https://github.com/pdf-raku/PDF-Class-raku.git",
   "tags": [
     "pdf"
   ],
