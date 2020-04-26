@@ -105,7 +105,7 @@ multi sub MAIN(
 #| update PDF, setting specified fields from name-value pairs
 multi sub MAIN(
     Str $infile,
-    Bool :edit($)! where .so,
+    Bool :fill($)! where .so,
     Str  :$save-as,
     Bool :$labels,          #| display labels, rather than keys
     Str  :$password = '',
@@ -152,7 +152,7 @@ pdf-fields.raku - Manipulate PDF fields
  pdf-fields.raku --password=pass --page=n --save-as=out.pdf [options] in.pdf
  Options
    --list [--labels]                 % list fields and current values
-   --edit [--labels] :key=value ...  % set fields from keys and values
+   --fill [--labels] -key=value ...  % set fields from keys and values
    --slice[=n] value value ...       % set consecutive fields starting at n (first=1)
    --reset [-/reformat] [-triggers]  % reset fields. Defaults: remove format, keep triggers
 

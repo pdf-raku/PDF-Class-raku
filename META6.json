@@ -1,6 +1,6 @@
 {
   "api": "PDF-1.7",
-  "auth": "github:p6-pdf",
+  "auth": "github:pdf-raku",
   "authors": [
     "David Warring"
   ],

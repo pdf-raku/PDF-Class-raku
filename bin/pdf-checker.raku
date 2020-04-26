@@ -15,7 +15,7 @@ my %indobj-seen;
 my Int $warnings = 0;
 my Int $errors = 0;
 
-my subset Annot of Hash where .<Type> ~~ 'Annot';
+my subset AnnotLike of Hash where .<Type> ~~ 'Annot';
 
 sub error($msg) {
     $*ERR.say: $msg;
@@ -132,7 +132,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     for $obj.keys.sort -> $k {
         %required{$k}:delete;
         # Avoid following /P back to page then back here via page /Annots, which tends to be deeply recursive and difficult to follow
-        next if $k eq 'P' && $obj ~~ Annot;
+        next if $k eq 'P' && $obj ~~ AnnotLike;
 	next if @*exclude.grep: $k;
 	my $kid;
 
