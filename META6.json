@@ -1,5 +1,4 @@
 {
-  "api": "PDF-1.7",
   "auth": "github:pdf-raku",
   "authors": [
     "David Warring"
@@ -7,7 +6,7 @@
   "build-depends": [
   ],
   "depends": [
-    "PDF:ver<0.3.8+>",
+    "PDF:ver<0.4.2+>",
     "PDF::Grammar",
     "PDF::Content"
   ],
