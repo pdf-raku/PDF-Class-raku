@@ -1,6 +1,6 @@
 # PDF::Class
 
-This Raku module is the base class for [PDF::API6](https://github.com/pdf-raku>/PDF-API6).
+This Raku module is the base class for [PDF::API6](https://pdf-raku.github.io/PDF-API6).
 
 PDF::Class provides a set of roles and classes that map to the internal structure of PDF documents; the aim being to make it easier to read, write valid PDF files.
 
@@ -305,10 +305,10 @@ The PDF::class module currently implements around 100 roles and classes of the 3
 
 ## See also
 
-- [PDF::Lite](https://github.com/pdf-raku/PDF-Lite-raku) - A Lite-weight alternative
+- [PDF::Lite](https://pdf-raku.github.io/PDF-Lite-raku) - A Lite-weight alternative
 - [PDF::API6](https://github.com/p6-raku/PDF-API6) - general purpose PDF manipulation, based on this
 module (PDF::Class)
-- [PDF::ISO_32000](https://github.com/pdf-raku/PDF-ISO_32000-raku) - A set of interface roles that have
+- [PDF::ISO_32000](https://pdf-raku.github.io/PDF-ISO_32000-raku) - A set of interface roles that have
 been mined from the PDF 32000 specification, e.g. ISO_32000::Catalog.
 
 ## Classes Quick Reference
