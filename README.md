@@ -1,3 +1,6 @@
+[[Raku PDF Project]](https://pdf-raku.github.io)
+ / [PDF::Class](https://pdf-raku.github.io/PDF-Class-raku)
+
 # PDF::Class
 
 This Raku module is the base class for [PDF::API6](https://pdf-raku.github.io/PDF-API6).
