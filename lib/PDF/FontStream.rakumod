@@ -1,7 +1,7 @@
 use PDF::COS::Tie;
 use PDF::COS::Tie::Hash;
 
-#| Target of PDF::FontDescriptor FontFile or FontFile 2 Attribute;
+#| Target of PDF::FontDescriptor FontFile or FontFile2 Attribute;
 role PDF::FontStream
     does PDF::COS::Tie::Hash {
 
