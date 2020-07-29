@@ -41,15 +41,11 @@ class PDF::Function::Exponential
             @out;
         }
     }
-    method calculator {
+    method calculator handles<calc> {
         my Range @domain = @.Domain.map: -> $a, $b { Range.new($a, $b) };
         my Range @range = do with $.Range {
             .map: -> $a, $b { Range.new($a, $b) }
         }
         Transform.new: :@domain, :@range, :@.C0, :@.C1, :$.N;
-    }
-    #| run the calculator function
-    method calc(@in) {
-        $.calculator.calc(@in);
     }
  }

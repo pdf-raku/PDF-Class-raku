@@ -151,15 +151,11 @@ class PDF::Function::PostScript
         }
     }
 
-    method calculator {
+    method calculator handles<calc> {
         my $ast = self.parse;
         my Range @domain = $.Domain.map: -> $a, $b { Range.new($a, $b) };
         my Range @range = $.Range.map: -> $a, $b { Range.new($a, $b) };
         Transform.new: :@domain, :@range, :$ast;
-    }
-    #| run the calculator function
-    method calc(@in) {
-        $.calculator.calc(@in);
     }
 
 }

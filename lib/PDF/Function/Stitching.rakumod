@@ -44,7 +44,7 @@ class PDF::Function::Stitching
         }
     }
 
-    method calculator {
+    method calculator handles<calc> {
         my Range @domain = @.Domain.map: -> $a, $b { Range.new($a, $b) };
         my Range @range = do with $.Range {
             .map: -> $a, $b { Range.new($a, $b) }
@@ -55,19 +55,20 @@ class PDF::Function::Stitching
         my Range @bounds;
         my @funcs := @.Functions;
         my PDF::Function::Transform @functions = @funcs.keys.map: { @funcs[$_].calculator };
-        my $k = @functions.elems;
+        my UInt $k = @functions.elems - 1;
         my @Bounds = @.Bounds;
-        die "Bounds array length error: {@Bounds.elems} != {$k-1}"
-            unless @Bounds.elems == $k-1;
-        @bounds[0] = @domain[0].min .. @Bounds[0];
-        for 1 ..^ ($k-1) {
-            @bounds[$_] = @Bounds[$_-1] .. @Bounds[$_];
+        die "Bounds array length error: {@Bounds.elems} != $k"
+            unless @Bounds.elems == $k;
+        if $k {
+            @bounds[0] = @domain[0].min .. @Bounds[0];
+            for 1 ..^ $k {
+                @bounds[$_] = @Bounds[$_-1] .. @Bounds[$_];
+            }
+            @bounds[$k] = @Bounds[$k-1] .. @domain[0].max;
         }
-        @bounds[$k-1] = @Bounds[$k-2] .. @domain[0].max;
+        else {
+            @bounds = @domain;
+        }
         Transform.new: :@domain, :@range, :@encode, :@functions, :@bounds;
-    }
-    #| run the calculator function
-    method calc(@in) {
-        $.calculator.calc(@in);
     }
 }

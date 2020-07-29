@@ -89,7 +89,7 @@ class PDF::Function::Sampled
             [(@out Z @.range).map: { $.clip(.[0], .[1]) }];
         }
     }
-    method calculator {
+    method calculator handles<calc> {
         my Range @domain = @.Domain.map: -> $a, $b { Range.new($a, $b) };
         my Range @range = @.Range.map: -> $a, $b { Range.new($a, $b) };
         my @size = @.Size;
@@ -109,9 +109,5 @@ class PDF::Function::Sampled
         my Blob $samples = unpack($.decoded, $bpc);
 
         Transform.new: :@domain, :@range, :@size, :@encode, :@decode, :$samples, :$bpc;
-    }
-    #| run the calculator function
-    method calc(@in) {
-        $.calculator.calc(@in);
     }
 }
