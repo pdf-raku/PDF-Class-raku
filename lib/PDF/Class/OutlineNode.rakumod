@@ -2,16 +2,19 @@ role PDF::Class::OutlineNode {
     use PDF::COS;
     use PDF::Destination :coerce-dest, :DestinationLike;
     has Array $.parents is rw;
-    sub siblings($cur) is rw {
-        my class Siblings does Iterable does Iterator {
-            has $.cur;
-            method iterator { self }
-            method pull-one {
-                my $this = $!cur;
-                $_ = .Next with $!cur;
-                $this // IterationEnd;
+    sub siblings($first) is rw {
+        my class Siblings does Iterable {
+            has $.first is required;
+            my class Iteration does Iterator {
+                has $.cur is required;
+                method pull-one {
+                    my $this = $!cur;
+                    $_ = .Next with $!cur;
+                    $this // IterationEnd;
+                }
             }
-        }.new( :$cur );
+            method iterator { Iteration.new: cur => $!first }
+        }.new(:$first);
     }
     method add-kid(Hash $kid is copy = {}) {
         my $grand-kids = $kid<kids>:delete;
@@ -62,7 +65,7 @@ role PDF::Class::OutlineNode {
         Proxy.new(
             FETCH => -> $ { $_ >= 0 with $.Count },
             STORE => -> $, Bool() $open {
-                $_ = $open ?? .abs !! - .abs
+                $_ = .abs * ($open ?? 1 !! -1)
                     with $.Count
             }
         )
