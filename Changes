@@ -1,3 +1,6 @@
+Release 0.4.5
+- Renamed sub & export: PDF::Field :&coerce -> :&coerce-field
+
 Release 0.4.4
 - Add PDF::Class::Defs. Fix annot detection in PDF::Field
 - Rename methods PDF::Field.flags -> PDF::Field.field-flags and

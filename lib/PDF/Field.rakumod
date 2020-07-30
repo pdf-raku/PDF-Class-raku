@@ -52,13 +52,9 @@ role PDF::Field
         }
     }
 
-    proto sub coerce( $, $ ) is export(:coerce) {*}
-    multi sub coerce( PDF::COS::Dict $dict, PDF::Field $field ) {
+    multi sub coerce-field( PDF::COS::Dict $dict, PDF::Field $field) is export(:coerce-field) {
 	# refuse to coerce an annotation as a field
 	PDF::COS.coerce( $dict, $field.field-delegate( $dict ) );
-    }
-    method coerce(Hash $dict) {
-        coerce( PDF::COS.coerce(:$dict), self.WHAT);
     }
 
     method type { 'Field' }
@@ -68,14 +64,14 @@ role PDF::Field
     my subset FieldLike is export(:FieldLike) of Hash where { (.<FT>:exists) || (.<Kids>:exists) }
 
     my subset AnnotOrField of Hash where AnnotLike|PDF::Field;
-    multi sub coerce( FieldLike $dict, AnnotOrField) {
+    multi sub coerce-field( FieldLike $dict, AnnotOrField) {
 	PDF::COS.coerce( $dict, PDF::Field.field-delegate( $dict ) )
     }
-    multi sub coerce( $_, AnnotOrField) is default {
+    multi sub coerce-field( $_, AnnotOrField) is default {
         fail "unable to coerce {.perl} to an Annotation or Field";
     }
 
-    has AnnotOrField @.Kids is entry(:indirect, :&coerce); # (Sometimes required, as described below) An array of indirect references to the immediate children of this field.
+    has AnnotOrField @.Kids is entry(:indirect, :coerce(&coerce-field)); # (Sometimes required, as described below) An array of indirect references to the immediate children of this field.
                                                 # In a non-terminal field, the Kids array is required to refer to field dictionaries that are immediate descendants of this field. In a terminal field, the Kids array ordinarily must refer to one or more separate widget annotations that are associated with this field. However, if there is only one associated widget annotation, and its contents have been merged into the field dictionary, Kids must be omitted.
 
     #| return any terminal descendants, or self
@@ -172,7 +168,7 @@ role PDF::Field
     my subset QuaddingFlags of UInt where 0..3;
     has QuaddingFlags $.Q is entry(:inherit, :alias<quadding>);   # (Optional; inheritable) A code specifying the form of quadding (justification) to be used in displaying the text:
                                                 # 0: Left-justified
-                                                # 1: 1Centered
+                                                # 1: Centered
                                                 # 2: Right-justified
 
     has PDF::COS::TextString $.DS is entry(:alias<default-style>);     # Optional; PDF 1.5) A default style string

@@ -10,11 +10,11 @@ role PDF::AcroForm
     # also does ISO_32000::Table_218-Entries_in_the_interactive_form_dictionary;
 
     use PDF::COS::Tie;
-    use PDF::Field :coerce;
+    use PDF::Field :coerce-field;
     use PDF::COS::Stream;
     use PDF::Resources;
 
-    has PDF::Field @.Fields is entry(:required, :&coerce);    # (Required) An array of references to the document’s root fields (those with no ancestors in the field hierarchy).
+    has PDF::Field @.Fields is entry(:required, :coerce(&coerce-field));    # (Required) An array of references to the document’s root fields (those with no ancestors in the field hierarchy).
     #| returns an inorder array of all descendant fields
     method fields returns Array {
 	my PDF::Field @fields;

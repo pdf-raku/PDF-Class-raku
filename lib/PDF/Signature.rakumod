@@ -42,7 +42,7 @@ role PDF::Signature
     has UInt $.R is entry; # (Optional) The version of the signature handler that was used to create the signature. (PDF 1.5) This entry shall not be used, and the information shall be stored in the Prop_Build dictionary.
     has UInt $.V is entry; # (Optional; PDF 1.5) The version of the signature dictionary format. It corresponds to the usage of the signature dictionary in the context of the value of SubFilter. The value is 1 if the Reference dictionary shall be considered critical to the validation of the signature.
     has Hash $.Prop_Build is entry; # (Optional; PDF 1.5) A dictionary that may be used by a signature handler to record information that captures the state of the computer environment used for signing, such as the name of the handler used to create the signature, software build date, version, and operating system.
-    has Int $.Prop_AuthTime is entry; # (Optional; PDF 1.5) The number of seconds since the signer was last authenticated, used in claims of signature repudiation. It should be omitted if the value is unknown.
+    has UInt $.Prop_AuthTime is entry; # (Optional; PDF 1.5) The number of seconds since the signer was last authenticated, used in claims of signature repudiation. It should be omitted if the value is unknown.
     my subset AuthType of PDF::COS::Name where 'PIN'|'Password'|'Fingerprint';
     has AuthType $.Prop_AuthType is entry; # (Optional; PDF 1.5) The method that shall be used to authenticate the signer, used in claims of signature repudiation. Valid values shall be PIN, Password, and Fingerprint.
 

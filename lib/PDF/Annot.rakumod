@@ -25,9 +25,9 @@ class PDF::Annot
     # also does ISO_32000::Table_164-Entries_common_to_all_annotation_dictionaries;
 
     method cb-init {
-        use PDF::Field :coerce, :FieldLike;
+        use PDF::Field :coerce-field, :FieldLike;
         # annots are also sometimes fields
-        coerce(self, PDF::Field)
+        coerce-field(self, PDF::Field)
             if self ~~ FieldLike && self !~~ PDF::Field;
     }
 
