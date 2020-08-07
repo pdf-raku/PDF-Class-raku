@@ -27,7 +27,7 @@ role PDF::Filespec
     multi sub to-file(Hash $value is rw, File) {
         PDF::COS.coerce( $value, PDF::Filespec );
     }
-    multi sub to-file($_, File) is default {
+    multi sub to-file($_, File) {
         fail "unable to coerce to a File: {.perl}";
     }
     multi sub to-file($_ is copy) { to-file($_, File) }

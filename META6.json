@@ -24,6 +24,7 @@
     "PDF::Action::Named": "lib/PDF/Action/Named.rakumod",
     "PDF::Action::Sound": "lib/PDF/Action/Sound.rakumod",
     "PDF::Action::Thread": "lib/PDF/Action/Thread.rakumod",
+    "PDF::Action::SubmitForm": "lib/PDF/Action/SubmitForm.rakumod",
     "PDF::Action::URI": "lib/PDF/Action/URI.rakumod",
     "PDF::Annot": "lib/PDF/Annot.rakumod",
     "PDF::Annot::_Markup": "lib/PDF/Annot/_Markup.rakumod",

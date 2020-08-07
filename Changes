@@ -2,6 +2,7 @@ Release 0.4.5
 - Renamed sub &export: PDF::Field :&coerce -> :&coerce-field
 - Correct additional actions (added in 0.4.4); seperate roles for
   Catalog, Fields, Annotations and Pages. #15
+- Added class PDF::Action::SubmitForm
 
 Release 0.4.4
 - Add PDF::Class::Defs. Fix annot detection in PDF::Field
@@ -9,7 +10,7 @@ Release 0.4.4
   PDF::Annots.flags -> PDF::Annots.annot-flags. Keep these distinct
   as the PDF::Field role is commonly mixed into PDF::Annot.
 - Add enumerations PDF::Annot :AnnotFlag and PDF::Field :FieldFlag,
-  :BtnFieldFllag, :TextFieldFlag, ChoiceFieldFlag
+  :BtnFieldFlag, :TextFieldFlag, ChoiceFieldFlag
 - Add role PDF::AdditionalActions
 - Renamed github project and repository p6-pdf/PDF-Class-p6 -> pdf-raku/PDF-Class-raku
 
