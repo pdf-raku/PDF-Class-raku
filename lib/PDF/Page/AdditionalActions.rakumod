@@ -19,7 +19,7 @@ Table 195 – Entries in a page object’s additional-actions dictionary
 =end pod
 
 #| (Optional; PDF 1.2) An action that is performed when the page is opened (for example, when the user navigates to it from the next or previous page or by means of a link annotation or outline item). This action is independent of any that may be defined by the OpenAction entry in the document Catalog (see 7.7.2, “Document Catalog”) and is executed after such an action.
-has PDF::Action $.O is entry;
+has PDF::Action $.O is entry(:alias<page-open>);
 
 #| (Optional; PDF 1.2) An action that is performed when the page is closed (for example, when the user navigates to the next or previous page or follows a link annotation or an outline item). This action applies to the page being closed and is executed before any other page is opened.
-has PDF::Action $.C is entry;
+has PDF::Action $.C is entry(:alias<page-close>);

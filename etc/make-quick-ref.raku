@@ -19,17 +19,17 @@ sub scan-classes($path) {
             scan-classes($_);
         }
         else {
-            next unless /'.pm''6'?$/;
+            next unless /'.rakumod''6'?$/;
             my @class = .Str.split('/');
             @class.shift;
             next if @class[*-2] eq 'Class';
-            @class.tail ~~ s/'.pm'$//;
+            @class.tail ~~ s/'.rakumod'$//;
             my $name = @class.join: "::";
 
             %classes{$name} = True;
         }
     }
-    # delete base clasess
+    # delete base classes
     %classes.keys.map: {
         my @c = .split('::'); @c.pop;
         %classes{@c.join('::')}:delete;
@@ -61,8 +61,8 @@ sub MAIN(:$class is copy) {
         my @accessors = $class\
             .^attributes\
             .grep({.can('entry') || .can('index')})\
-            .unique(:as(*.tied.accessor-name))\
-            .map({my $name = .tied.accessor-name; $name ~= "($_)" with .tied.alias; $name })\
+            .unique(:as(*.cos.accessor-name))\
+            .map({my $name = .cos.accessor-name; $name ~= "($_)" with .cos.alias; $name })\
             .grep(* ∉ $stream-accessors).sort;
 
         my @methods = $class.^methods.map(*.name).grep(* ∉ $std-methods).sort.unique;
