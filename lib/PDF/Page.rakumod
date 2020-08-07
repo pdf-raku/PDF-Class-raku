@@ -19,7 +19,7 @@ class PDF::Page
     use PDF::Image;
     use PDF::Resources;
     use PDF::Field;
-    use PDF::AdditionalActions;
+    use PDF::Page::AdditionalActions;
     use PDF::Bead-Thread; # Declares PDF::Bead & PDF::Thread
 
     # use ISO_32000::Table_30-Entries_in_a_page_object;
@@ -55,7 +55,7 @@ class PDF::Page
         fail "unable to coerce: {.perl} ({.WHAT.^name}) to an annotation";
     }
     has AnnotLike @.Annots is entry(:&coerce);                  # (Optional) An array of annotation dictionaries representing annotations associated with the page
-    has PDF::AdditionalActions $.AA is entry(:alias<additional-actions>);  # (Optional; PDF 1.2) An additional-actions dictionary defining actions to be performed when the page is opened or closed
+    has PDF::Page::AdditionalActions $.AA is entry(:alias<additional-actions>);  # (Optional; PDF 1.2) An additional-actions dictionary defining actions to be performed when the page is opened or closed
     use PDF::Metadata::XML;
     has PDF::Metadata::XML $.Metadata is entry;                 # (Optional; PDF 1.4) A metadata stream containing metadata for the page
     has Hash $.PieceInfo is entry;                              # (Optional; PDF 1.3) A page-piece dictionary associated with the page

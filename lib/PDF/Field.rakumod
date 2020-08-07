@@ -11,7 +11,7 @@ role PDF::Field
     use PDF::COS::TextString;
     use PDF::COS::Dict;
     use PDF::COS::Name;
-    use PDF::AdditionalActions;
+    use PDF::Field::AdditionalActions;
     use PDF::Class::Defs :AnnotLike, :TextOrStream;
 
     my role vanilla does PDF::Field {
@@ -159,7 +159,7 @@ role PDF::Field
     my subset FeildFlagsInt of UInt where 0 ..^ 2 +< 27;
     has UInt $.Ff is entry(:inherit, :alias<field-flags>, :default(0));           # Optional; inheritable) A set of flags specifying various characteristics of the field
 
-    has PDF::AdditionalActions $.AA is entry(:alias<additional-actions>);                     # (Optional; PDF 1.2) An additional-actions dictionary defining the field’s behavior in response to various trigger events. This entry has exactly the same meaning as the AA entry in an annotation dictionary
+    has PDF::Field::AdditionalActions $.AA is entry(:alias<additional-actions>);                     # (Optional; PDF 1.2) An additional-actions dictionary defining the field’s behavior in response to various trigger events. This entry has exactly the same meaning as the AA entry in an annotation dictionary
 
     # see [PDF 1.7 TABLE 8.71 Additional entries common to all fields containing variable text]
 

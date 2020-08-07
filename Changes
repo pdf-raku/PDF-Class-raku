@@ -1,5 +1,7 @@
 Release 0.4.5
-- Renamed sub & export: PDF::Field :&coerce -> :&coerce-field
+- Renamed sub &export: PDF::Field :&coerce -> :&coerce-field
+- Correct additional actions (added in 0.4.4); seperate roles for
+  Catalog, Fields, Annotations and Pages. #15
 
 Release 0.4.4
 - Add PDF::Class::Defs. Fix annot detection in PDF::Field
