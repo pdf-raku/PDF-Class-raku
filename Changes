@@ -3,6 +3,7 @@ Release 0.4.5
 - Correct additional actions (added in 0.4.4); seperate roles for
   Catalog, Fields, Annotations and Pages. #15
 - Added class PDF::Action::SubmitForm
+- Fix t/pdf-outline.t to work with PDF v0.4.4
 
 Release 0.4.4
 - Add PDF::Class::Defs. Fix annot detection in PDF::Field

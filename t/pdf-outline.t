@@ -54,4 +54,5 @@ lives-ok {$outline-obj.is-open = True}, '.is-open rw accessor';
 
 # Rewritten as a simple ASCII string
 %ast<ind-obj>[2]<dict><Title> = :literal('Moderator Quick Reference Guide');
+$outline-obj.Title.bom = False;
 is-json-equiv $ind-obj.ast, %ast, 'ast regeneration';
