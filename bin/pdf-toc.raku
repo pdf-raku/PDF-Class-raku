@@ -4,7 +4,7 @@ use v6;
 use PDF::Class;
 use PDF::Catalog;
 use PDF::Class::OutlineNode;
-use PDF::Destination;
+use PDF::Destination :DestDict;
 use PDF::Action::GoTo;
 
 use PDF::IO;
@@ -77,7 +77,7 @@ multi sub show-dest(Str $_) {
     show-dest(named-dest($_));
 }
 
-subset DestInternalRef of Hash where PDF::Action::GoTo | PDF::Catalog::DestDict;
+subset DestInternalRef of Hash where PDF::Action::GoTo | DestDict;
 multi sub show-dest(DestInternalRef $ref) {
     show-dest($ref.D);
 }
@@ -98,9 +98,10 @@ multi sub show-dest($_) is default {
 sub toc(PDF::Class::OutlineNode $outline, :$nesting! is copy) {
     my $where = do with $outline.Dest // $outline.A { show-dest($_) };
     with $where {
-        say( ('  ' x $nesting) ~ $outline.Title.trim ~ ' . . . ' ~ $_);
-        $nesting++;
+        my $title := $outline.Title.trim;
+        say( ('  ' x $nesting) ~ $title ~ ' . . . ' ~ $_);
         if $*closed || $outline.is-open {
+            $nesting++;
             toc($_, :$nesting)
                 for $outline.get-kids;
         }

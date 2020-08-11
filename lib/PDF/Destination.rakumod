@@ -86,7 +86,7 @@ role PDF::Destination
     }
 
     # DestNamed coercement also allows an intermediate dictionary with a /D entry
-    my role DestDict does PDF::COS::Tie::Hash {
+    my role DestDict is export(:DestDict) does PDF::COS::Tie::Hash {
         has DestSpec $.D is entry(:required, :alias<destination>, :coerce(&coerce-dest));
     }
 

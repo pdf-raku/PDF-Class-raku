@@ -4,6 +4,7 @@ Release 0.4.5
   Catalog, Fields, Annotations and Pages. #15
 - Added class PDF::Action::SubmitForm
 - Fix t/pdf-outline.t to work with PDF v0.4.4
+- Fix pdf-toc.raku
 
 Release 0.4.4
 - Add PDF::Class::Defs. Fix annot detection in PDF::Field
