@@ -30,4 +30,4 @@ docs/index.md : README.md
 $(DocLinker) :
 	(cd .. && git clone $(DocRepo) $(DocProj))
 
-doc :  $(DocLinker) $(MD)
+doc :  $(DocLinker) $(MD) docs/index.md
