@@ -14,19 +14,20 @@ role PDF::Field::Choice
     has PDF::COS::TextString @.V is entry(:inherit, :array-or-item);
     has PDF::COS::TextString @.DV is entry(:inherit, :array-or-item, :alias<default-value>);
 
-    my subset FieldOptions where { .[0] ~~ PDF::COS::TextString && ($_ ~~ Str || .[1] ~~ PDF::COS::TextString) }
-    multi sub coerce(Str $a is rw, FieldOptions) {
+    my subset FieldOptions is export(:FieldOptions) where { .[0] ~~ PDF::COS::TextString && ($_ ~~ Str || .[1] ~~ PDF::COS::TextString) }
+    proto sub coerce-field-opts($, FieldOptions) is export(:coerce-field-opts) {*}
+    multi sub coerce-field-opts(Str $a is rw, FieldOptions) {
         PDF::COS.coerce( $a, PDF::COS::TextString)
     }
-    multi sub coerce(List $a is rw, FieldOptions) {
+    multi sub coerce-field-opts(List $a is rw, FieldOptions) {
         PDF::COS.coerce( $a[$_], PDF::COS::TextString)
             for $a.keys;
     }
-    multi sub coerce($_, FieldOptions) is default {
-        fail "unable to coerce {.perl} to field options";
+    multi sub coerce-field-opts($_, FieldOptions) is default {
+        fail "unable to coerce {.raku} to field options";
     }
 
-    has FieldOptions @.Opt is entry(:&coerce);    # (Optional) An array of options to be presented to the user. Each element of the array is either a text string representing one of the available options or an array consisting of two text strings: the option’s export value and the text to be displayed as the name of the option
+    has FieldOptions @.Opt is entry(:coerce(&coerce-field-opts));    # (Optional) An array of options to be presented to the user. Each element of the array is either a text string representing one of the available options or an array consisting of two text strings: the option’s export value and the text to be displayed as the name of the option
 
    has UInt $.TI is entry(:alias<top-index>, :default(0));  # Optional) For scrollable list boxes, the top index (the index in the Opt array of the first option visible in the list). Default value: 0.
 
