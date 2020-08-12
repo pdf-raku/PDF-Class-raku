@@ -17,6 +17,8 @@ role PDF::Field
     my role vanilla does PDF::Field {
         # use ISO_32000::Table_220-Entries_common_to_all_field_dictionaries;
         # also does ISO_32000::Table_220-Entries_common_to_all_field_dictionaries;
+        # use ISO_32000::Table_222-Additional_entries_common_to_all_fields_containing_variable_text;
+        # also does ISO_32000::Table_222-Additional_entries_common_to_all_fields_containing_variable_text;
 
         ## type specific - see individual field definitions
         has Any $.V is entry(:inherit);           # (Optional; inheritable) The field’s value, whose format varies depending on the field type
@@ -52,9 +54,12 @@ role PDF::Field
         }
     }
 
-    multi sub coerce-field( PDF::COS::Dict $dict, PDF::Field $field) is export(:coerce-field) {
+    multi sub coerce-field(PDF::COS::Dict $dict, PDF::Field $field) is export(:coerce-field) {
 	# refuse to coerce an annotation as a field
 	PDF::COS.coerce( $dict, $field.field-delegate( $dict ) );
+    }
+    method coerce-field(Hash $dict) {
+        coerce-field(PDF::COS.coerce($dict), PDF::Field);
     }
 
     method type { 'Field' }
@@ -160,8 +165,6 @@ role PDF::Field
     has UInt $.Ff is entry(:inherit, :alias<field-flags>, :default(0));           # Optional; inheritable) A set of flags specifying various characteristics of the field
 
     has PDF::Field::AdditionalActions $.AA is entry(:alias<additional-actions>);                     # (Optional; PDF 1.2) An additional-actions dictionary defining the field’s behavior in response to various trigger events. This entry has exactly the same meaning as the AA entry in an annotation dictionary
-
-    # see [PDF 1.7 TABLE 8.71 Additional entries common to all fields containing variable text]
 
     has Str $.DA is entry(:inherit, :alias<default-appearance>);            # (Required; inheritable) The default appearance string containing a sequence of valid page-content graphics or text state operators that define such properties as the field’s text size and color.
 
