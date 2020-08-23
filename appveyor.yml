@@ -5,6 +5,9 @@ platform: x64
 install:
   # Install rakudostar for faster CI builds.
   - choco install rakudostar
+  # For Base64::Native
+  - choco install make
+  - choco install mingw
   # Change to build folder
   - cd %APPVEYOR_BUILD_FOLDER%
   # Refresh environment variables so zef works
