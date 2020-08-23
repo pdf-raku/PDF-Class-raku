@@ -7,5 +7,5 @@ install:
   - rakudobrew build zef
   - zef --depsonly install .
 script:
-  - prove -ve "raku -I."
+  - prove -ve "perl -I."
   - zef install .
