@@ -29,7 +29,7 @@ role PDF::AcroForm
 	$flds[$_].take-fields
             for $flds.keys;
     }
-    #| return fields mapped to a hash. Default keys are $.T and $.TU field entries
+    #| return fields mapped to a hash. Default key is /T entry
     method fields-hash( Array $fields-arr = self.fields,
                         :$key where 'T'|'TU'|'TR' = 'T'
 			  --> Hash) {

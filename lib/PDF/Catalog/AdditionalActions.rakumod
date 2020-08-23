@@ -6,9 +6,6 @@ unit role PDF::Catalog::AdditionalActions
 # use ISO_32000::Table_197-Entries_in_the_document_catalogs_additional-actions_dictionary;
 # also does ISO_32000::Table_197-Entries_in_the_document_catalogs_additional-actions_dictionary;
 
-use PDF::COS::Tie;
-use PDF::Action;
-
 =begin pod
 =head1 Description
 
@@ -16,6 +13,9 @@ Table 197 – Entries in the document catalog’s additional-actions dictionary
 
 =head1 Methods (Entries)
 =end pod
+
+use PDF::COS::Tie;
+use PDF::Action;
 
 #| (Optional; PDF 1.4) A JavaScript action that is performed before closing a document.
 has PDF::Action $.WC is entry(:alias<will-close>);
