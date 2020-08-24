@@ -16,6 +16,7 @@ install:
 build: off
 
 test_script:
+  - zef upgrade zef
   - zef --deps-only install .
   - prove -ve "perl6 -I."
   - zef install .
