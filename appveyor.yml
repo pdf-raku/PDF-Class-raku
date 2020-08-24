@@ -16,7 +16,7 @@ install:
 build: off
 
 test_script:
-  - zef install PDF::Grammar
+  - zef install PDF::Grammar Font::AFM
   - zef upgrade zef
   - zef --deps-only install .
   - prove -ve "perl6 -I."
