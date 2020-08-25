@@ -16,6 +16,10 @@ install:
 build: off
 
 test_script:
+  # spoon-feed deps for older zef versions
+  - zef install PDF::Grammar
+  - zef install PDF
+  - zef install PDF::Content
   - zef --deps-only install .
   - prove -ve "perl6 -I."
   - zef install .
