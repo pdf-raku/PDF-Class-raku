@@ -16,8 +16,8 @@ install:
 build: off
 
 test_script:
-  - zef install PDF::Grammar Font::AFM
-  - zef upgrade zef
+  # Strip dependency versions for older zefs
+  - raku -e'.spurt(.slurp.subst(/":ver<".*?">"/, "", :g)) given "META6.json".IO'
   - zef --deps-only install .
   - prove -ve "perl6 -I."
   - zef install .
