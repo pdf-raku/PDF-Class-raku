@@ -16,8 +16,6 @@ install:
 build: off
 
 test_script:
-  # Strip dependency versions for older zefs
-  - perl6 -e".spurt(.slurp.subst(/\":ver<\".*?\">\"/, \"\", :g)) given \"META6.json\".IO"
   - zef --deps-only install .
   - prove -ve "perl6 -I."
   - zef install .

@@ -6,7 +6,7 @@
   "build-depends": [
   ],
   "depends": [
-    "PDF:ver<0.4.2+>",
+    "PDF",
     "PDF::Grammar",
     "PDF::Content"
   ],
