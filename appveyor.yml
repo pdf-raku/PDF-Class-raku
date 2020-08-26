@@ -20,6 +20,9 @@ test_script:
   - zef install PDF::Grammar
   - zef install PDF
   - zef install PDF::Content
+  - zef install Base64::Native
+  - zef install Native::Packing
+  - zef install Compress::Zlib::Raw
   - zef --deps-only install .
   - prove -ve "perl6 -I."
   - zef install .
