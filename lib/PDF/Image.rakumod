@@ -49,6 +49,10 @@ role PDF::Image
     }
     has AlternateImage @.Alternates is entry;     # An array of alternate image dictionaries for this image
     my role SoftMask does PDF::COS::Tie::Hash {
+        # See [ISO 32000 Table 145 – Restrictions on the entries in a soft-mask image dictionary]
+        # The SMask is a somewhat specialized XObject::Image
+        my subset ImageName of PDF::COS::Name where 'Image';
+        has ImageName $.Subtype is entry(:required, :alias<subtype>);
         has Numeric @.Matte is entry; # (Optional; PDF 1.4) An array of component values specifying the matte colour with which the image data in the parent image shall have been preblended. The array shall consist of n numbers, where n is the number of components in the colour space specified by the ColorSpace entry in the parent image’s image dictionary; the numbers shall be valid colour components in that colour space. If this entry is absent, the image data shall not be preblended.
     }
 
@@ -90,10 +94,8 @@ role PDF::Image
                     my Str $data = .isa(PDF::COS::Stream) ?? .encoded !! $_
                         with .Lookup;
                     $palette = buf8.new: .encode("latin-1") with $data;
-                    with self.SMask {
-                        $trans = .stream
-                            with self.to-dict: $_;
-                    }
+                    $trans = .decoded
+                        with self.SMask;
                 }
                 when 'DeviceRGB'|'DeviceGray' {
                     $hdr.color-type = $_ ~~ 'DeviceRGB'
@@ -156,7 +158,7 @@ role PDF::Image
 
         my PDF::Content::Image::PNG $png .= new: :$hdr, :$stream;
         $png.palette = $_ with $palette;
-        $png.trans = $_ with $trans;
+        $png.trns = $_ with $trans;
         $png;
     }
 
