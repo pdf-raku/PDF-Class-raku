@@ -1,6 +1,9 @@
 [[Raku PDF Project]](https://pdf-raku.github.io)
  / [PDF::Class](https://pdf-raku.github.io/PDF-Class-raku)
 
+ <a href="https://travis-ci.org/pdf-raku/PDF-Class-raku"><img src="https://travis-ci.org/pdf-raku/PDF-Class-raku.svg?branch=master"></a>
+ <a href="https://ci.appveyor.com/project/dwarring/PDF-Class-raku/branch/master"><img src="https://ci.appveyor.com/api/projects/status/github/pdf-raku/PDF-Class-raku?branch=master&passingText=Windows%20-%20OK&failingText=Windows%20-%20FAIL&pendingText=Windows%20-%20pending&svg=true"></a>
+
 # PDF::Class
 
 This Raku module is the base class for [PDF::API6](https://pdf-raku.github.io/PDF-API6).

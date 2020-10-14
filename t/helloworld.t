@@ -133,6 +133,7 @@ todo "PDF::Content v0.4.2+ required to pass this test"
     unless PDF::Content.^ver >= v0.4.2;
 is-json-equiv $gfx.ops.tail(4).list, $(:Tj[{:literal("Hello, world!")}], :TL[:real(26.4)], "T*" => [], :ET[]), '$page.gfx.ops (tail)';
 
+srand(123456);
 lives-ok { PDF::Class.new.save-as: "t/no-pages.pdf", :!info }, 'create empty PDF';
 
 done-testing;

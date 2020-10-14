@@ -1,8 +1,11 @@
 Release 0.4.6
+- Fix SMask (soft-mask) handling in PDF::Image to-png() method
+- Add role for Font::Descriptor::CID /Style entry
 - Export PDF::Field::Choice :FieldOptions, :&coerce-field-opts for reuse
   by FDF::Field (FDF module)
 - Declare entries as PDF::COS::TextString in PDF::AcroForm, PDF::Field::SubmitForm,
   PDF::OutputIntent. We need these to correctly encode and decode as UTF-8/PDFDoc.
+
 Release 0.4.5
 - Renamed sub &export: PDF::Field :&coerce -> :&coerce-field
 - Correct additional actions (added in 0.4.4); seperate roles for

@@ -3,7 +3,7 @@ use v6;
 use PDF:ver(v0.3.8+);
 
 #| PDF entry-point. either a trailer dict or an XRef stream
-class PDF::Class:ver<0.4.6>#:api<PDF-1.7>
+class PDF::Class:ver<0.4.6>
     is PDF {
     # base class declares: $.Size, $.Encrypt, $.ID
     # use ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
@@ -31,7 +31,7 @@ class PDF::Class:ver<0.4.6>#:api<PDF-1.7>
     }
 
     # make sure it really is a PDF, not an FDF file etc
-    method open(|c) { nextwith( :type<PDF>, |c); }
+    method open(|c) { nextwith( :$.type, |c); }
 
     has Str @.creator = "PDF::Class-{PDF::Class.^ver}", "PDF::Content-{PDF::Content.^ver}", "PDF-{PDF.^ver}", "Raku-{$*PERL.version}";
 
