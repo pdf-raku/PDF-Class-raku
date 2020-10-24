@@ -5,6 +5,8 @@ Release 0.4.6
   by FDF::Field (FDF module)
 - Declare entries as PDF::COS::TextString in PDF::AcroForm, PDF::Field::SubmitForm,
   PDF::OutputIntent. We need these to correctly encode and decode as UTF-8/PDFDoc.
+- Change PDF::Function::Postscript calc() return value from Seq to Array - for
+  consistency with other function types.
 
 Release 0.4.5
 - Renamed sub &export: PDF::Field :&coerce -> :&coerce-field

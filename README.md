@@ -14,7 +14,7 @@ It assists with the construction of PDF documents, providing type-checking and t
 
 ## Description
 
-The entry point of a PDF document is the trailer dictionary. This is mapped to `PDF::Class`. It contains a `Root` entry which is mapped to a `PDF::Catalog` objects, and may contain other entries, including and `Info` entry mapped to a `PDF::Info` object.
+The entry point of a PDF document is the trailer dictionary. This is mapped to `PDF::Class`. It contains a `Root` entry which is mapped to a `PDF::Catalog` objects, and may contain other entries, including an `Info` entry mapped to a `PDF::Info` object.
 
 ```
     use PDF::Class;
@@ -368,7 +368,7 @@ PDF::Font::CIDFont | dict | BaseFont, CIDSystemInfo, CIDToGIDMap, DW(default-wid
 PDF::Font::CIDFontType0 | dict | BaseFont, CIDSystemInfo, CIDToGIDMap, DW(default-width), DW2(default-width-and-height), FontDescriptor, Subtype, Type, W(widths), W2(heights) | font-obj, make-font, set-font-obj |  | Table_117-Entries_in_a_CIDFont_dictionary
 PDF::Font::CIDFontType2 | dict | BaseFont, CIDSystemInfo, CIDToGIDMap, DW(default-width), DW2(defa\ult-width-and-height), FontDescriptor, Subtype, Type, W(widths), W2(heights) | font-obj, make-font, set-font-obj |  | Table_117-Entries_in_a_CIDFont_dictionary
 PDF::Font::MMType1 | dict | BaseFont, Encoding, FirstChar, FontDescriptor, LastChar, Name, Subtype, ToUnicode, Type, Widths | font-obj, make-font, set-font-obj |  | Table_111-Entries_in_a_Type_1_font_dictionary
-PDF::Font::TrueType | dict | BaseFont, Encoding, FirstChar, FontDescriptor, LastChar, Name, Subtype, ToUnicode, Type, Widths | font-obj, make-font, set-font-obj | Table_111-Entries_in_a_Type_1_font_dictionary
+PDF::Font::TrueType | dict | BaseFont, Encoding, FirstChar, FontDescriptor, LastChar, Name, Subtype, ToUnicode, Type, Widths | font-obj, make-font, set-font-obj | | Table_111-Entries_in_a_Type_1_font_dictionary
 PDF::FontDescriptor | dict | Type, FontName, FontFamily, FontStretch, FontWeight, Flags, FontBBox, ItalicAngle, Ascent, Descent, Leading, CapHeight, XHeight, StemV, StemH, AvgWidth, MaxWidth, MissingWidth, FontFile, FontFile2, FontFile3, CharSet |  |  | Table_122-Entries_common_to_all_font_descriptors
 PDF::FontDescriptor::CID | dict | Type, FontName, FontFamily, FontStretch, FontWeight, Flags, FontBBox, ItalicAngle, Ascent, Descent, Leading, CapHeight, XHeight, StemV, StemH, AvgWidth, MaxWidth, MissingWidth, FontFile, FontFile2, FontFile3, CharSet, CIDSet, FD, Lang, Style |  |  | Table_122-Entries_common_to_all_font_descriptors Table_117-Entries_in_a_CIDFont_dictionary
 PDF::FontFile | stream | Length1, Length2, Length3, Metadata, Subtype |  |  | Table_127-Additional_entries_in_an_embedded_font_stream_dictionary

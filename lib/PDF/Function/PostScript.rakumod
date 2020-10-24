@@ -63,16 +63,16 @@ class PDF::Function::PostScript
             sin      => method { sin(self.pop * pi / 180) },
             cos      => method { cos(self.pop * pi / 180) },
             atan     => method {
-                            my $den = self.pop;
-                            my $num = self.pop;
-                            $den = 0 if $den =~= 0;
-                            my $angle = $den
-                                ?? atan($num / $den) * 180 / pi
-                                !! ($num =~= 0 ?? die "undefined result" !! 90);
-                            $angle -= 180 if $den < 0;
-                            $angle += 360 if $angle < 0;
-                            $angle;
-                        },
+                my $den = self.pop;
+                my $num = self.pop;
+                $den = 0 if $den =~= 0;
+                my $angle = $den
+                    ?? atan($num / $den) * 180 / pi
+                    !! ($num =~= 0 ?? die "undefined result" !! 90);
+                $angle -= 180 if $den < 0;
+                $angle += 360 if $angle < 0;
+                $angle;
+            },
             exp      => method { self.pop ** $_ given self.pop },
             ln       => method { log self.pop; },
             log      => method { log10 self.pop; },
@@ -90,10 +90,10 @@ class PDF::Function::PostScript
             or      => method { self.pop(Int) +| self.pop(Int) },
             xor     => method { self.pop(Int) +^ self.pop(Int) },
             not     => method {
-                           given self.pop(Int) {
-                               $_ ~~ Bool ?? not $_  !! ($_ * -1) -1
-                           }
-                       },
+                given self.pop(Int) {
+                    $_ ~~ Bool ?? not $_  !! ($_ * -1) - 1
+                }
+            },
             bitshift => method { self.pop(Int) +< $_ given self.pop(Int) },
             true    => method { True },
             false   => method { False },
@@ -144,10 +144,10 @@ class PDF::Function::PostScript
             $.run(|$_) with $branch;
         }
 
-        method calc(@in where .elems = @.domain.elems) {
+        method calc(@in where .elems == @.domain.elems) {
             @!stack = (@in Z @.domain).map: { $.clip(.[0], .[1]) };
             $.run( |$!ast );
-            (@!stack Z @.range).map: { $.clip(.[0], .[1]) };
+            [(@!stack Z @.range).map: { $.clip(.[0], .[1]) }];
         }
     }
 
