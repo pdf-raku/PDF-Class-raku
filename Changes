@@ -1,13 +1,14 @@
 Release 0.4.7
 - Change PDF::Function::Postscript calc() return value from Seq to Array - for
   consistency with other function types.
+- Fix Font::Descriptor::CID, broken in last release (PDF::Tags issue #4)
 
 Release 0.4.6
 - Fix SMask (soft-mask) handling in PDF::Image to-png() method
 - Add role for Font::Descriptor::CID /Style entry
 - Export PDF::Field::Choice :FieldOptions, :&coerce-field-opts for reuse
   by FDF::Field (FDF module)
-- Declare entries as PDF::COS::TextString in PDF::AcroForm, PDF::Field::SubmitForm,
+- Declare entries as PDF::COS::TextString in PDF::AcroForm, PDF::Action::SubmitForm,
   PDF::OutputIntent. We need these to correctly encode and decode as UTF-8/PDFDoc.
 
 Release 0.4.5

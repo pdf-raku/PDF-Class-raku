@@ -11,7 +11,7 @@ role PDF::FontDescriptor::CID
     my role Style does PDF::COS::Tie::Hash {
         # The Style dictionary contains entries that define style attributes and values for the CIDFont.
         # Only the Panose entry is defined
-
+        use PDF::COS::ByteString;
         has PDF::COS::ByteString $.Panose is entry; # Ten bytes for the PANOSE classification number for the font.
     }
     has Style $.Style is entry;              # (Optional) A dictionary containing entries that describe the style of the glyphs in the font.

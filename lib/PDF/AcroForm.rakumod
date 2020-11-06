@@ -12,6 +12,7 @@ role PDF::AcroForm
     use PDF::COS::Tie;
     use PDF::Field :coerce-field;
     use PDF::COS::Stream;
+    use PDF::COS::TextString;
     use PDF::Resources;
 
     has PDF::Field @.Fields is entry(:required, :coerce(&coerce-field));    # (Required) An array of references to the document’s root fields (those with no ancestors in the field hierarchy).
