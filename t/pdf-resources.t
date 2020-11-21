@@ -11,6 +11,7 @@ use PDF::Grammar::PDF::Actions;
 use PDF::Font::TrueType;
 use PDF::Font::Type0;
 use PDF::OutputIntent;
+use PDF::COS::Name;
 
 require ::('PDF::Catalog');
 my $dict = { :Outlines(:ind-ref[2, 0]), :Type( :name<Catalog> ), :Pages{ :Type( :name<Pages> ) } };
@@ -95,7 +96,7 @@ PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
 %ast = $/.ast;
 
 $ind-obj = PDF::IO::IndObj.new( :$input, |%ast, :$reader );
-my $oi-obj = PDF::COS.coerce($ind-obj.object, PDF::OutputIntent);
+my $oi-obj = PDF::OutputIntent.COERCE: $ind-obj.object;
 does-ok $oi-obj, PDF::OutputIntent;
 is $oi-obj.S, 'GTS_PDFX', 'OutputIntent S';
 is $oi-obj.OutputCondition, 'CGATS TR 001 (SWOP)', 'OutputIntent OutputCondition';
@@ -181,7 +182,7 @@ $gs-obj.black-generation = { :FunctionType(2),
                            };
 is $gs-obj.BG2.FunctionType, 2, 'BG2 accessor';
 is-json-equiv $gs-obj.black-generation.C1, [50, -30, -40], 'black-generation accessor';
-$gs-obj.black-generation = PDF::COS.coerce: :name<MyFunc>;
+$gs-obj.black-generation = PDF::COS::Name.COERCE: 'MyFunc';
 is $gs-obj.BG2, 'MyFunc', 'BG2 accessor';
 ok !$gs-obj.BG.defined, 'BG accessor';
 is $gs-obj.black-generation, 'MyFunc', 'black-generation accessor';

@@ -27,7 +27,7 @@ role PDF::Appearance
         fail "Stream not of /Subtype /Form"
     }
     multi sub coerce(Hash $dict is rw, Appearance) {
-	PDF::COS.coerce($dict,  AppearanceStatus)
+	AppearanceStatus.COERCE: $dict;
     }
 
     has Appearance $.N is entry(:&coerce, :alias<normal>, :required); # (Required) The annotation’s normal appearance.

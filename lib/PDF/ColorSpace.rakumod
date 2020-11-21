@@ -27,7 +27,7 @@ class PDF::ColorSpace
 
                 my Str $subtype = ~$1;
 
-		self[0] //= PDF::COS.coerce( :name($subtype) );
+		self[0] //= PDF::COS::Name.COERCE: $subtype;
 
 		die "conflict between class-name $class-name ($subtype) and array[0] type /{self[0]}"
 		    unless self.Subtype eq $subtype;

@@ -44,7 +44,7 @@ my subset FontFileType of Str is export(:FontFileType) where 'Type1C'|'CIDFontTy
 
 my subset TextOrStream is export(:TextOrStream) where PDF::COS::TextString | PDF::COS::Stream;
 multi sub coerce-text-or-stream(Str $value is rw, TextOrStream) is export(:TextOrStream) {
-    $value = PDF::COS.coerce( $value, PDF::COS::TextString );
+    $value = PDF::COS::TextString.COERCE: $value;
 }
 
 my subset ColorSpace of PDF::COS is export(:ColorSpace) where PDF::COS::Name | PDF::ColorSpace;

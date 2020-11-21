@@ -24,7 +24,7 @@ role PDF::Class::OutlineNode {
             when DestinationLike  { warn "todo coerce dest: {.perl}" }
             default { warn "ignoring outline dest: {.gist}" }
         }
-        $kid = PDF::COS.coerce($kid, (require PDF::Outline));
+        $kid = (require PDF::Outline).COERCE: $kid;
         $kid.Dest = $_ with $dest;
         $kid.parents //= [];
         $kid.parents.push: self;

@@ -43,10 +43,10 @@ class PDF::Annot
     has PDF::COS::TextString $.NM is entry(:alias<annotation-name>);  # (Optional; PDF 1.4) The annotation name, a text string uniquely identifying it among all the annotations on its page.
     my subset ModTime where PDF::COS::DateString | PDF::COS::TextString;
     sub coerce-mod-time(Str $s is rw, ModTime) {
-	my \target-type = $s ~~ PDF::COS::DateString::DateRegex
+	my $class := $s ~~ PDF::COS::DateString::DateRegex
 	    ?? PDF::COS::DateString
 	    !! PDF::COS::TextString;
-	PDF::COS.coerce($s, target-type);
+	$s = $class.COERCE($s);
     }
     has ModTime $.M is entry(:coerce(&coerce-mod-time), :alias<mod-time>);                # (Optional; PDF 1.1) The date and time when the annotation was most recently modified.
     # The preferred format is a date string, but viewer applications should be prepared to accept and display a string in any format.

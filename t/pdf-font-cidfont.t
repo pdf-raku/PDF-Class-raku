@@ -57,5 +57,5 @@ sub to-doc($font-obj) {
 skip 'CID Font Development';
 ##use PDF::COS;
 ##my %params = to-doc($object.font-obj);
-##my $font = PDF::COS.coerce( |%params );
-##isa-ok $font, (require ::('PDF::Font::CIDFontType2'));
+##my $font = PDF::COS.coerce: |%params;
+##isa-ok $font, 'PDF::Font::CIDFontType2';

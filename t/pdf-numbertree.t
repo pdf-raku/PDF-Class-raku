@@ -29,7 +29,7 @@ my $reader = class { has $.auto-deref = False }.new;
 my PDF::IO::IndObj $ind-obj .= new( |%ast, :$reader);
 is $ind-obj.obj-num, 20, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
-my $nametree-obj = PDF::COS.coerce($ind-obj.object, PDF::NumberTree);
+my  PDF::NumberTree $nametree-obj .= COERCE: $ind-obj.object;
 does-ok $nametree-obj, PDF::NumberTree;
 is-json-equiv $nametree-obj.Kids, [], '$obj.First';
 is-json-equiv $nametree-obj.Nums, [ 20, 'Xxx', 30, 42 ], '$obj.Nums';

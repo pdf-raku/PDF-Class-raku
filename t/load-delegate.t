@@ -28,7 +28,7 @@ my $pages = ::('PDF::Pages').new;
 is $pages.Type, 'Pages', '$.Type init';
 
 require ::('PDF::XObject::Form');
-my PDF::COS::Name $Subtype .= coerce: :name<Form>;
+my PDF::COS::Name $Subtype .= COERCE: 'Form';
 my $form = ::('PDF::XObject::Form').new( :dict{ :BBox[0, 0, 100, 140 ], :$Subtype });
 is $form.Subtype, 'Form', '$.Subtype init';
 

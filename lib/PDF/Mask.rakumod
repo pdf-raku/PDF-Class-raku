@@ -24,7 +24,7 @@ role PDF::Mask
     has Numeric @.BC is entry(:alias<backdrop-color>); # An array of component values specifying the colour to be used as the backdrop against which to composite the transparency group XObject G. This entry shall be consulted only if the subtype S is Luminosity. The array shall consist of n numbers, where n is the number of components in the colour space specified by the CS entry in the group attributes dictionary
     # Default value: the colour space’s initial value, representing black.
     use PDF::Function;
-    my constant IdentityName = PDF::COS.coerce: :name<Identity>;
+    my constant IdentityName = PDF::COS::Name.COERCE: 'Identity';
     my subset TransferFunc where PDF::Function|IdentityName;
     multi sub coerce-xfer-func('Identity') { IdentityName }
     multi sub coerce-xfer-func($_) { fail "Unable to coerce transfer function: {.raku}"; }

@@ -35,7 +35,7 @@ is-deeply $outlines-obj.Last, (:ind-ref[20, 0]), '$obj.Last';
 lives-ok {$outlines-obj.check}, '$outlines-obj.check lives';
 is-json-equiv $ind-obj.ast, %ast, 'ast regeneration';
 
-$outlines-obj = PDF::COS.coerce({}, (require ::('PDF')::('Outlines')));
+$outlines-obj = (require ::('PDF')::('Outlines')).COERCE: {};
 $outlines-obj.add-kid({:Title<k1>});
 $outlines-obj.add-kid({:Title<k2>});
 $outlines-obj.First.add-kid({:Title<k3>});
@@ -45,7 +45,7 @@ is $outlines-obj.First.Title, 'k1', '.First';
 is $outlines-obj.Last.Title, 'k2', '.Last';
 is $outlines-obj.First.First.Title, 'k3', '.First.First';
 
-$outlines-obj = PDF::COS.coerce({}, (require ::('PDF')::('Outlines')));
+$outlines-obj = (require ::('PDF')::('Outlines')).COERCE: {};
 
 $outlines-obj.kids = ({:Title<k1>, :kids[ {:Title<k3>}, ] }, {:Title<k2>});
 

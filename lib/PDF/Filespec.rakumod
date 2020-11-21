@@ -22,10 +22,10 @@ role PDF::Filespec
 
     proto sub to-file(|c) is export(:to-file) {*};
     multi sub to-file(Str $value is rw, File) {
-        PDF::COS.coerce( $value, PDF::COS::TextString );
+        $value = PDF::COS::TextString.COERCE($value);
     }
     multi sub to-file(Hash $value is rw, File) {
-        PDF::COS.coerce( $value, PDF::Filespec );
+        $value = PDF::Fieldspec.COERCE: $value;
     }
     multi sub to-file($_, File) {
         fail "unable to coerce to a File: {.perl}";

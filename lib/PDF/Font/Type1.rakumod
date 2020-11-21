@@ -29,7 +29,7 @@ class PDF::Font::Type1
 
     my subset EncodingLike where PDF::COS::Name | PDF::Encoding;
     multi sub coerce(Hash $dict, EncodingLike) {
-        PDF::COS.coerce($dict, PDF::Encoding);
+        PDF::Encode.COERCE($dict);
     }
     has EncodingLike $.Encoding is entry(:&coerce);     # (Optional) A specification of the font’s character encoding if different from its built-in encoding. The value of Encoding is either the name of a predefined encoding (MacRomanEncoding, MacExpertEncoding, or WinAnsiEncoding, as described in Appendix D) or an encoding dictionary that specifies differences from the font’s built-in encoding or from a specified predefined encoding
 

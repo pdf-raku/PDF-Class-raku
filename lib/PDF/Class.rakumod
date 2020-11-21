@@ -3,7 +3,7 @@ use v6;
 use PDF:ver(v0.3.8+);
 
 #| PDF entry-point. either a trailer dict or an XRef stream
-class PDF::Class:ver<0.4.7>
+class PDF::Class:ver<0.4.8>
     is PDF {
     # base class declares: $.Size, $.Encrypt, $.ID
     # use ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
@@ -11,6 +11,7 @@ class PDF::Class:ver<0.4.7>
 
     use PDF::Content;
     use PDF::COS::Tie;
+    use PDF::COS::Name;
     use PDF::Class::Type;
     use PDF::Info;
     has PDF::Info $.Info is entry(:indirect);  # (Optional; must be an indirect reference) The document’s information dictionary
@@ -25,7 +26,7 @@ class PDF::Class:ver<0.4.7>
             },
             STORE => -> $, Version $_ {
                 my $name = .Str;
-                $.catalog<Version> = PDF::COS.coerce: :$name;
+                $.catalog<Version> = PDF::COS::Name.COERCE: $name;
             },
         );
     }

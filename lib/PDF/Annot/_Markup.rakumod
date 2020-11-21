@@ -34,7 +34,7 @@ class PDF::Annot::_Markup
     has PDF::COS::DateString $.CreationDate is entry; # (Optional; PDF 1.5) The date and time when the annotation was created.
     my subset ReplyToLike where PDF::COS::TextString | PDF::COS::Dict;
     multi sub coerce(Str $value is rw, ReplyToLike) {
-	$value = PDF::COS.coerce( $value, PDF::COS::TextString );
+	$value = PDF::COS::TextString.COERCE: $value;
     }
     has ReplyToLike $.IRT is entry(:alias<reply-to-ref>, :&coerce); # (Required if an RT entry is present, otherwise optional; PDF 1.5) A reference to the annotation that this annotation is “in reply to.” Both annotations shall be on the same page of the document. The relationship between the two annotations shall be specified by the RT entry.
     # If this entry is present in an FDF file, its type shall not be a dictionary but a text string containing the contents of the NM entry of the annotation being replied to, to allow for a situation where the annotation being replied to is not in the same FDF file. Subj text string (Optional; PDF 1.5) Text representing a short description of the subject being addressed by the annotation.

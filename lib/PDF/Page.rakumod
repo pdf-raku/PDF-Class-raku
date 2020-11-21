@@ -49,7 +49,7 @@ class PDF::Page
     multi sub coerce(Hash $annot is rw where {.<FT>:exists}, AnnotLike) {
         # secondary coercement needed to a field
         my PDF::Field $delegate .= field-delegate($annot);
-        PDF::COS.coerce($annot, $delegate)
+        $delegate.COERCE: $annot;
     }
     multi sub coerce($_, AnnotLike) is default {
         fail "unable to coerce: {.perl} ({.WHAT.^name}) to an annotation";

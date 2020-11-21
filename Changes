@@ -1,3 +1,6 @@
+Release 0.4.8
+- Use COS COERCE() method, introduced with PDF 0.4.4+ coercion semantics. 
+
 Release 0.4.7
 - Change PDF::Function::Postscript calc() return value from Seq to Array - for
   consistency with other function types.

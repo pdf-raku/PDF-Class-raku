@@ -47,7 +47,7 @@ sub to-doc($font-obj) {
 my $hbi-afm = PDF::Content::Font::CoreFont.load-font( :family<Helvetica>, :weight<Bold>, :style<Italic> );
 
 my %params = to-doc($hbi-afm);
-my $font = PDF::COS.coerce( |%params );
+my $font = PDF::COS.coerce: |%params;
 isa-ok $font, ::('PDF::Font::Type1');
 is $font.BaseFont, 'Helvetica-BoldOblique', '.BaseFont';
 is $font.Encoding, 'WinAnsiEncoding', '.Encoding';
@@ -57,7 +57,7 @@ ok $font.font-obj.metrics.isa(Font::Metrics::helvetica-boldoblique), 'font objec
 my $zapf = PDF::Content::Font::CoreFont.load-font( 'ZapfDingbats' );
 
 %params = to-doc($zapf);
-my $zapf-font = PDF::COS.coerce( |%params );
+my $zapf-font = PDF::COS.coerce: |%params;
 isa-ok $zapf-font, ::('PDF::Font::Type1');
 is $zapf-font.BaseFont, 'ZapfDingbats', '.BaseFont';
 ok !$zapf-font.Encoding.defined, '!.Encoding';
@@ -65,7 +65,7 @@ ok !$zapf-font.Encoding.defined, '!.Encoding';
 my $sym = PDF::Content::Font::CoreFont.load-font( 'Symbol' );
 
 %params = to-doc($sym);
-my $sym-font = PDF::COS.coerce( |%params );
+my $sym-font = PDF::COS.coerce: |%params;
 isa-ok $sym-font, ::('PDF::Font::Type1');
 is $sym-font.BaseFont, 'Symbol', '.BaseFont';
 ok !$sym-font.Encoding.defined, '!.Encoding';

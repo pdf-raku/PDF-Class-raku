@@ -10,6 +10,7 @@ use PDF::Grammar::PDF::Actions;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Page;
 use PDF::Catalog;
+use PDF::COS::Null;
 
 my PDF::Grammar::PDF::Actions $actions .= new;
 
@@ -118,7 +119,7 @@ dies-ok { $catalog.OpenAction = [$page, 'FitH', 'blah' ] }, '$catalog.OpenAction
 lives-ok { $catalog.OpenAction = [$page, 'FitH', 42 ] }, '$catalog.OpenAction assignment - numeric';
 is-json-equiv $catalog.OpenAction, [$page, 'FitH', 42 ], '$catalog.OpenAction assignment - numeric';
 
-my $null = PDF::COS.coerce( :null(Any) );
+my $null = PDF::COS::Null.COERCE: Any;
 lives-ok { $catalog.OpenAction = [$page, 'FitH', $null ] }, '$catalog.OpenAction assignment - null';
 is-json-equiv $catalog.OpenAction, [$page, 'FitH', Mu ], '$catalog.OpenAction assignment - null';
 

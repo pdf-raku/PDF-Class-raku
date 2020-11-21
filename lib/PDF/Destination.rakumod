@@ -46,7 +46,10 @@ role PDF::Destination
         PDF::Destination[ .[1] ];
     }
 
-    method !dest(List $dest) { PDF::COS.coerce( $dest, $.delegate-destination($dest) ) }
+    method !dest(List $dest) {
+        my $class = $.delegate-destination($dest);
+        $class.COERCE: $dest;
+    }
 
     #| constructs a new PDF::Destination array object
     sub fit(Fit $f) { $f.value }
@@ -78,7 +81,8 @@ role PDF::Destination
 
     # assume an array is a simple destination
     multi sub coerce-dest(DestinationLike $_, DestSpec) {
-        PDF::COS.coerce( $_, $?ROLE.delegate-destination($_) );
+        my $class =  $?ROLE.delegate-destination($_);
+        $class.COERCE: $_;
     }
 
     multi sub coerce-dest($_, DestSpec) is default {
@@ -92,7 +96,7 @@ role PDF::Destination
 
     my subset DestNamed is export(:DestNamed) where DestDict|DestSpec;
     multi sub coerce-dest(Hash $dict, DestNamed) {
-        PDF::COS.coerce($dict, DestDict);
+        DestDict.COERCE($dict);
     }
     multi sub coerce-dest($_, DestNamed) {
         coerce-dest($_, DestSpec);

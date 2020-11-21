@@ -30,7 +30,7 @@ class PDF::Pages
     has Numeric @.CropBox is entry(:inherit,:len(4));
 
     method cb-init {
-	self<Type> = PDF::COS.coerce( :name<Pages> );
+	self<Type> = PDF::COS::Name.COERCE: 'Pages';
 	unless (self<Kids>:exists) || (self<Count>:exists) {
 	    self<Kids> = [];
 	    self<Count> = 0;

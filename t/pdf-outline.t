@@ -33,7 +33,7 @@ my $reader = class { has $.auto-deref = False }.new;
 my PDF::IO::IndObj $ind-obj .= new( |%ast, :$reader);
 is $ind-obj.obj-num, 20, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
-my $outline-obj = PDF::COS.coerce($ind-obj.object, PDF::Outline);
+my $outline-obj = PDF::Outline.COERCE: $ind-obj.object;
 does-ok $outline-obj, PDF::Outline;
 is $outline-obj.Title, 'Moderator Quick Reference Guide', '$.Title accessor';
 is-deeply $outline-obj.First, (:ind-ref[22, 0]), '$obj.First';

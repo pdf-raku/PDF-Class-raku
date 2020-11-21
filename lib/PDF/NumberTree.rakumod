@@ -130,7 +130,7 @@ role PDF::NumberTree
 role PDF::NumberTree[
     $type,
     :&coerce = sub ($_ is rw, $t) {
-        PDF::COS.coerce($_, $t);
+        $_ = $t.COERCE($_);
     },
 ] does PDF::NumberTree {
     method of {$type}

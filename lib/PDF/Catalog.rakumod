@@ -212,13 +212,12 @@ class PDF::Catalog
         # vivify pages root
 	self<Type> //= PDF::COS.coerce( :name<Catalog> );
 
-        self<Pages> //= PDF::COS.coerce(
-            :dict{
-                :Type( :name<Pages> ),
-                :Resources{ :ProcSet[ :name<PDF>, :name<Text> ] },
-                :Count(0),
-                :Kids[],
-	    });
+        self<Pages> //= PDF::COS::Dict.COERCE: {
+            :Type( :name<Pages> ),
+            :Resources{ :ProcSet[ :name<PDF>, :name<Text> ] },
+            :Count(0),
+            :Kids[],
+	    };
     }
 
     method cb-finish {

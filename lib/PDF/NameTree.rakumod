@@ -119,7 +119,7 @@ role PDF::NameTree
 role PDF::NameTree[
     $type,
     :&coerce = sub ($_ is rw, $t) {
-        PDF::COS.coerce($_, $t);
+        $_ = $t.COERCE($_);
     },
 ] does PDF::NameTree {
     method of {$type}

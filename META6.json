@@ -6,9 +6,9 @@
   "build-depends": [
   ],
   "depends": [
-    "PDF",
+    "PDF:ver<0.4.4+>",
     "PDF::Grammar",
-    "PDF::Content"
+    "PDF::Content<0.4.2+>"
   ],
   "description": "PDF Document Object Model",
   "license": "Artistic-2.0",
@@ -148,5 +148,5 @@
   ],
   "test-depends": [
   ],
-  "version": "0.4.7"
+  "version": "0.4.8"
 }
