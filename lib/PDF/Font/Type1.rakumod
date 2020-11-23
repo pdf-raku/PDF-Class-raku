@@ -28,10 +28,10 @@ class PDF::Font::Type1
     has PDF::FontDescriptor $.FontDescriptor is entry(:indirect);      # (Required except for the standard 14 fonts; must be an indirect reference) A font descriptor describing the font’s metrics other than its glyph widths
 
     my subset EncodingLike where PDF::COS::Name | PDF::Encoding;
-    multi sub coerce(Hash $dict, EncodingLike) {
+    multi sub coerce-enc(Hash $dict, EncodingLike) {
         PDF::Encode.COERCE($dict);
     }
-    has EncodingLike $.Encoding is entry(:&coerce);     # (Optional) A specification of the font’s character encoding if different from its built-in encoding. The value of Encoding is either the name of a predefined encoding (MacRomanEncoding, MacExpertEncoding, or WinAnsiEncoding, as described in Appendix D) or an encoding dictionary that specifies differences from the font’s built-in encoding or from a specified predefined encoding
+    has EncodingLike $.Encoding is entry(:coerce(&coerce-enc));     # (Optional) A specification of the font’s character encoding if different from its built-in encoding. The value of Encoding is either the name of a predefined encoding (MacRomanEncoding, MacExpertEncoding, or WinAnsiEncoding, as described in Appendix D) or an encoding dictionary that specifies differences from the font’s built-in encoding or from a specified predefined encoding
 
     has PDF::COS::Stream $.ToUnicode is entry;          # (Optional; PDF 1.2) A stream containing a CMap file that maps character codes to Unicode values
 

@@ -28,9 +28,9 @@ class PDF::Action::Thread
 	# The index of the thread within the Threads array of its document’s Catalog (see Link 7.7.2, “Document Catalog” ). The first thread in the array has index 0.
 	# The title of the thread as specified in its thread information dictionary (see Link Ta b l e 160 ). If two or more threads have the same title, the one appearing first in the document Catalog’s Threads array shall be used.
     my subset BeadLike where PDF::Bead|UInt;
-    multi sub coerce(Hash $_, BeadLike) { PDF::Bead.COERCE($_) }
-    multi sub coerce($_, BeadLike) is default { fail "unable to coerce {.perl} to a Bead" }
-    has BeadLike $.B is entry(:alias<bead>, :&coerce);	# [dictionary or integer] (Optional) The bead in the destination thread, specified in one of the following forms:
+    multi sub coerce-bead(Hash $_, BeadLike) { PDF::Bead.COERCE($_) }
+    multi sub coerce-bead($_, BeadLike) is default { fail "unable to coerce {.perl} to a Bead" }
+    has BeadLike $.B is entry(:alias<bead>, :coerce(&coerce-bead));	# [dictionary or integer] (Optional) The bead in the destination thread, specified in one of the following forms:
 	# An indirect reference to a bead dictionary (see Link 12.4.3, “Articles” ). In this case, the thread is in the current file.
 	# The index of the bead within its thread. The first bead in a thread has index 0.
 }

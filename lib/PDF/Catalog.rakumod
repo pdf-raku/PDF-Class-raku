@@ -210,7 +210,7 @@ class PDF::Catalog
 
     method cb-init {
         # vivify pages root
-	self<Type> //= PDF::COS.coerce( :name<Catalog> );
+	self<Type> //= PDF::COS::Name.COERCE: 'Catalog';
 
         self<Pages> //= PDF::COS::Dict.COERCE: {
             :Type( :name<Pages> ),

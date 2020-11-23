@@ -71,7 +71,7 @@ role PDF::Field
 
     my subset AnnotOrField of Hash where AnnotLike|PDF::Field;
     multi sub coerce-field( FieldLike $dict, AnnotOrField) {
-        my $class = PDF::Field.field-delegate( $dict );
+        my PDF::Field:U $class = PDF::Field.field-delegate( $dict );
 	$class.COERCE: $dict;
     }
     multi sub coerce-field( $_, AnnotOrField) is default {
