@@ -20,7 +20,7 @@ my $input = q:to"--END-OBJ--";
   /Filter /ASCIIHexDecode
   /Range [ 0 1 0 1 0 1 0 1 ]
   /Size [ 2 ]
-  /Length 17
+  /Length 24
 >> stream
 00 11 21 30
 FF FF FF A0>
@@ -55,7 +55,7 @@ is $function-obj.FunctionType, 0, '$.FunctionType accessor';
 is $function-obj.type, 'Function', '$.type accessor';
 is $function-obj.subtype, 'Sampled', '$.subtype accessor';
 is-json-equiv $function-obj.Domain, [0, 1], '$.Domain accessor';
-is-json-equiv $function-obj.Length, 17, '$.Length accessor';
+is-json-equiv $function-obj.Length, 24, '$.Length accessor';
 lives-ok {$function-obj.check}, '$function-obj.check lives';
 
 given  $function-obj.calculator {

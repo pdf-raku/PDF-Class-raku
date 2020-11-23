@@ -1,5 +1,7 @@
 Release 0.4.8
-- Use COS COERCE() method, introduced with PDF 0.4.4+ coercion semantics. 
+- Use COS COERCE() method, introduced with PDF 0.4.4+ coercion semantics.
+- Fix pdf-function-sampled.t test. Has always been invalid.
+  Failing on PDF v0.4.4+.
 
 Release 0.4.7
 - Change PDF::Function::Postscript calc() return value from Seq to Array - for
