@@ -57,9 +57,10 @@ This module is a work in progress. It currently defines roles and classes for ma
 ```
     use PDF::Class;
     use PDF::Catalog;
+    use PDF::MarkInfo;
     my PDF::Class $pdf .= new;
     my PDF::Catalog $catalog = $pdf.catalog; # same as $pdf.Root;
-    with $catalog.MarkInfo //= {} {
+    with $catalog.MarkInfo //= {} -> PDF::MarkInfo $_ {
         .Marked = True;
         .UserProperties = False;
         .Suspects = False;
@@ -71,13 +72,15 @@ This module is a work in progress. It currently defines roles and classes for ma
 ```
     use PDF::Class;
     use PDF::Catalog;
+    use PDF::Viewer::Preferences;
+
     my PDF::Class $pdf .= new;
 
     my PDF::Catalog $doc = $pdf.catalog;
     $doc.PageLayout = 'TwoColumnLeft';
     $doc.PageMode   = 'UseThumbs';
 
-    given $doc.ViewerPreferences //= {} {
+    given $doc.ViewerPreferences //= {} -> PDF::Viewer::Preferences $_ {
         .Duplex = 'DuplexFlipShortEdge';
         .NonFullScreenPageMode = 'UseOutlines';
     }
@@ -112,22 +115,22 @@ is under development.
 For these reasons it possible to bypass PDF::Class accessors; instead accessing hashes and arrays directly, giving raw access to the PDF data.
 
 This will also bypass type coercements, so you may need to be more explicit. In
-the following example we cast the PageMode to a name, so it appears as a name
-in the out put stream `:name<UseToes>`, rather than a string `'UseToes'`.
+the following example forces the setting of PageMode to an illegal value.
 
 ```
     use PDF::Class;
     use PDF::Catalog;
+    use PDF::COS::Name;
     my PDF::Class $pdf .= new;
 
     my PDF::Catalog $doc = $pdf.catalog;
     try {
-        $doc.PageMode   = 'UseToes';
+        $doc.PageMode = 'UseToes'; # illegal
         CATCH { default { say "err, that didn't work: $_" } }
     }
 
     # same again, bypassing type checking
-    $doc<PageMode>  = :name<UseToes>;
+    $doc<PageMode> = PDF::COS::Name.COERCE: 'UseToes';
 ```
 
 ## Scripts in this Distribution
@@ -383,6 +386,7 @@ PDF::Image | stream | Alternates, BitsPerComponent, ColorSpace, Decode, Height, 
 PDF::Info | dict | Title, Author, CreationDate, Creator, Keywords, ModDate, Producer, Subject, Trapped  |  |  | Table_317-Entries_in_the_document_information_dictionary
 PDF::MCR | dict | MCID, Pg(page), Stm, StmOwn, Type |  |  | Table_324-Entries_in_a_marked-content_reference_dictionary
 PDF::Mask::Alpha | dict | BC(backdrop-color), G(transparency-group), S(subtype), TR(transfer-function), Type |  |  | Table_144-Entries_in_a_soft-mask_dictionary
+PDF::MarkInfo | dict | Marked UserProperties Suspects |  |  | Table_321-Entries_in_the_mark_information_dictionary
 PDF::Mask::Luminosity | dict | BC(backdrop-color), G(transparency-group), S(subtype), TR(transfer-function), Type |  |  | Table_144-Entries_in_a_soft-mask_dictionary
 PDF::Metadata::XML | stream | Metadata, Subtype, Type |  |  | Table_315-Additional_entries_in_a_metadata_stream_dictionary
 PDF::NameTree | dict | Kids, Limits, Names |  |  | Table_36-Entries_in_a_name_tree_node_dictionary

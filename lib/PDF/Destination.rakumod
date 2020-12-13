@@ -47,8 +47,8 @@ role PDF::Destination
     }
 
     method !dest(List $dest) {
-        my $class = $.delegate-destination($dest);
-        $class.COERCE: $dest;
+        my $role = $.delegate-destination($dest);
+        $role.COERCE: $dest;
     }
 
     #| constructs a new PDF::Destination array object
@@ -81,8 +81,8 @@ role PDF::Destination
 
     # assume an array is a simple destination
     multi sub coerce-dest(DestinationLike $_, DestSpec) {
-        my $class =  $?ROLE.delegate-destination($_);
-        $class.COERCE: $_;
+        my $role =  $?ROLE.delegate-destination($_);
+        $role.COERCE: $_;
     }
 
     multi sub coerce-dest($_, DestSpec) is default {

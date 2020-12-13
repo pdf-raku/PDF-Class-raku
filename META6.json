@@ -102,6 +102,7 @@
     "PDF::Image": "lib/PDF/Image.rakumod",
     "PDF::Info": "lib/PDF/Info.rakumod",
     "PDF::MCR": "lib/PDF/MCR.rakumod",
+    "PDF::MarkInfo": "lib/PDF/MarkInfo.rakumod",
     "PDF::Mask": "lib/PDF/Mask.rakumod",
     "PDF::Mask::Alpha": "lib/PDF/Mask/Alpha.rakumod",
     "PDF::Mask::Luminosity": "lib/PDF/Mask/Luminosity.rakumod",
@@ -148,5 +149,5 @@
   ],
   "test-depends": [
   ],
-  "version": "0.4.8"
+  "version": "0.4.9"
 }

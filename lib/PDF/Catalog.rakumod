@@ -31,6 +31,7 @@ class PDF::Catalog
     use PDF::OutputIntent;
     use PDF::Resources;
     use PDF::Metadata::XML;
+    use PDF::MarkInfo;
     use PDF::Names;
     use PDF::Signature;
     use PDF::Bead-Thread; # Declares PDF::Bead & PDF::Thread
@@ -137,18 +138,7 @@ class PDF::Catalog
     my subset StructTreeLike of PDF::Class::Type where { .<Type> ~~ 'StructTreeRoot' }; # autoloaded PDF::StructTreeRoot
     has StructTreeLike $.StructTreeRoot is entry;           # (Optional; PDF 1.3) The document’s structure tree root dictionary
 
-    role MarkInfoDict
-	does PDF::COS::Tie::Hash {
-
-        # use ISO_32000::Table_321-Entries_in_the_mark_information_dictionary;
-        # also does ISO_32000::Table_321-Entries_in_the_mark_information_dictionary;
-	has Bool $.Marked is entry;          # (Optional) A flag indicating whether the document conforms to Tagged PDF conventions. Default value: false.
-					     # Note: If Suspects is true, the document may not completely conform to Tagged PDF conventions.
-	has Bool $.UserProperties is entry;  # (Optional; PDF 1.6) A flag indicating the presence of structure elements that contain user properties attributes. Default value: false.
-	has Bool $.Suspects is entry;        # Optional; PDF 1.6) A flag indicating the presence of tag suspects. Default value: false.
-    }
-
-    has MarkInfoDict $.MarkInfo is entry;                # (Optional; PDF 1.4) A mark information dictionary containing information about the document’s usage of Tagged PDF conventions
+    has PDF::MarkInfo $.MarkInfo is entry;                # (Optional; PDF 1.4) A mark information dictionary containing information about the document’s usage of Tagged PDF conventions
 
     has PDF::COS::TextString $.Lang is entry;            # (Optional; PDF 1.4) A language identifier specifying the natural language for all text in the document except where overridden by language specifications for structure elements or marked content
 
