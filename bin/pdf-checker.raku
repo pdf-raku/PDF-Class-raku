@@ -2,14 +2,14 @@
 use v6;
 use PDF::Content;
 use PDF::Content::Graphics;
-use PDF::Writer;
+use PDF::IO::Writer;
 use PDF::COS::TextString;
 use PDF::COS::Util :to-ast;
 
 my Bool $*contents;
 my Bool $*trace;
 my Bool $*strict = False;
-my PDF::Writer $*writer .= new;
+my PDF::IO::Writer $*writer .= new;
 my Str @*exclude;
 my %indobj-seen;
 my Int $warnings = 0;
@@ -169,7 +169,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
             }
         }
     }
-    
+
     if @unknown-entries {
         @unknown-entries = suggest($obj, $entries, @unknown-entries);
         warning("Unknown entries {ref($obj)} ({show-type($obj)}) struct: @unknown-entries[]");
@@ -313,7 +313,7 @@ pdf-checker.raku - Check PDF structure and values
 
 =head1 DESCRIPTION
 
-Checks a PDF class structure. Traverses all objects in the PDF that are accessable from the root, reporting any errors or warnings that were encountered. 
+Checks a PDF class structure. Traverses all objects in the PDF that are accessable from the root, reporting any errors or warnings that were encountered.
 
 =head1 SEE ALSO
 
