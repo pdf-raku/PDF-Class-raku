@@ -8,7 +8,7 @@ use PDF::IO::IndObj;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::Grammar::Test :is-json-equiv;
-use PDF::Reader;
+use PDF::IO::Reader;
 
 my PDF::Grammar::PDF::Actions $actions .= new;
 
@@ -41,7 +41,7 @@ is $pages-obj.Kids[2].Type, 'Page', 'new Kid Type';
 lives-ok {$pages-obj.check}, '$pages-obj.check lives';
 
 my $fdf-input = 't/pdf/fdf-PageTree.in';
-$reader = PDF::Reader.new( );
+$reader = PDF::IO::Reader.new( );
 $reader.open( $fdf-input );
 my $pages = $reader.trailer<Root>;
 

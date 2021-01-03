@@ -78,12 +78,12 @@ is +%fields, 17, 'fields hash key count';
 ok %fields{'Given Name Text Box'} == @fields[0], 'field hash lookup by .T';
 
 # check meta-data
-use PDF::Reader;
-isa-ok $doc.reader, PDF::Reader, '$doc.reader';
-isa-ok $doc.AcroForm.reader, PDF::Reader, '$doc.AcroForm.reader';
-isa-ok @fields[0].reader, PDF::Reader, '$doc.AcroForm.Fields[0].reader';
+use PDF::IO::Reader;
+isa-ok $doc.reader, PDF::IO::Reader, '$doc.reader';
+isa-ok $doc.AcroForm.reader, PDF::IO::Reader, '$doc.AcroForm.reader';
+isa-ok @fields[0].reader, PDF::IO::Reader, '$doc.AcroForm.Fields[0].reader';
 is @fields[0].obj-num, 5, '.obj-num';
 is @fields[0].gen-num, 0, '.gen-num';
-isa-ok @fields[0].P.reader, PDF::Reader, '$doc.AcroForm.Fields[0].P.reader';
+isa-ok @fields[0].P.reader, PDF::IO::Reader, '$doc.AcroForm.Fields[0].P.reader';
 
 done-testing;

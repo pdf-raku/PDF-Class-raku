@@ -2,7 +2,7 @@
 use v6;
 use PDF::IO;
 use PDF::Class;
-use PDF::Reader;
+use PDF::IO::Reader;
 
 sub MAIN(Str $infile,              #| input PDF
 	 Str :$password = '',      #| password for the input PDF, if encrypted
@@ -16,7 +16,7 @@ sub MAIN(Str $infile,              #| input PDF
            !! $infile.IO
     );
 
-    my PDF::Reader $reader = PDF::Class.open( $input, :$password).reader;
+    my PDF::IO::Reader $reader = PDF::Class.open( $input, :$password).reader;
 
     # filter out hybryd references
     my @xrefs = $reader.revision-xrefs;
