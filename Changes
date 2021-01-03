@@ -1,3 +1,7 @@
+Release 0.4.10
+- Rename of PDF::Reader -> PDF::IO::Reader and PDF::Writer -> PDF::IO::Writer
+ in PDF v0.4.5
+
 Release 0.4.9
 - Add external PDF::MarkInfo role.
 
