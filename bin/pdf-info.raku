@@ -48,7 +48,7 @@ multi sub MAIN(Str $infile,           #| input PDF
     my UInt $pages = $pdf.page-count;
     my Version $pdf-version = $pdf.version;
     my PDF::Info $pdf-info = $_ with $pdf.Info;
-    my List $box = $pdf.Pages.MediaBox;
+    my List $box = $_ with $pdf.Pages.MediaBox // $pdf.page(1).MediaBox;
     my PDF::Catalog $catalog = $pdf.catalog;
     my Bool $tagged = False;
     my Bool $partial = False;
