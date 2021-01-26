@@ -11,6 +11,7 @@ class PDF::Function::Sampled
     # also does ISO_32000::Table_39-Additional_entries_specific_to_a_type_0_function_dictionary;
 
     use PDF::COS::Tie;
+    use PDF::IO::Util :pack;
 
     has UInt @.Size is entry(:required);  # (Required) An array of m positive integers specifying the number of samples in each input dimension of the sample table.
 
@@ -26,9 +27,9 @@ class PDF::Function::Sampled
 
     # (Optional) Other attributes of the stream that provides the sample values, as appropriate
 
-    use PDF::IO::Util :pack;
     class Transform
         is PDF::Function::Transform {
+
         has UInt $.bpc is required;
         has UInt @.size is required;
         has Range @.encode = @!size.map: {0 .. $_};
@@ -105,8 +106,10 @@ class PDF::Function::Sampled
         else {
             @range;
         }
-        my Sample $bpc = $.BitsPerSample;
-        my Blob $samples = unpack($.decoded, $bpc);
+        my Sample $bpc := $.BitsPerSample;
+        my $decoded = $.decoded;
+        $decoded .= encode() if $decoded ~~ Str;
+        my Blob $samples = unpack($decoded, $bpc);
 
         Transform.new: :@domain, :@range, :@size, :@encode, :@decode, :$samples, :$bpc;
     }

@@ -1,3 +1,7 @@
+{{$NEXT}}
+- Fixed PDF::ColorSpace coercement of [/Pattern]
+- Fixed PDF::Function::Sampled handling of uncompressed stream data
+
 Release 0.4.10
 - Rename of PDF::Reader -> PDF::IO::Reader and PDF::Writer -> PDF::IO::Writer
  in PDF v0.4.5
