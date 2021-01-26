@@ -32,7 +32,8 @@ class PDF::ColorSpace
 		die "conflict between class-name $class-name ($subtype) and array[0] type /{self[0]}"
 		    unless self.Subtype eq $subtype;
 
-		self[1] //= { :WhitePoint[ 1.0, 1.0, 1.0 ] };
+		self[1] //= %( :WhitePoint[ 1.0, 1.0, 1.0 ] )
+                    if $subtype ~~ 'CalGray'|'CalRGB'|'Lab';
 
                 last;
             }

@@ -98,7 +98,7 @@ PDF::COS.loader = class PDF::Class::Loader
         where ('CalGray'|'CalRGB'|'Lab'|'ICCBased'|'Pattern' #| PDF Spec 1.7 Section 4.5.4 CIE-Based Color Spaces
                |'Indexed'|'Separation'|'DeviceN'); #| PDF Spec 1.7 Section 4.5.5 Special Color Spaces)
     my subset ColorSpace of List where {
-        2 <= .elems <= 5 && from-ast(.[0]) ~~ ColorSpaceName
+        .elems <= 5 && from-ast(.[0]) ~~ ColorSpaceName
     }
 
     multi method load-delegate(ColorSpace :$array!, :$base-class!) {
