@@ -29,7 +29,7 @@ my PDF::IO::IndObj $ind-obj .= new( |%ast, :$reader);
 is $ind-obj.obj-num, 5, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $shading-obj = $ind-obj.object;
-isa-ok $shading-obj, ::('PDF')::('Shading::Radial');
+isa-ok $shading-obj, 'PDF::Shading::Radial';
 is $shading-obj.ShadingType, 3, '$.ShadingType accessor';
 is $shading-obj.type, 'Shading', '$.type accessor';
 is $shading-obj.subtype, 'Radial', '$.subtype accessor';

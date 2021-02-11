@@ -30,7 +30,7 @@ my %ast = $/.ast;
 
 my PDF::IO::IndObj $ind-obj .= new( :$input, |%ast );
 my $cmap-obj = $ind-obj.object;
-isa-ok $cmap-obj, ::('PDF::CMap');
+isa-ok $cmap-obj, 'PDF::CMap';
 is $cmap-obj.Type, 'CMap', 'CMap Type';
 is $cmap-obj.CMapName, '90ms-RKSJ-H', 'CMapName';
 is $cmap-obj.WMode, 0, 'WMode';

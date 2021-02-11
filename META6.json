@@ -1,5 +1,5 @@
 {
-  "auth": "github:pdf-raku",
+  "auth": "cpan:WARRINGD",
   "authors": [
     "David Warring"
   ],
@@ -8,7 +8,7 @@
   "depends": [
     "PDF:ver<0.4.5+>",
     "PDF::Grammar:ver<0.2.4+>",
-    "PDF::Content:ver<0.4.8+>"
+    "PDF::Content:ver<0.4.11+>"
   ],
   "description": "PDF Document Object Model",
   "license": "Artistic-2.0",
@@ -23,12 +23,10 @@
     "PDF::Action::Launch": "lib/PDF/Action/Launch.rakumod",
     "PDF::Action::Named": "lib/PDF/Action/Named.rakumod",
     "PDF::Action::Sound": "lib/PDF/Action/Sound.rakumod",
-    "PDF::Action::Thread": "lib/PDF/Action/Thread.rakumod",
     "PDF::Action::SubmitForm": "lib/PDF/Action/SubmitForm.rakumod",
+    "PDF::Action::Thread": "lib/PDF/Action/Thread.rakumod",
     "PDF::Action::URI": "lib/PDF/Action/URI.rakumod",
     "PDF::Annot": "lib/PDF/Annot.rakumod",
-    "PDF::Annot::_Markup": "lib/PDF/Annot/_Markup.rakumod",
-    "PDF::Annot::_TextMarkup": "lib/PDF/Annot/_TextMarkup.rakumod",
     "PDF::Annot::AdditionalActions": "lib/PDF/Annot/AdditionalActions.rakumod",
     "PDF::Annot::Caret": "lib/PDF/Annot/Caret.rakumod",
     "PDF::Annot::Circle": "lib/PDF/Annot/Circle.rakumod",
@@ -43,6 +41,8 @@
     "PDF::Annot::ThreeD": "lib/PDF/Annot/ThreeD.rakumod",
     "PDF::Annot::Underline": "lib/PDF/Annot/Underline.rakumod",
     "PDF::Annot::Widget": "lib/PDF/Annot/Widget.rakumod",
+    "PDF::Annot::_Markup": "lib/PDF/Annot/_Markup.rakumod",
+    "PDF::Annot::_TextMarkup": "lib/PDF/Annot/_TextMarkup.rakumod",
     "PDF::Appearance": "lib/PDF/Appearance.rakumod",
     "PDF::Bead-Thread": "lib/PDF/Bead-Thread.rakumod",
     "PDF::Border": "lib/PDF/Border.rakumod",
@@ -54,9 +54,9 @@
     "PDF::Class::Defs": "lib/PDF/Class/Defs.rakumod",
     "PDF::Class::Loader": "lib/PDF/Class/Loader.rakumod",
     "PDF::Class::OutlineNode": "lib/PDF/Class/OutlineNode.rakumod",
+    "PDF::Class::StructItem": "lib/PDF/Class/StructItem.rakumod",
     "PDF::Class::ThreeD": "lib/PDF/Class/ThreeD.rakumod",
     "PDF::Class::Type": "lib/PDF/Class/Type.rakumod",
-    "PDF::Class::StructItem": "lib/PDF/Class/StructItem.rakumod",
     "PDF::Class::Util": "lib/PDF/Class/Util.rakumod",
     "PDF::ColorSpace": "lib/PDF/ColorSpace.rakumod",
     "PDF::ColorSpace::CalGray": "lib/PDF/ColorSpace/CalGray.rakumod",
@@ -149,5 +149,5 @@
   ],
   "test-depends": [
   ],
-  "version": "0.4.10"
+  "version": "0.4.11"
 }

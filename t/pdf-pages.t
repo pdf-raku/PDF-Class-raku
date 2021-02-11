@@ -28,7 +28,7 @@ my PDF::IO::IndObj $ind-obj .= new( |%ast, :$reader);
 is $ind-obj.obj-num, 3, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $pages-obj = $ind-obj.object;
-isa-ok $pages-obj, ::('PDF')::('Pages');
+isa-ok $pages-obj, 'PDF::Pages';
 is $pages-obj.Type, 'Pages', '$.Type accessor';
 is $pages-obj.Count, 2, '$.Count accessor';
 is-json-equiv $pages-obj.Kids, [ :ind-ref[4, 0], :ind-ref[5, 0] ], '$.Kids accessor';

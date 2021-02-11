@@ -125,11 +125,11 @@ is-json-equiv $catalog.OpenAction, [$page, 'FitH', Mu ], '$catalog.OpenAction as
 
 lives-ok { $catalog.OpenAction = { :S( :name<GoTo> ), :D[$page, :name<Fit>] } }, '$catalog.OpenAction assignment - destination dict';
 is-json-equiv $catalog.OpenAction, { :S<GoTo>, :D[$page, 'Fit'] }, '$catalog.OpenAction - destination dict';
-isa-ok $catalog.OpenAction, ::('PDF')::('Action::GoTo');
+isa-ok $catalog.OpenAction, 'PDF::Action::GoTo';
 
 lives-ok { $catalog.URI = { :S( :name<URI> ), :URI("http://example.com") } }, '$catalog.URI assignment - destination dict';
 is-json-equiv $catalog.URI, { :S<URI>, :URI("http://example.com") }, '$catalog.URI - destination dict';
-isa-ok $catalog.URI, ::('PDF')::('Action::URI');
+isa-ok $catalog.URI, 'PDF::Action::URI';
 
 lives-ok {$catalog.core-font('Helvetica')}, 'can add resource (core-font) to catalog';
 is-json-equiv $catalog.Resources, {:Font{

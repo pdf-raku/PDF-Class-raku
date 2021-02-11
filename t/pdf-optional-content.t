@@ -45,13 +45,13 @@ is $ind-obj.obj-num, 49, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $ocmd-obj = $ind-obj.object;
 my $ocg-obj = $ocmd-obj.OCGs;
-isa-ok $ocg-obj, ::('PDF')::('OCG');
+isa-ok $ocg-obj, 'PDF::OCG';
 is $ocg-obj.Type, 'OCG', '$.Type accessor';
 is $ocg-obj.type, 'OCG', '$.type accessor';
 is $ocg-obj.Name, 'Watermark', '$.Name accessor';
 
 my $usage = $ocg-obj.Usage;
-does-ok $usage, ::('PDF')::('OCG')::('Usage'), 'Usage';
+does-ok $usage, ::('PDF::OCG::Usage'), 'Usage';
 
 my $export = $usage.Export;
 is $export.ExportState, 'ON', 'Usage.Export.ExportState';

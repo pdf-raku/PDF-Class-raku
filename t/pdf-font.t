@@ -30,7 +30,7 @@ my PDF::IO::IndObj $ind-obj .= new( |%ast);
 my $object = $ind-obj.object;
 is $ind-obj.obj-num, 7, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
-isa-ok $object, ::('PDF')::('Font::Type1');
+isa-ok $object, 'PDF::Font::Type1';
 is $object.Type, 'Font', '$.Type accessor';
 is $object.Subtype, 'Type1', '$.Subype accessor';
 is $object.Name, 'F1', '$.Name accessor';
@@ -48,7 +48,7 @@ my $hbi-afm = PDF::Content::Font::CoreFont.load-font( :family<Helvetica>, :weigh
 
 my %params = to-doc($hbi-afm);
 my $font = PDF::COS.coerce: |%params;
-isa-ok $font, ::('PDF::Font::Type1');
+isa-ok $font, 'PDF::Font::Type1';
 is $font.BaseFont, 'Helvetica-BoldOblique', '.BaseFont';
 is $font.Encoding, 'WinAnsiEncoding', '.Encoding';
 use Font::Metrics::helvetica-boldoblique;
@@ -58,7 +58,7 @@ my $zapf = PDF::Content::Font::CoreFont.load-font( 'ZapfDingbats' );
 
 %params = to-doc($zapf);
 my $zapf-font = PDF::COS.coerce: |%params;
-isa-ok $zapf-font, ::('PDF::Font::Type1');
+isa-ok $zapf-font, 'PDF::Font::Type1';
 is $zapf-font.BaseFont, 'ZapfDingbats', '.BaseFont';
 ok !$zapf-font.Encoding.defined, '!.Encoding';
 
@@ -66,7 +66,7 @@ my $sym = PDF::Content::Font::CoreFont.load-font( 'Symbol' );
 
 %params = to-doc($sym);
 my $sym-font = PDF::COS.coerce: |%params;
-isa-ok $sym-font, ::('PDF::Font::Type1');
+isa-ok $sym-font, 'PDF::Font::Type1';
 is $sym-font.BaseFont, 'Symbol', '.BaseFont';
 ok !$sym-font.Encoding.defined, '!.Encoding';
 is $sym-font.encode("ΑΒΓ").map(*.chr).join, "ABG", '.encode(...)'; # /Alpha /Beta /Gamma

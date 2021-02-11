@@ -64,14 +64,16 @@ is-json-equiv $inline[2], (:EI[ ]), 'third .content(:inline) op: :EI[]';
 my PDF::Class $pdf .= new;
 my $page = $pdf.add-page;
 $page.media-box = [0, 0, 220,220];
+$page.gfx.comment('**Inline Image**');
 $page.gfx.do($snoopy, 10, 15, :width(100), :height(190), :inline);
+$page.gfx.comment('**Resourced Image**');
 $page.gfx.do($snoopy, 120, 15, :width(90));
 $page.gfx.do($snoopy, 120, 115, :width(90));
 
 my @images = $page.images;
 is +@images, 2, '$page.images';
-my $image = @images[1];
-isa-ok $image, ::('PDF')::('XObject::Image');
+my $image = @images.tail;
+isa-ok $image, 'PDF::XObject::Image';
 is-json-equiv $image, $snoopy, '$images dict';
 is $image.encoded, $snoopy.encoded, '$images encoded';
 

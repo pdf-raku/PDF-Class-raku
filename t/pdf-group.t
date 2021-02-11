@@ -24,7 +24,7 @@ my %ast = $/.ast;
 
 my PDF::IO::IndObj $ind-obj .= new( :$input, |%ast );
 my $group-obj = $ind-obj.object;
-isa-ok $group-obj, ::('PDF::Group');
+isa-ok $group-obj, 'PDF::Group';
 is $group-obj.Type, 'Group', 'Group Type';
 is $group-obj.S, 'Transparency', 'Subtype';
 is $group-obj.I, True, 'I';

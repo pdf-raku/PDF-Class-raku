@@ -35,7 +35,7 @@ my PDF::IO::IndObj $ind-obj .= new( |%ast, :$input);
 is $ind-obj.obj-num, 15, '$.obj-num';
 is $ind-obj.gen-num, 0, '$.gen-num';
 my $pattern-obj = $ind-obj.object;
-isa-ok $pattern-obj, ::('PDF')::('Pattern::Tiling');
+isa-ok $pattern-obj, 'PDF::Pattern::Tiling';
 is $pattern-obj.Type, 'Pattern', '$.Type accessor';
 is-json-equiv $pattern-obj.BBox, [ 0, 0, 100, 100 ], '$.BBox accessor';
 my $zfont = $pattern-obj.core-font('ZapfDingbats');

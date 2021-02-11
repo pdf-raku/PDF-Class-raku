@@ -15,7 +15,7 @@ is $cs1.AlternateSpace, 'DeviceCMYK', '.AlternateSpace accessor';
 lives-ok {$cs1.check}, '$cs1.check lives';
 
 my $tint-transform = $cs1.TintTransform;
-isa-ok $tint-transform, ::('PDF::Function::Sampled');
+isa-ok $tint-transform, 'PDF::Function::Sampled';
 
 is $tint-transform.BitsPerSample, 8, '.TintTransform.BitsPerSample';
 is $tint-transform.Length, 257, '.TintTransform.Length';
@@ -24,13 +24,13 @@ my $atts;
 lives-ok {$atts = $cs1.Attributes}, '.Attributes accessor';
 
 my $colorants = $atts.Colorants;
-isa-ok $colorants, ::('PDF::COS::Dict'), 'Colorants';
+isa-ok $colorants, 'PDF::COS::Dict', 'Colorants';
 my $magenta = $colorants<Magenta>;
-isa-ok $magenta, ::('PDF::ColorSpace::Separation'), '.Colorants<Magenta>';
+isa-ok $magenta, 'PDF::ColorSpace::Separation', '.Colorants<Magenta>';
 is $magenta.Name, 'Magenta',  '.Colorants<Magenta>.Name';
 
 $tint-transform = $magenta.TintTransform;
-isa-ok $tint-transform, ::('PDF::Function::Sampled');
+isa-ok $tint-transform, 'PDF::Function::Sampled';
 is-json-equiv $tint-transform.Domain, [0, 1], '.Colorants<Magenta>.TintTransform';
 is $tint-transform.decoded, "\x[0]" x 4 ~ "\x[ff]" x 4, ".Colorants<Magenta>.TintTransform.decoded"; 
 
