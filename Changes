@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.4.11  2021-02-11T15:36:59+13:00
   - Fixed PDF::ColorSpace coercement of [/Pattern]
   - Fixed PDF::Function::Sampled handling of uncompressed stream data
 
