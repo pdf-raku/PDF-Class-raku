@@ -8,11 +8,11 @@ my %*SUB-MAIN-OPTS =
 
 #| list all fields and current values
 multi sub MAIN(
-    Str $infile,            #| input PDF
+    Str $infile,            #= input PDF
     Bool :list($)! where .so,
-    Bool :$labels,          #| display labels, rather than keys
-    Str  :$password = '',   #| password for the PDF/FDF, if encrypted
-    UInt :$page,            #| selected page
+    Bool :$labels,          #= display labels, rather than keys
+    Str  :$password = '',   #= password for the PDF/FDF, if encrypted
+    UInt :$page,            #= selected page
     ) {
     my PDF::Class $pdf .= open($infile, :$password);
     my @fields = ($page ?? $pdf.page($page) !! $pdf).fields;
@@ -35,12 +35,12 @@ multi sub MAIN(
 
 #| remove field formatting
 multi sub MAIN(
-    Str $infile,            #| input PDF
+    Str $infile,            #= input PDF
     Bool :reset($)! where .so,
     Bool :$reformat = True,
     Bool :$triggers = True,
     Str  :$save-as,
-    Str  :$password = '',   #| password for the PDF/FDF, if encrypted
+    Str  :$password = '',   #= password for the PDF/FDF, if encrypted
     ) {
     if !$reformat && $triggers {
         note "nothing to do";

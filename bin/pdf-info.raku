@@ -1,4 +1,4 @@
-#!/usr/bin/env perl6
+#!/usr/bin/env raku
 use v6;
 
 use PDF::Class;
@@ -19,7 +19,7 @@ multi sub pretty-print(Mu $val --> Str) is default {
     ~$val
 }
 
-# A port of pdfinfo.pl from the Perl 5 CAM::PDF module to PDF and Perl 6
+# A port of pdfinfo.pl from the Perl 5 CAM::PDF module to Raku PDF
 
 multi sub MAIN(Bool :$version! where $_) {
     # nyi in rakudo https://rt.perl.org/Ticket/Display.html?id=125017
@@ -32,8 +32,8 @@ sub yes-no(Bool $cond) {
     $cond ?? 'yes' !! 'no';
 }
 
-multi sub MAIN(Str $infile,           #| input PDF
-	       Str :$password = '',   #| password for the input PDF, if encrypted
+multi sub MAIN(Str $infile,           #= input PDF
+	       Str :$password = '',   #= password for the input PDF, if encrypted
     ) {
 
     my $input = PDF::IO.coerce(
@@ -129,7 +129,7 @@ file(s).
 =head1 SEE ALSO
 
 CAM::PDF (Perl 5)
-PDF (Perl 6)
+PDF (Raku)
 
 =head1 AUTHOR
 

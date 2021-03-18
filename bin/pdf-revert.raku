@@ -1,13 +1,13 @@
-#!/usr/bin/env perl6
+#!/usr/bin/env raku
 use v6;
 use PDF::IO;
 use PDF::Class;
 use PDF::IO::Reader;
 
-sub MAIN(Str $infile,              #| input PDF
-	 Str :$password = '',      #| password for the input PDF, if encrypted
-	 Str :$save-as = $infile,  #| output PDF
-	 Bool :$count,             #| show the number of revision
+sub MAIN(Str $infile,              #= input PDF
+	 Str :$password = '',      #= password for the input PDF, if encrypted
+	 Str :$save-as = $infile,  #= output PDF
+	 Bool :$count,             #= show the number of revision
     ) {
 
     my $input = PDF::IO.coerce(
@@ -20,7 +20,6 @@ sub MAIN(Str $infile,              #| input PDF
 
     # filter out hybryd references
     my @xrefs = $reader.revision-xrefs;
-warn :@xrefs.perl;
     my UInt $revs = + @xrefs;
 
     if $count {
@@ -36,9 +35,7 @@ warn :@xrefs.perl;
         my UInt $prev = @xrefs.tail(2)[0];
 	my Str $body = $reader.input.byte-str(0, $prev);
 	my Str $xref = $reader.input.byte-str($prev);
-        warn :$xref.perl;
         $xref ~~ s/<after \n'%%EOF'> .* $/\n/;
-        warn :$xref.perl;
 
 	my $fh = $save-as eq q{-}
 	   ?? $*OUT
@@ -81,7 +78,7 @@ has endured and applies no changes.
 =head1 SEE ALSO
 
 CAM::PDF (Perl 5)
-PDF (Perl 6)
+PDF (Raku)
 
 =head1 AUTHOR
 

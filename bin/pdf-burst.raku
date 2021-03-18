@@ -1,4 +1,4 @@
-#!/usr/bin/env perl6
+#!/usr/bin/env raku
 use v6;
 use PDF::Class;
 use PDF::Catalog;
@@ -14,16 +14,16 @@ multi sub output-filename(Str $filename where /'%'/) {$filename}
 multi sub output-filename(Str $infile) is default {
       my Str $ext = $infile.IO.extension;
       $ext eq ''
-      ?? $infile ~ '%03d.pdf'
-      !! $infile.subst(/ '.' $ext$/, '%03d.' ~ $ext);
+      ?? $infile ~ '-%03d.pdf'
+      !! $infile.subst(/ '.' $ext$/, '-%03d.' ~ $ext);
 }
 
 subset Number of Int where * > 0;
 
-sub MAIN(Str $infile,              #| input PDF
-	 Str :$password = '',      #| password for the input PDF, if encrypted
-	 Str :$save-as is copy,    #| output template filename
-         Number :$batch-size = 1,  #| number of pages per batch (1)
+sub MAIN(Str $infile,              #= input PDF
+	 Str :$password = '',      #= password for the input PDF, if encrypted
+	 Str :$save-as is copy,    #= output template filename
+         Number :$batch-size = 1,  #= number of pages per batch (1)
     ) {
 
     $save-as = output-filename( $save-as // $infile );
@@ -65,9 +65,10 @@ sub MAIN(Str $infile,              #| input PDF
 
         with $catalog.Pages -> PDF::Pages $p {
             # pretend these are the only pages in the document
+            my $n = +@pages;
 	    temp $p.Kids = @pages;
-	    temp $p.Count = +@pages;
-	    warn "saving {+@pages} pages: $save-page-as";
+	    temp $p.Count = $n;
+	    note "saving $n pages to: $save-page-as";
 	    $pdf.save-as( $save-page-as, :rebuild );
         }
     }

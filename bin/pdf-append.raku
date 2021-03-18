@@ -1,4 +1,4 @@
-#!/usr/bin/env perl6
+#!/usr/bin/env raku
 use v6;
 use PDF::Class;
 use PDF::Pages;
@@ -56,7 +56,7 @@ Copy the contents of C<file2.pdf> etc, to the end of C<file1.pdf>, optionally sa
 
 =head1 SEE ALSO
 
-PDF (Perl 6)
+PDF (Raku)
 CAM::PDF (Perl 5)
 
 =head1 AUTHOR
