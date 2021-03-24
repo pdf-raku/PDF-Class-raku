@@ -10,6 +10,7 @@ use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::COS::Stream;
 use PDF::Image;
+use PDF::Content::FontObj;
 
 my PDF::Grammar::PDF::Actions $actions .= new;
 
@@ -48,15 +49,15 @@ is-deeply $page.contents, '%dummy stream', '$.contents accessor';
 lives-ok {$page.Thumb = PDF::Image.open: "t/images/dna.small.gif"}, '$page.Thumb = $image - lives';
 lives-ok {$page.Thumb.data-uri}, '$page.Thumb.data-uri - lives';
 
-my $font = $page.core-font( 'Helvetica' );
-isa-ok $font, 'PDF::Font::Type1';
-is $font.font-obj.font-name, 'Helvetica', '.font-name';
-my $font-again = $page.core-font( 'Helvetica' );
+my PDF::Content::FontObj $font = $page.core-font( 'Helvetica' );
+isa-ok $font.to-dict, 'PDF::Font::Type1';
+is $font.font-name, 'Helvetica', '.font-name';
+my PDF::Content::FontObj $font-again = $page.core-font( 'Helvetica' );
 is-deeply $font-again, $font, 'core font caching';
 is-deeply $font-again.WHICH, $font.WHICH, 'core font caching';
 is-deeply [$page.Resources.Font.keys.sort], [<F1 F2>], 'font resource entries';
-my $font2 = $page.core-font( :family<Helvetica>, :weight<bold> );
-is $font2.font-obj.font-name, 'Helvetica-Bold', '.font-name';
+my PDF::Content::FontObj $font2 = $page.core-font( :family<Helvetica>, :weight<bold> );
+is $font2.font-name, 'Helvetica-Bold', '.font-name';
 is-deeply [$page.Resources.Font.keys.sort], [<F1 F2 F3>], 'font resource entries';
 
 is-json-equiv $page.MediaBox, [0, 0, 595, 842], '$.MediaBox accessor';

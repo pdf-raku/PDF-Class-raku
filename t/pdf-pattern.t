@@ -8,6 +8,7 @@ use PDF::IO::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
+use PDF::Content::FontObj;
 
 my PDF::Grammar::PDF::Actions $actions .= new;
 
@@ -38,12 +39,12 @@ my $pattern-obj = $ind-obj.object;
 isa-ok $pattern-obj, 'PDF::Pattern::Tiling';
 is $pattern-obj.Type, 'Pattern', '$.Type accessor';
 is-json-equiv $pattern-obj.BBox, [ 0, 0, 100, 100 ], '$.BBox accessor';
-my $zfont = $pattern-obj.core-font('ZapfDingbats');
+my PDF::Content::FontObj $zfont = $pattern-obj.core-font('ZapfDingbats');
 # example from [PDF 1.7 Example 4.24]
 $pattern-obj.gfx.ops: [
     'q',
     'BT',                              # Begin text object
-    :Tf[$pattern-obj.resource-key($zfont), 1],                # Set text font and size
+    :Tf[$pattern-obj.resource-key($zfont.to-dict), 1],                # Set text font and size
     :Tm[64, 0, 0, 64, 7.1771, 2.4414], # Set text matrix
     :Tc[0],                            # Set character spacing
     :Tw[0],                            # Set word spacing
