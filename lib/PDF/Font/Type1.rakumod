@@ -23,7 +23,7 @@ class PDF::Font::Type1
 
     has UInt $.LastChar is entry;                       # (Required except for the standard 14 fonts) The last character code defined in the font’s Widths array
 
-    has Numeric @.Widths is entry;                      # (Required except for the standard 14 fonts; indirect reference preferred) An array of (LastChar − FirstChar + 1) widths, each element being the glyph width for the character code that equals FirstChar plus the array index.
+    has Numeric @.Widths is entry(:indirect);           # (Required except for the standard 14 fonts; indirect reference preferred) An array of (LastChar − FirstChar + 1) widths, each element being the glyph width for the character code that equals FirstChar plus the array index.
 
     has PDF::FontDescriptor $.FontDescriptor is entry(:indirect);      # (Required except for the standard 14 fonts; must be an indirect reference) A font descriptor describing the font’s metrics other than its glyph widths
 
