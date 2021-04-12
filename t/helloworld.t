@@ -10,6 +10,8 @@ my PDF::Class $pdf .= new;
 my PDF::Page $page = $pdf.add-page;
 $page.media-box = [0, 0, 595, 842];
 
+my $id = $*PROGRAM-NAME.fmt: '%-16s';
+
 dies-ok { $page.media-box = [0, 595] }, 'media-box bad setter - dies';
 is-json-equiv $page.media-box, [0, 0, 595, 842], 'media-box bad setter - ignored';
 my $header-font = $page.core-font( :family<Helvetica>, :weight<bold> );
@@ -101,16 +103,14 @@ $page.text: {
 }
 
 given $pdf.Info //= {} -> PDF::Info $info {
-    $info.Author = 't/helloworld.t';
+    $info.Author = $*PROGRAM-NAME;
     $info.CreationDate = DateTime.new: :year(2015), :month(12), :day(25);
 }
 skip '$pdf.Info<Author> - not completing';
 ##is $pdf.Info<Author>, 't/helloworld.t', '$root.Info accessor';
-
-# ensure consistant document ID generation
-srand(123456);
-
+$pdf.id = $id++;
 ok $pdf.save-as('t/helloworld.pdf', :!info), '.save-as';
+$pdf.id = $id++;
 ok $pdf.save-as('t/helloworld-compressed.pdf', :compress, :!info), '.save-as( :compress )';
 throws-like { $pdf.wtf }, X::Method::NotFound;
 
@@ -131,7 +131,6 @@ is-deeply $contents-ast[*-1], (:ET[]), '.contents last elem';
 my $gfx = $page.render;
 is-json-equiv $gfx.ops.tail(4).list, $(:Tj[{:literal("Hello, world!")}], :TL[:real(26.4)], "T*" => [], :ET[]), '$page.gfx.ops (tail)';
 
-srand(123456);
-lives-ok { PDF::Class.new.save-as: "t/no-pages.pdf", :!info }, 'create empty PDF';
+lives-ok { PDF::Class.new(:$id).save-as: "t/no-pages.pdf", :!info }, 'create empty PDF';
 
 done-testing;

@@ -83,8 +83,8 @@ role PDF::NameTree
     }
 
     has NameTree $!name-tree;
-    method name-tree {
-        $!name-tree //= NameTree.new: :root(self);
+    method name-tree(PDF::NameTree:D $root:) {
+        $!name-tree //= NameTree.new: :$root;
     }
 
     has PDF::NameTree @.Kids is entry(:indirect); # (Root and intermediate nodes only; required in intermediate nodes; present in the root node if and only if Names is not present) Shall be an array of indirect references to the immediate children of this node. The children may be intermediate or leaf nodes.

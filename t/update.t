@@ -7,13 +7,17 @@ use PDF::Page;
 my PDF::Class $pdf .= open('t/update.pdf');
 my $new-page = $pdf.Pages.add-page;
 $new-page.gfx.say( 'New Last Page!!' );
+
 # ensure consistant document ID generation
-srand(123456);
+my $id = $*PROGRAM-NAME.fmt('%-16s').substr(0,16);
+
+$pdf.id = $id++;
 ok $pdf.update(:!info), 'update';
 
 $pdf .= open('t/update.pdf');
 is $pdf.page-count, 2, 'pdf now has two pages';
 
+$pdf.id = $id++;
 ok $pdf.save-as('tmp/update-resaved.json', :!info), 'save-as json';
 
 $pdf .= open('tmp/update-resaved.json');

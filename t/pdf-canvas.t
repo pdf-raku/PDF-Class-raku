@@ -20,7 +20,8 @@ $page.canvas: {
 }
 
 # ensure consistant document ID generation
-srand(123456);
+$pdf.id =  $*PROGRAM-NAME.fmt('%-16s').substr(0,16);
+
 lives-ok { $pdf.save-as("t/pdf-canvas.pdf", :!info) }, 'save-as';
 
 throws-like { $pdf.unknown-method }, X::Method::NotFound, '$pdf unknown method';

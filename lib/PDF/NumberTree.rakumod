@@ -98,8 +98,8 @@ role PDF::NumberTree
     }
 
     has NumberTree $!number-tree;
-    method number-tree {
-        $!number-tree //= NumberTree.new: :root(self);
+    method number-tree(PDF::NumberTree:D $root:) {
+        $!number-tree //= NumberTree.new: :$root;
     }
 
     has Numeric @.Limits is entry(:len(2)); # (Shall be present in Intermediate and leaf nodes only) Shall be an array of two integers, that shall specify the (numerically) least and greatest keys included in the Nums array of a leaf node or in the Nums arrays of any leaf nodes that are descendants of an intermediate node.
