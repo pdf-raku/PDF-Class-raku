@@ -28,7 +28,7 @@ role PDF::Filespec
         $value = PDF::Fieldspec.COERCE: $value;
     }
     multi sub to-file($_, File) {
-        fail "unable to coerce to a File: {.perl}";
+        fail "unable to coerce to a File: {.raku}";
     }
     multi sub to-file($_ is copy) { to-file($_, File) }
 

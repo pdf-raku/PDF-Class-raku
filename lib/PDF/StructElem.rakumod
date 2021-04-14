@@ -45,7 +45,7 @@ role PDF::StructElem
         PDF::StructElem.COERCE($obj);
     }
     multi sub coerce-parent($_, StructElemParent) is default {
-        fail "Unable to coerce {.perl} to a PDF::StructElem.P (parent) element";
+        fail "Unable to coerce {.raku} to a PDF::StructElem.P (parent) element";
     }
 
     multi sub coerce-child(StructElemChild $obj, StructElemChild) { $obj }
@@ -53,7 +53,7 @@ role PDF::StructElem
         PDF::StructElem.COERCE($obj);
     }
     multi sub coerce-child($_, StructElemChild) is default {
-        fail "Unable to coerce {.perl} to a PDF::StructElem.K (child) element";
+        fail "Unable to coerce {.raku} to a PDF::StructElem.K (child) element";
     }
 
     has StructElemParent $.P is entry(:required, :alias<struct-parent>, :coerce(&coerce-parent)); # (Required; shall be an indirect reference) The structure element that is the immediate parent of this one in the structure hierarchy.

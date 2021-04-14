@@ -71,7 +71,7 @@ role PDF::Destination
     multi method construct(PageRef :$page!, )                    { self!dest: [$page, fit(FitWindow), ] }
     multi method construct(DestinationLike $dest) { self.construct(|$dest) }
     multi method construct(*@args) is default {
-        fail "unable to construct destination: {@args.perl}";
+        fail "unable to construct destination: {@args.raku}";
     }
 
     # Coercions for explicit and named destinations
@@ -86,7 +86,7 @@ role PDF::Destination
     }
 
     multi sub coerce-dest($_, DestSpec) is default {
-        fail "Unable to handle destination: {.perl}";
+        fail "Unable to handle destination: {.raku}";
     }
 
     # DestNamed coercement also allows an intermediate dictionary with a /D entry

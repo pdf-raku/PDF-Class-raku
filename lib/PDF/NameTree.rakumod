@@ -49,7 +49,7 @@ role PDF::NameTree
             }
         }
 
-        method Hash handles <keys values pairs perl> {
+        method Hash handles <keys values pairs raku> {
             self!fetch($!root)
                 unless $!realized++;
             %!values;

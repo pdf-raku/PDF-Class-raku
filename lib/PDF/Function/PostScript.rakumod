@@ -22,7 +22,7 @@ class PDF::Function::PostScript
             my $v = @!stack
                 ?? @!stack.pop
                 !! die "Postscript stack underflow";
-            die "typecheck error, expected {$type.perl}, got: {$v.perl}"
+            die "typecheck error, expected {$type.raku}, got: {$v.raku}"
                 unless $v ~~ $type;
             $v;
         }

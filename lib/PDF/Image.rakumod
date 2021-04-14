@@ -130,7 +130,7 @@ role PDF::Image
                     }
                 }
                 default {
-                     X::NYI.new(:feature("PNG Image with color-space: {.perl}")).throw;
+                     X::NYI.new(:feature("PNG Image with color-space: {.raku}")).throw;
                 }
             }
 

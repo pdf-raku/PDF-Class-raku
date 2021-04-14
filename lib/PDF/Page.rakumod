@@ -52,7 +52,7 @@ class PDF::Page
         $delegate.COERCE: $annot;
     }
     multi sub coerce($_, AnnotLike) is default {
-        fail "unable to coerce: {.perl} ({.WHAT.^name}) to an annotation";
+        fail "unable to coerce: {.raku} ({.WHAT.^name}) to an annotation";
     }
     has AnnotLike @.Annots is entry(:&coerce);                  # (Optional) An array of annotation dictionaries representing annotations associated with the page
     has PDF::Page::AdditionalActions $.AA is entry(:alias<additional-actions>);  # (Optional; PDF 1.2) An additional-actions dictionary defining actions to be performed when the page is opened or closed
