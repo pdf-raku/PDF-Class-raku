@@ -40,7 +40,7 @@ $outlines-obj.add-kid({:Title<k1>});
 $outlines-obj.add-kid({:Title<k2>});
 $outlines-obj.First.add-kid({:Title<k3>});
 my @titles = $outlines-obj.kids.map: *.Title;
-is-deeply @titles.join(','), 'k1,k2', 'titles';
+is @titles.join(','), 'k1,k2', 'titles';
 is $outlines-obj.First.Title, 'k1', '.First';
 is $outlines-obj.Last.Title, 'k2', '.Last';
 is $outlines-obj.First.First.Title, 'k3', '.First.First';
@@ -50,7 +50,7 @@ $outlines-obj = (require ::('PDF')::('Outlines')).COERCE: {};
 $outlines-obj.kids = ({:Title<k1>, :kids[ {:Title<k3>}, ] }, {:Title<k2>});
 
 @titles = $outlines-obj.kids.map: *.Title;
-is-deeply @titles.join(','), 'k1,k2', 'titles';
+is @titles.join(','), 'k1,k2', 'titles';
 is $outlines-obj.First.Title, 'k1', 'kids-accessor: .First';
 is $outlines-obj.Last.Title, 'k2', 'kids-accessor: .Last';
 is $outlines-obj.First.First.Title, 'k3', 'kids-accessor: .First.First';
