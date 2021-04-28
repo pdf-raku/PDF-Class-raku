@@ -10,7 +10,7 @@ my PDF::Class $pdf .= new;
 my PDF::Page $page = $pdf.add-page;
 $page.media-box = [0, 0, 595, 842];
 
-my $id = $*PROGRAM-NAME.fmt: '%-16s';
+my $id = $*PROGRAM-NAME.fmt: '%-16.16s';
 
 dies-ok { $page.media-box = [0, 595] }, 'media-box bad setter - dies';
 is-json-equiv $page.media-box, [0, 0, 595, 842], 'media-box bad setter - ignored';

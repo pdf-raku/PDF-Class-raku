@@ -67,7 +67,7 @@ $page.gfx.say('Page with an open annotation');
 $page.gfx.EndText;
 
 # ensure consistant document ID generation
-$pdf.id = $*PROGRAM-NAME.fmt('%-16s').substr(0,16);
+$pdf.id = $*PROGRAM-NAME.fmt('%-16.16s');
 
 $pdf.save-as('t/pdf-annot.pdf', :!info);
 
