@@ -7,7 +7,8 @@ my PDF::Class $pdf .= new;
 my $page = $pdf.add-page;
 my $header-font = $page.core-font( :family<Helvetica>, :weight<bold> );
 
-unless try {require HTML::Canvas::To::PDF; 1} {
+try {require HTML::Canvas::To::PDF;}
+if $! {
     skip-rest 'HTML::Canvas::To::PDF required to run canvas tests';
     exit;
 }

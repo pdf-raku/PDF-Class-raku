@@ -69,4 +69,4 @@ my $sym-font = PDF::COS.coerce: |%params;
 isa-ok $sym-font, 'PDF::Font::Type1';
 is $sym-font.BaseFont, 'Symbol', '.BaseFont';
 ok !$sym-font.Encoding.defined, '!.Encoding';
-is $sym-font.encode("ΑΒΓ").map(*.chr).join, "ABG", '.encode(...)'; # /Alpha /Beta /Gamma
+is $sym-font.encode("ΑΒΓ", :cids)>>.chr.join, "ABG", '.encode(...)'; # /Alpha /Beta /Gamma

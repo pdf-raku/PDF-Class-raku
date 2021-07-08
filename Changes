@@ -1,4 +1,6 @@
 {{$NEXT}}
+  - fix stream decoding in PDF::Font::Sampled
+  - fix pdf-font.t for PDF::Content v0.5.4+
 
 0.4.13  2021-04-15T11:04:33+12:00
   - rename method calls .perl -> .raku
