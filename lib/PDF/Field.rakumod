@@ -57,7 +57,7 @@ role PDF::Field
     multi sub coerce-field(PDF::COS::Dict $dict, PDF::Field $field) is export(:coerce-field) {
 	# refuse to coerce an annotation as a field
         my PDF::Field:U $class = $field.field-delegate( $dict );
-	$class.COERCE( $dict,  );
+	$class.COERCE: $dict;
     }
     method coerce-field(Hash $dict) {
         coerce-field($dict, PDF::Field);
