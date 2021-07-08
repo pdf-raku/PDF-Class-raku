@@ -108,7 +108,7 @@ class PDF::Function::Sampled
         }
         my Sample $bpc := $.BitsPerSample;
         my $decoded = $.decoded;
-        $decoded .= encode() if $decoded ~~ Str;
+        $decoded .= encode('latin-1') if $decoded ~~ Str;
         my Blob $samples = unpack($decoded, $bpc);
 
         Transform.new: :@domain, :@range, :@size, :@encode, :@decode, :$samples, :$bpc;
