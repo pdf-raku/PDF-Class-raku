@@ -119,7 +119,7 @@ isa-ok $pdf.reader.trailer, PDF, 'trailer type';
 $page = $pdf.page: 1;
 isa-ok $page, 'PDF::Page', 'first pages';
 is $page.Contents.Filter, 'FlateDecode', 'page stream is compressed';
-is $pdf.Info.Author, 't/helloworld.t', '$pdf.Info.Author reload';
+is $pdf.Info.Author, $*PROGRAM-NAME, '$pdf.Info.Author reload';
 
 my $contents-ast;
 lives-ok {$contents-ast =  $pdf.page(1).contents-parse}, 'page contents-parse - lives';
