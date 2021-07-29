@@ -17,8 +17,8 @@ role PDF::Names does PDF::COS::Tie::Hash {
     has PDF::NameTree $.Templates is entry;              # (Optional; PDF 1.3) A name tree mapping name strings to invisible (template) pages for use in interactive forms.
     has PDF::NameTree $.IDS is entry;                    # (Optional; PDF 1.3) A name tree mapping digital identifiers to Web Capture content sets.
     has PDF::NameTree $.URLS is entry;                   # (Optional; PDF 1.3) A name tree mapping uniform resource locators (URLs) to Web Capture content sets10.4, "Content Sets").
-    use PDF::Filespec :File, :to-file;
-    has PDF::NameTree[File, :coerce(&to-file)] $.EmbeddedFiles is entry;          # (Optional; PDF 1.4) A name tree mapping name strings to file specifications for embedded file streams.
+    use PDF::Filespec :FileRef, :to-file;
+    has PDF::NameTree[FileRef, :coerce(&to-file)] $.EmbeddedFiles is entry;          # (Optional; PDF 1.4) A name tree mapping name strings to file specifications for embedded file streams.
     has PDF::NameTree $.AlternatePresentations is entry; # (Optional; PDF 1.4) A name tree mapping name strings to alternate presentations.
     has PDF::NameTree $.Renditions is entry;             # (Optional; PDF 1.5) A name tree mapping name strings (which shall have Unicode encoding) to rendition objects.
 

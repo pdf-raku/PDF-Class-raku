@@ -23,7 +23,7 @@ class PDF::Catalog
     use PDF::Catalog::AdditionalActions;
     use PDF::NumberTree;
     use PDF::NameTree;
-    use PDF::Destination :DestSpec, :DestNamed, :coerce-dest;
+    use PDF::Destination :DestRef, :DestNamed, :coerce-dest;
     use PDF::ViewerPreferences;
     use PDF::Outlines;
     use PDF::Action;
@@ -113,9 +113,9 @@ class PDF::Catalog
 
     has PDF::Thread @.Threads is entry(:indirect);        # (Optional; PDF 1.1; must be an indirect reference) An array of thread dictionaries representing the document’s article threads
 
-    my subset OpenAction where PDF::Action|DestSpec;
+    my subset OpenAction where PDF::Action|DestRef;
     multi sub coerce-action(List $_ is rw, OpenAction) {
-        coerce-dest($_, DestSpec);
+        coerce-dest($_, DestRef);
     }
     multi sub coerce-action($_, OpenAction) is default {
         fail "unable to coerce {.raku} to an open action";

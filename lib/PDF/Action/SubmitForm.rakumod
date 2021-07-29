@@ -15,7 +15,7 @@ class PDF::Action::SubmitForm
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::COS::TextString;
-    use PDF::Filespec :File, :&to-file;
+    use PDF::Filespec :FileRef, :&to-file;
     use PDF::Field :&coerce-field;
 
 =begin pod
@@ -28,7 +28,7 @@ Table 236 – Additional entries specific to a submit-form action
 =end pod
 
     #| (Required) A URL file specification giving the uniform resource locator (URL) of the script at the Web server that will process the submission.
-    has File $.F is entry(:required, :coerce(&to-file));
+    has FileRef $.F is entry(:required, :coerce(&to-file));
 
     #| (Optional) An array identifying which fields to include in the submission or which to exclude, depending on the setting of the Include/Exclude flag in the Flags entry. Each element of the array is either an indirect reference to a field dictionary or (PDF 1.3) a text string representing the fully qualified name of a field. Elements of both kinds may be mixed in the same array.
     my subset FieldRef where PDF::Field|PDF::COS::TextString;

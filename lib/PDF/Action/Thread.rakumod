@@ -15,10 +15,10 @@ class PDF::Action::Thread
     use PDF::COS;
     use PDF::COS::Tie;
     use PDF::Bead-Thread; # Declares PDF::Bead & PDF::Thread
-    use PDF::Filespec :File, :&to-file;
+    use PDF::Filespec :FileRef, :&to-file;
     use PDF::COS::TextString;
 
-    has File $.F is entry(:alias<file>, :coerce(&to-file));	# [file specification] (Optional) The file containing the thread. If this entry is absent, the thread is in the current file.
+    has FileRef $.F is entry(:alias<file>, :coerce(&to-file));	# [file specification] (Optional) The file containing the thread. If this entry is absent, the thread is in the current file.
     my subset ThreadLike where PDF::Thread|PDF::COS::TextString|UInt;
     multi sub coerce(Hash $_, ThreadLike) { PDF::Thread.COERCE($_) }
     multi sub coerce(Str  $_, ThreadLike) { PDF::TextString.COERCE($_) }

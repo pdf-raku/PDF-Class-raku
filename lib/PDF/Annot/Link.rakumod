@@ -11,12 +11,12 @@ class PDF::Annot::Link
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::Action;
-    use PDF::Destination :DestSpec, :coerce-dest;
+    use PDF::Destination :DestRef, :coerce-dest;
     use PDF::Action::URI;
     use PDF::Border;
 
     has PDF::Action $.A is entry(:alias<action>);             # (Optional; PDF 1.1) An action to be performed when the link annotation is activated.
-    has DestSpec $.Dest is entry(:coerce(&coerce-dest), :alias<destination>);      # (Optional; not permitted if an A entry is present) A destination to be displayed when the annotation is activated
+    has DestRef $.Dest is entry(:coerce(&coerce-dest), :alias<destination>);      # (Optional; not permitted if an A entry is present) A destination to be displayed when the annotation is activated
     my subset HighlightMode of PDF::COS::Name where 'N'|'I'|'O'|'P';
     has HighlightMode $.H is entry(:alias<highlight-mode>, :default<I>);           # (Optional; PDF 1.2) The annotation’s highlighting mode, the visual effect to be used when the mouse button is pressed or held down inside its active area:
                                        # N(None)    - No highlighting.

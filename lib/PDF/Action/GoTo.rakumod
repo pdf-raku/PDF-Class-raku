@@ -13,7 +13,7 @@ class PDF::Action::GoTo
 
     use PDF::COS::Tie;
     use PDF::COS::Name;
-    use PDF::Destination :DestSpec, :coerce-dest;
-    has DestSpec $.D is entry(:required, :alias<destination>, :coerce(&coerce-dest));    # (Required) The destination to jump to
+    use PDF::Destination :DestRef, :coerce-dest;
+    has DestRef $.D is entry(:required, :alias<destination>, :coerce(&coerce-dest));    # (Required) The destination to jump to
 
 }
