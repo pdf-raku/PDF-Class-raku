@@ -5,12 +5,7 @@
 endobj
 
 2 0 obj
-<<
-  /Type /Pages
-  /Count 0
-  /Kids [  ]
-  /Resources << /ProcSet [ /PDF /Text ] >>
->>
+<< /Type /Pages /Count 0 /Kids [  ] >>
 endobj
 
 xref
@@ -21,5 +16,5 @@ xref
 trailer
 << /ID [ (t/helloworlf.t  ) (t/helloworlf.t  ) ] /Root 1 0 R /Size 3 >>
 startxref
-169
+120
 %%EOF

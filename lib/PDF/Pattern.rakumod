@@ -19,8 +19,8 @@ role PDF::Pattern
     has Numeric @.Matrix is entry(:len(6), :default[1, 0, 0, 1, 0, 0]);                # (Optional) An array of six numbers specifying the pattern matrix. Default value: the identity matrix [ 1 0 0 1 0 0 ].
 
     my enum PatternTypes is export(:PatternTypes) « :Tiling(1) :Shading(2) »;
-    my constant %PatternTypes = %( PatternTypes.enums.Hash );
-    my constant %PatternNames = %( PatternTypes.enums.invert.Hash );
+    my constant %PatternTypes = PatternTypes.enums.Hash;
+    my constant %PatternNames = PatternTypes.enums.invert.Hash;
 
     method type    { 'Pattern' }
     method subtype { %PatternNames[ self<PatternType> ] }

@@ -204,7 +204,6 @@ class PDF::Catalog
 
         self<Pages> //= PDF::COS::Dict.COERCE: {
             :Type( :name<Pages> ),
-            :Resources{ :ProcSet[ :name<PDF>, :name<Text> ] },
             :Count(0),
             :Kids[],
 	    };

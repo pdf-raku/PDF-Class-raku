@@ -8,14 +8,18 @@ endobj
 <<
   /Type /Pages
   /Count 2
-  /Kids [ 3 0 R 5 0 R ]
+  /Kids [ 3 0 R 7 0 R ]
   /MediaBox [ 0 0 220 220 ]
-  /Resources << /ProcSet [ /PDF /Text ] /XObject << /Fm1 7 0 R >> >>
 >>
 endobj
 
 3 0 obj
-<< /Type /Page /Contents 4 0 R /Parent 2 0 R >>
+<<
+  /Type /Page
+  /Contents 4 0 R
+  /Parent 2 0 R
+  /Resources << /XObject << /Fm1 5 0 R >> >>
+>>
 endobj
 
 4 0 obj
@@ -38,10 +42,56 @@ endstream
 endobj
 
 5 0 obj
-<< /Type /Page /Contents 6 0 R /Parent 2 0 R >>
+<<
+  /Type /XObject
+  /Subtype /Form
+  /FormType 1
+  /BBox [ 0 0 200 200 ]
+  /Matrix [ 1 0 0 1 0 0 ]
+  /Resources << /Font << /F1 6 0 R >> /ProcSet [ /PDF ] >>
+  /Length 171
+>> stream
+q
+0 0 m
+0 200 l
+200 200 l
+200 0 l
+f
+Q
+/P BMC
+  q
+    BT
+      50 50 Td
+      0.5 0.95 0.5 rg
+      /F1 16 Tf
+      (Hello, again!) Tj
+      17.6 TL
+      T*
+    ET
+  Q
+EMC
+endstream
 endobj
 
 6 0 obj
+<<
+  /Type /Font
+  /Subtype /Type1
+  /BaseFont /Helvetica-Bold
+  /Encoding /WinAnsiEncoding
+>>
+endobj
+
+7 0 obj
+<<
+  /Type /Page
+  /Contents 8 0 R
+  /Parent 2 0 R
+  /Resources << /XObject << /Fm1 5 0 R >> >>
+>>
+endobj
+
+8 0 obj
 << /Length 368 >> stream
 q
   0.2 0 0 0.2 50 169.8 cm
@@ -82,60 +132,19 @@ Q
 endstream
 endobj
 
-7 0 obj
-<<
-  /Type /XObject
-  /Subtype /Form
-  /FormType 1
-  /BBox [ 0 0 200 200 ]
-  /Matrix [ 1 0 0 1 0 0 ]
-  /Resources << /Font << /F1 8 0 R >> /ProcSet [ /PDF ] >>
-  /Length 171
->> stream
-q
-0 0 m
-0 200 l
-200 200 l
-200 0 l
-f
-Q
-/P BMC
-  q
-    BT
-      50 50 Td
-      0.5 0.95 0.5 rg
-      /F1 16 Tf
-      (Hello, again!) Tj
-      17.6 TL
-      T*
-    ET
-  Q
-EMC
-endstream
-endobj
-
-8 0 obj
-<<
-  /Type /Font
-  /Subtype /Type1
-  /BaseFont /Helvetica-Bold
-  /Encoding /WinAnsiEncoding
->>
-endobj
-
 xref
 0 9
 0000000000 65535 f 
 0000000015 00000 n 
 0000000065 00000 n 
-0000000234 00000 n 
-0000000298 00000 n 
-0000000496 00000 n 
-0000000560 00000 n 
-0000000980 00000 n 
-0000001362 00000 n 
+0000000165 00000 n 
+0000000280 00000 n 
+0000000478 00000 n 
+0000000860 00000 n 
+0000000971 00000 n 
+0000001086 00000 n 
 trailer
 << /ID [ (t/pdf-xobject-fo) (t/pdf-xobject-fo) ] /Root 1 0 R /Size 9 >>
 startxref
-1473
+1506
 %%EOF

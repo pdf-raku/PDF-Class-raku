@@ -5,16 +5,17 @@
 endobj
 
 2 0 obj
-<<
-  /Type /Pages
-  /Count 1
-  /Kids [ 3 0 R ]
-  /Resources << /Pattern << /Pt1 5 0 R >> /ProcSet [ /PDF /Text ] >>
->>
+<< /Type /Pages /Count 1 /Kids [ 3 0 R ] >>
 endobj
 
 3 0 obj
-<< /Type /Page /Contents 4 0 R /MediaBox [ 0 0 230 210 ] /Parent 2 0 R >>
+<<
+  /Type /Page
+  /Contents 4 0 R
+  /MediaBox [ 0 0 230 210 ]
+  /Parent 2 0 R
+  /Resources << /Pattern << /Pt1 5 0 R >> >>
+>>
 endobj
 
 4 0 obj
@@ -96,12 +97,12 @@ xref
 0000000000 65535 f 
 0000000015 00000 n 
 0000000065 00000 n 
-0000000200 00000 n 
-0000000290 00000 n 
-0000001016 00000 n 
-0000001490 00000 n 
+0000000125 00000 n 
+0000000268 00000 n 
+0000000994 00000 n 
+0000001468 00000 n 
 trailer
 << /ID [ (t/pdf-pattern.t ) (t/pdf-pattern.t ) ] /Root 1 0 R /Size 7 >>
 startxref
-1564
+1542
 %%EOF
