@@ -1,9 +1,14 @@
 {{$NEXT}}
-  - fixed typechecks for Type0 font /Encoding entry and Mask /G (transparency-group)
-    entry.
+
+0.4.15  2021-08-07T06:53:26+12:00
+  - fixed type checks for Type0 font /Encoding entry and Mask /G
+    (transparency-group) entry.
+  - fixed #19 /Resources entry placement by removing initialization of
+    /ProcSet[ /PDF /Text ]. This marked obsolete in ISO-32000. It's
+    purpose is/was to support conversion to PostSript in older drivers.
 
 0.4.14  2021-07-09T09:10:33+12:00
-  - fix stream decoding in PDF::Font::Sampled
+  - fix stream decoding in PDF::Function::Sampled
   - fix pdf-font.t for PDF::Content v0.5.4+
 
 0.4.13  2021-04-15T11:04:33+12:00
@@ -44,7 +49,7 @@ Release 0.4.6
 
 Release 0.4.5
 - Renamed sub &export: PDF::Field :&coerce -> :&coerce-field
-- Correct additional actions (added in 0.4.4); seperate roles for
+- Correct additional actions (added in 0.4.4); separate roles for
   Catalog, Fields, Annotations and Pages. #15
 - Added class PDF::Action::SubmitForm
 - Fix t/pdf-outline.t to work with PDF v0.4.4
@@ -68,9 +73,9 @@ Release 0.4.3
 - Enable update of name-trees (via .name-tree()) and number-trees
   (via .number-tree()). Added calls to .cb-finish() which now must
   be called to publish the updates.
-- Also support name/number-tree vivication
+- Also support name/number-tree vivification
 - Add PDF::Class.creator() method - editable list of creators. Also
-  seperate creators with '; ' when writing to PDF::Info.Creator; seems
+  separate creators with '; ' when writing to PDF::Info.Creator; seems
   to be the convention.
 
 Release 0.4.2
@@ -122,7 +127,7 @@ Release 0.3.2
 Release 0.3.1
 - Fix StructElem coercement (broken in 0.3.0)
 - Fix PDF::Field .type() method to return 'Field', for
-  consistancy, and .subtype() to return the field type.
+  consistency, and .subtype() to return the field type.
 
 Release 0.3.0
 - Fixed pdf-toc.p6
@@ -192,7 +197,7 @@ Release 0.1.9
 - Fixed PDF::Action coercements
 
 Release 0.1.8
-- Add classess:
+- Add classes:
   -- PDF::OCG (Optional Content Groups)
   -- PDF::OCMD (Optional Content Membership Dictionary)
   -- PDF::MCR (Marked Content Reference)
@@ -222,7 +227,7 @@ Improvements from field testing of pdf-checker.p6:
 Release 0.1.4
 - Altered composition of some classes to avoid 'version skew' compilation
   errors (Issue #11)
-- Fixed PDF::ExtGState.SMask accessor; new subclasses PDF::Mask::Alpha,
+- Fixed PDF::ExtGState.SMask accessor; new sub classes PDF::Mask::Alpha,
   PDF::Mask::Luminosity
 - Improvements to pdf-checker.p6
 

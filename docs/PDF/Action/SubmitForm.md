@@ -14,8 +14,8 @@ Table 236 – Additional entries specific to a submit-form action
 Methods (Entries)
 =================
 
-class PDF::Filespec::File $.F
------------------------------
+class PDF::Filespec::FileRef $.F
+--------------------------------
 
 (Required) A URL file specification giving the uniform resource locator (URL) of the script at the Web server that will process the submission.
 
