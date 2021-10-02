@@ -3,8 +3,7 @@ use v6;
 use PDF::COS::Stream;
 use PDF::Pattern;
 use PDF::Content::XObject;
-use PDF::Content::Graphics;
-use PDF::Content::Resourced;
+use PDF::Content::Canvas;
 
 #| /PatternType 1 - Tiling
 
@@ -12,8 +11,7 @@ class PDF::Pattern::Tiling
     is PDF::COS::Stream
     does PDF::Pattern
     does PDF::Content::XObject['Form']
-    does PDF::Content::Graphics
-    does PDF::Content::Resourced {
+    does PDF::Content::Canvas {
 
     use PDF::COS::Tie;
     use PDF::Resources;

@@ -41,7 +41,7 @@ The entry point of a PDF document is the trailer dictionary. This is mapped to `
     $new-page.gfx.say: "New last page!";
 
     # save the updated pdf
-    $pdf.save-as: "tmp/pdf-updated.pdf", :!info;
+    $pdf.save-as: "tmp/pdf-updated.pdf";
 ```
 
 - This module contains definitions for many other standard PDF objects, such as Pages, Fonts and Images, as listed below.

@@ -1,10 +1,12 @@
 {{$NEXT}}
+  - Use PDF::Content v0.5.7+ PDF::Content::Canvas role for composing
+    XObject Forms and Tiling Patterns
 
 0.4.15  2021-08-07T06:53:26+12:00
   - fixed type checks for Type0 font /Encoding entry and Mask /G
     (transparency-group) entry.
   - fixed #19 /Resources entry placement by removing initialization of
-    /ProcSet[ /PDF /Text ]. This marked obsolete in ISO-32000. It's
+    /ProcSet[ /PDF /Text ]. This is marked obsolete in ISO-32000. It's
     purpose is/was to support conversion to PostSript in older drivers.
 
 0.4.14  2021-07-09T09:10:33+12:00

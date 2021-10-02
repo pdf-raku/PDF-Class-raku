@@ -136,7 +136,7 @@ role PDF::Field
 		    if $kid ~~ AnnotLike && $kid !~~ FieldLike;
 	    }
 	}
-	flat @annots;
+	@annots;
     }
 
     has PDF::COS::TextString $.T is entry(:alias<key>);      # Optional) The partial field name

@@ -43,7 +43,7 @@ role PDF::NumberTree
             else {
                 # branch node
                 given $node.Kids -> $kids {
-                    for 0 ..^ +$kids {
+                    for ^+$kids {
                         given $kids[$_] -> $kid {
                             with $key {
                                 my @limits[2] = $kid.Limits;

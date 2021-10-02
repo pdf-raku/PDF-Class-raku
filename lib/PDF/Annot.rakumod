@@ -52,7 +52,7 @@ class PDF::Annot
     # The preferred format is a date string, but viewer applications should be prepared to accept and display a string in any format.
     # See [ISO-32000 Table 165 - Annotation flags]
     my Int enum AnnotFlag is export(:AnnotFlag) « :AnnotInvisable(1) :AnnotHidden(2) :AnnotPrint(3) :AnnotNoZoom(4) :AnnotNoRotate(5) :AnnotNoView(6) :AnnotReadOnly(7) :AnnotLocked(8) :AnnotToggleNoView(9) :AnnotLockedContents(10) »;
-    my subset AnnotFlagsInt of UInt where 0 ..^ 2 +< 10;
+    my subset AnnotFlagsInt of UInt where ^(2 +< 10);
     has AnnotFlagsInt $.F is entry(:alias<annot-flags>, :default(0));              # (Optional; PDF 1.1) A set of flags specifying various characteristics of the annotation
     has PDF::Appearance $.AP is entry(:alias<appearance>);      # (Optional; PDF 1.2) An appearance dictionary specifying how the annotation is presented visually on the page
     has PDF::COS::Name $.AS is entry(:alias<appearance-state>); # (Required if the appearance dictionary AP contains one or more subdictionaries; PDF 1.2) The annotation’s appearance state, which selects the applicable appearance stream from an appearance subdictionary

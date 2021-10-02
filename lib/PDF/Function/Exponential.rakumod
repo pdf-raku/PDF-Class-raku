@@ -33,7 +33,7 @@ class PDF::Function::Exponential
 
         method calc(@in where .elems == 1) {
             my Numeric $x = self.clip(@in[0], @.domain[0]);
-            my @out = (0 ..^ $!n).map: -> \j {
+            my @out = (^$!n).map: -> \j {
                 @!C0[j]  +  ($x ** $!N) * (@!C1[j] - @!C0[j]);
             }
             @out = [(@out Z @.range).map: { self.clip(.[0], .[1]) }]

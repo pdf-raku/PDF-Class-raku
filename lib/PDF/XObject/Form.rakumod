@@ -3,16 +3,14 @@ use v6;
 use PDF::XObject;
 use PDF::Class::StructItem;
 use PDF::Content::XObject;
-use PDF::Content::Resourced;
-use PDF::Content::Graphics;
+use PDF::Content::Canvas;
 
 #| XObject Forms - /Type /XObject /Subtype Form
 class PDF::XObject::Form
     is PDF::XObject
     does PDF::Class::StructItem
     does PDF::Content::XObject['Form']
-    does PDF::Content::Graphics
-    does PDF::Content::Resourced {
+    does PDF::Content::Canvas {
 
     # use ISO_32000::Table_95-Additional_Entries_Specific_to_a_Type_1_Form_Dictionary;
     # also does ISO_32000::Table_95-Additional_Entries_Specific_to_a_Type_1_Form_Dictionary;

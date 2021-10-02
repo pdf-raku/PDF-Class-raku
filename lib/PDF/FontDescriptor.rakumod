@@ -22,7 +22,7 @@ role PDF::FontDescriptor
     has FontStretchName $.FontStretch is entry;        # (Optional; PDF 1.5; strongly recommended for Type 3 fonts in Tagged PDF documents) The font stretch value
     my subset FontWeightValue of Int where 0 <= * < 1000;
     has FontWeightValue $.FontWeight is entry;         # Optional; PDF 1.5; strongly recommended for Type 3 fonts in Tagged PDF documents) The weight (thickness) component of the fully-qualified font name or font specifier.
-    my subset FontFlags of Int where 0 ..^ (2 +< 18);
+    my subset FontFlags of Int where ^(2 +< 18);
 	# See [PDF 32000 table 123 - Font flags]
 	#     BIT POSITION: NAME - MEANING
 	#     1: FixedPitch - All glyphs have the same width (as opposed to proportional or variable-pitch fonts, which have different widths).

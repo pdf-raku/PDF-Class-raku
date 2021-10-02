@@ -49,7 +49,7 @@ class PDF::Function::Sampled
         method !base-index(@e) {
             my UInt $index = 0;
             my UInt $factor = $!n;
-            for 0 ..^ $!m -> \x {
+            for ^$!m -> \x {
                 $index += @e[x].floor * $factor;
                 $factor *= @!size[x];
             }
@@ -61,15 +61,15 @@ class PDF::Function::Sampled
         method !approximate(@e) {
             my \index = self!base-index(@e);
             my \n-samples = $!samples.elems;
-            my @base = (0 ..^ $!n).map: -> \y { $!samples[index + y] }
+            my @base = (^$!n).map: -> \y { $!samples[index + y] }
             my @samples = @base.list;
             my $offset = $!n;
-            for 0 ..^ $!m -> \x {
+            for ^$!m -> \x {
                 my \weight = @e[x] - @e[x].floor;
                 unless weight =~= 0 {
                     my \neighbour = index + $offset;
                     last if neighbour >= n-samples;
-                    for 0 ..^ $!n -> \y {
+                    for ^$!n -> \y {
                         my \this = $!samples[neighbour + y];
                         @samples[y] += (this - @base[y]) * weight;
                     }
@@ -84,7 +84,7 @@ class PDF::Function::Sampled
             my Numeric @e = (@x Z @.domain Z @!encode).map: { $.interpolate(.[0], .[1], .[2]) };
             @e = (@e Z @!size).map: { $.clip(.[0], 0 .. (.[1]-1)) }
             my @samples = self!approximate(@e);
-            my @out = (0 ..^ $!n).map: -> \y {
+            my @out = (^$!n).map: -> \y {
                 $.interpolate(@samples[y], 0 .. 2 ** $!bpc - 1, @!decode[y]);
             }
             [(@out Z @.range).map: { $.clip(.[0], .[1]) }];
