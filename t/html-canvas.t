@@ -13,7 +13,7 @@ if $! {
     exit;
 }
 
-$page.canvas: {
+$page.html-canvas: {
     .beginPath();
     .arc(95, 50, 40, 0, 2 * pi);
     .stroke();
@@ -23,7 +23,7 @@ $page.canvas: {
 # ensure consistant document ID generation
 $pdf.id =  $*PROGRAM-NAME.fmt('%-16.16s');
 
-lives-ok { $pdf.save-as("t/pdf-canvas.pdf", :!info) }, 'save-as';
+lives-ok { $pdf.save-as("t/html-canvas.pdf", :!info) }, 'save-as';
 
 throws-like { $pdf.unknown-method }, X::Method::NotFound, '$pdf unknown method';
 
