@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.4.16  2021-10-09T09:33:31+13:00
   - Use PDF::Content v0.5.7+ PDF::Content::Canvas role for composing
     XObject Form and Tiling Pattern classes
   - Replace canvas(&code) with html-canvas(&code) in pdf-canvas.t
