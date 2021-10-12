@@ -34,7 +34,7 @@ Table 236 – Additional entries specific to a submit-form action
     my subset FieldRef where PDF::Field|PDF::COS::TextString;
     multi sub coerce-field-ref(Hash $fld, FieldRef) { coerce-field($fld, PDF::Field) }
     multi sub coerce-field-ref(Str $value is rw, FieldRef) { $value = PDF::COS::TextString.COERCE($value) }
-    multi sub coerce-field-ref($_, $) { fail "unable to coerce to field reference: {.raku}"; }
+    multi sub coerce-field-ref($_, $) { warn "unable to coerce to field reference: {.raku}"; }
     has FieldRef @.Fields is entry(:coerce(&coerce-field));
     =para If this entry is omitted, the Include/Exclude flag is ignored, and all fields in the document’s interactive form is submitted except those whose NoExport flag is set. Fields with no values may also be excluded, as dictated by the value of the IncludeNoValueFields flag.
 

@@ -75,7 +75,7 @@ role PDF::Field
 	$class.COERCE: $dict;
     }
     multi sub coerce-field( $_, AnnotOrField) is default {
-        fail "unable to coerce {.raku} to an Annotation or Field";
+        warn "unable to coerce {.raku} to an Annotation or Field";
     }
 
     has AnnotOrField @.Kids is entry(:indirect, :coerce(&coerce-field)); # (Sometimes required, as described below) An array of indirect references to the immediate children of this field.

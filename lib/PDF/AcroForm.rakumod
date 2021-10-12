@@ -66,7 +66,7 @@ role PDF::AcroForm
         PDF::COS.coerce( $a[$_], PDF::COS::TextString)
             for 0, 2 ... +$a;
     }
-    multi sub coerce-xfa($_, $) { fail "unable to coerce to XFA forms: {.raku}" }
+    multi sub coerce-xfa($_, $) { warn "unable to coerce to XFA forms: {.raku}" }
     has XFA $.XFA is entry(:coerce(&coerce-xfa));          # (Optional; PDF 1.5) A stream or array containing an XFA resource, whose format is described by the Data Package (XDP) Specification.
                                                # The value of this entry must be either a stream representing the entire contents of the XML Data Package or an array of text string and stream pairs representing the individual packets comprising the XML Data Package
 

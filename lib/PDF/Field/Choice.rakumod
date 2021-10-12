@@ -24,7 +24,7 @@ role PDF::Field::Choice
             for $a.keys;
     }
     multi sub coerce-field-opts($_, FieldOptions) is default {
-        fail "unable to coerce {.raku} to field options";
+        warn "unable to coerce {.raku} to field options";
     }
 
     has FieldOptions @.Opt is entry(:coerce(&coerce-field-opts));    # (Optional) An array of options to be presented to the user. Each element of the array is either a text string representing one of the available options or an array consisting of two text strings: the option’s export value and the text to be displayed as the name of the option

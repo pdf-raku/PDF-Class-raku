@@ -86,7 +86,7 @@ role PDF::Destination
     }
 
     multi sub coerce-dest($_, DestRef) is default {
-        fail "Unable to handle destination: {.raku}";
+        warn "Unable to handle destination: {.raku}";
     }
 
     # DestNamed coercement also allows an intermediate dictionary with a /D entry
