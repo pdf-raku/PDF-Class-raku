@@ -39,13 +39,14 @@ sub MAIN(Str $infile,              #= input PDF
     # just remove anything in the catalog that may
     # reference other pages or otherwise confuse things
     $catalog<AcroForm MarkInfo Metadata Names OCProperties
-             Outlines PageLabels StructTreeRoot>:delete;
+             OpenAction Outlines PageLabels StructTreeRoot>:delete;
 
     my UInt $page-count = $pdf.page-count;
     my UInt $page-num = 1;
 
     while $page-num <= $page-count {
 
+        my $start = $page-num;
 	my $save-page-as = $save-as.sprintf($page-num);
 	die "invalid 'sprintf' output page format: $save-as"
 	    if $save-page-as eq $save-as;
@@ -68,7 +69,12 @@ sub MAIN(Str $infile,              #= input PDF
             my $n = +@pages;
 	    temp $p.Kids = @pages;
 	    temp $p.Count = $n;
-	    note "saving $n pages to: $save-page-as";
+            if $n > 1 {
+	        note "saving pages {$start ~ '-' ~ ($page-num - 1)}/$page-count to: $save-page-as";
+            }
+            else {
+	        note "saving page $start/$page-count to: $save-page-as";
+            }
 	    $pdf.save-as( $save-page-as, :rebuild );
         }
     }
