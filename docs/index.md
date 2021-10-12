@@ -41,7 +41,7 @@ The entry point of a PDF document is the trailer dictionary. This is mapped to `
     $new-page.gfx.say: "New last page!";
 
     # save the updated pdf
-    $pdf.save-as: "tmp/pdf-updated.pdf", :!info;
+    $pdf.save-as: "tmp/pdf-updated.pdf";
 ```
 
 - This module contains definitions for many other standard PDF objects, such as Pages, Fonts and Images, as listed below.
@@ -385,9 +385,9 @@ PDF::ICCProfile | dict | Alternate, Metadata, N(num-colors), Range |  |  | Table
 PDF::Image | stream | Alternates, BitsPerComponent, ColorSpace, Decode, Height, ID, ImageMask, Intent, Interpolate, Mask, Metadata, Name, OC(optional-content), OPI, SMask, SMaskInData, StructParent, Subtype, Type, Width | to-png |  | Table_89-Additional_Entries_Specific_to_an_Image_Dictionary
 PDF::Info | dict | Title, Author, CreationDate, Creator, Keywords, ModDate, Producer, Subject, Trapped  |  |  | Table_317-Entries_in_the_document_information_dictionary
 PDF::MCR | dict | MCID, Pg(page), Stm, StmOwn, Type |  |  | Table_324-Entries_in_a_marked-content_reference_dictionary
-PDF::Mask::Alpha | dict | BC(backdrop-color), G(transparency-group), S(subtype), TR(transfer-function), Type |  |  | Table_144-Entries_in_a_soft-mask_dictionary
 PDF::MarkInfo | dict | Marked UserProperties Suspects |  |  | Table_321-Entries_in_the_mark_information_dictionary
-PDF::Mask::Luminosity | dict | BC(backdrop-color), G(transparency-group), S(subtype), TR(transfer-function), Type |  |  | Table_144-Entries_in_a_soft-mask_dictionary
+PDF::Mask::Alpha | dict | BC(backdrop-color), G(transparency-xobject), S(subtype), TR(transfer-function), Type |  |  | Table_144-Entries_in_a_soft-mask_dictionary
+PDF::Mask::Luminosity | dict | BC(backdrop-color), G(transparency-xobject), S(subtype), TR(transfer-function), Type |  |  | Table_144-Entries_in_a_soft-mask_dictionary
 PDF::Metadata::XML | stream | Metadata, Subtype, Type |  |  | Table_315-Additional_entries_in_a_metadata_stream_dictionary
 PDF::NameTree | dict | Kids, Limits, Names |  |  | Table_36-Entries_in_a_name_tree_node_dictionary
 PDF::NumberTree | dict | Kids, Limits, Nums |  |  | Table_37-Entries_in_a_number_tree_node_dictionary

@@ -1,4 +1,6 @@
 {{$NEXT}}
+  - Fix handling of /G entry in PDF::Mask. It references an XObject Form
+    with a /Group transparency group entry, rather than a transparency group
 
 0.4.16  2021-10-09T09:33:31+13:00
   - Use PDF::Content v0.5.7+ PDF::Content::Canvas role for composing
