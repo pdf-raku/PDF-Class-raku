@@ -35,7 +35,7 @@ class PDF::Function::Stitching
 
         method calc(@in where .elems == 1) {
             my Numeric $x = self.clip(@in[0], @.domain[0]);
-            my UInt $i = @!bounds.pairs.first({.value.min <= $x <= .value.max}).key;
+            my UInt $i = @!bounds.first: {$x ~~ $_}, :k;
             my Numeric $e = $.interpolate($x, @.bounds[$i], @.encode[$i]);
             my @out = @!functions[$i].calc([$e]);
             @out = [(@out Z @.range).map: { self.clip(.[0], .[1]) }]
@@ -60,11 +60,12 @@ class PDF::Function::Stitching
         die "Bounds array length error: {@Bounds.elems} != $k"
             unless @Bounds.elems == $k;
         if $k {
-            @bounds[0] = @domain[0].min .. @Bounds[0];
+            my Range $r := @domain[0];
+            @bounds[0] = $r.min .. @Bounds[0];
             for 1 ..^ $k {
                 @bounds[$_] = @Bounds[$_-1] .. @Bounds[$_];
             }
-            @bounds[$k] = @Bounds[$k-1] .. @domain[0].max;
+            @bounds[$k] = @Bounds[$k-1] .. $r.max;
         }
         else {
             @bounds = @domain;
