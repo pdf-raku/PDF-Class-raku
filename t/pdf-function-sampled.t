@@ -39,7 +39,7 @@ sub is-result($a, $b, $test = 'calc', :$rel-tol = 0.002) {
     my $ok = $a.elems == $b.elems
         && !$a.keys.first({($a[$_] - $b[$_]).abs >= $rel-tol }).defined;
     ok $ok, $test;
-    diag "result {$a.perl}"
+    diag "result {$a.raku}"
         unless $ok;
     $ok
 }

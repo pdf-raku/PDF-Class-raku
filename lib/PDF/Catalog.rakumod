@@ -99,7 +99,7 @@ class PDF::Catalog
 
     has PDF::Names $.Names is entry;        # (Optional; PDF 1.2) The document’s name dictionary
 
-    has DestNamed %.Dests is entry(:coerce(&coerce-dest));    # (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
+    has DestNamed %.Dests is entry(:alias<destinations>, :coerce(&coerce-dest));    # (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
 
     has PDF::ViewerPreferences $.ViewerPreferences is entry; # (Optional; PDF 1.2) A viewer preferences dictionary specifying the way the document is to be displayed on the screen.
 

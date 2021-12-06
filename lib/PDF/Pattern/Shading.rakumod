@@ -10,7 +10,6 @@ class PDF::Pattern::Shading
     does PDF::Pattern {
 
     use PDF::COS::Tie;
-    use PDF::COS::Name;
     use PDF::Shading;
     use PDF::ExtGState;
 

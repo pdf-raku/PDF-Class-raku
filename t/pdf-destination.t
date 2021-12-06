@@ -12,7 +12,7 @@ multi sub is-destination(PDF::Destination $dest, $expected, $reason = 'destinati
 }
 multi sub is-destination($_, $, $reason) is default {
     flunk($reason);
-    note "{.perl} is not a valid destination";
+    note "{.raku} is not a valid destination";
 }
 
 my PDF::Page $page .= new: :dict{ :Type<Page> };

@@ -60,7 +60,7 @@ sub is-result($a, $b, $test = 'calc') {
     my $ok = $a.elems == $b.elems
         && !$a.keys.first({($a[$_] - $b[$_]).abs >= 0.01 }).defined;
     ok $ok, $test;
-    diag "expected {$b.perl}, got {$a.perl}"
+    diag "expected {$b.raku}, got {$a.raku}"
         unless $ok;
     $ok
 }

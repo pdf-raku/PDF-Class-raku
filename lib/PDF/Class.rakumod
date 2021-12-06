@@ -47,7 +47,7 @@ class PDF::Class:ver<0.4.17>
             }
             else {
                 # creating
-                $Info.Producer  //= "{self.WHAT.raku}{with self.^ver { "-$_" } else { '' }}";
+                $Info.Producer  //= "{self.^name}{with self.^ver { "-$_" } else { '' }}";
                 $Info.Creator   //= @!creator.join: '; ';
                 $Info.CreationDate //= $now
             }

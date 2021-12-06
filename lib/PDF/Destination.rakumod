@@ -81,11 +81,11 @@ role PDF::Destination
 
     # assume an array is a simple destination
     multi sub coerce-dest(DestinationLike $_, DestRef) {
-        my $role =  $?ROLE.delegate-destination($_);
+        my $role = $?ROLE.delegate-destination($_);
         $role.COERCE: $_;
     }
 
-    multi sub coerce-dest($_, DestRef) is default {
+    multi sub coerce-dest($_, DestRef) {
         warn "Unable to handle destination: {.raku}";
     }
 

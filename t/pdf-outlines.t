@@ -1,9 +1,11 @@
 use v6;
 use Test;
 
-plan 17;
+plan 20;
 
 use PDF::Class;
+use PDF::Page;
+use PDF::Destination;
 use PDF::IO::IndObj;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
@@ -55,4 +57,13 @@ is $outlines-obj.First.Title, 'k1', 'kids-accessor: .First';
 is $outlines-obj.Last.Title, 'k2', 'kids-accessor: .Last';
 is $outlines-obj.First.First.Title, 'k3', 'kids-accessor: .First.First';
 
+my PDF::Page $page .= new: :dict{ :Type<Page> };
+my $dest = [$page, 'Fit'];
 
+$outlines-obj.add-kid: {:Title<k3>, :$dest};
+does-ok $outlines-obj.Last.Dest, PDF::Destination, 'add kid with destination';
+note $outlines-obj.Last.Dest.raku;
+ok $outlines-obj.Last.Dest[0] === $page, 'add kid with destination';
+
+$outlines-obj.add-kid: {:Title<k3>, :dest<Foo>};
+is $outlines-obj.Last.Dest, 'Foo', 'add named destination';
