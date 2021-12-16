@@ -21,7 +21,7 @@ role PDF::Class::OutlineNode {
         my DestRef $dest;
         with $kid<dest>:delete {
             when DestRef { $dest = $_; }
-            when DestinationLike  { $dest = coerce-dest($_, DestRef); }
+            when DestinationLike|Str  { $dest = coerce-dest($_, DestRef); }
             default { warn "ignoring outline dest: {.gist}" }
         }
         $kid = (require PDF::Outline).COERCE: $kid;

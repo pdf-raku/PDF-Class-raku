@@ -13,7 +13,6 @@ sub MAIN(Str $infile,            #= input PDF
          Bool :$raku,            #= dump in a Raku-like notation
          Bool :$trace,           #= trace graphics (to stderr)
          Bool :$repair = False,  #= bypass index; recompute stream lengths
-         Bool :$strict = False,  #= enable extra rendering warnings
     ) {
 
     my $input = PDF::IO.coerce(
@@ -24,34 +23,44 @@ sub MAIN(Str $infile,            #= input PDF
 
     my PDF::Class $pdf .= open( $input, :$password, :$repair );
 
-    for 1 .. $pdf.page-count {
-        next if $page && $_ != $page;
-        my PDF::Page $p = $pdf.page($_);
-        if $raku {
-	    my constant Openers = 'q'|'BT'|'BMC'|'BDC'|'BX';
-	    my constant Closers = 'Q'|'ET'|'EMC'|'EX';
-            my $nesting = 0;
-            sub callback($op, *@args) {
-                $nesting-- if $nesting && $op ~~ Closers;
-                my $pad = '  ' x $nesting;
-                $nesting++ if $op ~~ Openers;
-                say sprintf '%s.%s(%s);',
-                    $pad,
-                    %OpName{$op},
-                    @args.map(*.raku).join(", ");
-            }
-            say "# **** Page $_ ****";
-            $p.render(:&callback);
+    if $page {
+        dump($pdf.page($page), :$page, :$raku, :$trace);
+    }
+    else {
+        $page = 0;
+        for $pdf.Pages.iterate -> $p {
+            ++$page;
+            dump($p, :$page, :$raku, :$trace);
         }
-        elsif $trace {
-            temp $*ERR = $*OUT;
-            say "# **** Page $_ ****";
+    }
+}
+
+sub callback($op, *@args) {
+    my constant Openers = 'q'|'BT'|'BMC'|'BDC'|'BX';
+    my constant Closers = 'Q'|'ET'|'EMC'|'EX';
+    $nesting-- if $nesting && $op ~~ Closers;
+    my $pad = '  ' x $nesting;
+    $nesting++ if $op ~~ Openers;
+    say sprintf '%s.%s(%s);',
+        $pad,
+        %OpName{$op},
+        @args.map(*.raku).join(", ");
+}
+
+sub dump($p, :$page, :$raku, :$trace) {
+    if $raku {
+        my $nesting = 0;
+        say "# **** Page $page ****";
+        $p.render(:&callback);
+    }
+    elsif $trace {
+        temp $*ERR = $*OUT;
+            say "# **** Page $page ****";
             $p.render(:trace);
-        }
-        else {
-            say "% **** Page $_ ****";
-            say $p.render(:comment-ops).Str;
-       }
+    }
+    else {
+        say "% **** Page $page ****";
+        say $p.render(:comment-ops).Str;
     }
 }
 

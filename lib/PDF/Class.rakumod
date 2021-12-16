@@ -3,7 +3,7 @@ use v6;
 use PDF;
 
 #| PDF entry-point. either a trailer dict or an XRef stream
-class PDF::Class:ver<0.4.17>
+class PDF::Class:ver<0.4.18>
     is PDF {
     # base class declares: $.Size, $.Encrypt, $.ID
     # use ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
@@ -83,7 +83,7 @@ class PDF::Class:ver<0.4.17>
     }
 
     my subset PagesLike of PDF::Class::Type where { .<Type> ~~ 'Pages' }; # autoloaded PDF::Pages
-    method Pages returns PagesLike handles <page pages add-page delete-page insert-page page-count page-index media-box crop-box bleed-box trim-box art-box core-font use-font rotate> { self.Root.Pages }
+    method Pages returns PagesLike handles <page pages add-page delete-page insert-page page-count page-index media-box crop-box bleed-box trim-box art-box core-font use-font rotate iterate-pages> { self.Root.Pages }
 
     method fields {
         do with self.Root.AcroForm { .fields } // [];

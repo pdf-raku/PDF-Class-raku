@@ -16,6 +16,7 @@ role PDF::Destination
         :FitBoxHoriz<FitBH> :FitBoxVert<FitBV>
         »;
 
+    use PDF::COS::ByteString;
     use PDF::COS::Name;
     use PDF::COS::Tie::Hash;
 
@@ -76,13 +77,17 @@ role PDF::Destination
 
     # Coercions for explicit and named destinations
     # a named destination may be either a byte-string or name object
-    my subset DestRef is export(:DestRef) where PDF::Destination|Str;
+    my subset DestRef is export(:DestRef) where PDF::Destination|PDF::COS::Name|PDF::COS::ByteString;
     proto sub coerce-dest($,$) is export(:coerce-dest) {*};
 
     # assume an array is a simple destination
     multi sub coerce-dest(DestinationLike $_, DestRef) {
         my $role = $?ROLE.delegate-destination($_);
         $role.COERCE: $_;
+    }
+
+    multi sub coerce-dest(Str $_, DestRef) {
+        PDF::COS::Name.COERCE: $_;
     }
 
     multi sub coerce-dest($_, DestRef) {

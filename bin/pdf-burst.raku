@@ -43,9 +43,9 @@ sub MAIN(Str $infile,              #= input PDF
 
     my UInt $page-count = $pdf.page-count;
     my UInt $page-num = 1;
+    my $page-iterator = $pdf.iterate-pages;
 
     while $page-num <= $page-count {
-
         my $start = $page-num;
 	my $save-page-as = $save-as.sprintf($page-num);
 	die "invalid 'sprintf' output page format: $save-as"
@@ -53,7 +53,7 @@ sub MAIN(Str $infile,              #= input PDF
 
         my PDF::Page @pages;
         for 1 .. $batch-size {
-            my PDF::Page $page = $pdf.page($page-num);
+            my $page = $page-iterator.pull-one;
             # bind resources and other inherited properties to the page
             for <Resources Rotate MediaBox CropBox> -> $k {
                 $page{$k} //= $_ with $page."$k"();

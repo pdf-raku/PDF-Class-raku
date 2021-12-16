@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 20;
+plan 21;
 
 use PDF::Class;
 use PDF::Page;
@@ -67,3 +67,4 @@ ok $outlines-obj.Last.Dest[0] === $page, 'add kid with destination';
 
 $outlines-obj.add-kid: {:Title<k3>, :dest<Foo>};
 is $outlines-obj.Last.Dest, 'Foo', 'add named destination';
+does-ok  $outlines-obj.Last.Dest, PDF::COS::Name, 'add named coercement';

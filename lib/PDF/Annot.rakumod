@@ -70,9 +70,7 @@ class PDF::Annot
     has Hash $.DR is entry(:alias<default-resources>);          # In PDF 1.2, an additional entry in the field dictionary, DR, was defined but was never implemented. Beginning with PDF 1.5, this entry is obsolete and should be ignored.
 
     method annots {
-        my @annots;
-        @annots.push: self;
-        @annots;
+        my @ = self;
     }
 
 }

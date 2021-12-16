@@ -1,5 +1,7 @@
 {{$NEXT}}
-  - Better named destination support.
+
+0.4.18  2021-12-17T07:34:24+13:00
+  - Fix PDF::Outline(s) add-kid() method to work with named destinations.
 
 0.4.17  2021-10-14T11:50:40+13:00
   - Fix handling of /G entry in PDF::Mask. It references an XObject Form
