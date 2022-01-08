@@ -4,7 +4,6 @@ use PDF::COS::Loader;
 
 PDF::COS.loader = class PDF::Class::Loader
     is PDF::COS::Loader {
-
     use PDF::Class::Defs :ActionSubtype, :AnnotSubtype, :FontFileType;
     use PDF::COS::Util :from-ast;
     use PDF::COS::Name;
@@ -110,4 +109,5 @@ PDF::COS.loader = class PDF::Class::Loader
 	$base-class;
     }
 
+    method pdf-class { require ::('PDF::Class') }
 }
