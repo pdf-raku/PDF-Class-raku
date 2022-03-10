@@ -18,13 +18,16 @@ jobs:
           #- windows-latest
         raku-version:
           - 'latest'
-          - '2020.05.1'
+          - '2021.12'
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - uses: Raku/setup-raku@v1
         with:
           raku-version: ${{ matrix.raku-version }}
+     - name: Install Libraries (MacOS)
+        if: matrix.os == 'macOS-latest'
+        run: brew install openssl
       - name: Install Dependencies
         run: |
           # install and test if need be (includes [test-depends])

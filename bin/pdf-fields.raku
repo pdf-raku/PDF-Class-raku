@@ -150,9 +150,9 @@ pdf-fields.raku - Manipulate PDF fields
 =head1 SYNOPSIS
 
  pdf-fields.raku --password=pass --page=n --save-as=out.pdf [options] in.pdf
- Options
+ Dispatch Options
    --list [--labels]                 % list fields and current values
-   --fill [--labels] -key=value ...  % set fields from keys and values
+   --fill [--labels] -<key>=value ...  % set fields from keys and values
    --slice[=n] value value ...       % set consecutive fields starting at n (first=1)
    --reset [-/reformat] [-triggers]  % reset fields. Defaults: remove format, keep triggers
 
