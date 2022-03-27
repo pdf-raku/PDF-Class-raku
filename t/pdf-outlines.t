@@ -62,7 +62,6 @@ my $dest = [$page, 'Fit'];
 
 $outlines-obj.add-kid: {:Title<k3>, :$dest};
 does-ok $outlines-obj.Last.Dest, PDF::Destination, 'add kid with destination';
-note $outlines-obj.Last.Dest.raku;
 ok $outlines-obj.Last.Dest[0] === $page, 'add kid with destination';
 
 $outlines-obj.add-kid: {:Title<k3>, :dest<Foo>};

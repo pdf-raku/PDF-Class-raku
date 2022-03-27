@@ -74,7 +74,7 @@ role PDF::Field
         my PDF::Field:U $class = PDF::Field.field-delegate( $dict );
 	$class.COERCE: $dict;
     }
-    multi sub coerce-field( $_, AnnotOrField) is default {
+    multi sub coerce-field( $_, AnnotOrField) {
         warn "unable to coerce {.raku} to an Annotation or Field";
     }
 

@@ -51,7 +51,7 @@ class PDF::Page
         my PDF::Field $delegate .= field-delegate($annot);
         $delegate.COERCE: $annot;
     }
-    multi sub coerce($_, AnnotLike) is default {
+    multi sub coerce($_, AnnotLike) {
         warn "unable to coerce: {.raku} ({.WHAT.^name}) to an annotation";
     }
     has AnnotLike @.Annots is entry(:&coerce);                  # (Optional) An array of annotation dictionaries representing annotations associated with the page

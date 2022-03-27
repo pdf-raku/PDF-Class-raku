@@ -2,7 +2,7 @@ use v6;
 use PDF::COS::Tie;
 use PDF::COS::Tie::Array;
 
-my subset NumNull where { ($_ // Numeric) ~~ Numeric };  #| UInt value or null
+my subset NumNull where Numeric|!.defined;  #| UInt value or null
 
 role PDF::Destination
     does PDF::COS::Tie::Array {
@@ -39,7 +39,7 @@ role PDF::Destination
     multi sub is-dest-like(PageRef $page, 'FitB')                  { True }
     multi sub is-dest-like(PageRef $page, 'FitBH', NumNull $top?)  { True }
     multi sub is-dest-like(PageRef $page, 'FitBV', NumNull $left?) { True }
-    multi sub is-dest-like(|c) is default                          { False }
+    multi sub is-dest-like(|c) { False }
 
     my subset DestinationLike of List is export(:DestinationLike) where is-dest-like(|$_);
 
@@ -71,7 +71,7 @@ role PDF::Destination
 
     multi method construct(PageRef :$page!, )                    { self!dest: [$page, fit(FitWindow), ] }
     multi method construct(DestinationLike $dest) { self.construct(|$dest) }
-    multi method construct(*@args) is default {
+    multi method construct(*@args) {
         fail "unable to construct destination: {@args.raku}";
     }
 

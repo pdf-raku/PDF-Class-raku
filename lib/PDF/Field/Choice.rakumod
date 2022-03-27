@@ -23,7 +23,7 @@ role PDF::Field::Choice
         PDF::COS.coerce( $a[$_], PDF::COS::TextString)
             for $a.keys;
     }
-    multi sub coerce-field-opts($_, FieldOptions) is default {
+    multi sub coerce-field-opts($_, FieldOptions) {
         warn "unable to coerce {.raku} to field options";
     }
 

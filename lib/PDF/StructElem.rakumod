@@ -25,7 +25,7 @@ role PDF::StructElem
     my subset StructElemLike of Hash where .<S>:exists;
     my subset StructRootLike of Hash where { .<Type> ~~ 'StructTreeRoot' }; # autoloaded PDF::StructTreeRoot
     my subset StructElemParent where StructRootLike|PDF::StructElem;
-    my subset StructElemChild is export(:StructElemChild) where { ($_//UInt) ~~ UInt|PDF::StructElem|ReferenceLike }
+    my subset StructElemChild is export(:StructElemChild) where Any:U|UInt|PDF::StructElem|ReferenceLike;
     sub coerce-struct-kids($obj, StructElemChild) is export(:coerce-struct-kids) {
         # /K can be a single element or an array of elements
         if $obj ~~ List {
@@ -44,7 +44,7 @@ role PDF::StructElem
     multi sub coerce-parent(StructElemLike $obj, StructElemParent) {
         PDF::StructElem.COERCE($obj);
     }
-    multi sub coerce-parent($_, StructElemParent) is default {
+    multi sub coerce-parent($_, StructElemParent) {
         warn "Unable to coerce {.raku} to a PDF::StructElem.P (parent) element";
     }
 
@@ -52,7 +52,7 @@ role PDF::StructElem
     multi sub coerce-child(StructElemLike $obj, StructElemChild) {
         PDF::StructElem.COERCE($obj);
     }
-    multi sub coerce-child($_, StructElemChild) is default {
+    multi sub coerce-child($_, StructElemChild) {
         warn "Unable to coerce {.raku} to a PDF::StructElem.K (child) element";
     }
 

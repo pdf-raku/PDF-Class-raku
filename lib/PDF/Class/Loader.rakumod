@@ -105,7 +105,7 @@ PDF::COS.loader = class PDF::Class::Loader
 	$.find-delegate('ColorSpace', $color-type, :$base-class);
     }
 
-    multi method load-delegate(:$base-class!) is default {
+    multi method load-delegate(:$base-class!) {
 	$base-class;
     }
 
