@@ -48,3 +48,5 @@ multi sub coerce-text-or-stream(Str $value is rw, TextOrStream) is export(:TextO
 }
 
 my subset ColorSpace of PDF::COS is export(:ColorSpace) where PDF::COS::Name | PDF::ColorSpace;
+
+my subset AsciiStr of PDF::COS::ByteString is export(:AsciiStr) where !.contains(/<-[\x0 .. \x7f \n]>/);

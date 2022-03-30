@@ -9,6 +9,7 @@ role PDF::Field::Signature
     use PDF::COS::Name;
     use PDF::COS::TextString;
     use PDF::Signature;
+    use PDF::Class::Defs :AsciiStr;
 
     # use ISO_32000::Table_252-Entries_in_a_signature_dictionary;
     # also does ISO_32000::Table_252-Entries_in_a_signature_dictionary;
@@ -53,8 +54,7 @@ role PDF::Field::Signature
             has Str @.SubjectDN is entry;	# [array of dictionaries] (Optional; PDF 1.7) An array of dictionaries, each specifying a Subject Distinguished Name (DN) that shall be present within the certificate for it to be acceptable for signing. The certificate ultimately used for the digital signature shall contain all the attributes specified in each of the dictionaries in this array. (PDF keys and values are mapped to certificate attributes and values.) The certificate is not constrained to use only attribute entries from these dictionaries but may contain additional attributes.The Subject Distinguished Name is described in RFC 3280 (see the Link Bibliography ). The key can be any legal attribute identifier (OID). Attribute names shall contain characters in the set a-z A-Z 0-9 and PERIOD.
                 # Certificate attribute names are used as key names in the dictionaries in this array. Values of the attributes are used as values of the keys. Values shall be text strings.
                 # The value of the corresponding flag in the Ff entry indicates whether this entry is a required constraint.
-            my subset ASCII-Str of Str where !.contains(/<-[\x0 .. \x7f]>/);
-            has ASCII-Str @.KeyUsage is entry;	# [array of ASCII strings] (Optional; PDF 1.7) An array of ASCII strings, where each string specifies an acceptable key-usage extension that shall be present in the signing certificate. Multiple strings specify a range of acceptable key-usage extensions. The key-usage extension is described in RFC 3280.
+            has AsciiStr @.KeyUsage is entry;	# [array of ASCII strings] (Optional; PDF 1.7) An array of ASCII strings, where each string specifies an acceptable key-usage extension that shall be present in the signing certificate. Multiple strings specify a range of acceptable key-usage extensions. The key-usage extension is described in RFC 3280.
                 # Each character in a string represents a key-usage type, where the order of the characters indicates the key-usage extension it represents. The first through ninth characters in the string, from left to right, represent the required value for the following key-usage extensions:
                 # 1 digitalSignature 4 dataEncipherment 7 cRLSign
                 # 2 non-Repudiation 5 keyAgreement 8 encipherOnly
@@ -68,7 +68,7 @@ role PDF::Field::Signature
                 # This array may contain self-signed certificates.
             has Str @.OID is entry;	# [array] (Optional) An array of byte strings that contain Object Identifiers (OIDs) of the certificate policies that shall be present in the signing certificate.
                 # EXAMPLE 2 An example of such a string is: (2.16.840.1.113733.1.7.1.1). This field shall only be used if the value of Issuer is not empty. The certificate policies extension is described in RFC 3280 (see the Link Span ). The value of the corresponding flag in the Ff entry indicates whether this is a required constraint.
-            has Str $.URL is entry;	# [ASCII string] (Optional) A URL, the use for which shall be defined by the URLTypeentry.
+            has AsciiStr $.URL is entry;	# [ASCII string] (Optional) A URL, the use for which shall be defined by the URLTypeentry.
             has PDF::COS::Name $.URLType is entry where 'Browser'|'Third';	# [Name] (Optional; PDF 1.7) A name indicating the usage of the URL entry. There are standard uses and there can be implementation-specific uses for this URL. The following value specifies a valid standard usage:
                 # Browser – The URL references content that shall be displayed in a web browser to allow enrolling for a new credential if a matching credential is not found. The Ff attribute’s URL bit shall be ignored for this usage.
                 # Third parties may extend the use of this attribute with their own attribute values, which shall conform to the guidelines described in Link Annex E .
@@ -85,7 +85,7 @@ role PDF::Field::Signature
 
         my role TimeStampUrl
         does PDF::COS::Tie::Hash {
-            has Str $.URL is entry;
+            has AsciiStr $.URL is entry;
             has Int $.Ff is entry(:default(0)) where 0|1;
         }
 	has TimeStampUrl $.TimeStamp is entry;       # (Optional; PDF 1.6) A time stamp dictionary containing two entries:
