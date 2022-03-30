@@ -5,9 +5,9 @@ use PDF::Grammar::Test :$is-json-equiv;
 use PDF::Catalog;
 use PDF::Annot::Widget;
 use PDF::Field;
-my $pdf;
+my PDF::Class $pdf;
 
-lives-ok {$pdf = PDF::Class.open("t/pdf/samples/OoPdfFormExample.pdf")}, "open form example  lives";
+lives-ok {$pdf .= open("t/pdf/samples/OoPdfFormExample.pdf")}, "open form example  lives";
 my $annots = $pdf.page(1).Annots;
 does-ok $annots[0], PDF::Annot::Widget, 'page annot does Annot';
 does-ok $annots[0], PDF::Field, 'page annot does PDF::Field';

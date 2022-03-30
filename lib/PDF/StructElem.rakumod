@@ -3,7 +3,7 @@ use v6;
 use PDF::COS::Tie::Hash;
 
 #| an entry in the StructTree
-#| See PDF::StructTreeRoot
+#| See also PDF::StructTreeRoot
 
 role PDF::StructElem
     does PDF::COS::Tie::Hash {
@@ -12,7 +12,6 @@ role PDF::StructElem
     use PDF::COS::Name;
     use PDF::COS::TextString;
     use PDF::Page;
-    use Method::Also;
 
     # use ISO_32000::Table_323-Entries_in_a_structure_element_dictionary;
     # also does ISO_32000::Table_323-Entries_in_a_structure_element_dictionary;
@@ -66,6 +65,8 @@ role PDF::StructElem
     # Each of these objects other than the first shall be considered to be a content item;
     # If the value of K is a dictionary containing no Type entry, it shall be assumed to be a structure element dictionary.
     my role Attributes is export(:Attributes) does PDF::COS::Tie::Hash {
+        # use  ISO_32000::Table_327-Entry_common_to_all_attribute_object_dictionaries;
+        # also does ISO_32000::Table_327-Entry_common_to_all_attribute_object_dictionaries;
         has PDF::COS::Name $.O is entry(:alias<owner>, :required);
         method set-attribute($key, $value) { self{$key} = $value }
         method Hash {
@@ -74,7 +75,11 @@ role PDF::StructElem
         }
     }
     my role UserProperties is export(:UserProperties) does Attributes {
-        my role Property does PDF::COS::Tie::Hash {
+        # use ISO_32000::Table_328-Additional_entries_in_an_attribute_object_dictionary_for_user_properties;
+        # also does ISO_32000::Table_328-Additional_entries_in_an_attribute_object_dictionary_for_user_properties
+        my role UserProperty does PDF::COS::Tie::Hash {
+            # use ISO_32000::Table_329-Entries_in_a_user_property_dictionary;
+            # also does ISO_32000::Table_329-Entries_in_a_user_property_dictionary;
             has Str $.N is entry(:required, :alias<key>); # The name of the user property.
             has $.V  is entry(:required, :alias<value>);    # The value of the user property.
             # While the value of this entry shall be any type of PDF object, conforming writers
@@ -88,14 +93,14 @@ role PDF::StructElem
             # user interface element that presents the attributes of an object. Default value:
             # false.
         }
-        has Property @.P is entry(:alias<properties>, :required);
+        has UserProperty @.P is entry(:alias<properties>, :required);
         method set-attribute($key, $value) {
             my @p := @.P;
             with (0 ..^ @p).first: { @p[$_]<N> eq $key } {
                 @p[$_]<V> = $value;
             }
             else {
-                @p.push:  Property.COERCE: %( :N($key), :V($value) );
+                @p.push:  UserProperty.COERCE: %( :N($key), :V($value) );
             }
         }
         method Hash {
@@ -155,7 +160,7 @@ role PDF::StructElem
             }
         }
     }
-    method attributes() is also<attribute-dicts> {
+    method attribute-dicts {
         given self<A> {
             when Hash { (%!atts-by-owner{.<O>} //= coerce-attributes($_, Attributes),) }
             when List {
