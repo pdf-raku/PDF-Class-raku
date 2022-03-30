@@ -1,4 +1,8 @@
 {{$NEXT}}
+  - Added Attributes for PDF::StructElem /A entry. Also used for PDF::StructTreeRoot
+    /ClassMap entry.
+  - Also added PDF::StructElem vivify-attributes() method to set-up an attributes
+    object for a particular owner (/O entry).
 
 0.4.18  2021-12-17T07:34:24+13:00
   - Fix PDF::Outline(s) add-kid() method to work with named destinations.

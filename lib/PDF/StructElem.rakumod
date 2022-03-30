@@ -12,6 +12,7 @@ role PDF::StructElem
     use PDF::COS::Name;
     use PDF::COS::TextString;
     use PDF::Page;
+    use Method::Also;
 
     # use ISO_32000::Table_323-Entries_in_a_structure_element_dictionary;
     # also does ISO_32000::Table_323-Entries_in_a_structure_element_dictionary;
@@ -64,17 +65,106 @@ role PDF::StructElem
     # • An object reference dictionary denoting a PDF object
     # Each of these objects other than the first shall be considered to be a content item;
     # If the value of K is a dictionary containing no Type entry, it shall be assumed to be a structure element dictionary.
-    has @.A is entry(:alias<attributes>, :array-or-item);         # (Optional) A single attribute object or array of attribute objects associated with this structure element. Each attribute object shall be either a dictionary or a stream. If the value of this entry is an array, each attribute object in the array may be followed by an integer representing its revision number.
-    method attribute-dicts() {
+    my role Attributes is export(:Attributes) does PDF::COS::Tie::Hash {
+        has PDF::COS::Name $.O is entry(:alias<owner>, :required);
+        method set-attribute($key, $value) { self{$key} = $value }
+        method Hash {
+            my @keys = self.keys.grep: * ne 'O';
+            my % = @keys.map: { $_ => self{$_} }
+        }
+    }
+    my role UserProperties is export(:UserProperties) does Attributes {
+        my role Property does PDF::COS::Tie::Hash {
+            has Str $.N is entry(:required, :alias<key>); # The name of the user property.
+            has $.V  is entry(:required, :alias<value>);    # The value of the user property.
+            # While the value of this entry shall be any type of PDF object, conforming writers
+            # should use only text string, number, and boolean values. Conforming readers
+            # should display text, number and boolean values to users but need not display
+            # values of other types; however, they should not treat other values as errors.
+            has Str $.F is entry(:alias<formatted>); # A formatted representation of the value of V, that shall be used for
+            # special formatting; for example “($123.45)” for the number -123.45. If this entry is
+            # absent, conforming readers should use a default format.
+            has Bool $.H is entry(:alias<hidden>); # If true, the attribute shall be hidden; that is, it shall not be shown in any
+            # user interface element that presents the attributes of an object. Default value:
+            # false.
+        }
+        has Property @.P is entry(:alias<properties>, :required);
+        method set-attribute($key, $value) {
+            my @p := @.P;
+            with (0 ..^ @p).first: { @p[$_]<N> eq $key } {
+                @p[$_]<V> = $value;
+            }
+            else {
+                @p.push:  Property.COERCE: %( :N($key), :V($value) );
+            }
+        }
+        method Hash {
+            my @p := @.P;
+            my % = (0 ..^ @p).map: { @p[$_]<N> => @p[$_]<V> }
+        }
+    }
+    proto sub coerce-attributes($, Attributes) is export(:coerce-attributes) {*}
+    multi sub coerce-attributes(Hash $atts where .<O> ~~ 'UserProperties', Attributes) {
+        UserProperties.COERCE: $atts;
+    }
+    multi sub coerce-attributes(Hash $atts where (.<O>:exists), Attributes) {
+        Attributes.COERCE: $atts;
+    }
+    multi sub coerce-attributes($_, Attributes) {
+        fail "unable to coerce struct element attributes: {.raku}";
+    }
+    has @.A is entry(:array-or-item);         # (Optional) A single attribute object or array of attribute objects associated with this structure element. Each attribute object shall be either a dictionary or a stream. If the value of this entry is an array, each attribute object in the array may be followed by an integer representing its revision number.
+    sub new-atts($O) {
+        my %atts = :$O;
+        %atts<P> = [] if $O eq 'UserProperties';
+        coerce-attributes %atts, Attributes;
+    }
+    has Attributes %!atts-by-owner;
+    method vivify-attributes(Str:D :$owner!) {
+        %!atts-by-owner{$owner} //= do {
+            given self<A> {
+                when Hash {
+                    if .<O> ~~ $owner {
+                        coerce-attributes($_, Attributes);
+                    }
+                    else {
+                        # need to start a list containing multiple owners
+                        # convert singular attribute to a list and append
+                        my UInt $rev = self.revision;
+                        my $new = new-atts $owner;
+                        self<A> = [$_, $rev, $new, $rev];
+                        $new;
+                    }
+                }
+                when Array {
+                    with .keys.reverse.first( -> $i {.[$i].isa(Hash) &&  .[$i].<O> ~~ $owner}) {
+                        # owner already in the list
+                        self<A>[$_+1] = self.revision;
+                        coerce-attributes(self<A>[$_], Attributes);
+                    }
+                    else {
+                        # append owner to the list
+                        my UInt $rev = self.revision;
+                        my $new = new-atts $owner;
+                        self<A>.push($new);
+                        self<A>.push: self.revision;
+                        $new;
+                    }
+                }
+                default { $_ = new-atts $owner }
+            }
+        }
+    }
+    method attributes() is also<attribute-dicts> {
         given self<A> {
-            when Hash { ($_,) }
+            when Hash { (%!atts-by-owner{.<O>} //= coerce-attributes($_, Attributes),) }
             when List {
-                .keys.map(-> $i {.[$i]}).grep(Hash)
+                .keys.map(-> $i {.[$i]}).grep(Hash).map: { %!atts-by-owner{.<O>} //= coerce-attributes($_, Attributes) }
             }
             default { () }
         }
     }
-    has @.C is entry(:array-or-item, :alias<class>);          # (Optional) An attribute class name or array of class names associated with this structure element. If the value of this entry is an array, each class name in the array may be followed by an integer representing its revision number.
+    has @.C is entry(:array-or-item);          # (Optional) An attribute class name or array of class names associated with this structure element. If the value of this entry is an array, each class name in the array may be followed by an integer representing its revision number.
 # If both the A and C entries are present and a given attribute is
 # specified by both, the one specified by the A entry shall take
     # precedence.
