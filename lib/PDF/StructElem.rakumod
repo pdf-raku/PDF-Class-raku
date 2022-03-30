@@ -67,7 +67,7 @@ role PDF::StructElem
     my role Attributes is export(:Attributes) does PDF::COS::Tie::Hash {
         # use  ISO_32000::Table_327-Entry_common_to_all_attribute_object_dictionaries;
         # also does ISO_32000::Table_327-Entry_common_to_all_attribute_object_dictionaries;
-        has PDF::COS::Name $.O is entry(:alias<owner>, :required);
+        has PDF::COS::Name $.O is entry(:alias<owner>);
         method set-attribute($key, $value) { self{$key} = $value }
         method Hash {
             my @keys = self.keys.grep: * ne 'O';
@@ -112,7 +112,7 @@ role PDF::StructElem
     multi sub coerce-attributes(Hash $atts where .<O> ~~ 'UserProperties', Attributes) {
         UserProperties.COERCE: $atts;
     }
-    multi sub coerce-attributes(Hash $atts where (.<O>:exists), Attributes) {
+    multi sub coerce-attributes(Hash $atts, Attributes) {
         Attributes.COERCE: $atts;
     }
     multi sub coerce-attributes($_, Attributes) {
@@ -162,9 +162,9 @@ role PDF::StructElem
     }
     method attribute-dicts {
         given self<A> {
-            when Hash { (%!atts-by-owner{.<O>} //= coerce-attributes($_, Attributes),) }
+            when Hash { (coerce-attributes($_, Attributes),) }
             when List {
-                .keys.map(-> $i {.[$i]}).grep(Hash).map: { %!atts-by-owner{.<O>} //= coerce-attributes($_, Attributes) }
+                .keys.map(-> $i {.[$i]}).grep(Hash).map: { coerce-attributes($_, Attributes) }
             }
             default { () }
         }
