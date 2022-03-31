@@ -15,23 +15,23 @@ role PDF::Appearance
     # also does ISO_32000::Table_168-Entries_in_an_appearance_dictionary;
 
     my subset FormLike of PDF::COS::Stream where .<Subtype> ~~ 'Form'; # autoloaded PDF::XObject::Form
-    my role AppearanceStatus
+    my role AppearanceStates
 	does PDF::COS::Tie::Hash {
 	has FormLike $.Off is entry;
 	has FormLike $.On  is entry;
 	has FormLike $.Yes is entry;
     }
 
-    my subset Appearance where FormLike | AppearanceStatus;
-    multi sub coerce(PDF::COS::Stream $dict is rw, Appearance) {
+    my subset AppearEntry where FormLike | AppearanceStates;
+    multi sub coerce(PDF::COS::Stream $dict is rw, AppearEntry) {
         warn "Stream not of /Subtype /Form"
     }
-    multi sub coerce(Hash $dict is rw, Appearance) {
-	AppearanceStatus.COERCE: $dict;
+    multi sub coerce(Hash $dict is rw, AppearEntry) {
+	AppearanceStates.COERCE: $dict;
     }
 
-    has Appearance $.N is entry(:&coerce, :alias<normal>, :required); # (Required) The annotation’s normal appearance.
-    has Appearance $.R is entry(:&coerce, :alias<rollover>);          # (Optional) The annotation’s rollover appearance. Default value: the value of the N entry.
-    has Appearance $.D is entry(:&coerce, :alias<down>);              # (Optional) The annotation’s down appearance. Default value: the value of the N entry.
+    has AppearEntry $.N is entry(:&coerce, :alias<normal>, :required); # (Required) The annotation’s normal appearance.
+    has AppearEntry $.R is entry(:&coerce, :alias<rollover>);          # (Optional) The annotation’s rollover appearance. Default value: the value of the N entry.
+    has AppearEntry $.D is entry(:&coerce, :alias<down>);              # (Optional) The annotation’s down appearance. Default value: the value of the N entry.
 
 }
