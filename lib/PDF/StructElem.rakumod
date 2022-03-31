@@ -108,6 +108,10 @@ role PDF::StructElem
             my % = (0 ..^ @p).map: { @p[$_]<N> => @p[$_]<V> }
         }
     }
+    my subset AttributesOrRev where Attributes|UInt;
+    multi sub coerce-atts-or-rev(Hash $_ is raw, AttributesOrRev) {
+         coerce-attributes($_, Attributes);
+    }
     proto sub coerce-attributes($, Attributes) is export(:coerce-attributes) {*}
     multi sub coerce-attributes(Hash $atts where .<O> ~~ 'UserProperties', Attributes) {
         UserProperties.COERCE: $atts;
@@ -118,7 +122,7 @@ role PDF::StructElem
     multi sub coerce-attributes($_, Attributes) {
         fail "unable to coerce struct element attributes: {.raku}";
     }
-    has @.A is entry(:array-or-item);         # (Optional) A single attribute object or array of attribute objects associated with this structure element. Each attribute object shall be either a dictionary or a stream. If the value of this entry is an array, each attribute object in the array may be followed by an integer representing its revision number.
+    has AttributesOrRev @.A is entry(:array-or-item, :coerce(&coerce-atts-or-rev));         # (Optional) A single attribute object or array of attribute objects associated with this structure element. Each attribute object shall be either a dictionary or a stream. If the value of this entry is an array, each attribute object in the array may be followed by an integer representing its revision number.
     sub new-atts($O) {
         my %atts = :$O;
         %atts<P> = [] if $O eq 'UserProperties';
