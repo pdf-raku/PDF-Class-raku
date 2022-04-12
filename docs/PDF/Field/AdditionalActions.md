@@ -9,23 +9,19 @@ Table 196 – Entries in a form field’s additional-actions dictionary
 Methods (Entries)
 =================
 
-class PDF::Action $.K (change)
-------------------------------
+### has PDF::Action $.K
 
 (Optional; PDF 1.3) A JavaScript action that is performed when the user modifies a character in a text field or combo box or modifies the selection in a scrollable list box. This action may check the added text for validity and reject or modify it.
 
-class PDF::Action $.F (format)
-------------------------------
+### has PDF::Action $.F
 
 (Optional; PDF 1.3) A JavaScript action that is performed before the field is formatted to display its value. This action may modify the field’s value before formatting.
 
-class PDF::Action $.V (validate)
---------------------------------
+### has PDF::Action $.V
 
 (Optional; PDF 1.3) A JavaScript action that is performed when the field’s value is changed. This action may check the new value for validity.
 
-class PDF::Action $.C (calculate)
----------------------------------
+### has PDF::Action $.C
 
 (Optional; PDF 1.3) A JavaScript action that is performed to recalculate the value of this field when that of another field changes. (The name C stands for “calculate.”) The order in which the document’s fields are recalculated is defined by the CO entry in the interactive form dictionary
 

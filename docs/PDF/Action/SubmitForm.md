@@ -14,8 +14,7 @@ Table 236 – Additional entries specific to a submit-form action
 Methods (Entries)
 =================
 
-class PDF::Filespec::FileRef $.F
---------------------------------
+### has PDF::Filespec::FileRef $.F
 
 (Required) A URL file specification giving the uniform resource locator (URL) of the script at the Web server that will process the submission.
 
@@ -25,8 +24,7 @@ class PDF::Filespec::FileRef $.F
 
 If this entry is omitted, the Include/Exclude flag is ignored, and all fields in the document’s interactive form is submitted except those whose NoExport flag is set. Fields with no values may also be excluded, as dictated by the value of the IncludeNoValueFields flag.
 
-class UInt $.Flags
-------------------
+### has UInt $.Flags
 
 (Optional; inheritable) A set of flags specifying various characteristics of the action (see Table 237). Default value: 0.
 
