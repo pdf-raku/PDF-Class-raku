@@ -17,18 +17,14 @@ Table 197 – Entries in the document catalog’s additional-actions dictionary
 use PDF::COS::Tie;
 use PDF::Action;
 
-#| (Optional; PDF 1.4) A JavaScript action that is performed before closing a document.
-has PDF::Action $.WC is entry(:alias<will-close>);
+has PDF::Action $.WC is entry(:alias<will-close>); #= (Optional; PDF 1.4) A JavaScript action that is performed before closing a document.
 
-#| (Optional; PDF 1.4) A JavaScript action that is performed before saving a document.
-has PDF::Action $.WS is entry(:alias<will-save>);
+has PDF::Action $.WS is entry(:alias<will-save>);  #= (Optional; PDF 1.4) A JavaScript action that is performed before saving a document.
 
-#| (Optional; PDF 1.4) A JavaScript action that is performed after saving a document.
-has PDF::Action $.DS is entry(:alias<did-save>);
+has PDF::Action $.DS is entry(:alias<did-save>);   #= (Optional; PDF 1.4) A JavaScript action that is performed after saving a document.
 
-#| (Optional; PDF 1.4) A JavaScript action that is performed before printing a document.
-has PDF::Action $.WP is entry(:alias<will-print>);
+has PDF::Action $.WP is entry(:alias<will-print>); #= (Optional; PDF 1.4) A JavaScript action that is performed before printing a document.
 
-#| (Optional; PDF 1.4) A JavaScript action that is performed after printing a document.
-has PDF::Action $.DP is entry(:alias<did-print>);
+has PDF::Action $.DP is entry(:alias<did-print>);  #= (Optional; PDF 1.4) A JavaScript action that is performed after printing a document.
+
 
