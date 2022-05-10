@@ -14,9 +14,11 @@ class PDF::Class:ver<0.5.0>
     use PDF::COS::Name;
     use PDF::Class::Type;
     use PDF::Info;
-    has PDF::Info $.Info is entry(:indirect);  # (Optional; must be an indirect reference) The document’s information dictionary
+    use PDF::Content::Font::CoreFont;
+
+    has PDF::Info $.Info is entry(:indirect);  #= (Optional; must be an indirect reference) The document’s information dictionary
     my subset CatalogLike of PDF::Class::Type where { .<Type> ~~ 'Catalog' };  # autoloaded PDF::Catalog
-    has CatalogLike $.Root is entry(:required, :indirect, :alias<catalog>);
+    has CatalogLike $.Root is entry(:required, :indirect, :alias<catalog>); #= The catalog dictionary for the PDF document contained in the file
 
     method type { 'PDF' }
     method version is rw {
@@ -37,7 +39,6 @@ class PDF::Class:ver<0.5.0>
     has Str @.creator = "PDF::Class-{PDF::Class.^ver}", "PDF::Content-{PDF::Content.^ver}", "PDF-{PDF.^ver}", "Raku-{$*RAKU.version}";
 
     method save-as($spec, Bool :$info = True, |c) {
-
         if $info {
             my $now = DateTime.now;
             my $Info = self.Info //= {};
@@ -75,6 +76,11 @@ class PDF::Class:ver<0.5.0>
 	    !! $perms.flag-is-set( $flag );
     }
 
+    has PDF::Content::Font::CoreFont::Cache $!cache .= new;
+    method core-font(|c) {
+        PDF::Content::Font::CoreFont.load-font(:$!cache, |c);
+    }
+
     method cb-init {
         unless self<Root> {
 	    self<Root> = { :Type( :name<Catalog> ) };
@@ -83,7 +89,7 @@ class PDF::Class:ver<0.5.0>
     }
 
     my subset PagesLike of PDF::Class::Type where { .<Type> ~~ 'Pages' }; # autoloaded PDF::Pages
-    method Pages returns PagesLike handles <page pages add-page delete-page insert-page page-count page-index media-box crop-box bleed-box trim-box art-box core-font use-font rotate iterate-pages> { self.Root.Pages }
+    method Pages returns PagesLike handles <page pages add-page delete-page insert-page page-count page-index media-box crop-box bleed-box trim-box art-box use-font rotate iterate-pages> { self.Root.Pages }
 
     method fields {
         do with self.Root.AcroForm { .fields } // [];

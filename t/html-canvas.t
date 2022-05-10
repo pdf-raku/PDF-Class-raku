@@ -5,7 +5,6 @@ plan 2;
 use PDF::Class;
 my PDF::Class $pdf .= new;
 my $page = $pdf.add-page;
-my $header-font = $page.core-font( :family<Helvetica>, :weight<bold> );
 
 try {require HTML::Canvas::To::PDF;}
 if $! {

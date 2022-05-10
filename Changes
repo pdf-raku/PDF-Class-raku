@@ -1,4 +1,6 @@
 {{$NEXT}}
+   - Use PDF::Content 0.6.1 core font cache. Prefer core-font loading
+     at the PDF level.
 
 0.5.0  2022-03-31T07:18:55+13:00
   - Added Attributes for PDF::StructElem /A entry. Also used for PDF::StructTreeRoot

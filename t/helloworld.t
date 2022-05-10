@@ -14,8 +14,8 @@ my $id = $*PROGRAM-NAME.fmt: '%-16.16s';
 
 dies-ok { $page.media-box = [0, 595] }, 'media-box bad setter - dies';
 is-json-equiv $page.media-box, [0, 0, 595, 842], 'media-box bad setter - ignored';
-my $header-font = $page.core-font( :family<Helvetica>, :weight<bold> );
-my $font = $page.core-font( :family<Helvetica> );
+my $header-font = $pdf.core-font( :family<Helvetica>, :weight<bold> );
+my $font = $pdf.core-font( :family<Helvetica> );
 my $width = 150;
 my $font-size = 15;
 my $x = 22;
@@ -40,7 +40,7 @@ $page.graphics: -> $gfx {
         }
 
         $txt.text-position = [240, 600];
-        $txt.font = [$page.core-font('ZapfDingbats'), 24];
+        $txt.font = [$pdf.core-font('ZapfDingbats'), 24];
         $txt.WordSpacing = 16;
         my $nbsp = "\c[NO-BREAK SPACE]";
         $txt.print("♠ ♣$nbsp");
