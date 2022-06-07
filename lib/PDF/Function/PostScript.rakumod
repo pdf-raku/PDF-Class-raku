@@ -8,7 +8,7 @@ class PDF::Function::PostScript
     is PDF::Function {
 
     method parse(Str() $decoded = $.decoded) {
-	state $actions //= (require ::('PDF::Grammar::Function::Actions')).new;
+	my $actions = (require ::('PDF::Grammar::Function::Actions')).new: :lite;
 	(require ::('PDF::Grammar::Function')).parse($decoded, :$actions)
 	    or die "unable to parse postscript function: $decoded";
 	$/.ast
@@ -18,32 +18,6 @@ class PDF::Function::PostScript
         is PDF::Function::Transform {
         has $.ast;
         has @.stack;
-        method pop($type = Numeric) {
-            my $v = @!stack
-                ?? @!stack.pop
-                !! die "Postscript stack underflow";
-            die "typecheck error, expected {$type.raku}, got: {$v.raku}"
-                unless $v ~~ $type;
-            $v;
-        }
-        method push($v) {
-            @!stack < 100
-                ?? @!stack.push($v)
-                !! die "Postscript stack overflow"
-        }
-
-        multi method run(List :$expr!) {
-            self.run(|$_) for $expr.list;
-        }
-        multi method run(Int :$int! ) {
-            self.push($int);
-        }
-        multi method run(Numeric :$real! ) {
-            self.push($real);
-        }
-        multi method run(Bool :$bool! ) {
-            self.push($bool);
-        }
 
         my Routine %Ops = BEGIN %(
             # Arithmetic
@@ -129,6 +103,26 @@ class PDF::Function::PostScript
                 @!stack.splice(* - $n).rotate($j);
             },
            );
+        method pop($type = Numeric) {
+            my $v = @!stack
+                ?? @!stack.pop
+                !! die "Postscript stack underflow";
+            die "typecheck error, expected {$type.raku}, got: {$v.raku}"
+                unless $v ~~ $type;
+            $v;
+        }
+        method push($v) {
+            @!stack < 100
+                ?? @!stack.push($v)
+                !! die "Postscript stack overflow"
+        }
+
+        multi method run(List :$expr!) {
+            self.run(|$_) for $expr.list;
+        }
+        multi method run($v) {
+            self.push($v);
+        }
         multi method run(Str :$op! ) {
             with %Ops{$op} {
                 @!stack.append: .(self);

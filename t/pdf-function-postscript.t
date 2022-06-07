@@ -50,17 +50,17 @@ lives-ok {$function-obj.check}, '$function-obj.check lives';
 
 my $ast = $function-obj.parse;
 is-json-equiv $ast, {
-    :expr[ :int(360), :op<mul>, :op<sin>,
-           :int(2), :op<div>,
-           :op<exch>, :int(360), :op<mul>, :op<sin>,
-           :int(2), :op<div>,
+    :expr[ 360, :op<mul>, :op<sin>,
+           2, :op<div>,
+           :op<exch>, 360, :op<mul>, :op<sin>,
+           2, :op<div>,
            :op<add>,
          ] }, '$.parse accessor';
 
 sub calc(Str $expr, @stack) {
     use PDF::Grammar::Function;
     use PDF::Grammar::Function::Actions;
-    my  PDF::Grammar::Function::Actions $actions .= new;
+    my  PDF::Grammar::Function::Actions $actions .= new: :lite;
     my $input = "\{$expr\}";
     PDF::Grammar::Function.parse($input, :$actions)
         // die "function parse failed: $input";
