@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.5.2  2022-06-07T17:20:38+12:00
    - Adjust tests for PDF 0.5.8+ which has a simplified AST
 
 0.5.1  2022-05-11T09:06:10+12:00
