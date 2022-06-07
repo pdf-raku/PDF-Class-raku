@@ -10,7 +10,7 @@ use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 
-my PDF::Grammar::PDF::Actions $actions .= new;
+my PDF::Grammar::PDF::Actions $actions .= new: :lite;
 
 my $input = q:to"--END-OBJ--";
 14 0 obj <<
@@ -53,11 +53,11 @@ lives-ok {$snoopy.check}, '$img.check lives';
 
 my $inline = $snoopy.inline-content;
 is +$inline, 3, '.content(:inline) has 3 ops';
-is-json-equiv $inline[0], (:BI[ :dict{ BPC => :int(8),
+is-json-equiv $inline[0], (:BI[ :dict{ BPC => 8,
                                        CS  => :name<DeviceRGB>,
                                        F   => :name<DCTDecode>,
-                                       H   => :int(254),
-                                       W   => :int(200) } ]), 'first .content(:inline) op: :BI[...]';
+                                       H   => 254,
+                                       W   => 200 } ]), 'first .content(:inline) op: :BI[...]';
 is-json-equiv $inline[1], (:ID[ :encoded($snoopy.encoded) ]), 'second .content(:inline) op: :ID[...]';
 is-json-equiv $inline[2], (:EI[ ]), 'third .content(:inline) op: :EI[]';
 

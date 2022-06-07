@@ -12,7 +12,7 @@ use PDF::COS::Stream;
 use PDF::Image;
 use PDF::Content::FontObj;
 
-my PDF::Grammar::PDF::Actions $actions .= new;
+my PDF::Grammar::PDF::Actions $actions .= new: :lite;
 
 my $input = q:to"--END-OBJ--";
 4 0 obj <<

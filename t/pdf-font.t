@@ -11,7 +11,7 @@ use PDF::Grammar::PDF::Actions;
 use PDF::COS;
 use PDF::Content::Font::CoreFont;
 
-my PDF::Grammar::PDF::Actions $actions .= new;
+my PDF::Grammar::PDF::Actions $actions .= new: :lite;
 
 my $input = q:to"--END-OBJ--";
 7 0 obj <<

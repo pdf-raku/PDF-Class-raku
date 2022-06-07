@@ -11,7 +11,7 @@ use PDF::Grammar::Test :is-json-equiv;
 use PDF::COS;
 use PDF::NameTree :NameTree;
 
-my PDF::Grammar::PDF::Actions $actions .= new;
+my PDF::Grammar::PDF::Actions $actions .= new: :lite;
 
 my $input = q:to"--END-OBJ--";
 20 0 obj <<

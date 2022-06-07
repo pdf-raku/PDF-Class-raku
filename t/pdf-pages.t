@@ -10,7 +10,7 @@ use PDF::Grammar::PDF::Actions;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::IO::Reader;
 
-my PDF::Grammar::PDF::Actions $actions .= new;
+my PDF::Grammar::PDF::Actions $actions .= new: :lite;
 
 my $input = q:to"--END-OBJ--";
 3 0 obj <<

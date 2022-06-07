@@ -89,7 +89,7 @@ class PDF::Class:ver<0.5.1>
     }
 
     my subset PagesLike of PDF::Class::Type where { .<Type> ~~ 'Pages' }; # autoloaded PDF::Pages
-    method Pages returns PagesLike handles <page pages add-page delete-page insert-page page-count page-index media-box crop-box bleed-box trim-box art-box use-font rotate iterate-pages> { self.Root.Pages }
+    method Pages returns PagesLike handles <page pages add-page add-pages delete-page insert-page page-count media-box crop-box bleed-box trim-box art-box use-font rotate iterate-pages> { self.Root.Pages }
 
     method fields {
         do with self.Root.AcroForm { .fields } // [];

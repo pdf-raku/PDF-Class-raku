@@ -12,7 +12,7 @@ use PDF::Page;
 use PDF::Catalog;
 use PDF::COS::Null;
 
-my PDF::Grammar::PDF::Actions $actions .= new;
+my PDF::Grammar::PDF::Actions $actions .= new: :lite;
 
 my $input = q:to"--END-OBJ--";
 215 0 obj <<

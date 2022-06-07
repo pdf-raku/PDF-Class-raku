@@ -10,7 +10,7 @@ use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::Grammar::Test :is-json-equiv;
 
-my PDF::Grammar::PDF::Actions $actions .= new;
+my PDF::Grammar::PDF::Actions $actions .= new: :lite;
 
 # example taken from HTML-Canvas-To-PDF-p6/t/render-pdf-test-sheets.pdf
 my $input = q:to"--END-OBJ--";

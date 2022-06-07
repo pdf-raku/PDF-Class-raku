@@ -23,7 +23,7 @@ my $input = q:to"--END--";
 endstream endobj
 --END--
 
-my PDF::Grammar::PDF::Actions $actions .= new;
+my PDF::Grammar::PDF::Actions $actions .= new: :lite;
 PDF::Grammar::PDF.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed: $input";
 my %ast = $/.ast;

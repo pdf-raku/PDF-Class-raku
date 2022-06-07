@@ -9,7 +9,7 @@ use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::Grammar::Test :is-json-equiv;
 
-my PDF::Grammar::PDF::Actions $actions .= new;
+my PDF::Grammar::PDF::Actions $actions .= new: :lite;
 my $reader = class { has $.auto-deref = False }.new;
 
 my $input = q:to"--END-OBJ--";

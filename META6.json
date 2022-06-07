@@ -6,9 +6,9 @@
   "build-depends": [
   ],
   "depends": [
-    "PDF:ver<0.4.6+>",
-    "PDF::Grammar:ver<0.2.4+>",
-    "PDF::Content:ver<0.6.1+>"
+    "PDF:ver<0.5.8+>",
+    "PDF::Grammar:ver<0.2.9+>",
+    "PDF::Content:ver<0.6.3+>"
   ],
   "description": "PDF Document Object Model",
   "license": "Artistic-2.0",

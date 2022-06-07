@@ -31,7 +31,7 @@ my $input = q:to"--END--";
 --END--
 
 my $reader = class { has $.auto-deref = False }.new;
-my PDF::Grammar::PDF::Actions $actions .= new;
+my PDF::Grammar::PDF::Actions $actions .= new: :lite;
 my PDF::Grammar::PDF $grammar;
 $grammar.parse($input, :$actions, :rule<ind-obj>)
     // die "parse failed: $input";
