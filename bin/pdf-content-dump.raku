@@ -27,14 +27,15 @@ sub MAIN(Str $infile,            #= input PDF
         dump($pdf.page($page), :$page, :$raku, :$trace);
     }
     else {
-        $page = 0;
-        for $pdf.Pages.iterate -> $p {
+        my $page = 0;
+        for $pdf.Pages.iterate-pages -> $p {
             ++$page;
             dump($p, :$page, :$raku, :$trace);
         }
     }
 }
 
+my $nesting = 0;
 sub callback($op, *@args) {
     my constant Openers = 'q'|'BT'|'BMC'|'BDC'|'BX';
     my constant Closers = 'Q'|'ET'|'EMC'|'EX';
@@ -49,7 +50,6 @@ sub callback($op, *@args) {
 
 sub dump($p, :$page, :$raku, :$trace) {
     if $raku {
-        my $nesting = 0;
         say "# **** Page $page ****";
         $p.render(:&callback);
     }
