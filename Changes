@@ -3,6 +3,7 @@
 0.5.3  2022-06-09T10:14:02+12:00
    - Fix script pdf-content-dump.raku
    - Adjust tests for PDF::Content 0.6.4+ simplified ops AST
+   - Use PDF::Grammar 0.3.0+ simplified AST for Postscript functions
 
 0.5.2  2022-06-07T17:20:38+12:00
    - Adjust tests for PDF 0.5.8+ which has a simplified AST
