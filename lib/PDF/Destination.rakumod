@@ -41,9 +41,11 @@ role PDF::Destination
     multi sub is-dest-like(PageRef $page, 'FitBV', NumNull $left?) { True }
     multi sub is-dest-like(|c) { False }
 
-    my subset DestinationLike of List is export(:DestinationLike) where is-dest-like(|$_);
+    my subset ExplicitDestLike of List where is-dest-like(|$_);
+    # Explicit or named destination
+    my subset DestinationLike is export(:DestinationLike) where ExplicitDestLike|Str;
 
-    method delegate-destination(DestinationLike $_) {
+    method delegate-destination(ExplicitDestLike $_) {
         PDF::Destination[ .[1] ];
     }
 
@@ -70,7 +72,7 @@ role PDF::Destination
                                                                                                       $bottom, $right, $top] }
 
     multi method construct(PageRef :$page!, )                    { self!dest: [$page, fit(FitWindow), ] }
-    multi method construct(DestinationLike $dest) { self.construct(|$dest) }
+    multi method construct(ExplicitDestLike $dest) { self.construct(|$dest) }
     multi method construct(*@args) {
         fail "unable to construct destination: {@args.raku}";
     }
@@ -78,10 +80,12 @@ role PDF::Destination
     # Coercions for explicit and named destinations
     # a named destination may be either a byte-string or name object
     my subset DestRef is export(:DestRef) where PDF::Destination|PDF::COS::Name|PDF::COS::ByteString;
+    my subset LocalDestRef is export(:LocalDestRef) where $_ ~~ PDF::Destination && .[0] ~~ PageLike:D || $_ ~~ PDF::COS::Name|PDF::COS::ByteString;
+    my subset RemoteDestRef is export(:RemoteDestRef) where $_ ~~ PDF::Destination && .[0] ~~ UInt:D || $_ ~~ PDF::COS::Name|PDF::COS::ByteString;
     proto sub coerce-dest($,$) is export(:coerce-dest) {*};
 
-    # assume an array is a simple destination
-    multi sub coerce-dest(DestinationLike $_, DestRef) {
+    # assume an array is an explicit destination
+    multi sub coerce-dest(ExplicitDestLike $_, DestRef) {
         my $role = $?ROLE.delegate-destination($_);
         $role.COERCE: $_;
     }

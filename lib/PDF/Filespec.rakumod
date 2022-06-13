@@ -19,6 +19,7 @@ role PDF::Filespec
 
     # file specifications may be either a dictionary or a simple text-string
     my subset FileRef is export(:FileRef) where PDF::COS::TextString|PDF::Filespec;
+    my subset FileRefLike is export(:FileRefLike) where Str|Hash;
 
     proto sub to-file(|c) is export(:to-file) {*};
     multi sub to-file(Str $value is rw, FileRef) {
@@ -30,7 +31,7 @@ role PDF::Filespec
     multi sub to-file($_, FileRef) {
         warn "unable to coerce to a File: {.raku}";
     }
-    multi sub to-file($_ is copy) { to-file($_, FileRef) }
+    multi sub to-file(FileRefLike $_ is copy) { to-file($_, FileRef) }
 
     has PDF::COS::Name $.Type is entry(:alias<type>) where 'Filespec'; # (Required if an EF or RF entry is present; recommended always) The type of PDF object that this dictionary describes; shall be Filespec for a file specification dictionary.
     has PDF::COS::Name $.FS is entry(:alias<file-system>); # (Optional) The name of the file system that shall be used to interpret this file specification. If this entry is present, all other entries in the dictionary shall be interpreted by the designated file system. PDF shall define only one standard file system name, URL; an application can register other names. This entry shall be independent of the F, UF, DOS, Mac, and Unix entries.
