@@ -9,6 +9,7 @@ class PDF::Class:ver<0.5.4>
     # use ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
     # also does ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
 
+    use PDF::COS::Util :&flag-is-set;
     use PDF::Content;
     use PDF::COS::Tie;
     use PDF::COS::Name;
@@ -73,7 +74,7 @@ class PDF::Class:ver<0.5.4>
 
 	!$perms.defined || $.crypt.?is-owner
             ?? True
-	    !! $perms.flag-is-set( $flag );
+	    !! $perms.&flag-is-set( $flag );
     }
 
     has PDF::Content::Font::CoreFont::Cache $!cache .= new;
