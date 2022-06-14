@@ -2,8 +2,6 @@ use v6;
 use Test;
 use PDF::Class;
 use PDF::Destination :Fit, :DestinationLike;
-use PDF::Action::GoTo;
-use PDF::Action::GoToR;
 use PDF::Page;
 use PDF::COS::Name;
 
@@ -17,7 +15,7 @@ multi sub is-destination($_, $, $reason) is default {
     note "{.raku} is not a valid destination";
 }
 
-my PDF::Page $page .= new: :dict{ :Type<Page> };
+my PDF::Page() $page = { :Type<Page> };
 my $dest = [$page, 'Fit'];
 
 ok $dest ~~ DestinationLike, 'is destination array';
@@ -65,23 +63,9 @@ is $d.right, 100, 'right accessor';
 is-destination $d=PDF::Destination.construct(FitBox, :$page), [$page, FitBox], 'FitBox destination';
 is $d.fit, FitBox, 'fit accessor';
 
-my PDF::Action::GoTo $goto .= construct: :destination<Foo>;
-is $goto.destination, 'Foo';
-$goto .= construct: :destination($d);
-cmp-ok $goto.destination, '===', $d;
-
-my PDF::Destination $d-remote .= construct(FitBox, :page(42));
-is-destination($d-remote, [42, FitBox], 'FitBox remote destination');
-is $d-remote.is-page-ref, False, 'destination is not a page ref';
-is $d-remote.page, 42, 'destination page';
-is $d-remote.fit, FitBox, 'fit accessor';
-
-my PDF::Action::GoToR $goto-r .= construct: :destination<Bar>, :file<my.pdf>;;
-is $goto-r.destination, 'Bar';
-$goto-r .= construct: :destination($d-remote), :file<my.pdf>;
-cmp-ok $goto-r.destination, '===', $d-remote;
-
-dies-ok {$goto-r.construct: :destination($d), :file<my.pdf>;}, 'remote construction on local destination - dies';
-dies-ok {$goto.construct: :destination($d-remote), :file<my.pdf>;}, 'local construction on remote destination - dies';
+is-destination $d=PDF::Destination.construct(FitBox, :page(42)), [42, FitBox], 'FitBox destination';
+is $d.is-page-ref, False, 'destination is not a page ref';
+is $d.page, 42, 'destination page';
+is $d.fit, FitBox, 'fit accessor';
 
 done-testing;
