@@ -42,11 +42,12 @@ sub display-item($_) {
             ?? ref($_)
             !! '...';
     }
-    when PDF::COS::TextString { .Str.perl }
+    when PDF::COS::TextString { .Str.raku }
+    when PDF::COS::TextString { .Str.raku }
     default {
         given to-ast($_) {
             .isa(Pair) && .key ~~ 'hex-string'
-                ?? .value.perl
+                ?? .value.raku
                 !! $*writer.write($_)
         }
     }
@@ -125,9 +126,8 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
         if $*trace;
 
     my Hash $entries = $obj.entries;
+    my %required = %$obj.required-entries;
     my Str @unknown-entries;
-
-     my %required = $entries.pairs.grep(*.value.cos.is-required);
 
     for $obj.keys.sort -> $k {
         %required{$k}:delete;
