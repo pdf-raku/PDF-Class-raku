@@ -1,6 +1,7 @@
 {{$NEXT}}
-   - Add construct() helper methods to PDF::Action::GoTo and
-     PDF::Action::GoToR, and PDF::Action::URI methods
+   - Fix PDF::Mask.TR (transfer-function) coercements
+   - Fix PDF::Destination named destination and GoTo/GotoR page destination
+     coercements
 
 0.5.4  2022-06-09T14:33:45+12:00
    - Fix PDF::Field coerce-field() for compatibility with FDF::Field (FDF module)

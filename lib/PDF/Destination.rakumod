@@ -80,24 +80,27 @@ role PDF::Destination
     # Coercions for explicit and named destinations
     # a named destination may be either a byte-string or name object
     my subset DestRef is export(:DestRef) where PDF::Destination|PDF::COS::Name|PDF::COS::ByteString;
-    my subset LocalDestRef is export(:LocalDestRef) where $_ ~~ PDF::Destination && .[0] ~~ PageLike:D || $_ ~~ PDF::COS::Name|PDF::COS::ByteString;
-    my subset RemoteDestRef is export(:RemoteDestRef) where $_ ~~ PDF::Destination && .[0] ~~ UInt:D || $_ ~~ PDF::COS::Name|PDF::COS::ByteString;
+    my subset LocalDestRef of DestRef is export(:LocalDestRef) where $_ ~~ PDF::Destination && .[0] ~~ PageLike:D || $_ ~~ Str;
+    my subset RemoteDestRef of DestRef is export(:RemoteDestRef) where $_ ~~ PDF::Destination && .[0] ~~ UInt:D || $_ ~~ Str;
     proto sub coerce-dest($,$) is export(:coerce-dest) {*};
 
     # assume an array is an explicit destination
-    multi sub coerce-dest(ExplicitDestLike $_, DestRef) {
+    multi sub coerce-dest(ExplicitDestLike $_ is rw, DestRef) {
         my $role = $?ROLE.delegate-destination($_);
         $role.COERCE: $_;
     }
 
-    multi sub coerce-dest(Str $_, DestRef) {
-        PDF::COS::Name.COERCE: $_;
+    multi sub coerce-dest(Str $_ is rw, DestRef) {
+        $_ = PDF::COS::Name.COERCE: $_;
     }
 
-    multi sub coerce-dest($_, DestRef) {
+    multi sub coerce-dest($_ is rw, DestRef) {
         warn "Unable to handle destination: {.raku}";
     }
 
+    multi sub coerce-dest($_ is copy, DestRef) {
+        coerce-dest($_, DestRef);
+    }
     # DestNamed coercement also allows an intermediate dictionary with a /D entry
     my role DestDict is export(:DestDict) does PDF::COS::Tie::Hash {
         has DestRef $.D is entry(:required, :alias<destination>, :coerce(&coerce-dest));

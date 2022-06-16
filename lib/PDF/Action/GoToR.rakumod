@@ -20,11 +20,4 @@ class PDF::Action::GoToR
     has FileRef $.F is entry(:alias<file>, :required, :coerce(&to-file)); # (Required) The file in which the destination shall be located.
     has RemoteDestRef $.D is entry(:required, :alias<destination>, :coerce(&coerce-dest)); # (Required) The destination to jump to. If the value is an array defining an explicit destination, its first element shall be a page number within the remote document rather than an indirect reference to a page object in the current document. The first page shall be numbered 0.
     has Bool $.NewWindow is entry; # (Optional; PDF 1.2) A flag specifying whether to open the destination document in a new window. If this flag is false, the destination document replaces the current document in the same window. If this entry is absent, the conforming reader should behave in accordance with its preference.
-    method construct(DestinationLike:D :$destination!, FileRefLike:D :$file!) {
-        my RemoteDestRef:D $D = coerce-dest($destination, DestRef);
-        my FileRef:D $F = to-file($file);
-        my PDF::COS::Name() $Type = 'Action';
-        my PDF::COS::Name() $S = 'GoToR';
-        self.COERCE: %( :$Type, :$S, :$F, :$D );
-    }
 }
