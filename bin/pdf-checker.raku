@@ -45,7 +45,7 @@ sub display-item($_) {
     when PDF::COS::TextString { .Str.perl }
     default {
         given to-ast($_) {
-            .key ~~ 'hex-string'
+            .isa(Pair) && .key ~~ 'hex-string'
                 ?? .value.perl
                 !! $*writer.write($_)
         }
