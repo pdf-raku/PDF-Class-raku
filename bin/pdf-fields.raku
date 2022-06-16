@@ -6,33 +6,6 @@ my %*SUB-MAIN-OPTS =
   :named-anywhere,    # allow named variables at any location 
 ;
 
-#| list all fields and current values
-multi sub MAIN(
-    Str $infile,            #= input PDF
-    Bool :list($)! where .so,
-    Bool :$labels,          #= display labels, rather than keys
-    Str  :$password = '',   #= password for the PDF/FDF, if encrypted
-    UInt :$page,            #= selected page
-    ) {
-    my PDF::Class $pdf .= open($infile, :$password);
-    my @fields = ($page ?? $pdf.page($page) !! $pdf).fields;
-
-    if @fields {
-        my $n = 0;
-        for @fields {
-            my $key = .TU if $labels;
-            $key //= .T // '???';
-            # value is commonly a text-string or name, but can
-            # also be dictionary object (e.g. PDF::Signature)
-            my $value = (.V // '').perl;
-            say "{++$n}. $key: $value";
-        }
-    }
-    else {
-	warn "this {$pdf.type} file has no form fields";
-    }
-}
-
 #| remove field formatting
 multi sub MAIN(
     Str $infile,            #= input PDF
@@ -138,6 +111,33 @@ multi sub MAIN(
     }
     else {
         $pdf.update;
+    }
+}
+
+#| list all fields and current values
+multi sub MAIN(
+    Str $infile,            #= input PDF
+    Bool :list($),          #= default
+    Bool :$labels,          #= display labels, rather than keys
+    Str  :$password = '',   #= password for the PDF/FDF, if encrypted
+    UInt :$page,            #= selected page
+    ) {
+    my PDF::Class $pdf .= open($infile, :$password);
+    my @fields = ($page ?? $pdf.page($page) !! $pdf).fields;
+
+    if @fields {
+        my $n = 0;
+        for @fields {
+            my $key = .TU if $labels;
+            $key //= .T // '???';
+            # value is commonly a text-string or name, but can
+            # also be dictionary object (e.g. PDF::Signature)
+            my $value = (.V // '').perl;
+            say "{++$n}. $key: $value";
+        }
+    }
+    else {
+	warn "this {$pdf.type} file has no form fields";
     }
 }
 
