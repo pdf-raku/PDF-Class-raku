@@ -27,8 +27,8 @@ role PDF::Mask
     use PDF::Function;
     my constant IdentityName = PDF::COS::Name.COERCE: 'Identity';
     my subset TransferFunc where PDF::Function|IdentityName;
-    multi sub coerce-xfer-func('Identity') { IdentityName }
-    multi sub coerce-xfer-func($_) { warn "Unable to coerce transfer function: {.raku}"; }
+    multi sub coerce-xfer-func($_ is rw where 'Identity', TransferFunc) { $_ = IdentityName }
+    multi sub coerce-xfer-func($_, TransferFunc) { warn "Unable to coerce transfer function: {.raku}"; }
     has TransferFunc $.TR is entry(:alias<transfer-function>, :default(IdentityName), :coerce(&coerce-xfer-func));                 # A function object specifying the transfer function to be used in deriving the mask values. The function shall accept one input, the computed group alpha or luminosity (depending on the value of the subtype S), and shall return one output, the resulting mask value. The input shall be in the range 0.0 to 1.0. The computed output shall be in the range 0.0 to 1.0; if it falls outside this range, it shall be forced to the nearest valid value. The name Identity may be specified in place of a function object to designate the identity
     # function. Default value: Identity.
 

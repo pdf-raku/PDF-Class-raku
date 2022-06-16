@@ -1,6 +1,6 @@
 use v6;
 use Test;
-plan 74;
+plan 76;
 
 use PDF::Class;
 use PDF::Class::Type;
@@ -164,6 +164,9 @@ is $gs-obj.TR, (:ind-ref[36, 0]), 'ExtGState TR';
 does-ok $gs-obj.SMask, (require ::('PDF::Mask')), 'ExtGState.SMask';
 is $gs-obj<SMask><S>, 'Alpha', 'ExtGState<SMask><S>';
 is $gs-obj.SMask.S, 'Alpha', 'ExtGState.SMask.S';
+$gs-obj.SMask.TR = 'Identity';
+is $gs-obj.SMask.TR, 'Identity';
+does-ok  $gs-obj.SMask.TR, PDF::COS::Name;
 
 $gs-obj.transparency = .5;
 is $gs-obj.CA, 0.5, 'transparency setter';
