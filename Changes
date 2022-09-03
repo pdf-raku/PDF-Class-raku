@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+0.5.6  2022-09-04T06:04:03+12:00
+   - Fix pdf-checker.raku for PDF::Content v0.6.3
+
 0.5.5  2022-07-05T08:01:32+12:00
    - Fix PDF::Mask.TR (transfer-function) coercements
    - Fix PDF::Destination named destination and GoTo/GotoR page destination
