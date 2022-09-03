@@ -1,7 +1,7 @@
 #!/usr/bin/env raku
 use v6;
 use PDF::Content;
-use PDF::Content::Graphics;
+use PDF::Content::Canvas;
 use PDF::IO::Writer;
 use PDF::COS::TextString;
 use PDF::COS::Util :to-ast;
@@ -176,7 +176,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     }
 
     check-contents($obj, :$depth)
-	if $*render && $obj.does(PDF::Content::Graphics);
+	if $*render && $obj.does(PDF::Content::Canvas);
 
 }
 
