@@ -24,6 +24,7 @@ sub MAIN(Str $infile,              #= input PDF
 	 Str :$password = '',      #= password for the input PDF, if encrypted
 	 Str :$save-as is copy,    #= output template filename
          Number :$batch-size = 1,  #= number of pages per batch (1)
+         UInt :$page,              #= page to extract
     ) {
 
     $save-as = output-filename( $save-as // $infile );
@@ -44,6 +45,10 @@ sub MAIN(Str $infile,              #= input PDF
     my UInt $page-count = $pdf.page-count;
     my UInt $page-num = 1;
     my $page-iterator = $pdf.iterate-pages;
+    if $page {
+        $page-iterator.pull-one
+            while $page-num < $page && $page-num++ < $page-count;
+    }
 
     while $page-num <= $page-count {
         my $start = $page-num;
@@ -53,14 +58,14 @@ sub MAIN(Str $infile,              #= input PDF
 
         my PDF::Page @pages;
         for 1 .. $batch-size {
-            my $page = $page-iterator.pull-one;
+            my $page-dict = $page-iterator.pull-one;
             # bind resources and other inherited properties to the page
             for <Resources Rotate MediaBox CropBox> -> $k {
-                $page{$k} //= $_ with $page."$k"();
+                $page-dict{$k} //= $_ with $page-dict."$k"();
             }
             # strip external references from the page
-            $page<StructParents Annots Parent>:delete;
-            push @pages, $page;
+            $page-dict<StructParents Annots Parent>:delete;
+            push @pages, $page-dict;
             last if ++$page-num > $page-count;
         }
 
@@ -77,6 +82,7 @@ sub MAIN(Str $infile,              #= input PDF
             }
 	    $pdf.save-as( $save-page-as, :rebuild );
         }
+        last if $page;
     }
 
 }
