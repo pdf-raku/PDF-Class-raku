@@ -19,7 +19,8 @@ clean :
 	@rm -f `find docs -name \*.md`
 
 $(MD): docs/%.md: lib/%.rakumod
-	mkdir -p `dirname $@`
+	@raku -I . -c $<
+	@mkdir -p `dirname $@`
 	raku -I . --doc=Markdown $< \
 	| TRAIL=$* raku -p -n $(DocLinker) \
         > $@
@@ -30,4 +31,7 @@ docs/index.md : README.md
 $(DocLinker) :
 	(cd .. && git clone $(DocRepo) $(DocProj))
 
-doc :  $(DocLinker) $(MD) docs/index.md
+Pod-To-Markdown-installed :
+	@raku -M Pod::To::Markdown -c
+
+doc :  $(DocLinker) Pod-To-Markdown-installed $(MD) docs/index.md
