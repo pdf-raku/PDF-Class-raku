@@ -7,13 +7,15 @@ MD = $(subst lib/,docs/,$(patsubst %.rakumod,%.md,$(POD)))
 
 all : doc
 
-docs : doc
+doc : test
+	@raku -M PDF::To::Cairo -c
+	pdf-previews.raku tmp
 
 test :
-	@prove -e"raku -I ." t
+	prove6 -I . t
 
 loudtest :
-	@prove -e"raku -I ." -v t
+	@prove6 -I . -v t
 
 clean :
 	@rm -f `find docs -name \*.md`

@@ -21,6 +21,14 @@ role PDF::Signature
     has PDF::COS::ByteString $.Contents is entry(:required); # (Required) The signature value. When ByteRange is present, the value shall be a hexadecimal string representing the value of the byte range digest. For public-key signatures, Contents should be either a DER-encoded PKCS#1 binary data object or a DER-encoded PKCS#7 binary data object.
     has PDF::COS::ByteString @.Cert is entry(:array-or-item); # (Required when SubFilter is adbe.x509.rsa_sha1) An array of byte strings that shall represent the X.509 certificate chain used when signing and verifying signatures that use public-key cryptography, or a byte string if the chain has only one entry. The signing certificate shall appear first in the array; it shall be used to verify the signature value in Contents, and the other certificates shall be used to verify the authenticity of the signing certificate.
     has UInt @.ByteRange is entry; # (Required for all signatures that are part of a signature field and usage rights signatures referenced from the UR3 entry in the permissions dictionary) An array of pairs of integers (starting byte offset, length in bytes) that shall describe the exact byte range for the digest calculation. Multiple discontiguous byte ranges shall be used to describe a digest that does not include the signature value (the Contents entry) itself.
+    method byte-ranges {
+        my @r := @.ByteRange;
+        (0, 2 ...^ +@r).map: {
+            my $start := @r[$_];
+            my $len := @r[$_ + 1];
+            Range.new($start, $start + $len);
+        }
+    }
     my role Reference does PDF::COS::Tie::Hash {
         # use ISO_32000::Table_253-Entries_in_a_signature_reference_dictionary;
         # also does ISO_32000::Table_253-Entries_in_a_signature_reference_dictionary;
