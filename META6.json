@@ -53,6 +53,7 @@
     "PDF::Catalog::AdditionalActions": "lib/PDF/Catalog/AdditionalActions.rakumod",
     "PDF::Class": "lib/PDF/Class.rakumod",
     "PDF::Class::Defs": "lib/PDF/Class/Defs.rakumod",
+    "PDF::Class::FieldContainer": "lib/PDF/Class/FieldContainer.rakumod",
     "PDF::Class::Loader": "lib/PDF/Class/Loader.rakumod",
     "PDF::Class::OutlineNode": "lib/PDF/Class/OutlineNode.rakumod",
     "PDF::Class::StructItem": "lib/PDF/Class/StructItem.rakumod",

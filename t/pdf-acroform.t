@@ -47,6 +47,7 @@ my $page = @fields[0].P;
 isa-ok $page, 'PDF::Page', '.P';
 is-json-equiv @fields[0].Rect, [165.7, 453.7, 315.7, 467.9], '.Rect';
 is @fields[0].T, 'Given Name Text Box', '.T';
+is @fields[0].field-name, 'Given Name Text Box', '.field-name';
 is @fields[0].TU, 'First name', '.TU';
 is @fields[0].V, '', '.V';
 is (try @fields[0].key), 'Given Name Text Box', '.key';

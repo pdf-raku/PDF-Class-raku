@@ -9,6 +9,9 @@ role PDF::AcroForm
     # use ISO_32000::Table_218-Entries_in_the_interactive_form_dictionary;
     # also does ISO_32000::Table_218-Entries_in_the_interactive_form_dictionary;
 
+    use PDF::Class::FieldContainer;
+    also does PDF::Class::FieldContainer;
+
     use PDF::COS::Tie;
     use PDF::Field :coerce-field;
     use PDF::COS::Stream;

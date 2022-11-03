@@ -13,6 +13,9 @@ class PDF::Page
     does PDF::Content::Page
     does PDF::Content::PageNode {
 
+    use PDF::Class::FieldContainer;
+    also does PDF::Class::FieldContainer;
+
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::COS::Stream;
@@ -81,31 +84,6 @@ class PDF::Page
             $annots.keys.map({$annots[$_]}).grep(PDF::Field);
         }
         else { [] }
-    }
-
-    multi method fields-hash(
-        Array $fields-arr = self.fields,
-        Str :$key! where 'T'|'TU'|'TR'
-            --> Hash) {
-	my %fields;
-
-	for $fields-arr.list -> $field {
-            %fields{ $_ } = $field
-                with $field{$key};
-	}
-
-	%fields;
-    }
-
-    multi method fields-hash(Array $fields-arr = self.fields --> Hash) {
-        my %fields;
-
-	for $fields-arr.list -> $field {
-            %fields{ $_ } = $field
-		with $field.field-name;
-	}
-
-	%fields;
     }
 
     method cb-check {
