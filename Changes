@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.5.7  2022-11-03T17:45:46+13:00
    - Add PDF::Signature byte-ranges() method
    - Improve field naming conformance in PDF::Field and field
      handling in pdf-fields.raku. Names should be of the form
