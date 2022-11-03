@@ -17,6 +17,7 @@ role PDF::AcroForm
     use PDF::COS::Stream;
     use PDF::COS::TextString;
     use PDF::Resources;
+    use PDF::Class::Defs :TextOrStream;
 
     has PDF::Field @.Fields is entry(:required, :coerce(&coerce-field));    # (Required) An array of references to the document’s root fields (those with no ancestors in the field hierarchy).
     #| returns an inorder array of all descendant fields
@@ -75,9 +76,13 @@ role PDF::AcroForm
 
     has UInt $.Q is entry(:alias<quadding>);                              # (Optional) A document-wide default value for the Q attribute of variable text fields
 
-    my subset XFA where .[0] ~~ PDF::COS::Stream|PDF::COS::TextString;
+    my subset XFA where .[0] ~~ TextOrStream;
+    multi sub coerce-xfa-elem(TextOrStream $v) { $v }
+    multi sub coerce-xfa-elem($v is rw) {
+        coerce-text-or-stream($v, TextOrStream);
+    }
     multi sub coerce-xfa(List $a, XFA) {
-        PDF::COS.coerce( $a[$_], PDF::COS::TextString)
+       coerce-xfa-elem( $a[$_])
             for 0, 2 ... +$a;
     }
     multi sub coerce-xfa($_, $) { warn "unable to coerce to XFA forms: {.raku}" }
