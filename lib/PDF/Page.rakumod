@@ -83,14 +83,26 @@ class PDF::Page
         else { [] }
     }
 
-    method fields-hash( Array $fields-arr = self.fields,
-                        :$key where 'T'|'TU'|'TR' = 'T'
-                            --> Hash) {
+    multi method fields-hash(
+        Array $fields-arr = self.fields,
+        Str :$key! where 'T'|'TU'|'TR'
+            --> Hash) {
 	my %fields;
 
 	for $fields-arr.list -> $field {
             %fields{ $_ } = $field
-		    with $field{$key};
+                with $field{$key};
+	}
+
+	%fields;
+    }
+
+    multi method fields-hash(Array $fields-arr = self.fields --> Hash) {
+        my %fields;
+
+	for $fields-arr.list -> $field {
+            %fields{ $_ } = $field
+		with $field.field-name;
 	}
 
 	%fields;

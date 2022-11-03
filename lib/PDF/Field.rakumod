@@ -140,6 +140,14 @@ role PDF::Field
     }
 
     has PDF::COS::TextString $.T is entry(:alias<key>);      # Optional) The partial field name
+    multi method field-name($fld is copy:) {
+        my @partial;
+        while $fld.defined && $fld<T>.defined {
+            @partial.unshift: $fld<T>;
+            $fld = $fld<Parent>;
+        }
+        @partial ?? @partial.join('.') !! Str;
+    }
 
     has PDF::COS::TextString $.TU is entry(:alias<label>);     # (Optional; PDF 1.3) An alternate field name to be used in place of the actual field name wherever the field must be identified in the user interface (such as in error or status messages referring to the field). This text is also useful when extracting the document’s contents in support of accessibility to users with disabilities or for other purposes
 

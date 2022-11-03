@@ -87,15 +87,11 @@ multi sub MAIN(
     Str $infile,
     Bool :fill($)! where .so,
     Str  :$save-as,
-    Bool :$labels,          #| display labels, rather than keys
     Str  :$password = '',
     UInt :$page,            #| selected page
     Bool :$reformat = True,
     Bool :$triggers = True,
     *%edits) {
-
-    enum ( :Keys<T>, :Labels<TU> );
-    my Str $key = $labels ?? Labels !! Keys;
 
     my PDF::Class $pdf .= open($infile, :$password);
     die "$infile has no fields defined"
@@ -104,7 +100,7 @@ multi sub MAIN(
     die "please provide field-values or --list to display fields"
 	unless %edits;
 
-    my %fields = ($page ?? $pdf.page($page) !! $pdf).fields-hash: :$key;
+    my %fields = ($page ?? $pdf.page($page) !! $pdf).fields-hash;
 
     for %edits.sort {
 	if %fields{.key}:exists {
@@ -131,7 +127,6 @@ multi sub MAIN(
     Str $infile,            #= input PDF
     Bool :list($),          #= default
     Bool :$json,            #= display as json
-    Bool :$labels,          #= display labels, rather than keys
     Str  :$password = '',   #= password for the PDF/FDF, if encrypted
     UInt :$page,            #= selected page
     ) {
@@ -142,8 +137,7 @@ multi sub MAIN(
     if @fields {
         my $n = 0;
         for @fields {
-            my $key = .TU if $labels;
-            $key //= .T // '???';
+            my $key = .field-name // '???';
             # value is commonly a text-string or name, but can
             # also be dictionary object (e.g. PDF::Signature)
             my $value = (.V // '');
@@ -171,10 +165,10 @@ pdf-fields.raku - Manipulate PDF fields
 
  pdf-fields.raku --password=pass --page=n --save-as=out.pdf [options] in.pdf
  Dispatch Options
-   --list [--labels] [--json]          % list fields and current values
-   --fill [--labels] -<key>=value ...  % set fields from keys and values
-   --slice[=n] value value ...         % set consecutive fields starting at n (first=1)
-   --reset [-/reformat] [-triggers]    % reset fields. Defaults: remove format, keep triggers
+   --list [--json]               % list fields and current values
+   --fill -<key>=value ...       % set fields from keys and values
+   --slice[=n] value value ...   % set consecutive fields starting at n (first=1)
+   --reset                       % reset fields. Defaults: remove format, keep triggers
 
  General Options:
    --/reformat          disable reformatting
