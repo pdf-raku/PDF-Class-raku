@@ -183,7 +183,7 @@ class PDF::Catalog
 	does PDF::COS::Tie::Hash {
         # use ISO_32000::Table_258-Entries_in_a_permissions_dictionary;
         # also does ISO_32000::Table_258-Entries_in_a_permissions_dictionary;
-        has PDF::Signature $.DocMDP is entry(:indirect); # (Optional) An indirect reference to a signature dictionary (see Table 252). This dictionary shall contain a Reference entry that is a signature reference dictionary (see Table 252) that has a DocMDP transform method (see 12.8.2.2, “DocMDP”) and corresponding transform parameters.
+        has PDF::Signature $.DocMDP is entry(:indirect); # (Optional) An indirect reference to a signature dictionary (see Table 252). This dictionary shall contain a Reference entry that is a signature reference dictionary (see Table 252) that has a DocMDP transform method and corresponding transform parameters.
         has PDF::Signature $.UR3 is entry;               # (Optional) A signature dictionary that is used to specify and validate additional capabilities (usage rights) granted for this document; that is, the enabling of interactive features of the conforming reader that are not available by default.
     }
     has Permissions $.Perms is entry;           # (Optional; PDF 1.5) A permissions dictionary that specifies user access permissions for the document.

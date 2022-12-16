@@ -14,7 +14,7 @@ endobj
   /Contents 4 0 R
   /MediaBox [ 0 0 612 792 ]
   /Parent 2 0 R
-  /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >>
+  /Resources << /Font << /F1 5 0 R >> >>
 >>
 endobj
 
@@ -45,7 +45,7 @@ q
   q
     BT
       1 0 0 1 10 -50 Tm
-      /F2 16 Tf
+      /F1 16 Tf
       (Hello World) Tj
     ET
   Q
@@ -57,31 +57,21 @@ endobj
 <<
   /Type /Font
   /Subtype /Type1
-  /BaseFont /Helvetica-Bold
-  /Encoding /WinAnsiEncoding
->>
-endobj
-
-6 0 obj
-<<
-  /Type /Font
-  /Subtype /Type1
   /BaseFont /Courier
   /Encoding /WinAnsiEncoding
 >>
 endobj
 
 xref
-0 7
+0 6
 0000000000 65535 f 
 0000000015 00000 n 
 0000000065 00000 n 
 0000000125 00000 n 
-0000000274 00000 n 
-0000000931 00000 n 
-0000001042 00000 n 
+0000000264 00000 n 
+0000000921 00000 n 
 trailer
-<< /ID [ (t/html-canvas.t ) (t/html-canvas.t ) ] /Root 1 0 R /Size 7 >>
+<< /ID [ (t/html-canvas.t ) (t/html-canvas.t ) ] /Root 1 0 R /Size 6 >>
 startxref
-1146
+1025
 %%EOF

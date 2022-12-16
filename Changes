@@ -1,4 +1,5 @@
 {{$NEXT}}
+   - Make Attribute /O entry :required (as per spec). 
 
 0.5.7  2022-11-03T17:45:46+13:00
    - Add PDF::Signature byte-ranges() method

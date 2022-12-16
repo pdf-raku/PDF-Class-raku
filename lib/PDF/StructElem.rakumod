@@ -67,7 +67,7 @@ role PDF::StructElem
     my role Attributes is export(:Attributes) does PDF::COS::Tie::Hash {
         # use  ISO_32000::Table_327-Entry_common_to_all_attribute_object_dictionaries;
         # also does ISO_32000::Table_327-Entry_common_to_all_attribute_object_dictionaries;
-        has PDF::COS::Name $.O is entry(:alias<owner>);
+        has PDF::COS::Name $.O is entry(:alias<owner>, :required);
         method set-attribute($key, $value) { self{$key} = $value }
         method Hash {
             my @keys = self.keys.grep: * ne 'O';
@@ -96,7 +96,7 @@ role PDF::StructElem
         has UserProperty @.P is entry(:alias<properties>, :required);
         method set-attribute($key, $value) {
             my @p := @.P;
-            with (0 ..^ @p).first: { @p[$_]<N> eq $key } {
+            with (^@p).first: { @p[$_]<N> eq $key } {
                 @p[$_]<V> = $value;
             }
             else {
@@ -105,7 +105,7 @@ role PDF::StructElem
         }
         method Hash {
             my @p := @.P;
-            my % = (0 ..^ @p).map: { @p[$_]<N> => @p[$_]<V> }
+            my % = (^@p).map: { @p[$_]<N> => @p[$_]<V> }
         }
     }
     my subset AttributesOrRev where Attributes|UInt;
@@ -173,7 +173,7 @@ role PDF::StructElem
             default { () }
         }
     }
-    has @.C is entry(:array-or-item);          # (Optional) An attribute class name or array of class names associated with this structure element. If the value of this entry is an array, each class name in the array may be followed by an integer representing its revision number.
+    has @.C is entry( :alias<class>, :array-or-item);          # (Optional) An attribute class name or array of class names associated with this structure element. If the value of this entry is an array, each class name in the array may be followed by an integer representing its revision number.
 # If both the A and C entries are present and a given attribute is
 # specified by both, the one specified by the A entry shall take
     # precedence.
