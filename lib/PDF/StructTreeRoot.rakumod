@@ -13,7 +13,8 @@ class PDF::StructTreeRoot
 
     use PDF::COS::Tie;
     use PDF::COS::Name;
-    use PDF::StructElem :coerce-struct-kids, :StructElemChild, :coerce-attributes, :Attributes;
+    use PDF::StructElem :coerce-struct-kids, :StructElemChild, :Attributes;
+    use PDF::Attributes :coerce-attributes;
     use PDF::NameTree;
     use PDF::NumberTree;
 
@@ -85,5 +86,5 @@ class PDF::StructTreeRoot
 
     has StandardStructureType %.RoleMap  is entry;     # A dictionary that shall map the names of structure types used in the document to their approximate equivalents in the set of standard structure types.
 
-    has Attributes %.ClassMap is entry(:coerce(&coerce-attributes));                      # A dictionary that shall map name objects designating attribute classes to the corresponding attribute objects
+    has PDF::Attributes %.ClassMap is entry(:coerce(&coerce-attributes));                      # A dictionary that shall map name objects designating attribute classes to the corresponding attribute objects
 }
