@@ -85,7 +85,7 @@ my role Table_344-BLSE_Attributes {
             # Justify Aligned with both the start and end edges, with internal spacing within each line expanded, if necessary, to achieve such alignment. The last (or only) line is aligned with the start edge only.
             # Default value: Start.
 
-    has Numeric @.BBox is entry(:required, :len(4));	# (Optional for Annot; required for any figure or table appearing in its entirety on a single page; not inheritable) An array of four numbers in default user space units that shall give the coordinates of the left, bottom, right, and top edges, respectively, of the element’s bounding box (the rectangle that completely encloses its visible content). This attribute applies to any element that lies on a single page and occupies a single rectangle.
+    has Numeric @.BBox is entry(:len(4));	# (Optional for Annot; required for any figure or table appearing in its entirety on a single page; not inheritable) An array of four numbers in default user space units that shall give the coordinates of the left, bottom, right, and top edges, respectively, of the element’s bounding box (the rectangle that completely encloses its visible content). This attribute applies to any element that lies on a single page and occupies a single rectangle.
 
     has NumericOrAuto $.Width is entry;	# (Optional; not inheritable; illustrations, tables, table headers, and table cells only; is used for table cells) The width of the element’s content rectangle (see “Content and Allocation Rectangles” in 14.8.5.4, “Layout Attributes”), measured in default user space units in the inline-progression direction. This attribute applies only to elements of structure type Figure, Formula, Form, Table, TH (Table header), or TD (Table data).
             # The name Auto in place of a numeric value indicates that no specific width constraint is to be imposed; the element’s width is determined by the intrinsic width of its content. Default value: Auto.
@@ -175,16 +175,3 @@ my role Table_345-ILSE_Attributes {
 }
 also does Table_345-ILSE_Attributes;
 
-#| Table 346 – Standard column attributes
-#use role ISO_32000::Table_346-Standard_column_attributes;
-#also does role ISO_32000::Table_346-Standard_column_attributes;
-
-my role Table_346-Column_Attributes {
-
-    has Int $.ColumnCount is entry(:default(1));	# (Optional; not inheritable; PDF 1.6) The number of columns in the content of the grouping element. Default value: 1.
-
-    has Numeric $.ColumnGap is entry(:array-or-item);	# (Optional; not inheritable; PDF 1.6) The desired space between adjacent columns, measured in default user space units in the inline-progression direction. If the value is a number, it specifies the space between all columns. If the value is an array, it contains numbers, the first element specifying the space between the first and second columns, the second specifying the space between the second and third columns, and so on. If there are fewer than ColumnCount - 1 numbers, the last element specifies all remaining spaces; if there are more than ColumnCount - 1 numbers, the excess array elements is ignored.
-
-    has Numeric $.ColumnWidths is entry(:array-or-item);	# (Optional; not inheritable; PDF 1.6) The desired width of the columns, measured in default user space units in the inline-progression direction. If the value is a number, it specifies the width of all columns. If the value is an array, it contains numbers, representing the width of each column, in order. If there are fewer than ColumnCount numbers, the last element specifies all remaining widths; if there are more than ColumnCount numbers, the excess array elements is ignored.
-}
-also does Table_346-Column_Attributes;

@@ -70,15 +70,18 @@ role PDF::StructElem
     }
     use PDF::Attributes::UserProperties;
     my role UserProperties is export(:UserProperties) does PDF::Attributes::UserProperties { }
-    my subset AttributesOrRev where Attributes|UInt;
+    my subset AttributesOrRev where PDF::Attributes|UInt;
     multi sub coerce-atts-or-rev(Hash $_ is raw, AttributesOrRev) {
-         coerce-attributes($_, Attributes);
+        coerce-attributes($_, PDF::Attributes);
+    }
+    multi sub coerce-atts-or-rev($_, AttributesOrRev) {
+        fail "unable to coerce attributes: {.raku}";
     }
     has AttributesOrRev @.A is entry(:array-or-item, :coerce(&coerce-atts-or-rev));         # (Optional) A single attribute object or array of attribute objects associated with this structure element. Each attribute object shall be either a dictionary or a stream. If the value of this entry is an array, each attribute object in the array may be followed by an integer representing its revision number.
     sub new-atts($O) {
         my %atts = :$O;
         %atts<P> = [] if $O eq 'UserProperties';
-        coerce-attributes %atts, Attributes;
+        coerce-attributes %atts, PDF::Attributes;
     }
     has Attributes %!atts-by-owner;
     method vivify-attributes(Str:D :$owner!) {
@@ -86,7 +89,7 @@ role PDF::StructElem
             given self<A> {
                 when Hash {
                     if .<O> ~~ $owner {
-                        coerce-attributes($_, Attributes);
+                        coerce-attributes($_, PDF::Attributes);
                     }
                     else {
                         # need to start a list containing multiple owners
@@ -101,7 +104,7 @@ role PDF::StructElem
                     with .keys.reverse.first( -> $i {.[$i].isa(Hash) &&  .[$i].<O> ~~ $owner}) {
                         # owner already in the list
                         self<A>[$_+1] = self.revision;
-                        coerce-attributes(self<A>[$_], Attributes);
+                        coerce-attributes(self<A>[$_], PDF::Attributes);
                     }
                     else {
                         # append owner to the list
@@ -118,9 +121,9 @@ role PDF::StructElem
     }
     method attribute-dicts {
         given self<A> {
-            when Hash { (coerce-attributes($_, Attributes),) }
+            when Hash { (coerce-attributes($_, PDF::Attributes),) }
             when List {
-                .keys.map(-> $i {.[$i]}).grep(Hash).map: { coerce-attributes($_, Attributes) }
+                .keys.map(-> $i {.[$i]}).grep(Hash).map: { coerce-attributes($_, PDF::Attributes) }
             }
             default { () }
         }
