@@ -12,15 +12,19 @@ role PDF::Attributes does PDF::COS::Tie::Hash {
         with $dict<O> -> $owner {
              PDF::COS.loader.find-delegate( 'Attributes', $owner, :base-class(PDF::Attributes) );
         }
+        else {
+            PDF::Attributes;
+        }
         
     }
     proto sub coerce-attributes($, PDF::Attributes) is export(:coerce-attributes) {*}
-    multi sub coerce-attributes(PDF::COS::Dict() $dict where { .<O>:exists }, PDF::Attributes $attributes) is export(:coerce-attributes) {
+    multi sub coerce-attributes(Hash $dict, PDF::Attributes $attributes) {
         my PDF::Attributes:U $role = $attributes.attributes-delegate( $dict );
 	PDF::COS.coerce: $dict, $role;
     }
     multi sub coerce-attributes($_, PDF::Attributes) {
-        fail "unable to coerce struct attributes: {.raku}";
+        warn "unable to coerce struct attributes: {.raku}";
+        $_;
     }
     method coerce-attributes(Hash $dict) {
         coerce-attributes($dict, PDF::Attributes);
