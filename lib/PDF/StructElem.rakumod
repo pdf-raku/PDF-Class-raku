@@ -66,10 +66,9 @@ role PDF::StructElem
     # Each of these objects other than the first shall be considered to be a content item;
     # If the value of K is a dictionary containing no Type entry, it shall be assumed to be a structure element dictionary.
     # DEPRECATED exports
-    my role Attributes is export(:Attributes) does PDF::Attributes {
-    }
+    my constant Attributes is export(:Attributes) = PDF::Attributes;
     use PDF::Attributes::UserProperties;
-    my role UserProperties is export(:UserProperties) does PDF::Attributes::UserProperties { }
+    my constant UserProperties is export(:UserProperties) = PDF::Attributes::UserProperties;
     my subset AttributesOrRev where PDF::Attributes|UInt;
     multi sub coerce-atts-or-rev(Hash $_ is raw, AttributesOrRev) {
         coerce-attributes($_, PDF::Attributes);
