@@ -8,7 +8,7 @@ role PDF::Attributes does PDF::COS::Tie::Hash {
     use PDF::COS::Name;
     has PDF::COS::Name $.O is entry(:alias<owner>, :required);
     method set-attribute($key, $value) { self{$key} = $value }
-    method attributes-delegate( PDF::COS::Dict $dict) {
+    method attributes-delegate( Hash $dict) {
         with $dict<O> -> $owner {
              PDF::COS.loader.find-delegate( 'Attributes', $owner, :base-class(PDF::Attributes) );
         }
