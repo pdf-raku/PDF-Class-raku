@@ -347,6 +347,11 @@ PDF::Annot::Text | dict | AP(appearance), AS(appearance-state), Border, C(color)
 PDF::Annot::ThreeD | dict | 3DA(activation), 3DB(view-box), 3DD(artwork), 3DI(interactive), 3DV(default-view), AP(appearance), AS(appearance-state), Border, C(color), Contents, DR(default-resources), F(flags), FT(field-type), M(mod-time), NM(annotation-name), OC(optional-content), P(page), Rect, StructParent, Subtype, Type |  |  | Table_164-Entries_common_to_all_annotation_dictionaries
 PDF::Annot::Widget | dict | A(action), AA(additional-actions), AP(appearance), AS(appearance-state), BS(border-style), Border, C(color), Contents, DR(default-resources), F(flags), FT(field-type), H(highlight-mode), M(mod-time), MK, NM(annotation-name), OC(optional-content), P(page), Parent, Rect, StructParent, Subtype, Type |  |  | Table_188-Additional_entries_specific_to_a_widget_annotation Table_164-Entries_common_to_all_annotation_dictionaries
 PDF::Appearance | dict | D(down), N(normal), R(rollover) |  |  | Table_168-Entries_in_an_appearance_dictionary
+PDF::Attributes::Layout | dict |  |  |  | 
+PDF::Attributes::List | dict | ListNumbering |  | Table 347 – Standard list attribute | 
+PDF::Attributes::PrintField | dict | Desc, Role, checked |  | Table 348 – PrintField attributes | 
+PDF::Attributes::Table | dict | ColSpan, Headers, RowSpan, Scope, Summary |  | Table Table 349 – Standard table attributes | 
+PDF::Attributes::UserProperties | dict | P(properties) | set-attribute |  | 
 PDF::Border | dict | D(dash-pattern), S(style), Type, W(width) |  |  | Table_166-Entries_in_a_border_style_dictionary
 PDF::CIDSystemInfo | dict | Ordering, Registry, Supplement |  |  | Table_116-Entries_in_a_CIDSystemInfo_dictionary
 PDF::CMap | stream | CIDSystemInfo, CMapName, Type, UseCMap, WMode |  | /Type /CMap | Table_120-Additional_entries_in_a_CMap_stream_dictionary

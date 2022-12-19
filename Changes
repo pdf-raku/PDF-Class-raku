@@ -1,5 +1,8 @@
 {{$NEXT}}
-   - Make Attribute /O entry :required (as per spec). 
+
+0.5.8  2022-12-20T09:47:06+13:00
+   - Make Attribute /O entry :required (as per spec).
+   - Add PDF::Attributes::{Layout|List|PrintField|Table|UserProperties}
 
 0.5.7  2022-11-03T17:45:46+13:00
    - Add PDF::Signature byte-ranges() method
