@@ -58,9 +58,11 @@ sub MAIN(:$class is copy) {
         my @interfaces = $class.^roles.grep({.^name ~~ /^ISO_32000/}).list;
         my @see-also = @interfaces.map: *.^name;
 
-        my @accessors = $class\
-            .^attributes\
-            .grep({.can('entry') || .can('index')})\
+        my Attribute @atts = $class.^attributes;
+        @atts.append: .^attributes
+            for $class.^roles;
+        my @accessors = @atts
+            .grep({.can('cos')})\
             .unique(:as(*.cos.accessor-name))\
             .map({my $name = .cos.accessor-name; $name ~= "($_)" with .cos.alias; $name })\
             .grep(* ∉ $stream-accessors).sort;
