@@ -13,7 +13,8 @@ role PDF::Signature {
     # use ISO_32000::Table_252-Entries_in_a_signature_dictionary;
     # also does ISO_32000::Table_252-Entries_in_a_signature_dictionary;
 
-    has PDF::COS::Name $.Type is entry where 'Sig'; # (Optional) The type of PDF object that this dictionary describes; if present, shall be Sig for a signature dictionary.
+    my subset SigType of PDF::COS::Name where 'Sig';
+    has SigType $.Type is entry; # (Optional) The type of PDF object that this dictionary describes; if present, shall be Sig for a signature dictionary.
     has PDF::COS::Name $.Filter is entry(:required); # (Required; inheritable) The name of the preferred signature handler to use when validating this signature. If the Prop_Build entry is not present, it shall be also the name of the signature handler that was used to create the signature. If Prop_Build is present, it may be used to determine the name of the handler that created the signature (which is typically the same as Filter but is not needed to be). A conforming reader may substitute a different handler when verifying the signature, as long as it supports the specified SubFilter format.
     # Example signature handlers are Adobe.PPKLite, Entrust.PPKEF, CICI.SignIt, and VeriSign.PPKVS.
     has PDF::COS::Name $.SubFilter is entry; |# (Optional) A name that describes the encoding of the signature value and key information in the signature dictionary. A conforming reader may use any handler that supports this format to validate the signature.

@@ -7,7 +7,7 @@ class PDF::Annot::ThreeD {
     also is PDF::Annot;
     also does PDF::Class::ThreeD;
 
-    # use ISO_32000::Table_298-Additional_entries_specific_to_a_ThreeD_annotation
+    # use ISO_32000::Table_298-Additional_entries_specific_to_a_ThreeD_annotation;
     # also does ISO_32000::Table_298-Additional_entries_specific_to_a_ThreeD_annotation;
 
     use PDF::COS::Tie;

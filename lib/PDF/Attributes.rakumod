@@ -1,6 +1,6 @@
 use PDF::COS::Tie::Hash;
 role PDF::Attributes does PDF::COS::Tie::Hash {
-    # use  ISO_32000::Table_327-Entry_common_to_all_attribute_object_dictionaries;
+    # use ISO_32000::Table_327-Entry_common_to_all_attribute_object_dictionaries;
     # also does ISO_32000::Table_327-Entry_common_to_all_attribute_object_dictionaries;
     use PDF::COS;
     use PDF::COS::Dict;

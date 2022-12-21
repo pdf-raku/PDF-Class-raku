@@ -10,8 +10,8 @@ role PDF::Field::Signature {
     use PDF::Signature;
     use PDF::Class::Defs :AsciiStr;
 
-    # use ISO_32000::Table_252-Entries_in_a_signature_dictionary;
-    # also does ISO_32000::Table_252-Entries_in_a_signature_dictionary;
+    # use ISO_32000::Table_232-Additional_entries_specific_to_a_signature_field;
+    # also does ISO_32000::Table_232-Additional_entries_specific_to_a_signature_field;
 
     has PDF::Signature $.V is entry(:alias<value>);
 

@@ -10,8 +10,8 @@ my subset NumericOrAuto where Numeric|Auto;
 my subset RGB of Numeric where 0.0 <= * <= 1.0;
 my subset TextAlign of PDF::COS::Name where 'Start'|'Center'|'End'|'Justify';
 
-    # use ISO_32000::Table_343-Standard_layout_attributes_common_to_all_standard_structure_type;
-# also does ISO_32000::Table_343-Standard_layout_attributes_common_to_all_standard_structure_type;
+# use ISO_32000::Table_343-Standard_layout_attributes_common_to_all_standard_structure_types;
+# also does ISO_32000::Table_343-Standard_layout_attributes_common_to_all_standard_structure_types;
 my role Table_343-Common_attributes {
 
     my subset Placement of PDF::COS::Name where 'Block'|'Inline'|'Before'|'Start'|'End';
@@ -57,9 +57,10 @@ my role Table_343-Common_attributes {
 }
 also does Table_343-Common_attributes;
 
+# use ISO_32000::Table_344-Additional_standard_layout_attributes_specific_to_block-level_structure_elements;
+# also does ISO_32000::Table_344-Additional_standard_layout_attributes_specific_to_block-level_structure_elements;
+
 #| Table 344 – Additional standard layout attributes specific to block-level structure elements
-#use ISO_32000::Table_344-Additional_standard_layout_attributes_specific_to_block-level_structure_elements;
-#also does ISO_32000::Table_344-Additional_standard_layout_attributes_specific_to_block-level_structure_elements;
 my role Table_344-BLSE_Attributes {
     has Numeric $.SpaceBefore is entry;	# (Optional; not inheritable) The amount of extra space preceding the before edge of the BLSE, measured in default user space units in the block-progression direction. This value is added to any adjustments induced by the LineHeight attributes of ILSEs within the first line of the BLSE (see “Layout Attributes for ILSEs” in 14.8.5.4, “Layout Attributes”). If the preceding BLSE has a SpaceAfter attribute, the greater of the two attribute values is used. Default value: 0.
             # This attribute is disregarded for the first BLSE placed in a given reference area.
@@ -114,10 +115,10 @@ my role Table_344-BLSE_Attributes {
 }
 also does Table_344-BLSE_Attributes;
 
-#| Table 345 – Standard layout attributes specific to inline-level structure elements
-#use ISO_32000::Table_345-Standard_layout_attributes_specific_to_inline-level_structure_elements;
-#also does ISO_32000::Table_345-Standard_layout_attributes_specific_to_inline-level_structure_elements;
+# use ISO_32000::Table_345-Standard_layout_attributes_specific_to_inline-level_structure_elements;
+# also does ISO_32000::Table_345-Standard_layout_attributes_specific_to_inline-level_structure_elements;
 
+#| Table 345 – Standard layout attributes specific to inline-level structure elements
 my role Table_345-ILSE_Attributes {
 
     has Numeric $.BaselineShift is entry;	# (Optional; not inheritable) The distance, in default user space units, by which the element’s baseline is shifted relative to that of its parent element. The shift direction is the opposite of the block-progression direction specified by the prevailing WritingMode attribute (see “General Layout Attributes” in 14.8.5.4, “Layout Attributes”). Thus, positive values shall shift the baseline toward the before edge and negative values toward the after edge of the reference area (upward and downward, respectively, in Western writing systems). Default value: 0.
