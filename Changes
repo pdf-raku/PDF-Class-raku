@@ -1,5 +1,11 @@
 {{$NEXT}}
 
+0.5.10  2022-12-22T07:46:31+13:00
+   - Regenerate 'Classes Quick Reference' in README.md
+   - Make extensive use of 'also is' and 'also does' for class
+     composition. This was needed for `make-quick-ref.raku` work
+     reliably.
+
 0.5.9  2022-12-20T10:12:51+13:00
    - Fix PDF::Tags::Reader regression
 
