@@ -1,9 +1,8 @@
 use v6;
 
-use PDF::Annot::_Markup;
-
-class PDF::Annot::Square
-    is PDF::Annot::_Markup {
+class PDF::Annot::Square {
+    use PDF::Annot::_Markup;
+    also is PDF::Annot::_Markup;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

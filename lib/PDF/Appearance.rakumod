@@ -1,11 +1,10 @@
 use v6;
 
-use PDF::COS::Tie::Hash;
-
 #| Appearance role - see PDF::Annot - /AP entry
 
-role PDF::Appearance
-    does PDF::COS::Tie::Hash {
+role PDF::Appearance {
+    use PDF::COS::Tie::Hash;
+    also does PDF::COS::Tie::Hash;
 
     use PDF::COS;
     use PDF::COS::Tie;

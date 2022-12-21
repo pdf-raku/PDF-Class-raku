@@ -1,11 +1,10 @@
 use v6;
 
-use PDF::Function;
-
 #| /FunctionType 3 - Stitching
 #| see [PDF 32000 Section 7.4.10 Type 3 (Stitching) Functions]
-class PDF::Function::Stitching
-    is PDF::Function {
+class PDF::Function::Stitching {
+    use PDF::Function;
+    also is PDF::Function;
 
     # use ISO_32000::Table_41-Additional_entries_specific_to_a_type_3_function_dictionary;
     # also does ISO_32000::Table_41-Additional_entries_specific_to_a_type_3_function_dictionary;

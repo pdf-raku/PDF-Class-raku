@@ -1,9 +1,8 @@
 use v6;
 
-use PDF::Field;
-
-role PDF::Field::Text
-    does PDF::Field {
+role PDF::Field::Text {
+    use PDF::Field;
+    also does PDF::Field;
 
     use PDF::COS;
     use PDF::COS::Tie;

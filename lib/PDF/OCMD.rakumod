@@ -1,12 +1,12 @@
 use v6;
 
-use PDF::COS::Dict;
-use PDF::Class::Type;
-
 # /Type /OCMD - Optional Content Membership Dictionary
-class PDF::OCMD
-    is PDF::COS::Dict
-    does PDF::Class::Type {
+class PDF::OCMD {
+    use PDF::COS::Dict;
+    use PDF::Class::Type;
+
+    also is PDF::COS::Dict;
+    also does PDF::Class::Type;
 
     # use ISO_32000::Table_99-Entries_in_an_Optional_Content_Membership_Dictionary;
     # also does ISO_32000::Table_99-Entries_in_an_Optional_Content_Membership_Dictionary;

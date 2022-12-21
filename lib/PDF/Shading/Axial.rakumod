@@ -1,12 +1,12 @@
 use v6;
 
-use PDF::COS::Dict;
-use PDF::Shading;
-
 #| /ShadingType 2 - Axial
-class PDF::Shading::Axial
-    is PDF::COS::Dict
-    does PDF::Shading {
+class PDF::Shading::Axial {
+    use PDF::COS::Dict;
+    use PDF::Shading;
+
+    also is PDF::COS::Dict;
+    also does PDF::Shading;
 
     # use ISO_32000::Table_80-Additional_Entries_Specific_to_a_Type_2_Shading_Dictionary;
     # also does ISO_32000::Table_80-Additional_Entries_Specific_to_a_Type_2_Shading_Dictionary;

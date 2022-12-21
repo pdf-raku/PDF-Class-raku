@@ -1,11 +1,11 @@
 use v6;
 
-use PDF::COS::Tie::Hash;
-use PDF::Class::Type;
+role PDF::Pattern {
+    use PDF::COS::Tie::Hash;
+    use PDF::Class::Type;
 
-role PDF::Pattern
-    does PDF::COS::Tie::Hash
-    does PDF::Class::Type::Subtyped {
+    also does PDF::COS::Tie::Hash;
+    also does PDF::Class::Type::Subtyped;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

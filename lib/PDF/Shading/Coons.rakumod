@@ -1,12 +1,12 @@
 use v6;
 
-use PDF::COS::Stream;
-use PDF::Shading;
-
 #| /ShadingType 6 - Coons
-class PDF::Shading::Coons
-    is PDF::COS::Stream
-    does PDF::Shading {
+class PDF::Shading::Coons {
+    use PDF::COS::Stream;
+    use PDF::Shading;
+
+    also is PDF::COS::Stream;
+    also does PDF::Shading;
 
     # use ISO_32000::Table_84-Additional_Entries_Specific_to_a_Type_6_Shading_Dictionary;
     # also does ISO_32000::Table_84-Additional_Entries_Specific_to_a_Type_6_Shading_Dictionary;

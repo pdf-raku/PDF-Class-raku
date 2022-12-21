@@ -1,11 +1,10 @@
 use v6;
 
-use PDF::Annot::_Markup;
-
 #| /Type Annot - Annotation subtypes
 #| See [PDF 32000 Section 12.5 Annotations]
-class PDF::Annot::Text
-    is PDF::Annot::_Markup {
+class PDF::Annot::Text {
+    use PDF::Annot::_Markup;
+    also is PDF::Annot::_Markup;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

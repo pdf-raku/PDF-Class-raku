@@ -1,9 +1,8 @@
 use v6;
 
-use PDF::Field;
-
-role PDF::Field::Signature
-    does PDF::Field {
+role PDF::Field::Signature {
+    use PDF::Field;
+    also does PDF::Field;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

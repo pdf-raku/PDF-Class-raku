@@ -1,9 +1,9 @@
 use v6;
 
-use PDF::Group;
+class PDF::Group::Transparency {
+    use PDF::Group;
+    also is PDF::Group;
 
-class PDF::Group::Transparency
-    is PDF::Group {
     use PDF::COS::Tie;
     use PDF::COS::Name;
     use PDF::Class::Defs :ColorSpace;

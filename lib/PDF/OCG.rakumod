@@ -1,12 +1,11 @@
 use v6;
 
-use PDF::COS::Dict;
-use PDF::Class::Type;
-
 #| /Type /OCG - Optional Content Group
-class PDF::OCG
-    is PDF::COS::Dict
-    does PDF::Class::Type {
+class PDF::OCG {
+    use PDF::COS::Dict;
+    use PDF::Class::Type;
+    also is PDF::COS::Dict;
+    also does PDF::Class::Type;
 
     # use ISO_32000::Table_98-Entries_in_an_Optional_Content_Group_Dictionary;
     # also does ISO_32000::Table_98-Entries_in_an_Optional_Content_Group_Dictionary;

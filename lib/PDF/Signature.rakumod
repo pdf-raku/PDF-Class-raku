@@ -1,9 +1,8 @@
 use v6;
 
-use PDF::COS::Tie::Hash;
-
-role PDF::Signature
-    does PDF::COS::Tie::Hash {
+role PDF::Signature {
+    use PDF::COS::Tie::Hash;
+    also does PDF::COS::Tie::Hash;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

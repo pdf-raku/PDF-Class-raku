@@ -1,8 +1,9 @@
 use v6;
-use PDF::COS::Tie::Hash;
 
-unit role PDF::Sound
-    does PDF::COS::Tie::Hash;
+unit role PDF::Sound;
+
+use PDF::COS::Tie::Hash;
+also does PDF::COS::Tie::Hash;
 
 ## use ISO_32000::Table_294-Additional_entries_specific_to_a_sound_object;
 ## also does ISO_32000::Table_294-Additional_entries_specific_to_a_sound_object;

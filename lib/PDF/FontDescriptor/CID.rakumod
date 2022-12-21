@@ -1,6 +1,6 @@
-use PDF::FontDescriptor;
-role PDF::FontDescriptor::CID
-    does PDF::FontDescriptor {
+role PDF::FontDescriptor::CID {
+    use PDF::FontDescriptor;
+    also does PDF::FontDescriptor;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

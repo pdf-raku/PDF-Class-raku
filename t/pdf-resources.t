@@ -8,6 +8,7 @@ use PDF::IO::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
+use PDF::Encoding;
 use PDF::Font::TrueType;
 use PDF::Font::Type0;
 use PDF::OutputIntent;
@@ -65,7 +66,7 @@ is $sc-font-obj.BaseFont, 'Helvetica', 'sc font $.BaseFont';
 lives-ok {$sc-font-obj.check}, '$sc-font-obj.check lives';
 $sc-font-obj.Encoding = { :Type( :name<Encoding> ), :BaseEncoding( :name<MacRomanEncoding> ) };
 my $enc-obj = $sc-font-obj.Encoding;
-does-ok $enc-obj, ::('PDF::Encoding');
+does-ok $enc-obj, PDF::Encoding;
 is $enc-obj.Type, 'Encoding', '$enc.Type';
 is $enc-obj.BaseEncoding, 'MacRomanEncoding', '$enc.BaseEncoding';
 lives-ok {$enc-obj.check}, '$enc-obj.check lives';
@@ -119,7 +120,7 @@ is-deeply $new-page.resource-key($fm2), 'Fm2', 'xobject form name';
 my $im1 = $new-page.use-resource( $image );
 is-deeply $new-page.resource-key($im1), 'Im1', 'xobject form name';
 
-my $font = ::('PDF::Font::Type1').new: :dict{ :BaseFont<Helvetica>, :Type<Font>, :Subtype<Type1> };
+my $font = PDF::Font::Type1.new: :dict{ :BaseFont<Helvetica>, :Type<Font>, :Subtype<Type1> };
 my $f1 = $new-page.use-resource( $font );
 is-deeply $new-page.resource-key($f1), 'F1', 'font name';
 

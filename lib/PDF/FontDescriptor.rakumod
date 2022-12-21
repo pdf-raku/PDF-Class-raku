@@ -1,11 +1,10 @@
 use v6;
 
-use PDF::COS::Tie::Hash;
-
 #| /Type /FontDescriptor - the FontDescriptor dictionary
 
-role PDF::FontDescriptor
-    does PDF::COS::Tie::Hash {
+role PDF::FontDescriptor {
+    use PDF::COS::Tie::Hash;
+    also does PDF::COS::Tie::Hash;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

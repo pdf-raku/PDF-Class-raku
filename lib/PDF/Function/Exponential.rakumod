@@ -1,10 +1,9 @@
 use v6;
 
-use PDF::Function;
-
 #| /FunctionType 2 - Exponential
-class PDF::Function::Exponential
-    is PDF::Function {
+class PDF::Function::Exponential {
+    use PDF::Function;
+    also is PDF::Function;
 
     # use ISO_32000::Table_40-Additional_entries_specific_to_a_type_2_function_dictionary;
     # also does ISO_32000::Table_40-Additional_entries_specific_to_a_type_2_function_dictionary;

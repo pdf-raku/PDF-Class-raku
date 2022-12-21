@@ -1,10 +1,10 @@
 use v6;
-use PDF::Font;
-use PDF::Content::Resourced;
 
-class PDF::Font::Type3
-    is PDF::Font
-    does PDF::Content::Resourced {
+class PDF::Font::Type3 {
+    use PDF::Font;
+    use PDF::Content::Resourced;
+    also is PDF::Font;
+    also does PDF::Content::Resourced;
 
     use PDF::COS::Tie;
     use PDF::COS::Dict;

@@ -1,9 +1,9 @@
 use v6;
 
-use PDF::ColorSpace;
 
-class PDF::ColorSpace::Indexed
-    is PDF::ColorSpace {
+class PDF::ColorSpace::Indexed {
+    use PDF::ColorSpace;
+    also is PDF::ColorSpace;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

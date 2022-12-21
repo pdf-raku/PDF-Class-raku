@@ -1,7 +1,7 @@
-use PDF::COS::Tie::Hash;
+role PDF::ICCProfile {
 
-role PDF::ICCProfile
-    does PDF::COS::Tie::Hash {
+    use PDF::COS::Tie::Hash;
+    also does PDF::COS::Tie::Hash;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

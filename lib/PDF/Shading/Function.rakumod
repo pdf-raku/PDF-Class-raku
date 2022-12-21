@@ -1,12 +1,12 @@
 use v6;
 
-use PDF::COS::Dict;
-use PDF::Shading;
-
 #| /ShadingType 1 - Functional
-class PDF::Shading::Function
-    is PDF::COS::Dict
-    does PDF::Shading {
+class PDF::Shading::Function {
+    use PDF::COS::Dict;
+    use PDF::Shading;
+
+    also is PDF::COS::Dict;
+    also does PDF::Shading;
 
     # use ISO_32000::Table_79-Additional_Entries_Specific_to_a_Type_1_Shading_Dictionary;
     # also does ISO_32000::Table_79-Additional_Entries_Specific_to_a_Type_1_Shading_Dictionary;

@@ -1,5 +1,6 @@
+unit role PDF::Attributes::UserProperties;
 use PDF::Attributes;
-unit role PDF::Attributes::UserProperties does PDF::Attributes;
+also does PDF::Attributes;
     # use ISO_32000::Table_328-Additional_entries_in_an_attribute_object_dictionary_for_user_properties;
     # also does ISO_32000::Table_328-Additional_entries_in_an_attribute_object_dictionary_for_user_properties
 use PDF::COS::Tie;

@@ -1,13 +1,13 @@
 use v6;
 
-use PDF::COS::Tie::Hash;
-use PDF::Class::Type;
-
 #| /Type /OutputIntent
 
-role PDF::OutputIntent
-    does PDF::COS::Tie::Hash
-    does PDF::Class::Type::Subtyped {
+role PDF::OutputIntent {
+    use PDF::COS::Tie::Hash;
+    use PDF::Class::Type;
+
+    also does PDF::COS::Tie::Hash;
+    also does PDF::Class::Type::Subtyped;
 
     # use ISO_32000::Table_365-Entries_in_an_output_intent_dictionary;
     # also does ISO_32000::Table_365-Entries_in_an_output_intent_dictionary;

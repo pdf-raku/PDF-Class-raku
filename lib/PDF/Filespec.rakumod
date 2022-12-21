@@ -1,9 +1,7 @@
-use v6;
+role PDF::Filespec {
 
-use PDF::COS::Tie::Hash;
-
-role PDF::Filespec
-    does PDF::COS::Tie::Hash {
+    use PDF::COS::Tie::Hash;
+    also does PDF::COS::Tie::Hash;
 
     use PDF::COS;
     use PDF::COS::Tie;

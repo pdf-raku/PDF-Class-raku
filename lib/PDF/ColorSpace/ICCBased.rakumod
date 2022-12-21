@@ -1,9 +1,8 @@
 use v6;
 
-use PDF::ColorSpace;
-
-class PDF::ColorSpace::ICCBased
-    is PDF::ColorSpace {
+class PDF::ColorSpace::ICCBased {
+    use PDF::ColorSpace;
+    also is PDF::ColorSpace;
 
     use PDF::COS::Tie;
     use PDF::ICCProfile;

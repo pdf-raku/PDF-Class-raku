@@ -1,7 +1,7 @@
-use PDF::COS::Dict;
-use PDF::Mask;
-class PDF::Mask::Luminosity
-    is PDF::COS::Dict
-    does PDF::Mask {
-        # /S /Luminosity
+class PDF::Mask::Luminosity {
+    # /S /Luminosity
+    use PDF::COS::Dict;
+    use PDF::Mask;
+    also is PDF::COS::Dict;
+    also does PDF::Mask;
 }

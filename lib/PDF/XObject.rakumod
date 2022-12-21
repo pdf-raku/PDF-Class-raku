@@ -1,14 +1,14 @@
 use v6;
 
-use PDF::COS::Stream;
-use PDF::Class::Type;
-
 #| /Type /XObject - describes an abstract XObject. See also
 #| PDF::XObject::Form, PDF::XObject::Image
 
-class PDF::XObject
-    is PDF::COS::Stream
-    does PDF::Class::Type::Subtyped {
+class PDF::XObject {
+    use PDF::COS::Stream;
+    use PDF::Class::Type;
+
+    also is PDF::COS::Stream;
+    also does PDF::Class::Type::Subtyped;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

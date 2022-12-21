@@ -1,14 +1,14 @@
 use v6;
 
-use PDF::COS::Dict;
-use PDF::Class::Type;
-use PDF::Content::Resourced;
 
 #| /Type /Catalog - usually the document root in a PDF
-class PDF::Catalog
-    is PDF::COS::Dict
-    does PDF::Class::Type
-    does PDF::Content::Resourced {
+class PDF::Catalog {
+    use PDF::COS::Dict;
+    use PDF::Class::Type;
+    use PDF::Content::Resourced;
+    also is PDF::COS::Dict;
+    also does PDF::Class::Type;
+    also does PDF::Content::Resourced;
 
     # use ISO_32000::Table_28-Entries_in_the_catalog_dictionary;
     # also does ISO_32000::Table_28-Entries_in_the_catalog_dictionary;

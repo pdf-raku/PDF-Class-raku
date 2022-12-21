@@ -1,8 +1,8 @@
 use v6;
 
-use PDF::Font;
-class PDF::Font::CIDFont
-    is PDF::Font {
+class PDF::Font::CIDFont {
+    use PDF::Font;
+    also is PDF::Font;
 
     use PDF::COS::Tie;
     use PDF::COS::Stream;

@@ -1,15 +1,15 @@
 use v6;
 
-use PDF::COS::Dict;
-use PDF::Content::Font;
-use PDF::Class::Type;
-
 #| /Type /Font - Describes a font
 
-class PDF::Font
-    is PDF::COS::Dict
-    does PDF::Content::Font
-    does PDF::Class::Type::Subtyped {
+class PDF::Font {
+    use PDF::COS::Dict;
+    use PDF::Content::Font;
+    use PDF::Class::Type;
+
+    also is PDF::COS::Dict;
+    also does PDF::Content::Font;
+    also does PDF::Class::Type::Subtyped;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

@@ -8,6 +8,7 @@ use PDF::IO::IndObj;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
 use PDF::Grammar::Test :is-json-equiv;
+use PDF::OCG;
 
 my PDF::Grammar::PDF::Actions $actions .= new: :lite;
 my $reader = class { has $.auto-deref = False }.new;
@@ -51,7 +52,7 @@ is $ocg-obj.type, 'OCG', '$.type accessor';
 is $ocg-obj.Name, 'Watermark', '$.Name accessor';
 
 my $usage = $ocg-obj.Usage;
-does-ok $usage, ::('PDF::OCG::Usage'), 'Usage';
+does-ok $usage, PDF::OCG::Usage, 'Usage';
 
 my $export = $usage.Export;
 is $export.ExportState, 'ON', 'Usage.Export.ExportState';

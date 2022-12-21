@@ -1,8 +1,8 @@
 use v6;
-use PDF::Annot::_Markup;
 
-class PDF::Annot::FileAttachment
-    is PDF::Annot::_Markup {
+class PDF::Annot::FileAttachment {
+    use PDF::Annot::_Markup;
+    also is PDF::Annot::_Markup;
 
     use PDF::COS;
     use PDF::COS::Tie;

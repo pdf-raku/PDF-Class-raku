@@ -1,13 +1,13 @@
 use v6;
 
-use PDF::COS::Dict;
-use PDF::Class::Type;
-use PDF::Class::ThreeD;
+class PDF::ExData::Markup3D {
+    use PDF::COS::Dict;
+    use PDF::Class::Type;
+    use PDF::Class::ThreeD;
 
-class PDF::ExData::Markup3D
-    is PDF::COS::Dict
-    does PDF::Class::Type
-    does PDF::Class::ThreeD {
+    also is PDF::COS::Dict;
+    also does PDF::Class::Type;
+    also does PDF::Class::ThreeD;
 
     # use ISO_32000::Table_313-Entries_in_an_external_data_dictionary_used_to_markup_ThreeD_annotations;
     # also does ISO_32000::Table_313-Entries_in_an_external_data_dictionary_used_to_markup_ThreeD_annotations;

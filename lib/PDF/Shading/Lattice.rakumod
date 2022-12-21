@@ -1,12 +1,12 @@
 use v6;
 
-use PDF::COS::Stream;
-use PDF::Shading;
-
 #| /ShadingType 5 - Lattice
-class PDF::Shading::Lattice
-    is PDF::COS::Stream
-    does PDF::Shading {
+class PDF::Shading::Lattice {
+    use PDF::COS::Stream;
+    use PDF::Shading;
+
+    also is PDF::COS::Stream;
+    also does PDF::Shading;
 
     use PDF::COS::Tie;
     use PDF::Function;

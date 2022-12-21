@@ -1,12 +1,12 @@
 use v6;
 
-use PDF::COS::Tie::Hash;
 
 #| an entry in the StructTree
 #| See also PDF::StructTreeRoot
 
-role PDF::StructElem
-    does PDF::COS::Tie::Hash {
+role PDF::StructElem {
+    use PDF::COS::Tie::Hash;
+    also does PDF::COS::Tie::Hash;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

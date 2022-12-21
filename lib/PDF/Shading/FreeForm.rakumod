@@ -1,12 +1,12 @@
 use v6;
 
-use PDF::COS::Stream;
-use PDF::Shading;
-
 #| /ShadingType 4 - FreeForm
-class PDF::Shading::FreeForm
-    is PDF::COS::Stream
-    does PDF::Shading {
+class PDF::Shading::FreeForm {
+    use PDF::COS::Stream;
+    use PDF::Shading;
+
+    also is PDF::COS::Stream;
+    also does PDF::Shading;
 
     # use ISO_32000::Table_82-Additional_Entries_Specific_to_a_Type_4_Shading_Dictionary;
     # also does ISO_32000::Table_82-Additional_Entries_Specific_to_a_Type_4_Shading_Dictionary;

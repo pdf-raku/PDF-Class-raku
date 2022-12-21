@@ -1,12 +1,12 @@
 use v6;
 
-use PDF::COS::Dict;
-use PDF::Class::Type;
-
 # /Type /MCR - Marked Content Reference
-class PDF::MCR
-    is PDF::COS::Dict
-    does PDF::Class::Type {
+class PDF::MCR {
+    use PDF::COS::Dict;
+    use PDF::Class::Type;
+
+    also is PDF::COS::Dict;
+    also does PDF::Class::Type;
 
     # use ISO_32000::Table_324-Entries_in_a_marked-content_reference_dictionary;
     # also does ISO_32000::Table_324-Entries_in_a_marked-content_reference_dictionary;

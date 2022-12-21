@@ -1,10 +1,10 @@
 use v6;
 
-use PDF::COS::Loader;
+use PDF::COS;
 
-PDF::COS.loader = class PDF::Class::Loader
-    is PDF::COS::Loader {
-    use PDF::COS;
+PDF::COS.loader = class PDF::Class::Loader {
+    use PDF::COS::Loader;
+    also is PDF::COS::Loader;
     use PDF::Class::Defs :ActionSubtype, :AnnotSubtype, :FontFileType;
     use PDF::COS::Util :from-ast;
     use PDF::COS::Name;

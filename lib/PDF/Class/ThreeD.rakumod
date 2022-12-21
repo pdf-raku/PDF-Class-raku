@@ -1,9 +1,8 @@
 # Roles for PDF::Annot::ThreeD, PDF::ExData::Markup3D
 
-use PDF::COS::Tie::Hash;
-
-role PDF::Class::ThreeD
-    does PDF::COS::Tie::Hash {
+role PDF::Class::ThreeD {
+    use PDF::COS::Tie::Hash;
+    also does PDF::COS::Tie::Hash;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

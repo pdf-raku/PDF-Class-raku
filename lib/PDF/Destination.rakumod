@@ -1,13 +1,12 @@
 use v6;
-use PDF::COS::Tie;
-use PDF::COS::Tie::Array;
 
-my subset NumNull where Numeric|!.defined;  #| UInt value or null
-
-role PDF::Destination
-    does PDF::COS::Tie::Array {
+role PDF::Destination {
 
     # See [PDF 32000 Table 151 - Destination syntax]
+    use PDF::COS::Tie::Array;
+    also does PDF::COS::Tie::Array;
+
+    my subset NumNull where Numeric|!.defined;  #| UInt value or null
 
     my enum Fit is export(:Fit) «
         :FitXYZoom<XYZ>     :FitWindow<Fit>
@@ -16,6 +15,7 @@ role PDF::Destination
         :FitBoxHoriz<FitBH> :FitBoxVert<FitBV>
         »;
 
+    use PDF::COS::Tie;
     use PDF::COS::ByteString;
     use PDF::COS::Name;
     use PDF::COS::Tie::Hash;
@@ -118,6 +118,7 @@ role PDF::Destination
 
 role PDF::Destination['XYZ']
     does PDF::Destination {
+    use PDF::COS::Tie;
     has Numeric $.left is index(2);
     has Numeric $.top is index(3);
     has Numeric $.zoom is index(4);
@@ -129,16 +130,19 @@ role PDF::Destination['Fit']
 
 role PDF::Destination['FitH']
     does PDF::Destination {
+    use PDF::COS::Tie;
     has Numeric $.top is index(2);
 }
 
 role PDF::Destination['FitV']
     does PDF::Destination {
+    use PDF::COS::Tie;
     has Numeric $.left is index(2);
 }
 
 role PDF::Destination['FitR']
     does PDF::Destination {
+    use PDF::COS::Tie;
     has Numeric $.left is index(2);
     has Numeric $.bottom is index(3);
     has Numeric $.right is index(4);
@@ -151,11 +155,13 @@ role PDF::Destination['FitB']
 
 role PDF::Destination['FitBH']
     does PDF::Destination {
+    use PDF::COS::Tie;
     has Numeric $.top is index(2);
 }
 
 role PDF::Destination['FitBV']
     does PDF::Destination {
+    use PDF::COS::Tie;
     has Numeric $.left is index(2);
 }
 

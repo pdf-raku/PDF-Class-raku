@@ -1,9 +1,7 @@
-use v6;
-use PDF::COS::Tie::Hash;
+unit role PDF::Field::AdditionalActions;
 
-unit role PDF::Field::AdditionalActions
-    does PDF::COS::Tie::Hash;
-
+    use PDF::COS::Tie::Hash;
+    also does PDF::COS::Tie::Hash;
 # use ISO_32000::Table_196-Entries_in_a_form_fields_additional-actions_dictionary;
 # also does ISO_32000::Table_196-Entries_in_a_form_fields_additional-actions_dictionary;
 

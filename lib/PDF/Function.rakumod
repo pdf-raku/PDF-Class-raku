@@ -1,10 +1,9 @@
 use v6;
 
-use PDF::COS::Stream;
-
 #| /FunctionType 1..7 - the Function dictionary delegates
-class PDF::Function
-    is PDF::COS::Stream {
+class PDF::Function {
+    use PDF::COS::Stream;
+    also is PDF::COS::Stream;
 
     use PDF::COS::Tie;
 

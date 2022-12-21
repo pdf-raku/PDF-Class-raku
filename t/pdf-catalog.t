@@ -11,6 +11,7 @@ use PDF::Grammar::Test :is-json-equiv;
 use PDF::Page;
 use PDF::Catalog;
 use PDF::COS::Null;
+use PDF::ViewerPreferences;
 
 my PDF::Grammar::PDF::Actions $actions .= new: :lite;
 
@@ -110,7 +111,7 @@ my $oc_properties = $catalog.OCProperties;
 
 
 my $viewer-preferences = $catalog.ViewerPreferences;
-does-ok $viewer-preferences, ::('PDF::ViewerPreferences'), '$.ViewerPreferences role';
+does-ok $viewer-preferences, PDF::ViewerPreferences, '$.ViewerPreferences role';
 is-json-equiv $viewer-preferences.HideToolbar, True, '$.ViewerPreferences.HideToolbar';
 is-json-equiv $viewer-preferences.Direction, 'R2L', '$.ViewerPreferences.Direction';
 

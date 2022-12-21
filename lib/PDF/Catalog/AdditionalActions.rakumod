@@ -1,8 +1,8 @@
 use v6;
-use PDF::COS::Tie::Hash;
 
-unit role PDF::Catalog::AdditionalActions
-    does PDF::COS::Tie::Hash;
+unit role PDF::Catalog::AdditionalActions;
+use PDF::COS::Tie::Hash;
+also does PDF::COS::Tie::Hash;
 # use ISO_32000::Table_197-Entries_in_the_document_catalogs_additional-actions_dictionary;
 # also does ISO_32000::Table_197-Entries_in_the_document_catalogs_additional-actions_dictionary;
 

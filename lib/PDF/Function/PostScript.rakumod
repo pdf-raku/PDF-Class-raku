@@ -1,11 +1,10 @@
 use v6;
 
-use PDF::Function;
-
 #| /FunctionType 4 - PostScript
 #| see [PDF 32000 Section 7.10.5 Type 4 (PostScript Transform) Functions]
-class PDF::Function::PostScript
-    is PDF::Function {
+class PDF::Function::PostScript {
+    use PDF::Function;
+    also is PDF::Function;
 
     method parse(Str() $decoded = $.decoded) {
 	my $actions = (require ::('PDF::Grammar::Function::Actions')).new: :lite;

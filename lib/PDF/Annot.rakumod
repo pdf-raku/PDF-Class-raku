@@ -1,13 +1,13 @@
 use v6;
 
-use PDF::Class::StructItem;
-use PDF::Class::Type;
-
 #| /Type /Annot Annotations
-class PDF::Annot
-    is PDF::COS::Dict
-    does PDF::Class::StructItem
-    does PDF::Class::Type {
+class PDF::Annot {
+    use PDF::Class::StructItem;
+    use PDF::Class::Type;
+
+    also is PDF::COS::Dict;
+    also does PDF::Class::StructItem;
+    also does PDF::Class::Type;
 
     use PDF::COS::Tie;
     use PDF::COS::Tie::Array;

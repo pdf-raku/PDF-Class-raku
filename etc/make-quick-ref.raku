@@ -57,17 +57,19 @@ sub MAIN(:$class is copy) {
         my $doc = $class.WHY // '';
         my @interfaces = $class.^roles.grep({.^name ~~ /^ISO_32000/}).list;
         my @see-also = @interfaces.map: *.^name;
+        my %seen;
 
         my Attribute @atts = $class.^attributes;
-        @atts.append: .^attributes
-            for $class.^roles;
+        for $class.^roles {
+            try @atts.append: .^attributes
+        }
         my @accessors = @atts
             .grep({.can('cos')})\
             .unique(:as(*.cos.accessor-name))\
-            .map({my $name = .cos.accessor-name; $name ~= "($_)" with .cos.alias; $name })\
+            .map({my $name = .cos.accessor-name; %seen{$name}++; $name ~= "($_)" with .cos.alias; $name })\
             .grep(* ∉ $stream-accessors).sort;
 
-        my @methods = $class.^methods.map(*.name).grep(* ∉ $std-methods).sort.unique;
+        my @methods = $class.^methods.map(*.name).grep({!%seen{$_}}).grep(* ∉ $std-methods).sort.unique;
         my $ref = make-class-reference($name);
         say "$ref | $type | {@accessors.join: ', '} | {@methods.join: ', '} | $doc | {@see-also.join: ' '}";
 

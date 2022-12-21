@@ -1,9 +1,8 @@
 use v6;
 
-use PDF::ColorSpace;
-
-class PDF::ColorSpace::Pattern
-    is PDF::ColorSpace {
+class PDF::ColorSpace::Pattern {
+    use PDF::ColorSpace;
+    also is PDF::ColorSpace;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

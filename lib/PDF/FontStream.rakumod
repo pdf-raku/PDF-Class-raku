@@ -1,10 +1,10 @@
-use PDF::COS::Tie;
-use PDF::COS::Tie::Hash;
 
 #| Target of PDF::FontDescriptor FontFile or FontFile2 Attribute;
-role PDF::FontStream
-    does PDF::COS::Tie::Hash {
+role PDF::FontStream {
+    use PDF::COS::Tie::Hash;
+    also does PDF::COS::Tie::Hash;
 
+    use PDF::COS::Tie;
     use PDF::Metadata::XML;
     use PDF::COS::Name;
 

@@ -1,14 +1,13 @@
 use v6;
 
-use PDF::Class::StructItem;
-use PDF::Content:ver(v0.2.3+);
-use PDF::Content::XObject;
-use PDF::COS::Tie::Hash;
+role PDF::Image {
+    use PDF::Class::StructItem;
+    use PDF::Content::XObject;
+    use PDF::COS::Tie::Hash;
 
-role PDF::Image
-    does PDF::Class::StructItem
-    does PDF::Content::XObject['Image']
-    does PDF::COS::Tie::Hash {
+    also does PDF::Class::StructItem;
+    also does PDF::Content::XObject['Image'];
+    also does PDF::COS::Tie::Hash;
 
     # use ISO_32000::Table_89-Additional_Entries_Specific_to_an_Image_Dictionary;
     # also does ISO_32000::Table_89-Additional_Entries_Specific_to_an_Image_Dictionary;

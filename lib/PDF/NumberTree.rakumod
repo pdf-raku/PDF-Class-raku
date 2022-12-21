@@ -1,9 +1,8 @@
 use v6;
 
-use PDF::COS::Tie::Hash;
-
-role PDF::NumberTree
-    does PDF::COS::Tie::Hash {
+role PDF::NumberTree {
+    use PDF::COS::Tie::Hash;
+    also does PDF::COS::Tie::Hash;
 
     use PDF::COS;
     use PDF::COS::Tie;

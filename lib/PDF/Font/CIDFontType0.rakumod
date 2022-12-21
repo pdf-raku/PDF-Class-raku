@@ -1,6 +1,6 @@
 use v6;
-use PDF::Font::CIDFont;
 
-class PDF::Font::CIDFontType0
-    is PDF::Font::CIDFont {
+class PDF::Font::CIDFontType0 {
+    use PDF::Font::CIDFont;
+    also is PDF::Font::CIDFont;
 }

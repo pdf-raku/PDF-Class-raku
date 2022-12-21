@@ -1,11 +1,10 @@
 use v6;
 
-use PDF::Function;
-
 #| /FunctionType 0 - Sampled
 #| see [PDF 32000 Section 7.10.2 Type 0 (Sampled) Functions]
-class PDF::Function::Sampled
-    is PDF::Function {
+class PDF::Function::Sampled {
+    use PDF::Function;
+    also is PDF::Function;
 
     # use ISO_32000::Table_39-Additional_entries_specific_to_a_type_0_function_dictionary;
     # also does ISO_32000::Table_39-Additional_entries_specific_to_a_type_0_function_dictionary;

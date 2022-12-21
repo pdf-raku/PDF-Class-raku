@@ -1,9 +1,8 @@
 use v6;
 
-use PDF::Annot;
-
-class PDF::Annot::_Markup
-    is PDF::Annot {
+class PDF::Annot::_Markup {
+    use PDF::Annot;
+    also is PDF::Annot;
 
     use PDF::COS::Tie;
     use PDF::COS::Tie::Hash;

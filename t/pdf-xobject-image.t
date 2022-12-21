@@ -9,6 +9,7 @@ use PDF::IO::IndObj;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Grammar::PDF;
 use PDF::Grammar::PDF::Actions;
+use PDF::XObject::Image;
 
 my PDF::Grammar::PDF::Actions $actions .= new: :lite;
 
@@ -43,7 +44,7 @@ is-json-equiv $ximage-obj.ColorSpace, 'DeviceGray', '$.ColorSpace accessor';
 is-json-equiv $ximage-obj.BitsPerComponent, 8, '$.BitsPerComponent accessor';
 is $ximage-obj.encoded, "(binary data)", '$.encoded accessor';
 
-my $snoopy = ::('PDF')::('XObject::Image').open("t/images/snoopy-happy-dance.jpg");
+my $snoopy = PDF::XObject::Image.open("t/images/snoopy-happy-dance.jpg");
 is $snoopy.Width, 200, '$img.Width (jpeg)';
 is $snoopy.Height, 254, '$img.Height (jpeg)';
 is $snoopy.ColorSpace, 'DeviceRGB', '$img.ColorSpace (jpeg)';

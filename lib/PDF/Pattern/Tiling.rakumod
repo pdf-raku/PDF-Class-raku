@@ -1,17 +1,17 @@
 use v6;
 
-use PDF::COS::Stream;
-use PDF::Pattern;
-use PDF::Content::XObject;
-use PDF::Content::Canvas;
-
 #| /PatternType 1 - Tiling
 
-class PDF::Pattern::Tiling
-    is PDF::COS::Stream
-    does PDF::Pattern
-    does PDF::Content::XObject['Form']
-    does PDF::Content::Canvas {
+class PDF::Pattern::Tiling {
+    use PDF::COS::Stream;
+    use PDF::Pattern;
+    use PDF::Content::XObject;
+    use PDF::Content::Canvas;
+
+    also is PDF::COS::Stream;
+    also does PDF::Pattern;
+    also does PDF::Content::XObject['Form'];
+    also does PDF::Content::Canvas;
 
     use PDF::COS::Tie;
     use PDF::Resources;

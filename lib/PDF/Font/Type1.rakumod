@@ -1,8 +1,8 @@
 use v6;
-use PDF::Font;
 
-class PDF::Font::Type1
-    is PDF::Font {
+class PDF::Font::Type1 {
+    use PDF::Font;
+    also is PDF::Font;
 
     use PDF::COS::Tie;
     use PDF::COS::Dict;

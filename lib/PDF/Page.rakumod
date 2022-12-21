@@ -1,17 +1,17 @@
 use v6;
 
-use PDF::COS::Dict;
-use PDF::Class::Type;
-use PDF::Content::Page;
-use PDF::Content::PageNode;
-
 #| /Type /Page - describes a single PDF page
 
-class PDF::Page
-    is PDF::COS::Dict
-    does PDF::Class::Type
-    does PDF::Content::Page
-    does PDF::Content::PageNode {
+class PDF::Page {
+    use PDF::COS::Dict;
+    use PDF::Class::Type;
+    use PDF::Content::Page;
+    use PDF::Content::PageNode;
+
+    also is PDF::COS::Dict;
+    also does PDF::Class::Type;
+    also does PDF::Content::Page;
+    also does PDF::Content::PageNode;
 
     use PDF::Class::FieldContainer;
     also does PDF::Class::FieldContainer;

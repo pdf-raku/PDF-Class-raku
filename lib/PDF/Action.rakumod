@@ -1,12 +1,12 @@
 use v6;
-use PDF::COS::Tie::Hash;
-use PDF::Class::Type;
 
 #| /Type /Action
 
-role PDF::Action
-    does PDF::COS::Tie::Hash
-    does PDF::Class::Type::Subtyped {
+role PDF::Action {
+    use PDF::COS::Tie::Hash;
+    use PDF::Class::Type;
+    also does PDF::COS::Tie::Hash;
+    also does PDF::Class::Type::Subtyped;
 
     # use ISO_32000::Table_193-Entries_common_to_all_action_dictionaries;
     # also does ISO_32000::Table_193-Entries_common_to_all_action_dictionaries;

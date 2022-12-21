@@ -1,9 +1,8 @@
 use v6;
 
-use PDF::COS::Array;
-
-class PDF::ColorSpace
-    is PDF::COS::Array {
+class PDF::ColorSpace {
+    use PDF::COS::Array;
+    also is PDF::COS::Array;
 
     # See [PDF 32000 Section 8.6.3 Color Space Families]
 

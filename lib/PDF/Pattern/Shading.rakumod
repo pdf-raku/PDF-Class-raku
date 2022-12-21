@@ -1,13 +1,13 @@
 use v6;
 
-use PDF::COS::Dict;
-use PDF::Pattern;
-
 #| /ShadingType 2 - Axial
 
-class PDF::Pattern::Shading
-    is PDF::COS::Dict
-    does PDF::Pattern {
+class PDF::Pattern::Shading {
+    use PDF::COS::Dict;
+    use PDF::Pattern;
+
+    also is PDF::COS::Dict;
+    also does PDF::Pattern;
 
     use PDF::COS::Tie;
     use PDF::Shading;
