@@ -127,7 +127,7 @@ role PDF::StructElem {
             default { () }
         }
     }
-    has @.C is entry( :alias<class>, :array-or-item);          # (Optional) An attribute class name or array of class names associated with this structure element. If the value of this entry is an array, each class name in the array may be followed by an integer representing its revision number.
+    has PDF::COS::Name @.C is entry( :alias<class>, :array-or-item);          # (Optional) An attribute class name or array of class names associated with this structure element. If the value of this entry is an array, each class name in the array may be followed by an integer representing its revision number.
 # If both the A and C entries are present and a given attribute is
 # specified by both, the one specified by the A entry shall take
     # precedence.
