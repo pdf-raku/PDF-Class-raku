@@ -1,14 +1,12 @@
-use v6;
-
 #| /Type XObject /Subtype /Image
 #| See [PDF 32000 Section 8.9 - Images ]
-class PDF::XObject::Image {
-    use PDF::XObject;
-    use PDF::Image;
+unit class PDF::XObject::Image;
 
-    also is PDF::XObject;
-    also does PDF::Image;
-}
+use PDF::XObject;
+use PDF::Image;
+
+also is PDF::XObject;
+also does PDF::Image;
 
 =begin pod
 

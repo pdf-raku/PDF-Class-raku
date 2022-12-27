@@ -52,5 +52,3 @@ has PDF::Action $.PC is entry(:alias<page-close>);     #= (Optional; PDF 1.5) An
 has PDF::Action $.PV is entry(:alias<page-visable>);   #= (Optional; PDF 1.5) An action that is performed when the page containing the annotation becomes visible.
 
 has PDF::Action $.PI is entry(:alias<page-invisable>); #= (Optional; PDF 1.5) An action that is performed when the page containing the annotation is no longer visible in the conforming reader’s user interface.
-
-

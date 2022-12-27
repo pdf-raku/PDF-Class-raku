@@ -1,8 +1,4 @@
-use v6;
+unit class PDF::Annot::Circle;
 
-class PDF::Annot::Circle {
-    use PDF::Annot::Square;
-    also is PDF::Annot::Square;
-}
-
-
+use PDF::Annot::Square;
+also is PDF::Annot::Square;

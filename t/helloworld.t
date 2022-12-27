@@ -1,5 +1,6 @@
 use v6;
 use Test;
+use PDF;
 use PDF::Content;
 use PDF::Grammar::Test :is-json-equiv;
 use PDF::Class;

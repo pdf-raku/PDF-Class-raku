@@ -2,12 +2,13 @@ use v6;
 use Test;
 use PDF::Class;
 use PDF::Grammar::Test :is-json-equiv;
+use PDF::ColorSpace::DeviceN;
 
 my PDF::Class $doc .= open: "t/pdf/colorspace-devicen.in";
 my %cs = $doc.Root.Pages.resources: 'ColorSpace';
 
 my $cs1 = %cs<CS1>;
-does-ok $cs1, ::('PDF::ColorSpace::DeviceN');
+does-ok $cs1, PDF::ColorSpace::DeviceN;
 is $cs1.type, 'ColorSpace', '.type Accessor';
 is $cs1.Subtype, 'DeviceN', '.Subtype Accessor';
 is $cs1.Names[1], 'Magenta', '.Names[1]';

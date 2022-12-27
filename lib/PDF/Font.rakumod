@@ -1,20 +1,17 @@
-use v6;
-
 #| /Type /Font - Describes a font
+unit class PDF::Font;
 
-class PDF::Font {
-    use PDF::COS::Dict;
-    use PDF::Content::Font;
-    use PDF::Class::Type;
+use PDF::COS::Dict;
+use PDF::Content::Font;
+use PDF::Class::Type;
 
-    also is PDF::COS::Dict;
-    also does PDF::Content::Font;
-    also does PDF::Class::Type::Subtyped;
+also is PDF::COS::Dict;
+also does PDF::Content::Font;
+also does PDF::Class::Type::Subtyped;
 
-    use PDF::COS::Tie;
-    use PDF::COS::Name;
+use PDF::COS::Tie;
+use PDF::COS::Name;
 
-    has PDF::COS::Name $.Type is entry(:required, :alias<type>) where 'Font';
-    has PDF::COS::Name $.Subtype is entry(:required, :alias<subtype>);
+has PDF::COS::Name $.Type is entry(:required, :alias<type>) where 'Font';
+has PDF::COS::Name $.Subtype is entry(:required, :alias<subtype>);
 
-}

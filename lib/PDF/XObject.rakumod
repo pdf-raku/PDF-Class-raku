@@ -1,23 +1,19 @@
-use v6;
-
 #| /Type /XObject - describes an abstract XObject. See also
 #| PDF::XObject::Form, PDF::XObject::Image
+unit class PDF::XObject;
 
-class PDF::XObject {
-    use PDF::COS::Stream;
-    use PDF::Class::Type;
+use PDF::COS::Stream;
+use PDF::Class::Type;
 
-    also is PDF::COS::Stream;
-    also does PDF::Class::Type::Subtyped;
+also is PDF::COS::Stream;
+also does PDF::Class::Type::Subtyped;
 
-    use PDF::COS::Tie;
-    use PDF::COS::Name;
+use PDF::COS::Tie;
+use PDF::COS::Name;
 
-    has PDF::COS::Name $.Type is entry(:alias<type>) where 'XObject';
-    my subset XObjectSubtype of PDF::COS::Name where 'Form'|'Image'|'PS';
-    has XObjectSubtype $.Subtype is entry(:required, :alias<subtype>);
-
-}
+has PDF::COS::Name $.Type is entry(:alias<type>) where 'XObject';
+my subset XObjectSubtype of PDF::COS::Name where 'Form'|'Image'|'PS';
+has XObjectSubtype $.Subtype is entry(:required, :alias<subtype>);
 
 =begin pod
 
