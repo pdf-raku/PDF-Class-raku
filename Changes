@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+0.5.11  2022-12-28T12:55:03+13:00
+   - fix /StructElem /C(class) definition
+   - use unit form of classes and roles
+
 0.5.10  2022-12-22T07:46:31+13:00
    - Regenerate 'Classes Quick Reference' in README.md
    - Make extensive use of 'also is' and 'also does' for class
