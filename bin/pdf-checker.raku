@@ -102,6 +102,11 @@ sub MAIN(Str $infile,                 #= input PDF
             .resume
         }
     }
+    CATCH {
+        default {
+            error("Fatal error opening $infile: $_");
+        }
+    }
     my $pdf = (require ::($class)).open( $infile, :$password, :$repair );
     @*exclude = $exclude.split(/:s ',' /)
     	      if $exclude;
