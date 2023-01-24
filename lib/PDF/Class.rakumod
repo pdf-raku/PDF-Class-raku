@@ -29,14 +29,14 @@ method version is rw {
             Version.new: $.catalog<Version> // self.?reader.?version // '1.4'
         },
         STORE => -> $, Version $_ {
-            my $name = .Str;
-            $.catalog<Version> = PDF::COS::Name.COERCE: $name;
+            my PDF::COS::Name() $name = .Str;
+            $.catalog<Version> = $name;
         },
     );
 }
 
 # make sure it really is a PDF, not an FDF file etc
-method open(|c) { nextwith( :$.type, |c); }
+method open(|c) is hidden-from-backtrace { nextwith( :$.type, |c); }
 
 has Str @.creator = "PDF::Class-{PDF::Class.^ver}", "PDF::Content-{PDF::Content.^ver}", "PDF-{PDF.^ver}", "Raku-{$*RAKU.version}";
 
