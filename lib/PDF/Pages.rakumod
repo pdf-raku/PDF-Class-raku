@@ -1,4 +1,3 @@
-
 #| /Type /Pages - a node in the page tree
 unit class PDF::Pages;
 

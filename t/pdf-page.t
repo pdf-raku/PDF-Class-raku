@@ -92,10 +92,10 @@ is-json-equiv $page.trim-box, $page.crop-box, '$trim-box - get';
 is-json-equiv $page.art-box, $page.crop-box, '$.art-box - get';
 $page.ArtBox = [10,10,240,290];
 is-json-equiv $page.art-box, [10,10,240,290], '$.art-box - updated';
-use PDF::Content::Page :PageSizes;
+use PDF::Content::Page :PageSizes, :&to-landscape;
 $page.media-box = PageSizes::A3;
 is-json-equiv $page.media-box, [0,0,842,1190], 'media-box page-name setter';
-$page.media-box = $page.to-landscape( PageSizes::A3 );
+$page.media-box = to-landscape( PageSizes::A3 );
 is-json-equiv $page.media-box, [0,0,1190,842], 'media-box page-name setter :landscape';
 is-json-equiv $page.media-box, [0,0,1190,842], 'media-box page-name setter :landscape';
 

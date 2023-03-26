@@ -6,6 +6,9 @@ unit class PDF::Class:ver<0.5.11>;
 use PDF;
 also is PDF;
 
+use PDF::Content::API;
+also does PDF::Content::API;
+
 # base class declares: $.Size, $.Encrypt, $.ID
 # use ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
 # also does ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
@@ -78,11 +81,6 @@ method permitted(UInt $flag --> Bool) {
         !! $perms.&flag-is-set( $flag );
 }
 
-has PDF::Content::Font::CoreFont::Cache $!cache .= new;
-method core-font(|c) {
-    PDF::Content::Font::CoreFont.load-font(:$!cache, |c);
-}
-
 method cb-init {
     unless self<Root> {
         self<Root> = { :Type( :name<Catalog> ) };
@@ -91,7 +89,7 @@ method cb-init {
 }
 
 my subset PagesLike of PDF::Class::Type where { .<Type> ~~ 'Pages' }; # autoloaded PDF::Pages
-method Pages returns PagesLike handles <page pages add-page add-pages delete-page insert-page page-count media-box crop-box bleed-box trim-box art-box use-font rotate iterate-pages> { self.Root.Pages }
+method Pages returns PagesLike handles <page pages add-page add-pages delete-page insert-page page-count media-box crop-box bleed-box trim-box art-box bleed use-font rotate iterate-pages> { self.Root.Pages }
 
 method fields {
     do with self.Root.AcroForm { .fields } // [];
