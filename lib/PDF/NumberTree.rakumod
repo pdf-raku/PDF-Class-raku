@@ -15,6 +15,7 @@ role PDF::NumberTree {
     has @.Nums is entry; # Root and leaf nodes only; required in leaf nodes; present in the root node if and only if Kids is not present) An array of the form
                          # [ key 1 value 1 key 2 value 2 ... key n value n ]
                          # where each key i is an integer and the corresponding value i shall be the object associated with that key. The keys are sorted in numerical order
+
     my class NumberTree is export(:NumberTree) {
         has %!values{Int};
         has PDF::NumberTree $.root;
@@ -22,6 +23,7 @@ role PDF::NumberTree {
         has Bool $!realized;
         has Bool $.updated is rw;
         has Int  $!max-key;
+        has Lock:D $!lock .= new;
 
         method max-key {
             $!max-key //= max(self.Hash.keys.max, -1); 
@@ -30,12 +32,14 @@ role PDF::NumberTree {
         method !fetch($node, Int $key?) {
             with $node.Nums -> $kv {
                 # leaf node
-                unless %!fetched{$node}++ {
-                    for 0, 2 ...^ +$kv {
-                       my $val = $kv[$_ + 1];
-                       .($val, $!root.of)
-                           with $!root.coercer;
-                       %!values{$kv[$_] + 0} = $val;
+                $!lock.protect: {
+                    unless %!fetched{$node}++ {
+                        for 0, 2 ...^ +$kv {
+                            my $val = $kv[$_ + 1];
+                            .($val, $!root.of)
+                            with $!root.coercer;
+                            %!values{$kv[$_] + 0} = $val;
+                        }
                     }
                 }
             }
@@ -60,7 +64,7 @@ role PDF::NumberTree {
 
         method Hash handles <keys values pairs raku> {
             self!fetch($!root)
-                unless $!realized++;
+                unless $!lock.protect: { $!realized++ };
             %!values;
         }
 
@@ -68,7 +72,7 @@ role PDF::NumberTree {
             Proxy.new(
                 FETCH => {
                     self!fetch($!root, $key)
-                        unless $!realized || (%!values{$key}:exists);
+                        unless $!lock.protect: { $!realized || (%!values{$key}:exists); }
                     %!values{$key};
                 },
                 STORE => -> $, $val {
@@ -80,25 +84,30 @@ role PDF::NumberTree {
         method ASSIGN-KEY(Int() $key, $val is copy) is also<ASSIGN-POS> {
             .($val, $!root.of)
                 with $!root.coercer;
-            with $!max-key {
-                $_ = $key if $key > $_;
+            $!lock.protect: {
+                with $!max-key {
+                    $_ = $key if $key > $_;
+                }
+                $!updated = True;
+                self.Hash{$key} = $val;
             }
-            $!updated = True;
-            self.Hash{$key} = $val;
         }
 
         method DELETE-KEY(Int() $key) is also<DELETE-POS> {
-            with $!max-key {
-                $_ = Nil if $key == $_;
+            $!lock.protect: {
+                with $!max-key {
+                    $_ = Nil if $key == $_;
+                }
+                $!updated = True;
+                self.Hash{$key}:delete;
             }
-            $!updated = True;
-            self.Hash{$key}:delete;
         }
     }
 
+    my Lock $lock .= new;
     has NumberTree $!number-tree;
-    method number-tree(PDF::NumberTree:D $root:) {
-        $!number-tree //= NumberTree.new: :$root;
+    method number-tree(::?CLASS:D $root:) {
+        $lock.protect: { $!number-tree //= NumberTree.new: :$root }
     }
 
     has Numeric @.Limits is entry(:len(2)); # (Shall be present in Intermediate and leaf nodes only) Shall be an array of two integers, that shall specify the (numerically) least and greatest keys included in the Nums array of a leaf node or in the Nums arrays of any leaf nodes that are descendants of an intermediate node.

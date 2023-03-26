@@ -16,16 +16,19 @@ role PDF::NameTree {
         has Bool %!fetched{Any};
         has Bool $!realized;
         has Bool $.updated is rw;
+        has Lock:D $!lock .= new;
 
         method !fetch($node, Str $key?) {
             with $node.Names -> $kv {
                 # leaf node
-                unless %!fetched{$node}++ {
-                    for 0, 2 ...^ +$kv {
-                        my $val = $kv[$_ + 1];
-                      .($val, $!root.of)
-                           with $!root.coercer;
-                         %!values{ $kv[$_] } = $val;
+                $!lock.protect: {
+                    unless %!fetched{$node}++ {
+                        for 0, 2 ...^ +$kv {
+                            my $val = $kv[$_ + 1];
+                          .($val, $!root.of)
+                               with $!root.coercer;
+                             %!values{ $kv[$_] } = $val;
+                        }
                     }
                 }
             }
@@ -50,7 +53,7 @@ role PDF::NameTree {
 
         method Hash handles <keys values pairs raku> {
             self!fetch($!root)
-                unless $!realized++;
+                unless $!lock.protect: { $!realized++ };
             %!values;
         }
 
@@ -58,7 +61,7 @@ role PDF::NameTree {
             Proxy.new(
                 FETCH => {
                     self!fetch($!root, $key)
-                        unless $!realized || (%!values{$key}:exists);
+                        unless $!lock.protect: { $!realized || (%!values{$key}:exists); }
                     %!values{$key};
                 },
                 STORE => -> $, $val {
@@ -70,20 +73,25 @@ role PDF::NameTree {
         method ASSIGN-KEY(Str() $key, $val is copy) {
             .($val, $!root.of)
                 with $!root.coercer;
-            $!updated = True;
-            self.Hash{$key} = $val;
+            $!lock.protect: {
+                $!updated = True;
+                self.Hash{$key} = $val;
+            }
         }
 
         method DELETE-KEY(Str() $key) {
-            $!updated = True;
-            self.Hash{$key}:delete;
+            $!lock.protect: {
+                $!updated = True;
+                self.Hash{$key}:delete;
+            }
         }
 
     }
 
+    my Lock $lock .= new;
     has NameTree $!name-tree;
     method name-tree(PDF::NameTree:D $root:) {
-        $!name-tree //= NameTree.new: :$root;
+        $lock.protect: { $!name-tree //= NameTree.new: :$root }
     }
 
     has PDF::NameTree @.Kids is entry(:indirect); # (Root and intermediate nodes only; required in intermediate nodes; present in the root node if and only if Names is not present) Shall be an array of indirect references to the immediate children of this node. The children may be intermediate or leaf nodes.
