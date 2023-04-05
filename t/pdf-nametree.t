@@ -44,4 +44,3 @@ $names<1.4> = 99;
 $nametree-obj.cb-finish();
 is-json-equiv $nametree-obj.Names, [ '1.1', 'Xxx', '1.2', 42, '1.3', 3.14, '1.4', 99 ], '$obj.Names after rebuild';
 ok !defined($nametree-obj.Kids), '$obj.Kids after rebuild';
-

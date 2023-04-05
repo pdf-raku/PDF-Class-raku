@@ -42,5 +42,3 @@ lives-ok {$nametree-obj.check}, '$nametree-obj.check lives';
 $nums[50] = 99;
 $nametree-obj.cb-finish();
 is-json-equiv $nametree-obj.Nums, [ 20, 'Xxx', 30, 42, 50, 99], '$obj.Nums after update';
-
-
