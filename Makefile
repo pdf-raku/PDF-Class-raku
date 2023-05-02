@@ -8,10 +8,6 @@ MD = $(subst lib/,docs/,$(patsubst %.rakumod,%.md,$(POD)))
 
 all : doc
 
-doc : test
-	@raku -M PDF::To::Cairo -c
-	pdf-previews.raku tmp
-
 test :
 	prove6 -I . -j $(TEST_JOBS) t
 
@@ -20,6 +16,11 @@ loudtest :
 
 clean :
 	@rm -f `find docs -name \*.md`
+
+previews : test
+	@raku -M PDF::To::Cairo -c
+	@raku -M FontConfig -c
+	pdf-previews.raku tmp
 
 $(MD): docs/%.md: lib/%.rakumod
 	@raku -I . -c $<
@@ -37,4 +38,4 @@ $(DocLinker) :
 Pod-To-Markdown-installed :
 	@raku -M Pod::To::Markdown -c
 
-doc :  $(DocLinker) Pod-To-Markdown-installed $(MD) docs/index.md
+doc : previews $(DocLinker) Pod-To-Markdown-installed $(MD) docs/index.md
