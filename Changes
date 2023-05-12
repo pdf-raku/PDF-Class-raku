@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+0.5.13  2023-05-13T07:14:42+12:00
+   - Make PDF::ISO_32000 a dependency. Apply roles to classes.
+
 0.5.12  2023-04-06T06:25:08+12:00
    - Make NameTree and NumberTree accessors thread-safe
 
