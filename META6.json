@@ -9,7 +9,7 @@
     "PDF:ver<0.5.10+>",
     "PDF::Grammar:ver<0.3.0+>",
     "PDF::Content:ver<0.6.10+>",
-    "PDF::ISO_32000:ver<0.1.3+>",
+    "PDF::ISO_32000:ver<0.0.13+>",
     "JSON::Fast"
   ],
   "description": "PDF Document Object Model",
