@@ -8,8 +8,8 @@ use PDF::COS::Stream;
 use PDF::COS::Name;
 use PDF::FontDescriptor::CID;
 
-# use ISO_32000::Table_117-Entries_in_a_CIDFont_dictionary;
-# also does ISO_32000::Table_117-Entries_in_a_CIDFont_dictionary;
+use ISO_32000::Table_117-Entries_in_a_CIDFont_dictionary;
+also does ISO_32000::Table_117-Entries_in_a_CIDFont_dictionary;
 
 use PDF::CIDSystemInfo;
 use PDF::FontDescriptor::CID;

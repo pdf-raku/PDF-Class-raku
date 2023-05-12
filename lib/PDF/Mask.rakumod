@@ -7,8 +7,8 @@ use PDF::COS::Tie;
 use PDF::COS::Name;
 use PDF::XObject::Form;
 
-# use ISO_32000::Table_144-Entries_in_a_soft-mask_dictionary;
-# also does ISO_32000::Table_144-Entries_in_a_soft-mask_dictionary;
+use ISO_32000::Table_144-Entries_in_a_soft-mask_dictionary;
+also does ISO_32000::Table_144-Entries_in_a_soft-mask_dictionary;
 
 # /Type entry is optional, but should be /Mask when present
 has PDF::COS::Name $.Type is entry where 'Mask';

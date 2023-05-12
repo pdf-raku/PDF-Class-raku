@@ -3,8 +3,8 @@ unit role PDF::Field::Choice;
 use PDF::Field;
 also does PDF::Field;
 
-# use ISO_32000::Table_231-Additional_entries_specific_to_a_choice_field;
-# also does ISO_32000::Table_231-Additional_entries_specific_to_a_choice_field;
+use ISO_32000::Table_231-Additional_entries_specific_to_a_choice_field;
+also does ISO_32000::Table_231-Additional_entries_specific_to_a_choice_field;
 
 use PDF::COS::Tie;
 use PDF::COS::TextString;

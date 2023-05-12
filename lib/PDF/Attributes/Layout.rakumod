@@ -10,8 +10,8 @@ my subset NumericOrAuto where Numeric|Auto;
 my subset RGB of Numeric where 0.0 <= * <= 1.0;
 my subset TextAlign of PDF::COS::Name where 'Start'|'Center'|'End'|'Justify';
 
-# use ISO_32000::Table_343-Standard_layout_attributes_common_to_all_standard_structure_types;
-# also does ISO_32000::Table_343-Standard_layout_attributes_common_to_all_standard_structure_types;
+use ISO_32000::Table_343-Standard_layout_attributes_common_to_all_standard_structure_types;
+also does ISO_32000::Table_343-Standard_layout_attributes_common_to_all_standard_structure_types;
 my role Table_343-Common_attributes {
 
     my subset Placement of PDF::COS::Name where 'Block'|'Inline'|'Before'|'Start'|'End';
@@ -57,8 +57,8 @@ my role Table_343-Common_attributes {
 }
 also does Table_343-Common_attributes;
 
-# use ISO_32000::Table_344-Additional_standard_layout_attributes_specific_to_block-level_structure_elements;
-# also does ISO_32000::Table_344-Additional_standard_layout_attributes_specific_to_block-level_structure_elements;
+use ISO_32000::Table_344-Additional_standard_layout_attributes_specific_to_block-level_structure_elements;
+also does ISO_32000::Table_344-Additional_standard_layout_attributes_specific_to_block-level_structure_elements;
 
 #| Table 344 – Additional standard layout attributes specific to block-level structure elements
 my role Table_344-BLSE_Attributes {
@@ -115,8 +115,8 @@ my role Table_344-BLSE_Attributes {
 }
 also does Table_344-BLSE_Attributes;
 
-# use ISO_32000::Table_345-Standard_layout_attributes_specific_to_inline-level_structure_elements;
-# also does ISO_32000::Table_345-Standard_layout_attributes_specific_to_inline-level_structure_elements;
+use ISO_32000::Table_345-Standard_layout_attributes_specific_to_inline-level_structure_elements;
+also does ISO_32000::Table_345-Standard_layout_attributes_specific_to_inline-level_structure_elements;
 
 #| Table 345 – Standard layout attributes specific to inline-level structure elements
 my role Table_345-ILSE_Attributes {

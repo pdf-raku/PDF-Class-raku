@@ -8,8 +8,8 @@ also does PDF::Class::StructItem;
 also does PDF::Content::XObject['Image'];
 also does PDF::COS::Tie::Hash;
 
-# use ISO_32000::Table_89-Additional_Entries_Specific_to_an_Image_Dictionary;
-# also does ISO_32000::Table_89-Additional_Entries_Specific_to_an_Image_Dictionary;
+use ISO_32000::Table_89-Additional_Entries_Specific_to_an_Image_Dictionary;
+also does ISO_32000::Table_89-Additional_Entries_Specific_to_an_Image_Dictionary;
 
 use PDF::COS::Tie;
 use PDF::COS::Stream;

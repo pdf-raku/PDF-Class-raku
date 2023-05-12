@@ -9,8 +9,8 @@ use PDF::COS::ByteString;
 use PDF::COS::DateString;
 use PDF::COS::TextString;
 
-# use ISO_32000::Table_252-Entries_in_a_signature_dictionary;
-# also does ISO_32000::Table_252-Entries_in_a_signature_dictionary;
+use ISO_32000::Table_252-Entries_in_a_signature_dictionary;
+also does ISO_32000::Table_252-Entries_in_a_signature_dictionary;
 
 my subset SigType of PDF::COS::Name where 'Sig';
 has SigType $.Type is entry; # (Optional) The type of PDF object that this dictionary describes; if present, shall be Sig for a signature dictionary.

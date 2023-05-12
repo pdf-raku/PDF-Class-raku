@@ -12,8 +12,8 @@ use PDF::COS::DateString;
 use PDF::COS::Dict;
 use PDF::COS::Stream;
 
-# use ISO_32000::Table_44-Entries_in_a_file_specification_dictionary;
-# also does ISO_32000::Table_44-Entries_in_a_file_specification_dictionary;
+use ISO_32000::Table_44-Entries_in_a_file_specification_dictionary;
+also does ISO_32000::Table_44-Entries_in_a_file_specification_dictionary;
 
 # file specifications may be either a dictionary or a simple text-string
 my subset FileRef is export(:FileRef) where PDF::COS::TextString|PDF::Filespec;

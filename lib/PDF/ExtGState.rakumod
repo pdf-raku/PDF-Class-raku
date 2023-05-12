@@ -9,8 +9,8 @@ use PDF::COS::Name;
 use PDF::Mask;
 use PDF::Function;
 
-# use ISO_32000::Table_58-Entries_in_a_Graphics_State_Parameter_Dictionary;
-# also does ISO_32000::Table_58-Entries_in_a_Graphics_State_Parameter_Dictionary;
+use ISO_32000::Table_58-Entries_in_a_Graphics_State_Parameter_Dictionary;
+also does ISO_32000::Table_58-Entries_in_a_Graphics_State_Parameter_Dictionary;
 
 has PDF::COS::Name $.Type is entry where 'ExtGState';
 has Numeric $.LW is entry(:alias<line-width>);               # (Optional; PDF 1.3) The line width

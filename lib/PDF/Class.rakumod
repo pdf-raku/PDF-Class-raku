@@ -10,8 +10,8 @@ use PDF::Content::API;
 also does PDF::Content::API;
 
 # base class declares: $.Size, $.Encrypt, $.ID
-# use ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
-# also does ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
+use ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
+also does ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
 
 use PDF::COS::Util :&flag-is-set;
 use PDF::Content;

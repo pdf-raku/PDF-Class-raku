@@ -6,8 +6,8 @@ use PDF::Shading;
 also is PDF::COS::Stream;
 also does PDF::Shading;
 
-# use ISO_32000::Table_82-Additional_Entries_Specific_to_a_Type_4_Shading_Dictionary;
-# also does ISO_32000::Table_82-Additional_Entries_Specific_to_a_Type_4_Shading_Dictionary;
+use ISO_32000::Table_82-Additional_Entries_Specific_to_a_Type_4_Shading_Dictionary;
+also does ISO_32000::Table_82-Additional_Entries_Specific_to_a_Type_4_Shading_Dictionary;
 
 use PDF::COS::Tie;
 use PDF::Function;

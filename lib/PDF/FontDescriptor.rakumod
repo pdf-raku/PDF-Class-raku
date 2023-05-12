@@ -9,8 +9,8 @@ use PDF::COS::Name;
 use PDF::FontStream;
 use PDF::FontFile;
 
-# use ISO_32000::Table_122-Entries_common_to_all_font_descriptors;
-# also does ISO_32000::Table_122-Entries_common_to_all_font_descriptors;
+use ISO_32000::Table_122-Entries_common_to_all_font_descriptors;
+also does ISO_32000::Table_122-Entries_common_to_all_font_descriptors;
 
 has PDF::COS::Name $.Type is entry(:required) where 'FontDescriptor';
 has PDF::COS::Name $.FontName is entry(:required); # (Required) The PostScript name of the font.

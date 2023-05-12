@@ -6,8 +6,8 @@ use PDF::Class::Type;
 also is PDF::COS::Dict;
 also does PDF::Class::Type;
 
-# use ISO_32000::Table_98-Entries_in_an_Optional_Content_Group_Dictionary;
-# also does ISO_32000::Table_98-Entries_in_an_Optional_Content_Group_Dictionary;
+use ISO_32000::Table_98-Entries_in_an_Optional_Content_Group_Dictionary;
+also does ISO_32000::Table_98-Entries_in_an_Optional_Content_Group_Dictionary;
 
 use PDF::COS::Tie;
 use PDF::COS::Tie::Hash;

@@ -24,8 +24,8 @@ use PDF::Field;
 use PDF::Page::AdditionalActions;
 use PDF::Bead-Thread; # Declares PDF::Bead & PDF::Thread
 
-# use ISO_32000::Table_30-Entries_in_a_page_object;
-# also does ISO_32000::Table_30-Entries_in_a_page_object;
+use ISO_32000::Table_30-Entries_in_a_page_object;
+also does ISO_32000::Table_30-Entries_in_a_page_object;
 
 has PDF::COS::Name $.Type is entry(:required, :alias<type>) where 'Page';
 my subset PagesLike of Hash where .<Type> ~~ 'Pages'; # autoloaded PDF::Pages

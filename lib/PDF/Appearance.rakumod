@@ -8,8 +8,8 @@ use PDF::COS;
 use PDF::COS::Tie;
 use PDF::COS::Stream;
 
-# use ISO_32000::Table_168-Entries_in_an_appearance_dictionary;
-# also does ISO_32000::Table_168-Entries_in_an_appearance_dictionary;
+use ISO_32000::Table_168-Entries_in_an_appearance_dictionary;
+also does ISO_32000::Table_168-Entries_in_an_appearance_dictionary;
 
 my subset FormLike of PDF::COS::Stream where .<Subtype> ~~ 'Form'; # autoloaded PDF::XObject::Form
 my role AppearanceStates

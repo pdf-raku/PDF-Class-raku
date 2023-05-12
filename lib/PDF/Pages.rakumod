@@ -15,8 +15,8 @@ use PDF::COS::Tie;
 use PDF::COS::Name;
 use PDF::Resources;
 
-# use ISO_32000::Table_29-Required_entries_in_a_page_tree_node;
-# also does ISO_32000::Table_29-Required_entries_in_a_page_tree_node;
+use ISO_32000::Table_29-Required_entries_in_a_page_tree_node;
+also does ISO_32000::Table_29-Required_entries_in_a_page_tree_node;
 
 has PDF::COS::Name $.Type is entry(:required, :alias<type>) where 'Pages';
 has PDF::Pages $.Parent is entry(:indirect); # (Required except in root node; must be an indirect reference) The page tree node that is the immediate parent of this one.

@@ -14,8 +14,8 @@ use PDF::Class::Defs :ColorSpace;
 my subset ShadingTypeInt of Int where 1..7;
 has ShadingTypeInt $.ShadingType is entry(:required);
 
-# use ISO_32000::Table_78-Entries_Common_to_All_Shading_Dictionaries;
-# also does ISO_32000::Table_78-Entries_Common_to_All_Shading_Dictionaries;
+use ISO_32000::Table_78-Entries_Common_to_All_Shading_Dictionaries;
+also does ISO_32000::Table_78-Entries_Common_to_All_Shading_Dictionaries;
 
 has ColorSpace $.ColorSpace is entry(:required); # (Required) The color space in which color values are expressed.
 has @.Background is entry;                        # (Optional) An array of color components appropriate to the color space, specifying a single background color value.

@@ -4,8 +4,8 @@ unit role PDF::AcroForm;
 use PDF::COS::Tie::Hash;
 also does PDF::COS::Tie::Hash;
 
-# use ISO_32000::Table_218-Entries_in_the_interactive_form_dictionary;
-# also does ISO_32000::Table_218-Entries_in_the_interactive_form_dictionary;
+use ISO_32000::Table_218-Entries_in_the_interactive_form_dictionary;
+also does ISO_32000::Table_218-Entries_in_the_interactive_form_dictionary;
 
 use PDF::Class::FieldContainer;
 also does PDF::Class::FieldContainer;

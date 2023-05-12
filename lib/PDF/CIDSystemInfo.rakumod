@@ -3,8 +3,8 @@ unit role PDF::CIDSystemInfo;
 use PDF::COS::Tie::Hash;
 also does PDF::COS::Tie::Hash;
 
-# use ISO_32000::Table_116-Entries_in_a_CIDSystemInfo_dictionary;
-# also does ISO_32000::Table_116-Entries_in_a_CIDSystemInfo_dictionary;
+use ISO_32000::Table_116-Entries_in_a_CIDSystemInfo_dictionary;
+also does ISO_32000::Table_116-Entries_in_a_CIDSystemInfo_dictionary;
 
 use PDF::COS::Tie;
 

@@ -13,8 +13,8 @@ use PDF::COS::Stream;
 use PDF::Encoding;
 use PDF::FontDescriptor;
 
-# use ISO_32000::Table_111-Entries_in_a_Type_1_font_dictionary;
-# also does ISO_32000::Table_111-Entries_in_a_Type_1_font_dictionary;
+use ISO_32000::Table_111-Entries_in_a_Type_1_font_dictionary;
+also does ISO_32000::Table_111-Entries_in_a_Type_1_font_dictionary;
 
 has PDF::COS::Name $.Name is entry;                 # (Required in PDF 1.0; optional otherwise) The name by which this font is referenced in the Font subdictionary of the current resource dictionary.
                                                     # Note: This entry is obsolescent and its use is no longer recommended.

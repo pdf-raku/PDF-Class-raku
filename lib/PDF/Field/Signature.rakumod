@@ -9,8 +9,8 @@ use PDF::COS::TextString;
 use PDF::Signature;
 use PDF::Class::Defs :AsciiStr;
 
-# use ISO_32000::Table_232-Additional_entries_specific_to_a_signature_field;
-# also does ISO_32000::Table_232-Additional_entries_specific_to_a_signature_field;
+use ISO_32000::Table_232-Additional_entries_specific_to_a_signature_field;
+also does ISO_32000::Table_232-Additional_entries_specific_to_a_signature_field;
 
 has PDF::Signature $.V is entry(:alias<value>);
 

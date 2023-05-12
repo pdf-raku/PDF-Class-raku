@@ -10,8 +10,8 @@ also does PDF::Class::StructItem;
 also does PDF::Content::XObject['Form'];
 also does PDF::Content::Canvas;
 
-# use ISO_32000::Table_95-Additional_Entries_Specific_to_a_Type_1_Form_Dictionary;
-# also does ISO_32000::Table_95-Additional_Entries_Specific_to_a_Type_1_Form_Dictionary;
+use ISO_32000::Table_95-Additional_Entries_Specific_to_a_Type_1_Form_Dictionary;
+also does ISO_32000::Table_95-Additional_Entries_Specific_to_a_Type_1_Form_Dictionary;
 
 use PDF::COS::Tie;
 use PDF::COS::DateString;

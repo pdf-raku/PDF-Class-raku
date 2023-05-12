@@ -7,8 +7,8 @@ use PDF::Action;
 also is PDF::COS::Dict;
 also does PDF::Action;
 
-# use ISO_32000::Table_200-Additional_entries_specific_to_a_remote_go-to_action;
-# also does ISO_32000::Table_200-Additional_entries_specific_to_a_remote_go-to_action;
+use ISO_32000::Table_200-Additional_entries_specific_to_a_remote_go-to_action;
+also does ISO_32000::Table_200-Additional_entries_specific_to_a_remote_go-to_action;
 
 use PDF::COS::Tie;
 use PDF::COS::Name;

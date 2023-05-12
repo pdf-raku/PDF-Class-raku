@@ -7,8 +7,8 @@ use PDF::COS::Dict;
 also is PDF::COS::Dict;
 also does PDF::Action;
 
-# use ISO_32000::Table_236-Additional_entries_specific_to_a_submit-form_action;
-# also does ISO_32000::Table_236-Additional_entries_specific_to_a_submit-form_action;
+use ISO_32000::Table_236-Additional_entries_specific_to_a_submit-form_action;
+also does ISO_32000::Table_236-Additional_entries_specific_to_a_submit-form_action;
 
 use PDF::COS::Tie;
 use PDF::COS::Name;

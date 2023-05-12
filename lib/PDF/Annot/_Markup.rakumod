@@ -14,8 +14,8 @@ use PDF::COS::Stream;
 use PDF::ExData::Markup3D;
 use PDF::Class::Defs :TextOrStream;
 
-# use ISO_32000::Table_170-Additional_entries_specific_to_markup_annotations;
-# also does ISO_32000::Table_170-Additional_entries_specific_to_markup_annotations;
+use ISO_32000::Table_170-Additional_entries_specific_to_markup_annotations;
+also does ISO_32000::Table_170-Additional_entries_specific_to_markup_annotations;
 
 # This is the base class for Markup Annotations, as indicated in [PDF 32000 Table 169, Column 3].
 # I.e.: Text, FreeText, Line, Square, Circle, Polygon, PolyLine, Highlight Underline, Squiggly,

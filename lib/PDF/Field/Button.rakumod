@@ -3,8 +3,8 @@ unit role PDF::Field::Button;
 use PDF::Field;
 also does PDF::Field;
 
-# use ISO_32000::Table_227-Additional_entry_specific_to_check_box_and_radio_button_fields;
-# also does ISO_32000::Table_227-Additional_entry_specific_to_check_box_and_radio_button_fields;
+use ISO_32000::Table_227-Additional_entry_specific_to_check_box_and_radio_button_fields;
+also does ISO_32000::Table_227-Additional_entry_specific_to_check_box_and_radio_button_fields;
 
 use PDF::COS::Tie;
 use PDF::COS::TextString;
