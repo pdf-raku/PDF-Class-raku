@@ -24,7 +24,8 @@ sub MAIN(Str $infile,              #= input PDF
 	 Str :$password = '',      #= password for the input PDF, if encrypted
 	 Str :$save-as is copy,    #= output template filename
          Number :$batch-size = 1,  #= number of pages per batch (1)
-         UInt :$page,              #= page to extract
+         UInt :$page,              #= page to extract,
+         Bool :$repair,            #= recover invalid PDF
     ) {
 
     $save-as = output-filename( $save-as // $infile );
@@ -35,7 +36,7 @@ sub MAIN(Str $infile,              #= input PDF
            !! $infile.IO
     );
 
-    my PDF::Class $pdf .= open( $input, :$password);
+    my PDF::Class $pdf .= open: $input, :$password, :$repair;
     my PDF::Catalog $catalog = $pdf.catalog;
     # just remove anything in the catalog that may
     # reference other pages or otherwise confuse things
