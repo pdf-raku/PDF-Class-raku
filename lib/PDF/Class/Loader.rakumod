@@ -43,6 +43,7 @@ PDF::COS.loader = class PDF::Class::Loader {
             |'SigRef'|'TransformParams'    # handled by PDF::Signature
             |'Sig'|'PageLabel'             # handled by PDF::Catalog
             |'EmbeddedFile'                # handled by PDF::Filespec
+            |'Stream'                      # MS print-driver fluff
             ?? $base-class
             !! $.find-delegate( $type, $subtype, :$base-class );
     }
