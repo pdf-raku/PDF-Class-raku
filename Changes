@@ -1,4 +1,5 @@
 {{$NEXT}}
+   - Rename some t/ *.pm files to *.rakumod. Avoid deprecation warnings
 
 0.5.13  2023-05-13T07:14:42+12:00
    - Make PDF::ISO_32000 a dependency. Apply roles to classes.
