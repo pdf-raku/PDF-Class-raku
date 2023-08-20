@@ -1,5 +1,9 @@
 {{$NEXT}}
+
+0.5.14  2023-08-21T07:45:41+12:00
    - Rename some t/ *.pm files to *.rakumod. Avoid deprecation warnings
+   - Rework low-level t/pdf-pages.t tests; incompatible with latest pending
+     PDF::Content release
 
 0.5.13  2023-05-13T07:14:42+12:00
    - Make PDF::ISO_32000 a dependency. Apply roles to classes.

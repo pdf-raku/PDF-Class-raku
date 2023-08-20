@@ -1,7 +1,7 @@
 DocProj=pdf-raku.github.io
 DocRepo=https://github.com/pdf-raku/$(DocProj)
 DocLinker=../$(DocProj)/etc/resolve-links.raku
-TEST_JOBS ?= 6
+TEST_JOBS ?= 8
 
 POD = $(shell find lib -name \*.rakumod|xargs grep -le '=begin')
 MD = $(subst lib/,docs/,$(patsubst %.rakumod,%.md,$(POD)))
