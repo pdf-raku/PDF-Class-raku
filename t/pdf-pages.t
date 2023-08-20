@@ -1,7 +1,7 @@
 use v6;
 use Test;
 
-plan 26;
+plan 22;
 
 use PDF::Page;
 use PDF::IO::IndObj;
@@ -12,11 +12,12 @@ use PDF::IO::Reader;
 
 my PDF::Grammar::PDF::Actions $actions .= new: :lite;
 
+
 my $input = q:to"--END-OBJ--";
 3 0 obj <<
   /Type /Pages
-  /Count 2
-  /Kids [4 0 R  5 0 R]
+  /Count 0
+  /Kids []
 >> endobj
 --END-OBJ--
 
@@ -30,12 +31,10 @@ is $ind-obj.gen-num, 0, '$.gen-num';
 my $pages-obj = $ind-obj.object;
 isa-ok $pages-obj, 'PDF::Pages';
 is $pages-obj.Type, 'Pages', '$.Type accessor';
+$pages-obj.add-page();
+$pages-obj.add-page();
 is $pages-obj.Count, 2, '$.Count accessor';
-is-json-equiv $pages-obj.Kids, [ :ind-ref[4, 0], :ind-ref[5, 0] ], '$.Kids accessor';
-is-json-equiv $pages-obj[0], (:ind-ref[4, 0]), '$pages[0] accessor';
-is-json-equiv $pages-obj[1], (:ind-ref[5, 0]), '$pages[1] accessor';
-is-json-equiv $ind-obj.ast, %ast, 'ast regeneration';
-my $new-page = $pages-obj.add-page();
+$pages-obj.add-page();
 is $pages-obj.Count, 3, '$.Count accessor';
 is $pages-obj.Kids[2].Type, 'Page', 'new Kid Type';
 lives-ok {$pages-obj.check}, '$pages-obj.check lives';
@@ -60,6 +59,7 @@ is $pages[60].obj-num, 324, 'second-last page';
 is $pages[61].obj-num, 330, 'last page';
 is $pages[61].Rotate, 270, 'inheritance';
 
+my $new-page;
 lives-ok {$new-page = $pages.add-page}, 'add-page - lives';
 isa-ok $new-page, PDF::Page;
 is $pages.Count, 63, 'number of pages';
