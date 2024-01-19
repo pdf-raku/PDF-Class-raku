@@ -24,7 +24,7 @@ multi sub to-file(Str $value is rw, FileRef) {
     $value = PDF::COS::TextString.COERCE($value);
 }
 multi sub to-file(Hash $value is rw, FileRef) {
-    $value = PDF::Fieldspec.COERCE: $value;
+    $value = PDF::Filespec.COERCE: $value;
 }
 multi sub to-file($_, FileRef) {
     warn "unable to coerce to a File: {.raku}";
