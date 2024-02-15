@@ -4,6 +4,7 @@ unit role PDF::ExtGState;
 use PDF::COS::Tie::Hash;
 also does PDF::COS::Tie::Hash;
 
+use PDF::Class::Defs :BlendMode;
 use PDF::COS::Tie;
 use PDF::COS::Name;
 use PDF::Mask;
@@ -39,7 +40,7 @@ has $.HT is entry(:alias<halftone>) where Hash|'Default';    # (Optional) The ha
 has Numeric $.FL is entry(:alias<flatness-tolerance>);       # (Optional; PDF 1.3) The flatness tolerance
 has Numeric $.SM is entry(:alias<smoothness-tolerance>);             # (Optional; PDF 1.3) The smoothness tolerance
 has Bool $.SA is entry(:alias<stroke-adjustment>);           # (Optional) A flag specifying whether to apply automatic stroke adjustment
-has $.BM is entry(:alias<blend-mode>);                       # (Optional; PDF 1.4) The current blend mode to be used in the transparent imaging model
+has BlendMode @.BM is entry(:alias<blend-mode>, :array-or-item);  # (Optional; PDF 1.4) The current blend mode to be used in the transparent imaging model
 my subset SMaskLike where PDF::Mask|PDF::COS::Name;
 has SMaskLike $.SMask is entry(:alias<soft-mask>);          # (Optional; PDF 1.4) The current soft mask, specifying the mask shape or mask opacity values to be used in the transparent imaging mode
 my subset Alpha of Numeric where 0.0 .. 1.0;

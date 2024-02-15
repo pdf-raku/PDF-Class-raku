@@ -13,6 +13,7 @@ use PDF::COS::Tie::Array;
 use PDF::COS::Name;
 use PDF::COS::DateString;
 use PDF::COS::TextString;
+use PDF::Class::Defs :BlendMode;
 use PDF::Appearance;
 use PDF::Border;
 use PDF::Filespec;
@@ -75,13 +76,6 @@ has PDF::Filespec @.AF is entry(); # (Optional; PDF 2.0) An array of one or more
 has Numeric $.ca is entry(:default(1.0)); # (Optional; PDF 2.0) When regenerating the annotation's appearance stream, this is the opacity value that is used for all nonstroking operations on all visible elements of the annotation in its closed state (including its background and border) but not the popup window that appears when the annotation is opened.
 
 has Numeric $.CA is entry(:default(1.0)); # (Optional; PDF 1.4, PDF 2.0 for non-markup annotations) When regenerating the annotation's appearance stream, this is the opacity value that is used for stroking all visible elements of the annotation in its closed state, including its background and border, but not the popup window that appears when the annotation is opened.
-
-my subset BlendMode of PDF::COS::Name is export(:BlendMode) where
-# [ PDF 32000-1:2008 Table 136 Standard separable blend modes]
-'Normal'|'Compatible'|'Multiply'|'Screen'|'Overlay'|'Darken'|'Lighten'|'ColorDodge'|'ColorBurn'|'HardLight'|'SoftLight'|'Difference'|'Exclusion'
-# [ PDF 32000-1:2008 Table 136 Standard non-separable blend modes]
-|'Hue'|'Saturation'|'Color'|'Luminosity';
-;
 
 has BlendMode $.BM is entry; # (Optional; PDF 2.0)  The blend mode that shall be used when painting the annotation onto the page (see 11.3.5, "Blend Mode" and 11.6.3, "Specifying Blending Colour Space and Blend Mode"). If this key is not present, blending shall take place using the Normal blend mode.
 

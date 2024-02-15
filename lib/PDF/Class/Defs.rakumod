@@ -50,3 +50,10 @@ multi sub coerce-text-or-stream(Str $value is rw, TextOrStream) is export(:TextO
 my subset ColorSpace of PDF::COS is export(:ColorSpace) where PDF::COS::Name | PDF::ColorSpace;
 
 my subset AsciiStr of PDF::COS::ByteString is export(:AsciiStr) where !.contains(/<-[\x0 .. \x7f \n]>/);
+
+my subset BlendMode of PDF::COS::Name is export(:BlendMode) where
+# [ PDF 32000-1:2008 Table 136 Standard separable blend modes]
+'Normal'|'Compatible'|'Multiply'|'Screen'|'Overlay'|'Darken'|'Lighten'|'ColorDodge'|'ColorBurn'|'HardLight'|'SoftLight'|'Difference'|'Exclusion'
+# [ PDF 32000-1:2008 Table 136 Standard non-separable blend modes]
+|'Hue'|'Saturation'|'Color'|'Luminosity';
+;
