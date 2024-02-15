@@ -15,6 +15,7 @@ use PDF::COS::DateString;
 use PDF::COS::TextString;
 use PDF::Appearance;
 use PDF::Border;
+use PDF::Filespec;
 use PDF::OCG;   # optional content group
 use PDF::OCMD;  # optional content membership dict
 my subset OCG-or-OCMD where PDF::OCG|PDF::OCMD;
@@ -22,6 +23,9 @@ use PDF::Page;
 
 use ISO_32000::Table_164-Entries_common_to_all_annotation_dictionaries;
 also does ISO_32000::Table_164-Entries_common_to_all_annotation_dictionaries;
+
+use ISO_32000_2::Table_166-Entries_common_to_all_annotation_dictionaries;
+also does ISO_32000_2::Table_166-Entries_common_to_all_annotation_dictionaries;
 
 method cb-init {
     use PDF::Field :coerce-field, :FieldLike;
@@ -65,6 +69,23 @@ has Border $.Border is entry(:default[0, 0, 1]);            # (Optional) An arra
 has Numeric @.C is entry(:alias<color>);                    # (Optional; PDF 1.1) An array of numbers in the range 0.0 to 1.0, representing a color used for (*) background, when closed, (*) title bar of pop-up window, (*) link border
 has UInt $.StructParent is entry(:alias<struct-parent>);                           # (Required if the annotation is a structural content item; PDF 1.3) The integer key of the annotation’s entry in the structural parent tree
 has OCG-or-OCMD $.OC is entry(:alias<optional-content>);    # (Optional; PDF 1.5) An optional content group or optional content membership dictionary specifying the optional content properties for the annotation.
+
+has PDF::Filespec @.AF is entry(); # (Optional; PDF 2.0) An array of one or more file specification dictionaries, which denote the associated files for this annotation).
+
+has Numeric $.ca is entry(:default(1.0)); # (Optional; PDF 2.0) When regenerating the annotation's appearance stream, this is the opacity value that is used for all nonstroking operations on all visible elements of the annotation in its closed state (including its background and border) but not the popup window that appears when the annotation is opened.
+
+has Numeric $.CA is entry(:default(1.0)); # (Optional; PDF 1.4, PDF 2.0 for non-markup annotations) When regenerating the annotation's appearance stream, this is the opacity value that is used for stroking all visible elements of the annotation in its closed state, including its background and border, but not the popup window that appears when the annotation is opened.
+
+my subset BlendMode of PDF::COS::Name is export(:BlendMode) where
+# [ PDF 32000-1:2008 Table 136 Standard separable blend modes]
+'Normal'|'Compatible'|'Multiply'|'Screen'|'Overlay'|'Darken'|'Lighten'|'ColorDodge'|'ColorBurn'|'HardLight'|'SoftLight'|'Difference'|'Exclusion'
+# [ PDF 32000-1:2008 Table 136 Standard non-separable blend modes]
+|'Hue'|'Saturation'|'Color'|'Luminosity';
+;
+
+has BlendMode $.BM is entry; # (Optional; PDF 2.0)  The blend mode that shall be used when painting the annotation onto the page (see 11.3.5, "Blend Mode" and 11.6.3, "Specifying Blending Colour Space and Blend Mode"). If this key is not present, blending shall take place using the Normal blend mode.
+
+has PDF::COS::TextString $.Lang is entry; # (Optional; PDF 2.0) A language identifier overriding the document’s language identifier to specify the natural language for all text in the annotation except where overridden by other explicit language specifications
 
 has Hash $.DR is entry(:alias<default-resources>);          # In PDF 1.2, an additional entry in the field dictionary, DR, was defined but was never implemented. Beginning with PDF 1.5, this entry is obsolete and should be ignored.
 

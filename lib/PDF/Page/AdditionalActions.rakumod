@@ -1,10 +1,15 @@
 use v6;
-use PDF::COS::Tie::Hash;
 
-unit role PDF::Page::AdditionalActions
-    does PDF::COS::Tie::Hash;
-    # use ISO_32000::Table_195-Entries_in_a_page_objects_additional-actions_dictionary;
-    # also does ISO_32000::Table_195-Entries_in_a_page_objects_additional-actions_dictionary;
+unit role PDF::Page::AdditionalActions;
+
+use PDF::COS::Tie::Hash;
+also does PDF::COS::Tie::Hash;
+
+use ISO_32000::Table_195-Entries_in_a_page_objects_additional-actions_dictionary;
+also does ISO_32000::Table_195-Entries_in_a_page_objects_additional-actions_dictionary;
+
+use ISO_32000_2::Table_198-Entries_in_a_page_objects_additional-actions_dictionary;
+also does ISO_32000_2::Table_198-Entries_in_a_page_objects_additional-actions_dictionary;
 
 use PDF::COS::Tie;
 use PDF::Action;

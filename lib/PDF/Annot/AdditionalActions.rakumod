@@ -3,8 +3,13 @@ unit role PDF::Annot::AdditionalActions;
 
 use PDF::COS::Tie::Hash;
 also does PDF::COS::Tie::Hash;
-    # use ISO_32000::Table_194-Entries_in_an_annotations_additional-actions_dictionary;
-    # also does  ISO_32000::Table_194-Entries_in_an_annotations_additional-actions_dictionary;
+
+use ISO_32000::Table_194-Entries_in_an_annotations_additional-actions_dictionary;
+also does ISO_32000::Table_194-Entries_in_an_annotations_additional-actions_dictionary;
+
+use ISO_32000_2::Table_197-Entries_in_an_annotations_additional-actions_dictionary;
+also does ISO_32000_2::Table_197-Entries_in_an_annotations_additional-actions_dictionary;
+
 =begin pod
 
 =head1 Description

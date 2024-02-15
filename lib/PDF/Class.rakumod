@@ -13,10 +13,17 @@ also does PDF::Content::API;
 use ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
 also does ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
 
+use ISO_32000_2::Table_15-Entries_in_the_file_trailer_dictionary;
+also does ISO_32000_2::Table_15-Entries_in_the_file_trailer_dictionary;
+
+use ISO_32000_2::Table_19-Additional_entries_in_a_hybrid-reference_files_trailer_dictionary;
+also does ISO_32000_2::Table_19-Additional_entries_in_a_hybrid-reference_files_trailer_dictionary;
+
 use PDF::COS::Util :&flag-is-set;
 use PDF::Content;
 use PDF::COS::Tie;
 use PDF::COS::Name;
+use PDF::COS::Type::XRef;
 use PDF::Class::Type;
 use PDF::Info;
 use PDF::Content::Font::CoreFont;
@@ -24,6 +31,8 @@ use PDF::Content::Font::CoreFont;
 has PDF::Info $.Info is entry(:indirect);  #= (Optional; must be an indirect reference) The document’s information dictionary
 my subset CatalogLike of PDF::Class::Type where { .<Type> ~~ 'Catalog' };  # autoloaded PDF::Catalog
 has CatalogLike $.Root is entry(:required, :indirect, :alias<catalog>); #= The catalog dictionary for the PDF document contained in the file
+
+has PDF::COS::Type::XRef $.XRefStm is entry; #= Only applicable to Hybrid cross reference streams 
 
 method type { 'PDF' }
 method version is rw {
