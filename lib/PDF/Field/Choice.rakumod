@@ -6,13 +6,16 @@ also does PDF::Field;
 use ISO_32000::Table_231-Additional_entries_specific_to_a_choice_field;
 also does ISO_32000::Table_231-Additional_entries_specific_to_a_choice_field;
 
+use ISO_32000_2::Table_234-Additional_entries_specific_to_a_choice_field;
+also does ISO_32000_2::Table_234-Additional_entries_specific_to_a_choice_field;
+
 use PDF::COS::Tie;
 use PDF::COS::TextString;
 
 has PDF::COS::TextString @.V is entry(:inherit, :array-or-item);
 has PDF::COS::TextString @.DV is entry(:inherit, :array-or-item, :alias<default-value>);
 
-my subset FieldOptions is export(:FieldOptions) where { .[0] ~~ PDF::COS::TextString && ($_ ~~ Str || .[1] ~~ PDF::COS::TextString) }
+my subset FieldOptions is export(:FieldOptions) where { .[0] ~~ PDF::COS::TextString && (.elems == 1 || .[1] ~~ PDF::COS::TextString) }
 proto sub coerce-field-opts($, FieldOptions) is export(:coerce-field-opts) {*}
 multi sub coerce-field-opts(Str $a is rw, FieldOptions) {
     PDF::COS.coerce( $a, PDF::COS::TextString)

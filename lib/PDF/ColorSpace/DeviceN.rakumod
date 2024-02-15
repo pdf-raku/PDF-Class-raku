@@ -24,8 +24,11 @@ has DeviceNDict $.Attributes is index(4);
 my role DeviceNProcessDict
     does PDF::COS::Tie::Hash {
 
-    # use ISO_32000::Table_72-Entries_in_a_DeviceN_Process_Dictionary;
-    # also does ISO_32000::Table_72-Entries_in_a_DeviceN_Process_Dictionary;
+    use ISO_32000::Table_72-Entries_in_a_DeviceN_Process_Dictionary;
+    also does ISO_32000::Table_72-Entries_in_a_DeviceN_Process_Dictionary;
+
+    use ISO_32000_2::Table_71-Entries_in_a_DeviceN_process_dictionary;
+    also does ISO_32000_2::Table_71-Entries_in_a_DeviceN_process_dictionary;
 
     has ColorSpace $.ColorSpace is entry(:required); # (Required) A name or array identifying the process color space, which may be any device or CIE-based color space. If an ICCBased color space is specified, it must provide calibration information appropriate for the process color components specified in the names array of the DeviceN color space.
     has PDF::COS::Name @.Components is entry(:required); # (Required) An array of component names that correspond, in order, to the components of the process color space specified in ColorSpace. For example, an RGB color space must have three names corresponding to red, green, and blue. The names may be arbitrary (that is, not the same as the standard names for the color space components) and must match those specified in the names array of the DeviceN color space, even if all components are not present in the names array.

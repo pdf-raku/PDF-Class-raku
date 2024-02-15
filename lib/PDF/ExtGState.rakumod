@@ -13,6 +13,9 @@ use PDF::Function;
 use ISO_32000::Table_58-Entries_in_a_Graphics_State_Parameter_Dictionary;
 also does ISO_32000::Table_58-Entries_in_a_Graphics_State_Parameter_Dictionary;
 
+use ISO_32000_2::Table_57-Entries_in_a_graphics_state_parameter_dictionary;
+also does ISO_32000_2::Table_57-Entries_in_a_graphics_state_parameter_dictionary;
+
 has PDF::COS::Name $.Type is entry where 'ExtGState';
 has Numeric $.LW is entry(:alias<line-width>);               # (Optional; PDF 1.3) The line width
 has UInt $.LC is entry(:alias<line-cap>);                    # (Optional; PDF 1.3) The line cap style
@@ -63,3 +66,8 @@ method transparency is rw {
             self.ca = self.CA = val;
         });
 }
+
+my subset BlackPtComp of PDF::COS::Name where 'ON'|'OFF'|'Default';
+has BlackPtComp $.UseBlackPtComp is entry(:default<Default>); # (Optional; PDF 2.0) This graphics state parameter controls whether black point compensation is performed while doing CIE-based colour conversions.
+
+has Numeric @.HTO is entry(:len(2)); # (Optional; PDF 2.0) Halftone origin, specified as an array of two numbers specifying the X and Y location of the halftone origin in the current coordinate system.\nAlthough the numbers are specified in the current coordinate system, changes to the current coordinate system (for example as a result of invocation of a form XObject) do not move the halftone origin relative to the underlying device coordinate system.
