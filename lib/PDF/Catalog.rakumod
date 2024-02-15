@@ -11,6 +11,9 @@ also does PDF::Content::Resourced;
 use ISO_32000::Table_28-Entries_in_the_catalog_dictionary;
 also does ISO_32000::Table_28-Entries_in_the_catalog_dictionary;
 
+use ISO_32000_2::Table_29-Entries_in_the_catalog_dictionary;
+also does ISO_32000_2::Table_29-Entries_in_the_catalog_dictionary;
+
 use PDF::COS::Tie;
 use PDF::COS::Tie::Hash;
 use PDF::COS::Name;
@@ -18,21 +21,22 @@ use PDF::COS::Null;
 use PDF::COS::Stream;
 use PDF::COS::TextString;
 
-use PDF::Catalog::AdditionalActions;
-use PDF::NumberTree;
-use PDF::NameTree;
-use PDF::Destination :DestRef, :DestNamed, :coerce-dest;
-use PDF::ViewerPreferences;
-use PDF::Outlines;
-use PDF::Action;
 use PDF::AcroForm;
+use PDF::Action;
+use PDF::Bead-Thread; # Declares PDF::Bead & PDF::Thread
+use PDF::Catalog::AdditionalActions;
+use PDF::Destination :DestRef, :DestNamed, :coerce-dest;
+use PDF::Filespec;
+use PDF::MarkInfo;
+use PDF::Metadata::XML;
+use PDF::NameTree;
+use PDF::Names;
+use PDF::NumberTree;
+use PDF::Outlines;
 use PDF::OutputIntent;
 use PDF::Resources;
-use PDF::Metadata::XML;
-use PDF::MarkInfo;
-use PDF::Names;
 use PDF::Signature;
-use PDF::Bead-Thread; # Declares PDF::Bead & PDF::Thread
+use PDF::ViewerPreferences;
 use PDF::Class::Util :to-roman, :alpha-number, :decimal-number;
 
 has PDF::COS::Name $.Type is entry(:required, :alias<type>) where 'Catalog';
@@ -193,6 +197,12 @@ has PDF::COS::Dict @.Requirements is entry; # (Optional; PDF 1.7) An array of re
 has PDF::COS::Dict $.Collection is entry;   # (Optional; PDF 1.7) A collection dictionary that a PDF consumer uses to enhance the presentation of file attachments stored in the PDF document.
 
 has Bool $.NeedsRendering is entry;         # (Optional; PDF 1.7) A flag used to expedite the display of PDF documents containing XFA forms. It specifies whether the document must be regenerated when the document is first opened.
+
+has PDF::COS::Dict $.DSS is entry;          # (Optional; PDF 2.0) A DSS dictionary containing document-wide security information.
+
+has PDF::Filespec @.AF is entry;            # Optional; PDF 2.0) An array of one or more file specification dictionaries which denote the associated files for this PDF document.
+
+has PDF::COS::Dict $.DPartRoot is entry;    # (Optional; PDF 2.0) A DPartRoot dictionary used to describe the document parts hierarchy for this PDF document.
 
 has PDF::Resources $.Resources is entry;
 

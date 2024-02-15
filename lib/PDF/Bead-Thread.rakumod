@@ -1,15 +1,20 @@
 use v6;
-use PDF::COS::Tie::Hash;
 
 # Beads and Threads. Declare both together to avoid
 # dealing with circular references
 
 role PDF::Thread {...};
 
-role PDF::Bead does PDF::COS::Tie::Hash {
+role PDF::Bead {
 
-    # use ISO_32000::Table_161-Entries_in_a_bead_dictionary;
-    # also does ISO_32000::Table_161-Entries_in_a_bead_dictionary;
+    use PDF::COS::Tie::Hash;
+    also does PDF::COS::Tie::Hash;
+
+    use ISO_32000::Table_161-Entries_in_a_bead_dictionary;
+    also does ISO_32000::Table_161-Entries_in_a_bead_dictionary;
+
+    use ISO_32000_2::Table_163-Entries_in_a_bead_dictionary;
+    also does ISO_32000_2::Table_163-Entries_in_a_bead_dictionary;
 
     use PDF::COS::Tie;
     use PDF::COS::Name;

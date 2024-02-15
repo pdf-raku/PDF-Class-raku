@@ -7,6 +7,9 @@ also does PDF::COS::Tie::Hash;
 use ISO_32000::Table_166-Entries_in_a_border_style_dictionary;
 also does ISO_32000::Table_166-Entries_in_a_border_style_dictionary;
 
+use ISO_32000_2::Table_168-Entries_in_a_border_style_dictionary;
+also does ISO_32000_2::Table_168-Entries_in_a_border_style_dictionary;
+
 use PDF::COS::Tie;
 use PDF::COS::Name;
 

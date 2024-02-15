@@ -11,6 +11,9 @@ also does PDF::Class::Type;
 use ISO_32000::Table_120-Additional_entries_in_a_CMap_stream_dictionary;
 also does ISO_32000::Table_120-Additional_entries_in_a_CMap_stream_dictionary;
 
+use ISO_32000_2::Table_118-Additional_entries_in_a_CMap_stream_dictionary;
+also does ISO_32000_2::Table_118-Additional_entries_in_a_CMap_stream_dictionary;
+
 use PDF::COS::Tie;
 use PDF::COS::Name;
 use PDF::CIDSystemInfo;
