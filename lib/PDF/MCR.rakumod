@@ -10,6 +10,9 @@ also does PDF::Class::Type;
 use ISO_32000::Table_324-Entries_in_a_marked-content_reference_dictionary;
 also does ISO_32000::Table_324-Entries_in_a_marked-content_reference_dictionary;
 
+use ISO_32000_2::Table_357-Entries_in_a_marked-content_reference_dictionary;
+also does ISO_32000_2::Table_357-Entries_in_a_marked-content_reference_dictionary;
+
 use PDF::COS::Tie;
 use PDF::COS::Name;
 use PDF::COS::Stream;

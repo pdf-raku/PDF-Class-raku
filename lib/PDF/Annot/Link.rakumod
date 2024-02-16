@@ -6,6 +6,9 @@ also is PDF::Annot::_Markup;
 use ISO_32000::Table_173-Additional_entries_specific_to_a_link_annotation;
 also does ISO_32000::Table_173-Additional_entries_specific_to_a_link_annotation;
 
+use ISO_32000_2::Table_176-Additional_entries_specific_to_a_link_annotation;
+also does ISO_32000_2::Table_176-Additional_entries_specific_to_a_link_annotation;
+
 use PDF::COS::Tie;
 use PDF::COS::Name;
 use PDF::Action;

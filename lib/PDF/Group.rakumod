@@ -11,6 +11,9 @@ also does PDF::Class::Type::Subtyped;
 use ISO_32000::Table_96-Entries_Common_to_all_Group_Attributes_Dictionaries;
 also does ISO_32000::Table_96-Entries_Common_to_all_Group_Attributes_Dictionaries;
 
+use ISO_32000_2::Table_94-Entries_common_to_all_group_attributes_dictionaries;
+also does ISO_32000_2::Table_94-Entries_common_to_all_group_attributes_dictionaries;
+
 use PDF::COS::Tie;
 use PDF::COS::Name;
 

@@ -11,11 +11,15 @@ also does PDF::COS::Tie::Hash;
 use ISO_32000::Table_89-Additional_Entries_Specific_to_an_Image_Dictionary;
 also does ISO_32000::Table_89-Additional_Entries_Specific_to_an_Image_Dictionary;
 
+use ISO_32000_2::Table_87-Additional_entries_specific_to_an_image_dictionary;
+also does ISO_32000_2::Table_87-Additional_entries_specific_to_an_image_dictionary;
+
 use PDF::COS::Tie;
 use PDF::COS::Stream;
 use PDF::COS::Array;
 use PDF::COS::Name;
 use PDF::Class::Defs :ColorSpace;
+use PDF::Filespec;
 use PDF::ColorSpace::Indexed;
 use PDF::Metadata::XML;
 use PDF::OCG;   # optional content group
@@ -68,6 +72,12 @@ has Str $.ID is entry;                        #= (Optional; PDF 1.3; indirect re
 has Hash $.OPI is entry;                      #= (Optional; PDF 1.2) An OPI version dictionary for the image. If ImageMask is true, this entry is ignored.
 has PDF::Metadata::XML $.Metadata is entry;     #= (Optional; PDF 1.4) A metadata stream containing metadata for the image
 has OCG-or-OCMD $.OC is entry(:alias<optional-content>);   #= (Optional; PDF 1.5) An optional content group or optional content membership dictionary
+has PDF::Filespec @.AF is entry;                   #= (Optional; PDF 2.0) An array of one or more file specification dictionaries dictionaries which denote the associated files for this image.
+
+has PDF::COS::Dict $.Measure is entry;             #= (Optional; PDF 2.0) A measure dictionary that specifies the scale and units which apply to the image.
+
+has PDF::COS::Dict $.PtData is entry;              #= (Optional; PDF 2.0) A point data dictionary that specifies the extended geospatial data that apply to the image.  
+
 
 my subset PNGPredictor of Int where 10 .. 15;
 

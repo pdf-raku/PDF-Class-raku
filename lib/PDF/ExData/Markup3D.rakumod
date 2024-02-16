@@ -11,6 +11,9 @@ also does PDF::Class::ThreeD;
 use ISO_32000::Table_313-Entries_in_an_external_data_dictionary_used_to_markup_ThreeD_annotations;
 also does ISO_32000::Table_313-Entries_in_an_external_data_dictionary_used_to_markup_ThreeD_annotations;
 
+use ISO_32000_2::Table_324-Entries_in_an_external_data_dictionary_used_to_markup_ThreeD_annotations;
+also does ISO_32000_2::Table_324-Entries_in_an_external_data_dictionary_used_to_markup_ThreeD_annotations;
+
 use PDF::COS::Tie;
 use PDF::COS::Name;
 

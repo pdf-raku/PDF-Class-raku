@@ -26,7 +26,7 @@ role PDF::NumberTree {
         has Lock:D $!lock .= new;
 
         method max-key {
-            $!max-key //= max(self.Hash.keys.max, -1); 
+            $!max-key //= (self.Hash.keys.Slip, -1).max; 
         }
 
         method !fetch($node, Int $key?) {

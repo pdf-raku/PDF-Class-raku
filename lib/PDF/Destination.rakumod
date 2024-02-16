@@ -16,6 +16,7 @@ role PDF::Destination {
         »;
 
     use PDF::COS::Tie;
+    use PDF::COS::Array;
     use PDF::COS::ByteString;
     use PDF::COS::Name;
     use PDF::COS::Tie::Hash;
@@ -104,6 +105,7 @@ role PDF::Destination {
     # DestNamed coercement also allows an intermediate dictionary with a /D entry
     my role DestDict is export(:DestDict) does PDF::COS::Tie::Hash {
         has DestRef $.D is entry(:required, :alias<destination>, :coerce(&coerce-dest));
+        has PDF::COS::Array $.SD is entry; # (Optional; PDF 2.0) The structure destination to jump to. If present, the structure destination takes precedence over destination in the D entry.
     }
 
     my subset DestNamed is export(:DestNamed) where DestDict|DestRef;

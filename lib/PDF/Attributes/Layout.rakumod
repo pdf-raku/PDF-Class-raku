@@ -12,6 +12,10 @@ my subset TextAlign of PDF::COS::Name where 'Start'|'Center'|'End'|'Justify';
 
 use ISO_32000::Table_343-Standard_layout_attributes_common_to_all_standard_structure_types;
 also does ISO_32000::Table_343-Standard_layout_attributes_common_to_all_standard_structure_types;
+
+use ISO_32000_2::Table_378-Standard_layout_attributes_common_to_all_standard_structure_types;
+also does ISO_32000_2::Table_378-Standard_layout_attributes_common_to_all_standard_structure_types;
+
 my role Table_343-Common_attributes {
 
     my subset Placement of PDF::COS::Name where 'Block'|'Inline'|'Before'|'Start'|'End';

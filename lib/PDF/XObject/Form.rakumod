@@ -13,11 +13,16 @@ also does PDF::Content::Canvas;
 use ISO_32000::Table_95-Additional_Entries_Specific_to_a_Type_1_Form_Dictionary;
 also does ISO_32000::Table_95-Additional_Entries_Specific_to_a_Type_1_Form_Dictionary;
 
+use ISO_32000_2::Table_93-Additional_entries_specific_to_a_Type_1_form_dictionary;
+also does ISO_32000_2::Table_93-Additional_entries_specific_to_a_Type_1_form_dictionary;
+
 use PDF::COS::Tie;
 use PDF::COS::DateString;
-use PDF::Resources;
 use PDF::COS::Stream;
 use PDF::COS::Name;
+
+use PDF::Filespec;
+use PDF::Resources;
 use PDF::Group::Transparency;
 use PDF::OCG;   # optional content group
 use PDF::OCMD;  # optional content membership dict
@@ -41,6 +46,12 @@ has Hash $.OPI is entry;                           #= (Optional; PDF 1.2) An OPI
 has OCG-or-OCMD $.OC is entry(:alias<optional-content-group>);         #= (Optional; PDF 1.5) An optional content group or optional content membership dictionary
 
 has PDF::COS::Name $.Name is entry;                #= (Required in PDF 1.0; optional otherwise) The name by which this form XObject is referenced in the XObject subdictionary of the current resource dictionary.
+
+has PDF::Filespec @.AF is entry;                   #= (Optional; PDF 2.0) An array of one or more file specification dictionaries dictionaries which denote the associated files for this form XObject.
+
+has PDF::COS::Dict $.Measure is entry;             #= (Optional; PDF 2.0) A measure dictionary that specifies the scale and units which apply to the form.
+
+has PDF::COS::Dict $.PtData is entry;              #= (Optional; PDF 2.0) A point data dictionary that specifies the extended geospatial data that apply to the form.  
 
 method cb-check {
     die "only one of /StructParent or /StructParents should be present"

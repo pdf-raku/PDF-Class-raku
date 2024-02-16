@@ -9,6 +9,9 @@ use PDF::COS::Tie;
 use ISO_32000::Table_38-Entries_common_to_all_function_dictionaries;
 also does ISO_32000::Table_38-Entries_common_to_all_function_dictionaries;
 
+use ISO_32000_2::Table_38-Entries_common_to_all_function_dictionaries;
+also does ISO_32000_2::Table_38-Entries_common_to_all_function_dictionaries;
+
 subset FunctionTypeInt of UInt where 0|2|3|4;
 
 has FunctionTypeInt $.FunctionType is entry(:required);

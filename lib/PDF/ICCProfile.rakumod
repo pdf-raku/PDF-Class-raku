@@ -1,4 +1,3 @@
-
 unit role PDF::ICCProfile;
 
 use PDF::COS::Tie::Hash;
@@ -12,6 +11,9 @@ use PDF::Class::Defs :ColorSpace;
 
 use ISO_32000::Table_66-Additional_Entries_Specific_to_an_ICC_Profile_Stream_Dictionary;
 also does ISO_32000::Table_66-Additional_Entries_Specific_to_an_ICC_Profile_Stream_Dictionary;
+
+use ISO_32000_2::Table_65-Additional_entries_specific_to_an_ICC_profile_stream_dictionary;
+also does ISO_32000_2::Table_65-Additional_entries_specific_to_an_ICC_profile_stream_dictionary;
 
 has UInt $.N is entry(:required, :alias<num-colors>);          # (Required) The number of color components in the color space described by the ICC profile data. This number must match the number of components actually in the ICC profile. As of PDF 1.4, N must be 1, 3, or 4.
 has ColorSpace $.Alternate is entry;      # (Optional) An alternate color space to be used in case the one specified in the stream data is not supported (for example, by applications designed for earlier versions of PDF). The alternate space may be any valid color space (except a Pattern color space) that has the number of components specified by N. If this entry is omitted and the application does not understand the ICC profile data, the color space used is DeviceGray, DeviceRGB, or DeviceCMYK, depending on whether the value of N is 1, 3, or 4, respectively.
