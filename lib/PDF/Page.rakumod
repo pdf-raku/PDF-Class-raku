@@ -18,14 +18,20 @@ also does PDF::Class::FieldContainer;
 use PDF::COS::Tie;
 use PDF::COS::Name;
 use PDF::COS::Stream;
-use PDF::Image;
-use PDF::Resources;
-use PDF::Field;
-use PDF::Page::AdditionalActions;
+
 use PDF::Bead-Thread; # Declares PDF::Bead & PDF::Thread
+use PDF::Field;
+use PDF::Filespec;
+use PDF::Image;
+use PDF::OutputIntent;
+use PDF::Page::AdditionalActions;
+use PDF::Resources;
 
 use ISO_32000::Table_30-Entries_in_a_page_object;
 also does ISO_32000::Table_30-Entries_in_a_page_object;
+
+use ISO_32000_2::Table_31-Entries_in_a_page_object;
+also does ISO_32000_2::Table_31-Entries_in_a_page_object;
 
 has PDF::COS::Name $.Type is entry(:required, :alias<type>) where 'Page';
 my subset PagesLike of Hash where .<Type> ~~ 'Pages'; # autoloaded PDF::Pages
@@ -77,6 +83,9 @@ has PDF::COS::Name $.TemplateInstantiated is entry;         # (Required if this 
 has Hash $.PresSteps is entry;                              # (Optional; PDF 1.5) A navigation node dictionary representing the first node on the page
 has Numeric $.UserUnit is entry(:default(1.0));             # (Optional; PDF 1.6) A positive number giving the size of default user space units, in multiples of 1 ⁄ 72 inch
 has Hash @.VP is entry(:alias<view-ports>);  # Optional; PDF 1.6) An array of viewport dictionaries
+has PDF::Filespec @.AF is entry;                            # Optional; PDF 2.0) An array of one or more file specification dictionaries which denote the associated files for this page.
+has PDF::OutputIntent @.OutputIntents is entry;             # Optional; PDF 2.0) An array of output intent dictionaries that specify the colour characteristics of output devices on which this page might be rendered
+has Hash $.DPart is entry(:indirect);                       # (Required, if this page is within the range of a DPart, not permitted otherwise; PDF 2.0) An indirect reference to the DPart dictionary whose range of pages includes this page object
 
 method fields {
     with self.Annots -> $annots {

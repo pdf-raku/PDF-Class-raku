@@ -9,6 +9,9 @@ also does PDF::Class::Type;
 use ISO_32000::Table_98-Entries_in_an_Optional_Content_Group_Dictionary;
 also does ISO_32000::Table_98-Entries_in_an_Optional_Content_Group_Dictionary;
 
+use ISO_32000_2::Table_96-Entries_in_an_optional_content_group_dictionary;
+also does ISO_32000_2::Table_96-Entries_in_an_optional_content_group_dictionary;
+
 use PDF::COS::Tie;
 use PDF::COS::Tie::Hash;
 use PDF::COS::Dict;

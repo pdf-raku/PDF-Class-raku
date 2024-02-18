@@ -11,6 +11,9 @@ use PDF::COS::TextString;
 use ISO_32000::Table_348-PrintField_attributes;
 also does ISO_32000::Table_348-PrintField_attributes;
 
+use ISO_32000_2::Table_383-PrintField_attributes;
+also does ISO_32000_2::Table_383-PrintField_attributes;
+
 my subset Role of PDF::COS::Name where 'rb'|'cb'|'pb'|'tv';
 has Role $.Role is entry;	# (Optional; not inheritable) The type of form field represented by this graphic. The value of Role is one of the following, and a conforming reader interprets its meaning as defined herein.
 	# rbRadio button

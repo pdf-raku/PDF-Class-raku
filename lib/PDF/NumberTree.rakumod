@@ -8,8 +8,11 @@ role PDF::NumberTree {
     use PDF::COS::Tie;
     use Method::Also;
 
-    # use ISO_32000::Table_37-Entries_in_a_number_tree_node_dictionary;
-    # also does ISO_32000::Table_37-Entries_in_a_number_tree_node_dictionary;
+    use ISO_32000::Table_37-Entries_in_a_number_tree_node_dictionary;
+    also does ISO_32000::Table_37-Entries_in_a_number_tree_node_dictionary;
+
+    use ISO_32000_2::Table_37-Entries_in_a_number_tree_node_dictionary;
+    also does ISO_32000_2::Table_37-Entries_in_a_number_tree_node_dictionary;
 
     has PDF::NumberTree @.Kids is entry(:indirect); # (Root and intermediate nodes only; required in intermediate nodes; present in the root node if and only if Nums is not present) Shall be an array of indirect references to the immediate children of this node. The children may be intermediate or leaf nodes.
     has @.Nums is entry; # Root and leaf nodes only; required in leaf nodes; present in the root node if and only if Kids is not present) An array of the form

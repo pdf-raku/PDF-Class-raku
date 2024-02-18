@@ -17,6 +17,9 @@ has ShadingTypeInt $.ShadingType is entry(:required);
 use ISO_32000::Table_78-Entries_Common_to_All_Shading_Dictionaries;
 also does ISO_32000::Table_78-Entries_Common_to_All_Shading_Dictionaries;
 
+use ISO_32000_2::Table_77-Entries_common_to_all_shading_dictionaries;
+also does ISO_32000_2::Table_77-Entries_common_to_all_shading_dictionaries;
+
 has ColorSpace $.ColorSpace is entry(:required); # (Required) The color space in which color values are expressed.
 has @.Background is entry;                        # (Optional) An array of color components appropriate to the color space, specifying a single background color value.
 has Numeric @.BBox is entry(:len(4));             # (Optional) An array of four numbers giving the left, bottom, right, and top coordinates, respectively, of the shading’s bounding box

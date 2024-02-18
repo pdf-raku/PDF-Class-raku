@@ -8,6 +8,9 @@ also is PDF::Function;
 use ISO_32000::Table_39-Additional_entries_specific_to_a_type_0_function_dictionary;
 also does ISO_32000::Table_39-Additional_entries_specific_to_a_type_0_function_dictionary;
 
+use ISO_32000_2::Table_39-Additional_entries_specific_to_a_Type_0_function_dictionary;
+also does ISO_32000_2::Table_39-Additional_entries_specific_to_a_Type_0_function_dictionary;
+
 use PDF::COS::Tie;
 use PDF::IO::Util :pack;
 
