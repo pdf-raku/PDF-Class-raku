@@ -10,10 +10,15 @@ also does PDF::Class::Type;
 use ISO_32000::Table_322-Entries_in_the_structure_tree_root;
 also does ISO_32000::Table_322-Entries_in_the_structure_tree_root;
 
+use ISO_32000_2::Table_354-Entries_in_the_structure_tree_root;
+also does ISO_32000_2::Table_354-Entries_in_the_structure_tree_root;
+
 use PDF::COS::Tie;
 use PDF::COS::Name;
 use PDF::StructElem :coerce-struct-kids, :StructElemChild, :Attributes;
 use PDF::Attributes :coerce-attributes;
+use PDF::Filespec;
+use PDF::Namespace;
 use PDF::NameTree;
 use PDF::NumberTree;
 
@@ -86,3 +91,9 @@ our subset StandardStructureType of PDF::COS::Name where
 has StandardStructureType %.RoleMap  is entry;     # A dictionary that shall map the names of structure types used in the document to their approximate equivalents in the set of standard structure types.
 
 has PDF::Attributes %.ClassMap is entry(:coerce(&coerce-attributes));                      # A dictionary that shall map name objects designating attribute classes to the corresponding attribute objects
+
+has PDF::Namespace @.Namespaces is entry(:indirect); # (Required if any structure elements have namespace identifiers; PDF 2.0) An array of namespaces used within the document
+
+has PDF::Filespec @.PronunciationLexicon is entry(:indirect); # (Optional; PDF 2.0) An array containing one or more indirect specifications references to file specification dictionaries, where each specified file is a pronunciation lexicon, which is an XML file conforming to the Pronunciation Lexicon Specification (PLS) Version 1.0.
+
+has PDF::Filespec @.AF is entry; # (Optional; PDF 2.0) An array of one or more file specification dictionaries (7.11.3, "File specification dictionaries") which denote the associated files for the entire structure tree.

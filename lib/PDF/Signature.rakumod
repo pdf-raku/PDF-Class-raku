@@ -12,6 +12,9 @@ use PDF::COS::TextString;
 use ISO_32000::Table_252-Entries_in_a_signature_dictionary;
 also does ISO_32000::Table_252-Entries_in_a_signature_dictionary;
 
+use ISO_32000_2::Table_255-Entries_in_a_signature_dictionary;
+also does ISO_32000_2::Table_255-Entries_in_a_signature_dictionary;
+
 my subset SigType of PDF::COS::Name where 'Sig';
 has SigType $.Type is entry; # (Optional) The type of PDF object that this dictionary describes; if present, shall be Sig for a signature dictionary.
 has PDF::COS::Name $.Filter is entry(:required); # (Required; inheritable) The name of the preferred signature handler to use when validating this signature. If the Prop_Build entry is not present, it shall be also the name of the signature handler that was used to create the signature. If Prop_Build is present, it may be used to determine the name of the handler that created the signature (which is typically the same as Filter but is not needed to be). A conforming reader may substitute a different handler when verifying the signature, as long as it supports the specified SubFilter format.

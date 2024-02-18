@@ -9,6 +9,9 @@ also does PDF::Action;
 use ISO_32000::Table_208-Additional_entries_specific_to_a_sound_action;
 also does ISO_32000::Table_208-Additional_entries_specific_to_a_sound_action;
 
+use ISO_32000_2::Table_212-Additional_entries_specific_to_a_sound_action;
+also does ISO_32000_2::Table_212-Additional_entries_specific_to_a_sound_action;
+
 use PDF::COS;
 use PDF::COS::Tie;
 use PDF::Sound;
