@@ -1,6 +1,9 @@
 # /Type /OCMD - Optional Content Membership Dictionary
 unit class PDF::OCMD;
 
+use PDF::Class::OptionalContent;
+also does PDF::Class::OptionalContent;
+
 use PDF::COS::Dict;
 use PDF::Class::Type;
 

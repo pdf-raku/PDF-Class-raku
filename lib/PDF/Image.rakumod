@@ -19,12 +19,10 @@ use PDF::COS::Stream;
 use PDF::COS::Array;
 use PDF::COS::Name;
 use PDF::Class::Defs :ColorSpace;
+use PDF::Class::OptionalContent;
 use PDF::Filespec;
 use PDF::ColorSpace::Indexed;
 use PDF::Metadata::XML;
-use PDF::OCG;   # optional content group
-use PDF::OCMD;  # optional content membership dict
-my subset OCG-or-OCMD where PDF::OCG|PDF::OCMD;
 
 use PDF::Content::Image::PNG :PNG-CS;
 use PDF::IO::Filter;
@@ -47,7 +45,7 @@ does PDF::COS::Tie::Hash {
     # also does ISO_32000::Table_91-Entries_in_an_Alternate_Image_Dictionary;
     has PDF::Image $.Image is entry(:required);
     has Bool $.DefaultForPrinting is entry;
-    has OCG-or-OCMD $.OC is entry;
+    has PDF::Class::OptionalContent $.OC is entry;
 }
 has AlternateImage @.Alternates is entry;     # An array of alternate image dictionaries for this image
 my role SoftMask does PDF::COS::Tie::Hash {
@@ -71,7 +69,7 @@ has UInt $.StructParent is entry(:alias<struct-parent>);             #= (Require
 has Str $.ID is entry;                        #= (Optional; PDF 1.3; indirect reference preferred) The digital identifier of the image’s parent Web Capture content set
 has Hash $.OPI is entry;                      #= (Optional; PDF 1.2) An OPI version dictionary for the image. If ImageMask is true, this entry is ignored.
 has PDF::Metadata::XML $.Metadata is entry;     #= (Optional; PDF 1.4) A metadata stream containing metadata for the image
-has OCG-or-OCMD $.OC is entry(:alias<optional-content>);   #= (Optional; PDF 1.5) An optional content group or optional content membership dictionary
+has PDF::Class::OptionalContent $.OC is entry(:alias<optional-content>);   #= (Optional; PDF 1.5) An optional content group or optional content membership dictionary
 has PDF::Filespec @.AF is entry;                   #= (Optional; PDF 2.0) An array of one or more file specification dictionaries dictionaries which denote the associated files for this image.
 
 has PDF::COS::Dict $.Measure is entry;             #= (Optional; PDF 2.0) A measure dictionary that specifies the scale and units which apply to the image.

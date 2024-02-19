@@ -24,9 +24,7 @@ use PDF::COS::Name;
 use PDF::Filespec;
 use PDF::Resources;
 use PDF::Group::Transparency;
-use PDF::OCG;   # optional content group
-use PDF::OCMD;  # optional content membership dict
-my subset OCG-or-OCMD where PDF::OCG|PDF::OCMD;
+use PDF::Class::OptionalContent;
 
 has Int $.FormType is entry where 1;               #= (Optional) A code identifying the type of form XObject that this dictionary describes. The only valid value is 1.
 has Numeric @.BBox is entry(:required,:len(4));    #= (Required) An array of four numbers in the form coordinate system (see above), giving the coordinates of the left, bottom, right, and top edges, respectively, of the form XObject’s bounding box.
@@ -43,7 +41,7 @@ has UInt $.StructParents is entry;                 #= (Required if the form XObj
 method struct-parent { self.StructParents // self.StructParent }
 has Hash $.OPI is entry;                           #= (Optional; PDF 1.2) An OPI version dictionary for the form XObject
 
-has OCG-or-OCMD $.OC is entry(:alias<optional-content-group>);         #= (Optional; PDF 1.5) An optional content group or optional content membership dictionary
+has PDF::Class::OptionalContent $.OC is entry(:alias<optional-content-group>);         #= (Optional; PDF 1.5) An optional content group or optional content membership dictionary
 
 has PDF::COS::Name $.Name is entry;                #= (Required in PDF 1.0; optional otherwise) The name by which this form XObject is referenced in the XObject subdictionary of the current resource dictionary.
 

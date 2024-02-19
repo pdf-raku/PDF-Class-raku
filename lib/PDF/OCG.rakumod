@@ -1,6 +1,9 @@
 #| /Type /OCG - Optional Content Group
 unit class PDF::OCG;
 
+use PDF::Class::OptionalContent;
+also does PDF::Class::OptionalContent;
+
 use PDF::COS::Dict;
 use PDF::Class::Type;
 also is PDF::COS::Dict;
