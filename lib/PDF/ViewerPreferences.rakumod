@@ -10,6 +10,9 @@ use PDF::COS::Name;
 use ISO_32000::Table_150-Entries_in_a_viewer_preferences_dictionary;
 also does ISO_32000::Table_150-Entries_in_a_viewer_preferences_dictionary;
 
+use ISO_32000_2::Table_147-Entries_in_a_viewer_preferences_dictionary;
+also does ISO_32000_2::Table_147-Entries_in_a_viewer_preferences_dictionary;
+
 has Bool $.HideToolbar is entry;            # (Optional) A flag specifying whether to hide the viewer application’s tool bars when the document is active. Default value: false.
 
 has Bool $.HideMenubar is entry;            # (Optional) A flag specifying whether to hide the viewer application’s menu bar when the document is active. Default value: false.
@@ -60,3 +63,6 @@ has Bool $.PickTrayByPDFSize is entry;     # (Optional; PDF 1.7) A flag specifyi
 has UInt @.PrintPageRange is entry;       # (Optional; PDF 1.7) The page numbers used to initialize the print dialog box when the file is printed. The first page of the PDF file is denoted by 1. Each pair consists of the first and last pages in the sub-range. An odd number of integers causes this entry to be ignored. Negative numbers cause the entire array to be ignored.
 
 has UInt $.NumCopies is entry;             # (Optional; PDF 1.7) The number of copies to be printed when the print dialog is opened for this file. Supported values are the integers 2 through 5. Values outside this range are ignored.
+
+my subset Enforcable of PDF::COS::Name where 'PrintScaling';
+has Enforcable @.Enforce is entry;         # (Optional; PDF 2.0) An array of names of Viewer preference settings that shall be enforced by PDF processors and that shall not be overridden by subsequent selections in the application user interface.

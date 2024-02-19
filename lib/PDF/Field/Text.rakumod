@@ -12,6 +12,9 @@ use PDF::Class::Defs :TextOrStream;
 use ISO_32000::Table_229-Additional_entry_specific_to_a_text_field;
 also does ISO_32000::Table_229-Additional_entry_specific_to_a_text_field;
 
+use ISO_32000_2::Table_232-Additional_entry_specific_to_a_text_field;
+also does ISO_32000_2::Table_232-Additional_entry_specific_to_a_text_field;
+
 has TextOrStream $.V is entry(:coerce(&coerce-text-or-stream), :inherit);
 has TextOrStream $.DV is entry(:coerce(&coerce-text-or-stream), :inherit, :alias<default-value>);
 

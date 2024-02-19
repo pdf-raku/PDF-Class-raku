@@ -12,6 +12,9 @@ use PDF::COS::TextString;
 use ISO_32000::Table_172-Additional_entries_specific_to_a_text_annotation;
 also does ISO_32000::Table_172-Additional_entries_specific_to_a_text_annotation;
 
+use ISO_32000_2::Table_175-Additional_entries_specific_to_a_text_annotation;
+also does ISO_32000_2::Table_175-Additional_entries_specific_to_a_text_annotation;
+
 has Bool $.Open is entry;                        # (Optional) A flag specifying whether the annotation should initially be displayed open. Default value: false (closed).
 has PDF::COS::Name $.Name is entry(:alias<icon-name>, :default<Note>);              # (Optional) The name of an icon to be used in displaying the annotation. Viewer applications should provide predefined icon appearances for at least the following standard names:
                                                  #  - Comment, Key, Note, Help, NewParagraph, Paragraph, Insert

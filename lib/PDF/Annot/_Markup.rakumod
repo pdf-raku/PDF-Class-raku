@@ -17,6 +17,9 @@ use PDF::Class::Defs :TextOrStream;
 use ISO_32000::Table_170-Additional_entries_specific_to_markup_annotations;
 also does ISO_32000::Table_170-Additional_entries_specific_to_markup_annotations;
 
+use ISO_32000_2::Table_172-Additional_entries_in_an_annotation_dictionary_specific_to_markup_annotations;
+also does ISO_32000_2::Table_172-Additional_entries_in_an_annotation_dictionary_specific_to_markup_annotations;
+
 # This is the base class for Markup Annotations, as indicated in [PDF 32000 Table 169, Column 3].
 # I.e.: Text, FreeText, Line, Square, Circle, Polygon, PolyLine, Highlight Underline, Squiggly,
 # StrikeOut, Stamp, Caret, Ink, FileAttachment, Sound

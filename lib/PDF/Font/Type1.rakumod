@@ -16,6 +16,9 @@ use PDF::FontDescriptor;
 use ISO_32000::Table_111-Entries_in_a_Type_1_font_dictionary;
 also does ISO_32000::Table_111-Entries_in_a_Type_1_font_dictionary;
 
+use ISO_32000_2::Table_109-Entries_in_a_Type_1_font_dictionary;
+also does ISO_32000_2::Table_109-Entries_in_a_Type_1_font_dictionary;
+
 has PDF::COS::Name $.Name is entry;                 # (Required in PDF 1.0; optional otherwise) The name by which this font is referenced in the Font subdictionary of the current resource dictionary.
                                                     # Note: This entry is obsolescent and its use is no longer recommended.
 has PDF::COS::Name $.BaseFont is entry(:required);  # (Required) The PostScript name of the font. For Type 1 fonts, this is usually the value of the FontName entry in the font program

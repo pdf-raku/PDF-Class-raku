@@ -17,6 +17,9 @@ use PDF::Resources;
 use ISO_32000::Table_75-Additional_Entries_Specific_to_a_Type_1_Pattern_Dictionary;
 also does ISO_32000::Table_75-Additional_Entries_Specific_to_a_Type_1_Pattern_Dictionary;
 
+use ISO_32000_2::Table_74-Additional_entries_specific_to_a_Type_1_pattern_dictionary;
+also does ISO_32000_2::Table_74-Additional_entries_specific_to_a_Type_1_pattern_dictionary;
+
 subset PaintCode of Int where 1|2;
 has PaintCode $.PaintType is entry(:required);   # (Required) A code that determines how the color of the pattern cell is to be specified:
                                                  #  1: Colored tiling pattern.

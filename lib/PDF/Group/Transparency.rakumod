@@ -10,6 +10,9 @@ use PDF::Class::Defs :ColorSpace;
 use ISO_32000::Table_147-Additional_entries_specific_to_a_transparency_group_attributes_dictionary;
 also does ISO_32000::Table_147-Additional_entries_specific_to_a_transparency_group_attributes_dictionary;
 
+use ISO_32000_2::Table_145-Additional_entries_specific_to_a_transparency_group_attributes_dictionary;
+also does ISO_32000_2::Table_145-Additional_entries_specific_to_a_transparency_group_attributes_dictionary;
+
 has PDF::COS::Name $.S is entry(:required) where 'Transparency';
 
 has ColorSpace  $.CS is entry(:alias<color-space>); # (Sometimes required) The group colour space, which is used for the following purposes:

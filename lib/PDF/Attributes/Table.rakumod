@@ -12,6 +12,9 @@ use PDF::COS::Name;
 use ISO_32000::Table_349-Standard_table_attributes;
 also does ISO_32000::Table_349-Standard_table_attributes;
 
+use ISO_32000_2::Table_384-Standard_table_attributes;
+also does ISO_32000_2::Table_384-Standard_table_attributes;
+
 has UInt $.RowSpan is entry;	# (Optional; not inheritable) The number of rows in the enclosing table that is spanned by the cell. The cell shall expand by adding rows in the block-progression direction specified by the table’s WritingMode attribute. If this entry is absent, a conforming reader assumes a value of 1.
 	# This entry is only be used when the table cell has a structure type of TH or TD or one that is role mapped to structure type TH or TD (see Table 337).
 
