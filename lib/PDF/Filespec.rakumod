@@ -18,6 +18,8 @@ also does ISO_32000::Table_44-Entries_in_a_file_specification_dictionary;
 use ISO_32000_2::Table_43-Entries_in_a_file_specification_dictionary;
 also does ISO_32000_2::Table_43-Entries_in_a_file_specification_dictionary;
 
+use PDF::Class::Image; 
+
 # file specifications may be either a dictionary or a simple text-string
 my subset FileRef is export(:FileRef) where PDF::COS::TextString|PDF::Filespec;
 my subset FileRefLike is export(:FileRefLike) where Str|Hash;
@@ -63,7 +65,15 @@ has EmbeddedFile %.EF is entry(:alias<embedded-files>); # (Required if RF is pre
 has Array %.RF is entry(:alias<related-files>); # (Optional; PDF 1.3) A dictionary with the same structure as the EF dictionary, which shall be present. Each key in the RF dictionary shall also be present in the EF dictionary. Each value shall be a related files array identifying files that are related to the corresponding file in the EF dictionary. If this entry is present, the Type entry is required and the file specification dictionary shall be indirectly referenced.
 has PDF::COS::TextString $.Desc is entry; # (Optional; PDF 1.6) Descriptive text associated with the file specification. It shall be used for files in the EmbeddedFiles name tree.
 has PDF::COS::Dict $.CI is entry(:indirect); # (Optional; shall be indirect reference; PDF 1.7) A collection item dictionary, which shall be used to create the user interface for portable collections.
-has PDF::COS::Stream $.Thumb is entry; # (Optional; PDF 2.0) A stream object defining the thumbnail image for the file specification.
+multi sub coerce-thumb(PDF::COS::Stream $thumb, PDF::Class::Image) {
+    # PDF::Filespec has a cyclic dependency on PDF::Image,
+    # which does PDF::Class::Image
+    PDF::COS.coerce: $thumb, PDF::COS.required("PDF::Image");
+}
+multi sub coerce-thumb($_, PDF::Class::Image) {
+    fail "unable to coerce thumbnail: {.raku}";
+}
+has PDF::Class::Image $.Thumb is entry(:coerce(&coerce-thumb)); # (Optional; PDF 2.0) A stream object defining the thumbnail image for the file specification.
 has PDF::COS::Dict $.EP is entry; # (PDF 2.0; Required if this file specification references an encrypted payload document as described in 7.6.7, "Unencrypted wrapper document") The value of this key is an encrypted payload dictionary which identifies that the file specified in the EF dictionary is an encrypted payload.
 
 my subset AFRelationship of PDF::COS::Name where 'Source'|'Data'|'Alternative'|'Supplement'|'EncryptedPayload'|'FormData'|'Schema'|'Unspecified';

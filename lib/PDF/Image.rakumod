@@ -1,9 +1,11 @@
 unit role PDF::Image;
 
+use PDF::Class::Image;
 use PDF::Class::StructItem;
 use PDF::Content::XObject;
 use PDF::COS::Tie::Hash;
 
+also does PDF::Class::Image;
 also does PDF::Class::StructItem;
 also does PDF::Content::XObject['Image'];
 also does PDF::COS::Tie::Hash;
