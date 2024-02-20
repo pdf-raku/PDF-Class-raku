@@ -37,10 +37,10 @@ method add-kid(Hash $kid is copy = {}) {
     my $node = $kid;
 
     while $node {
-        last if  %seen{$node}++;
-        $node.Count++;
+        last if %seen{$node}++;
         last unless $node.can('Parent');
         $node .= Parent;
+        $node.Count++;
     }
     $kid.kids = $_ with $grand-kids;
     $kid;
