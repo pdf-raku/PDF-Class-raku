@@ -2,7 +2,6 @@ unit role PDF::Class::OutlineNode;
 
 use PDF::COS;
 use PDF::Destination :coerce-dest, :DestinationLike, :DestRef;
-has Array $.parents is rw;
 sub siblings($first) is rw {
     my class Siblings does Iterable {
         has $.first is required;
@@ -27,8 +26,7 @@ method add-kid(Hash $kid is copy = {}) {
     }
     $kid = (require PDF::Outline).COERCE: $kid;
     $kid.Dest = $_ with $dest;
-    $kid.parents //= [];
-    $kid.parents.push: self;
+    $kid.Parent = self;
     with self.Last {
         .Next = $kid;
         $kid.Prev = $_;
@@ -36,17 +34,13 @@ method add-kid(Hash $kid is copy = {}) {
     self.Last = $kid;
     self.First //= $kid;
     my %seen{Any};
-    my @nodes = $kid;
+    my $node = $kid;
 
-    while @nodes {
-        my $node = @nodes.shift;
-        unless %seen{$node}++ {
-            $node.Count++;
-            with $node.parents {
-                @nodes.push: $_
-                    for .list;
-            }
-        }
+    while $node {
+        last if  %seen{$node}++;
+        $node.Count++;
+        last unless $node.can('Parent');
+        $node .= Parent;
     }
     $kid.kids = $_ with $grand-kids;
     $kid;
