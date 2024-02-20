@@ -1,2 +1,2 @@
-#= Performed by PDF::OCG and PDF::OCMD
-unit role PDF::Class::OptionalContent;
+#= Consumed by PDF::OCG and PDF::OCMD
+unit class PDF::Class::OptionalContent;
