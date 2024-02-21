@@ -29,8 +29,10 @@ has PDF::COS::Name @.Intent is entry(:array-or-item, :default<View>); # (Optiona
 
 role Usage
     does PDF::COS::Tie::Hash {
-    # use ISO_32000::Table_102-Entries_in_an_Optional_Content_Usage_Dictionary;
-    # also does ISO_32000::Table_102-Entries_in_an_Optional_Content_Usage_Dictionary;
+    use ISO_32000::Table_102-Entries_in_an_Optional_Content_Usage_Dictionary;
+    also does ISO_32000::Table_102-Entries_in_an_Optional_Content_Usage_Dictionary;
+    use ISO_32000_2::Table_100-Entries_in_an_optional_content_usage_dictionary;
+    also does ISO_32000_2::Table_100-Entries_in_an_optional_content_usage_dictionary;
 
     my role CreatorInfo
         does PDF::COS::Tie::Hash {

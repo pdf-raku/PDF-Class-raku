@@ -34,11 +34,14 @@ my role DeviceNProcessDict
     has PDF::COS::Name @.Components is entry(:required); # (Required) An array of component names that correspond, in order, to the components of the process color space specified in ColorSpace. For example, an RGB color space must have three names corresponding to red, green, and blue. The names may be arbitrary (that is, not the same as the standard names for the color space components) and must match those specified in the names array of the DeviceN color space, even if all components are not present in the names array.
 }
 
-my role DeviceNMixingDict
+my role DeviceNMixingHints
     does PDF::COS::Tie::Hash {
 
-    # use ISO_32000::Table_73-Entries_in_a_DeviceN_Mixing_Hints_Dictionary;
-    # also does ISO_32000::Table_73-Entries_in_a_DeviceN_Mixing_Hints_Dictionary;
+    use ISO_32000::Table_73-Entries_in_a_DeviceN_Mixing_Hints_Dictionary;
+    also does ISO_32000::Table_73-Entries_in_a_DeviceN_Mixing_Hints_Dictionary;
+
+    use ISO_32000_2::Table_72-Entries_in_a_DeviceN_mixing_hints_dictionary;
+    also does ISO_32000_2::Table_72-Entries_in_a_DeviceN_mixing_hints_dictionary;
 
     has Numeric %.Solidities is entry;  # (Optional) A dictionary specifying the solidity of inks to be used in blending calculations when used as an alternative to the tint transformation function. For each entry, the key is a colorant name, and the value is a number between 0.0 and 1.0. This dictionary need not contain entries for all colorants used in this color space; it may also include additional colorants not used by this color space.
         # A value of 1.0 simulates an ink that completely covers the inks beneath; a value of 0.0 simulates a transparent ink that completely reveals the inks beneath. An entry with a key of Default specifies a value to be used by all components in the associated DeviceN color space for which a solidity value is not explicitly provided. If Default is not present, the default value for unspecified colorants is 0.0; applications may choose to use other values.
@@ -52,8 +55,11 @@ my role DeviceNMixingDict
 my role DeviceNDict
     does PDF::COS::Tie::Hash {
 
-    # use ISO_32000::Table_71-Entries_in_a_DeviceN_Colour_Space_Attributes_Dictionary;
-    # also does ISO_32000::Table_71-Entries_in_a_DeviceN_Colour_Space_Attributes_Dictionary;
+    use ISO_32000::Table_71-Entries_in_a_DeviceN_Colour_Space_Attributes_Dictionary;
+    also does ISO_32000::Table_71-Entries_in_a_DeviceN_Colour_Space_Attributes_Dictionary;
+
+    use ISO_32000_2::Table_70-Entries_in_a_DeviceN_colour_space_attributes_dictionary;
+    also does ISO_32000_2::Table_70-Entries_in_a_DeviceN_colour_space_attributes_dictionary;
 
     my subset DeviceNSubtype of PDF::COS::Name where 'DeviceN' | 'NChannel';
     has DeviceNSubtype $.Subtype is entry(:default<DeviceN>);  # (Optional; PDF 1.6) A name specifying the preferred treatment for the color space. Possible values are DeviceN and NChannel. Default value: DeviceN.
@@ -66,6 +72,6 @@ my role DeviceNDict
 
     has DeviceNProcessDict $.Process is entry; # (Required if Subtype is NChannel and the color space includes components of a process color space, otherwise optional; PDF 1.6) A dictionary (see Table 4.22) that describes the process color space whose components are included in this color space.
 
-    has DeviceNMixingDict $.MixingHints is entry; # (Optional; PDF 1.6) A dictionary (see Table 4.23) that specifies optional attributes of the inks to be used in blending calculations when used as an alternative to the tint transformation function.
+    has DeviceNMixingHints $.MixingHints is entry; # (Optional; PDF 1.6) A dictionary (see Table 4.23) that specifies optional attributes of the inks to be used in blending calculations when used as an alternative to the tint transformation function.
 }
 

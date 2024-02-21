@@ -71,8 +71,10 @@ has UInt $.StructParents is entry(:alias<struct-parent>);   # (Required if the p
 has Str $.ID is entry;                       # (Optional; PDF 1.3; indirect reference preferred) The digital identifier of the page’s parent Web Capture content set
 has Numeric $.PZ is entry(:alias<preferred-zoom>);          # (Optional; PDF 1.3) The page’s preferred zoom (magnification) factor
 my role SeparationInfo does PDF::COS::Tie::Hash {
-    # use ISO_32000::Table_364-Entries_in_a_separation_dictionary;
-    # also does ISO_32000::Table_364-Entries_in_a_separation_dictionary;
+    use ISO_32000::Table_364-Entries_in_a_separation_dictionary;
+    also does ISO_32000::Table_364-Entries_in_a_separation_dictionary;
+    use ISO_32000_2::Table_400-Entries_in_a_separation_dictionary;
+    also does ISO_32000_2::Table_400-Entries_in_a_separation_dictionary;
     has PDF::Page @.Pages is entry;
     has Str $.DeviceColorant is entry;
     has Array $.ColorSpace is entry;

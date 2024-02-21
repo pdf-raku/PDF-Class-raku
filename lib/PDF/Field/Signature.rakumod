@@ -19,8 +19,13 @@ has PDF::Signature $.V is entry(:alias<value>);
 
 my role LockDict
     does PDF::COS::Tie::Hash {
-    # use ISO_32000::Table_233-Entries_in_a_signature_field_lock_dictionary;
-    # also does ISO_32000::Table_233-Entries_in_a_signature_field_lock_dictionary;
+
+    use ISO_32000::Table_233-Entries_in_a_signature_field_lock_dictionary;
+    also does ISO_32000::Table_233-Entries_in_a_signature_field_lock_dictionary;
+
+    use ISO_32000_2::Table_236-Entries_in_a_signature_field_lock_dictionary;
+    also does ISO_32000_2::Table_236-Entries_in_a_signature_field_lock_dictionary;
+
     has PDF::COS::Name $.Type is entry where 'SigFieldLock';     # (Optional) The type of PDF object that this dictionary describes; if present, must be SigFieldLock for a signature field lock dictionary
     my subset ActionSet of PDF::COS::Name where 'All'|'Include'|'Exclude';
     has ActionSet $.Actions is entry(:required);   # (Required) A name which, in conjunction with Fields, indicates the set of fields that should be locked
@@ -31,8 +36,10 @@ has LockDict $.Lock is entry(:indirect);   # (Optional; must be an indirect refe
 
 my role SeedValueDict
     does PDF::COS::Tie::Hash {
-    # use ISO_32000::Table_234-Entries_in_a_signature_field_seed_value_dictionary;
-    # also does ISO_32000::Table_234-Entries_in_a_signature_field_seed_value_dictionary;
+    use ISO_32000::Table_234-Entries_in_a_signature_field_seed_value_dictionary;
+    also does ISO_32000::Table_234-Entries_in_a_signature_field_seed_value_dictionary;
+    use ISO_32000_2::Table_237-Entries_in_a_signature_field_seed_value_dictionary;
+    also does ISO_32000_2::Table_237-Entries_in_a_signature_field_seed_value_dictionary;
     has PDF::COS::Name $.Type is entry where 'SV';                 # (Optional) The type of PDF object that this dictionary describes; if present, must be SV for a seed value dictionary.
     has PDF::COS::Name $.Filter is entry;         # (Optional) The signature handler to be used to sign the signature field. Beginning with PDF 1.7, if Filter is specified and the Ff entry indicates this entry is a required constraint, then the signature handler specified by this entry must be used when signing; otherwise, signing must not take place. If Ff indicates that this is an optional constraint, this handler should be used if it is available. If it is not available, a different handler can be used instead.
     has PDF::COS::Name @.SubFilter is entry;      # first name in the array that matches an encoding supported by the signature handler should be the encoding that is actually used for signing. If SubFilter is specified and the Ff entry indicates that this entry is a required constraint, then the first matching encodings must be used when signing; otherwise, signing must not take place. If Ff indicates that this is an optional constraint, then the first matching encoding should be used if it is available. If it is not available, a different encoding can be used.
@@ -46,8 +53,10 @@ my role SeedValueDict
 
     my role CertificateSeedValueDict
         does PDF::COS::Tie::Hash {
-        # use ISO_32000::Table_235-Entries_in_a_certificate_seed_value_dictionary;
-        # also does ISO_32000::Table_235-Entries_in_a_certificate_seed_value_dictionary;
+        use ISO_32000::Table_235-Entries_in_a_certificate_seed_value_dictionary;
+        also does ISO_32000::Table_235-Entries_in_a_certificate_seed_value_dictionary;
+        use ISO_32000_2::Table_238-Entries_in_a_certificate_seed_value_dictionary;
+        also does ISO_32000_2::Table_238-Entries_in_a_certificate_seed_value_dictionary;
         has PDF::COS::Name $.Type is entry where 'SVCert';	# (Optional) The type of PDF object that this dictionary describes; if present, shall be SVCert for a certificate seed value dictionary.
         has UInt $.Ff is entry;	# [integer] (Optional) A set of bit flags specifying the interpretation of specific entries in this dictionary. A value of 1 for the flag means that a signer shall be required to use only the specified values for the entry. A value of 0 means that other values are permissible. Bit positions are 1 (Subject); 2 (Issuer); 3 (OID); 4 (SubjectDN); 5 (Reserved); 6 (KeyUsage); 7 (URL).
             # Default value: 0.
