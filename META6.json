@@ -80,6 +80,7 @@
     "PDF::ColorSpace::Pattern": "lib/PDF/ColorSpace/Pattern.rakumod",
     "PDF::ColorSpace::Separation": "lib/PDF/ColorSpace/Separation.rakumod",
     "PDF::Destination": "lib/PDF/Destination.rakumod",
+    "PDF::EmbeddedFile": "lib/PDF/EmbeddedFile.rakumod",
     "PDF::Encoding": "lib/PDF/Encoding.rakumod",
     "PDF::ExData::Markup3D": "lib/PDF/ExData/Markup3D.rakumod",
     "PDF::ExtGState": "lib/PDF/ExtGState.rakumod",

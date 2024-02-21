@@ -2,6 +2,8 @@
    - Implement basic PDF::ISO_32000_2 conformance (PDF 2.0
      specification) for existing classes.
    - Fix outline node construction
+   - Externalize PDF::Filespec EmbeddedFile role as
+     PDF::EmbeddedFile
 
 0.5.15  2024-01-20T09:49:22+13:00
    - Fix PDF::Filespec coercement
