@@ -21,3 +21,7 @@ has Numeric @.view-box  is entry(:key<3DB>, :len(4)); # rectangle (Optional) The
 has Hash $.artwork is entry(:key<3DD>);      # A 3D stream or 3D reference dictionary that specifies the 3D artwork to be shown.
 
 has Bool $.interactive is entry(:key<3DI>, :default);  # (Optional) A flag indicating the primary use of the 3D annotation. If true, it is intended to be interactive; if false, it is intended to be manipulated programmatically, as with a JavaScript animation. Conforming readers may present different user interface controls for interactive 3D annotations (for example, to rotate, pan, or zoom the artwork) than for those managed by a script or other mechanism. Default value: true.
+
+has Hash $.units is entry(:key<3DU>); # (Optional; PDF 2.0) A 3D units dictionary that specifies the units definitions for the 3D data associated with this annotation
+
+has Hash $.GEO is entry; # Optional; PDF 2.0) For Geospatial3D requirement type, a geospatial information section may be present as an attribute within a 3D Annotation.

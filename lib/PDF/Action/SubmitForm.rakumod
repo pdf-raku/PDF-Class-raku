@@ -30,7 +30,6 @@ Table 236 – Additional entries specific to a submit-form action
 
 has FileRef $.F is entry(:required, :coerce(&to-file));     #= (Required) A URL file specification giving the uniform resource locator (URL) of the script at the Web server that will process the submission.
 
-
 my subset FieldRef where PDF::Field|PDF::COS::TextString;
 multi sub coerce-field-ref(Hash $fld, FieldRef) { coerce-field($fld, PDF::Field) }
 multi sub coerce-field-ref(Str $value is rw, FieldRef) { $value = PDF::COS::TextString.COERCE($value) }
@@ -40,3 +39,5 @@ has FieldRef @.Fields is entry(:coerce(&coerce-field));     #= (Optional) An arr
 =para If this entry is omitted, the Include/Exclude flag is ignored, and all fields in the document’s interactive form is submitted except those whose NoExport flag is set. Fields with no values may also be excluded, as dictated by the value of the IncludeNoValueFields flag.
 
 has UInt $.Flags is entry(:default(0));     #= (Optional; inheritable) A set of flags specifying various characteristics of the action (see Table 237). Default value: 0.
+
+has PDF::COS::TextString $.CharSet is entry; # (Optional; inheritable; PDF 2.0) Supported values include: utf-8, utf-16, Shift-JIS, BigFive, GBK, or UHC.

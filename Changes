@@ -1,4 +1,9 @@
 {{$NEXT}}
+   - Fix some missing PDF::ISO_32000_2 definitions, picked
+     up during staging of: zef install PDF::Class
+     -- PDF::Action::SubmitForm /CharSet
+     -- PDF::Annot::ThreeD /3DU /GEO
+     -- PDF::Shading::FreeForm
 
 0.5.16  2024-02-21T15:29:46+13:00
    - Implement basic PDF::ISO_32000_2 conformance (PDF 2.0
