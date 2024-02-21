@@ -121,8 +121,8 @@
     "PDF::Mask::Luminosity": "lib/PDF/Mask/Luminosity.rakumod",
     "PDF::Metadata::XML": "lib/PDF/Metadata/XML.rakumod",
     "PDF::NameTree": "lib/PDF/NameTree.rakumod",
-    "PDF::Namespace": "lib/PDF/Namespace.rakumod",
     "PDF::Names": "lib/PDF/Names.rakumod",
+    "PDF::Namespace": "lib/PDF/Namespace.rakumod",
     "PDF::NumberTree": "lib/PDF/NumberTree.rakumod",
     "PDF::OBJR": "lib/PDF/OBJR.rakumod",
     "PDF::OCG": "lib/PDF/OCG.rakumod",
@@ -163,5 +163,5 @@
   ],
   "test-depends": [
   ],
-  "version": "0.5.15"
+  "version": "0.5.16"
 }

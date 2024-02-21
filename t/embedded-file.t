@@ -1,5 +1,5 @@
 use Test;
-plan 2;
+plan 3;
 
 use PDF::Class;
 use PDF::Catalog;
@@ -7,6 +7,8 @@ use PDF::Names;
 use PDF::NameTree;
 use PDF::Filespec;
 use PDF::EmbeddedFile;
+use PDF::Image;
+use PDF::COS::Stream;
 
 my PDF::Class $pdf .= open: "t/pdf/samples/embedded-files.pdf";
 
@@ -20,3 +22,9 @@ is $file.file-name, 't/images/lightbulb.gif', 'file-name';
 my PDF::EmbeddedFile:D $ef = $file.EF<F>;
 my UInt:D $size = $ef.Params.Size;
 is $ef.decoded.bytes, $size, 'embedded file size';
+
+my PDF::COS::Stream() $img = { :decoded<xxx>, :dict{} }; 
+
+$file.Thumb = $img;
+
+does-ok $img, PDF::Image, 'Thumb coercion';

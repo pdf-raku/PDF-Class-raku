@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.5.16  2024-02-21T15:29:46+13:00
    - Implement basic PDF::ISO_32000_2 conformance (PDF 2.0
      specification) for existing classes.
    - Fix outline node construction
