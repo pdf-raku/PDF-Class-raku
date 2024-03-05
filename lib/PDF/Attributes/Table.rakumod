@@ -30,3 +30,4 @@ has Scope $.Scope is entry;	# (Optional; not inheritable; PDF 1.5) A name whose 
 has PDF::COS::TextString $.Summary is entry;	# (Optional; not inheritable; PDF 1.7) A summary of the table’s purpose and structure. This entry is only be used within Table structure elements (see Table 337).
 	# NOTE For use in non-visual rendering such as speech or braille
 
+has PDF::COS::TextString $.Short is entry;      # (Optional; not inheritable; PDF 2.0) Contains a short form of the content of a TH structure element’s content.
