@@ -1,4 +1,4 @@
-#| Table 348 – PrintField attributes
+#| PrintField attributes
 unit role PDF::Attributes::PrintField;
 
 use PDF::Attributes;

@@ -1,5 +1,7 @@
+unit role PDF::Attributes::Layout;
+
 use PDF::Attributes;
-unit role PDF::Attributes::Layout does PDF::Attributes;
+also does PDF::Attributes;
 
 use PDF::COS::Tie;
 use PDF::COS::Name;
@@ -16,7 +18,7 @@ also does ISO_32000::Table_343-Standard_layout_attributes_common_to_all_standard
 use ISO_32000_2::Table_378-Standard_layout_attributes_common_to_all_standard_structure_types;
 also does ISO_32000_2::Table_378-Standard_layout_attributes_common_to_all_standard_structure_types;
 
-my role Table_343-Common_attributes {
+my role Common_attributes {
 
     my subset Placement of PDF::COS::Name where 'Block'|'Inline'|'Before'|'Start'|'End';
     has Placement $.Placement is entry;	# (Optional; not inheritable) The positioning of the element with respect to the enclosing reference area and other content:
@@ -59,13 +61,16 @@ my role Table_343-Common_attributes {
 
     has RGB @.Color is entry(:len(3));	# (Optional; inheritable; PDF 1.5) The colour to be used for drawing text and the default value for the colour of table borders and text decorations. The value is an array of three numbers in the range 0.0 to 1.0, representing the red, green, and blue values, respectively, of an RGB colour space. If this attribute is not specified, the border colour for this element is the current text fill colour in effect at the start of its associated content.
 }
-also does Table_343-Common_attributes;
+also does Common_attributes;
 
 use ISO_32000::Table_344-Additional_standard_layout_attributes_specific_to_block-level_structure_elements;
 also does ISO_32000::Table_344-Additional_standard_layout_attributes_specific_to_block-level_structure_elements;
 
+use ISO_32000_2::Table_379-Additional_standard_layout_attributes_specific_to_block-level_structure_elements;
+also does ISO_32000_2::Table_379-Additional_standard_layout_attributes_specific_to_block-level_structure_elements;
+
 #| Table 344 – Additional standard layout attributes specific to block-level structure elements
-my role Table_344-BLSE_Attributes {
+my role BLSE_Attributes {
     has Numeric $.SpaceBefore is entry;	# (Optional; not inheritable) The amount of extra space preceding the before edge of the BLSE, measured in default user space units in the block-progression direction. This value is added to any adjustments induced by the LineHeight attributes of ILSEs within the first line of the BLSE (see “Layout Attributes for ILSEs” in 14.8.5.4, “Layout Attributes”). If the preceding BLSE has a SpaceAfter attribute, the greater of the two attribute values is used. Default value: 0.
             # This attribute is disregarded for the first BLSE placed in a given reference area.
 
@@ -117,13 +122,16 @@ my role Table_344-BLSE_Attributes {
 
     has Int @.TPadding is entry(:array-or-item, :default(0));	# (Optional; inheritable; PDF 1.5) Specifies an offset to account for the separation between the table cell’s content rectangle and the surrounding border (see “Content and Allocation Rectangles” in 14.8.5.4, “Layout Attributes”). If both TPadding and Padding apply to a given table cell, Padding shall supersede TPadding. A positive value shall enlarge the background area; a negative value shall trim it, and the border may overlap the element’s text or graphic. The value is either a single number representing the width of the padding, in default user space units, that applies to all four edges of the table cell or a 4-entry array representing the padding width for the before edge, after edge, start edge, and end edge, respectively, of the content rectangle. Default value: 0.
 }
-also does Table_344-BLSE_Attributes;
+also does BLSE_Attributes;
 
 use ISO_32000::Table_345-Standard_layout_attributes_specific_to_inline-level_structure_elements;
 also does ISO_32000::Table_345-Standard_layout_attributes_specific_to_inline-level_structure_elements;
 
+use ISO_32000_2::Table_380-Standard_layout_attributes_specific_to_inline-level_structure_elements;
+also does ISO_32000_2::Table_380-Standard_layout_attributes_specific_to_inline-level_structure_elements;
+
 #| Table 345 – Standard layout attributes specific to inline-level structure elements
-my role Table_345-ILSE_Attributes {
+my role ILSE_Attributes {
 
     has Numeric $.BaselineShift is entry;	# (Optional; not inheritable) The distance, in default user space units, by which the element’s baseline is shifted relative to that of its parent element. The shift direction is the opposite of the block-progression direction specified by the prevailing WritingMode attribute (see “General Layout Attributes” in 14.8.5.4, “Layout Attributes”). Thus, positive values shall shift the baseline toward the before edge and negative values toward the after edge of the reference area (upward and downward, respectively, in Western writing systems). Default value: 0.
             # The shifted element may be a superscript, a subscript, or an inline graphic. The shift applies to the element, its content, and all of its descendants. Any further baseline shift applied to a child of this element is measured relative to the shifted baseline of this (parent) element.
@@ -138,6 +146,9 @@ my role Table_345-ILSE_Attributes {
             # This attribute applies to all ILSEs (including implicit ones) that are children of this element or of its nested ILSEs, if any. It does not apply to nested BLSEs.
             # When translating to a specific export format, the values Normal and Auto, if specified, is used directly if they are available in the target format. The meaning of the term “reasonable value” is left to the conforming reader to determine. It is approximately 1.2 times the font size, but this value can vary depending on the export format.
             # NOTE 1 In the absence of a numeric value for LineHeight or an explicit value for the font size, a reasonable method of calculating the line height from the information in a Tagged PDF file is to find the difference between the associated font’s Ascent and Descent values (see 9.8, “Font Descriptors”), map it from glyph space to default user space (see 9.4.4, “Text Space Details”), and use the maximum resulting value for any character in the line.
+
+    my subset TextPosition of PDF::COS::Name where 'Sup'|'Sub'|'Normal';
+    has TextPosition $.TextPosition is entry;           # Optional; inheritable; PDF 2.0) The position of the element relative the immediately surrounding content.
 
     has RGB @.TextDecorationColor is entry(:len(3));	# (Optional; inheritable; PDF 1.5) The colour to be used for drawing text decorations. The value is an array of three numbers in the range 0.0 to 1.0, representing the red, green, and blue values, respectively, of an RGB colour space. If this attribute is not specified, the border colour for this element is the current fill colour in effect at the start of its associated content.
 
@@ -178,12 +189,15 @@ my role Table_345-ILSE_Attributes {
             # Default value: Auto.
             # NOTE 2 This attribute is used most commonly to differentiate between the preferred orientation of alphabetic (non- ideographic) text in vertically written Japanese documents (Auto or 90) and the orientation of the ideographic characters and/or alphabetic (non- ideographic) text in western signage and advertising (90). This attribute shall affect both the alignment and width of the glyphs. If a glyph is perpendicular to the vertical baseline, its horizontal alignment point is aligned with the alignment baseline for the script to which the glyph belongs. The width of the glyph area is determined from the horizontal width font characteristic for the glyph.
 }
-also does Table_345-ILSE_Attributes;
+also does ILSE_Attributes;
 
-#use role ISO_32000::Table_346-Standard_column_attributes;
-#also does role ISO_32000::Table_346-Standard_column_attributes;
+use ISO_32000::Table_346-Standard_column_attributes;
+also does ISO_32000::Table_346-Standard_column_attributes;
 
-my role Table_346-Column_Attributes {
+use ISO_32000_2::Table_381-Standard_layout_attributes_specific_to_standard_column_attributes;
+also does ISO_32000_2::Table_381-Standard_layout_attributes_specific_to_standard_column_attributes;
+
+my role Column_Attributes {
 
     has Int $.ColumnCount is entry(:default(1));	# (Optional; not inheritable; PDF 1.6) The number of columns in the content of the grouping element. Default value: 1.
 
@@ -191,4 +205,4 @@ my role Table_346-Column_Attributes {
 
     has Numeric @.ColumnWidths is entry(:array-or-item);	# (Optional; not inheritable; PDF 1.6) The desired width of the columns, measured in default user space units in the inline-progression direction. If the value is a number, it specifies the width of all columns. If the value is an array, it contains numbers, representing the width of each column, in order. If there are fewer than ColumnCount numbers, the last element specifies all remaining widths; if there are more than ColumnCount numbers, the excess array elements is ignored.
 }
-also does Table_346-Column_Attributes;
+also does Column_Attributes;

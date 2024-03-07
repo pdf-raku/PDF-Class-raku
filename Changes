@@ -1,4 +1,6 @@
 {{$NEXT}}
+   - Fix PDF::ISO_32000_2 definition for PDF::Attributes::Table; Add /Short
+   - Add some other PDF::ISO_32000_2 definitions
 
 0.5.17  2024-02-22T08:18:14+13:00
    - Fix some missing PDF::ISO_32000_2 definitions, picked up
