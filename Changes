@@ -1,5 +1,7 @@
 {{$NEXT}}
-   - Fix PDF::ISO_32000_2 definition for PDF::Attributes::Table; Add /Short
+
+0.5.18  2024-03-08T17:30:00+13:00
+   - Fix PDF::ISO_32000_2 definition for PDF::Attributes::{Table|Layout|list};
    - Add some other PDF::ISO_32000_2 definitions
 
 0.5.17  2024-02-22T08:18:14+13:00
