@@ -39,4 +39,17 @@ does-ok $att, PDF::Attributes::Layout;
 is $att<TextDecorationType>, 'Underline';
 is $att.TextDecorationType, 'Underline';
 
+# sanity check some other attribute types
+use PDF::Attributes::PrintField;
+my PDF::Attributes::PrintField() $pf = %( :Role<rb>, :Checked<on>);
+is $pf.Role, 'rb';
+
+use PDF::Attributes::Table;
+my PDF::Attributes::Table() $tab = %( :RowSpan(3), :ColSpan(1), :Headers<Name Score>);
+is $tab.RowSpan, 3;
+
+use PDF::Attributes::UserProperties;
+my PDF::Attributes::UserProperties() $up = %( :P[ ${:N<foo>, :V<Bar>} ] );
+is $up.P[0].N, 'foo';
+
 done-testing;

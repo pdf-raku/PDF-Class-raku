@@ -46,6 +46,9 @@ my subset TextOrStream is export(:TextOrStream) where PDF::COS::TextString | PDF
 multi sub coerce-text-or-stream(Str $value is rw, TextOrStream) is export(:TextOrStream) {
     $value = PDF::COS::TextString.COERCE: $value;
 }
+multi sub coerce-text-or-stream($_, TextOrStream) {
+    fail "expected text or PDF stream, got: " ~ .raku;
+}
 
 my subset ColorSpace of PDF::COS is export(:ColorSpace) where PDF::COS::Name | PDF::ColorSpace;
 

@@ -24,8 +24,11 @@ has Role $.Role is entry;	# (Optional; not inheritable) The type of form field r
 	# NOTE 1 Examples include text edit fields, numeric fields, password fields, digital signatures, and combo boxes. Default value: None specified.
 
 my subset Checked of PDF::COS::Name where 'on'|'off'|'neutral';
+# PDF 1.7
 has Checked $.checked is entry;	# (Optional; not inheritable) The state of a radio button or check box field. The value is one of: on, off (default), or neutral.
-	# NOTE 2 The case (capitalization) used for this key does not conform to the same conventions used elsewhere in this standard.
+# NOTE 2 The case (capitalization) used for this key does not conform to the same conventions used elsewhere in this standard.
+# PDF 2.0
+has Checked $.Checked is entry;
 
 has PDF::COS::TextString $.Desc is entry;	# (Optional; not inheritable) The alternate name of the field.
 	# NOTE 3 Similar to the value supplied in the TU entry of the field dictionary for interactive fields (see Table 220).
