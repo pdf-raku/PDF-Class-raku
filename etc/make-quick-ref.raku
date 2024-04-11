@@ -20,7 +20,7 @@ sub  MAIN(Str:D $md-file, :$class) {
     }
     my $doc = $md-file.IO.slurp;
     my @table = gather { gen-table(@classes) }
-    unshift @table, ('--------' xx 6) .join(' | ' );
+    unshift @table, ('--------' xx 7) .join(' | ' );
     unshift @table, ('Class', 'Types', 'Accessors', 'Methods', 'Description', 'PDF 1.7 References', 'PDF 2.0 References').join: ' | ';
     print $doc.subst(/^^[[\N+"|"\N+\n]+]$Anchor/, @table.join("\n") ~ "\n" ~ $Anchor);
 }
@@ -67,7 +67,7 @@ sub gen-table(@classes) {
 
         my $doc = $class.WHY // '';
         my @interfaces = $class.^roles.grep({.^name ~~ /^ISO_32000/}).list;
-        my @see-also = @interfaces.map: *.^name;
+        my @see-also = @interfaces.map(*.^name).sort({/Table_(\d+)/; $0.Int});
         my @pdf_17_refs = @see-also.grep(/^'ISO_32000::'/);
         my @pdf_20_refs = @see-also.grep(/^'ISO_32000_2::'/);
         my %seen;
