@@ -13,8 +13,6 @@ use ISO_32000_2::Table_210-Additional_entries_specific_to_a_URI_action;
 also does ISO_32000_2::Table_210-Additional_entries_specific_to_a_URI_action;
 
 use PDF::COS::Tie;
-use PDF::COS::ByteString;
-use PDF::COS::Name;
 use PDF::Class::Defs :AsciiStr;
 
 has AsciiStr $.URI is entry(:required);   # (Required) The uniform resource identifier to resolve, encoded in 7-bit ASCII.
