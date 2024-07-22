@@ -1,7 +1,7 @@
 use v6;
 
 #| PDF entry-point. either a trailer dict or an XRef stream
-unit class PDF::Class:ver<0.5.18>;
+unit class PDF::Class:ver<0.5.19>;
 
 use PDF;
 also is PDF;

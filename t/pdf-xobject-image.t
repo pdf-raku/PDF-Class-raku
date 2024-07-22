@@ -54,12 +54,14 @@ lives-ok {$snoopy.check}, '$img.check lives';
 
 my $inline = $snoopy.inline-content;
 is +$inline, 3, '.content(:inline) has 3 ops';
-is-json-equiv $inline[0], (:BI[ :dict{ BPC => 8,
+is-json-equiv $inline[0], (:BI[ ]), 'first .content(:inline) op: :BI[...]';
+is-json-equiv $inline[1], (:ID[ :dict{ BPC => 8,
                                        CS  => :name<DeviceRGB>,
                                        F   => :name<DCTDecode>,
                                        H   => 254,
-                                       W   => 200 } ]), 'first .content(:inline) op: :BI[...]';
-is-json-equiv $inline[1], (:ID[ :encoded($snoopy.encoded) ]), 'second .content(:inline) op: :ID[...]';
+                                       L   => 8247,
+                                       W   => 200 },
+                                :encoded($snoopy.encoded) ]), 'second .content(:inline) op: :ID[...]';
 is-json-equiv $inline[2], (:EI[ ]), 'third .content(:inline) op: :EI[]';
 
 my PDF::Class $pdf .= new;

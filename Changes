@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+0.5.19  2024-07-23T06:08:16+12:00
+   - Add PDF 2.0 references to README
+   - Fix pdf-xobject-image.t for latest inline-image AST. Bump PDF,
+     PDF::Grammar, PDF::Content
+
 0.5.18  2024-03-08T17:30:00+13:00
    - Fix PDF::ISO_32000_2 definition for PDF::Attributes::{Table|Layout|list};
    - Add some other PDF::ISO_32000_2 definitions
