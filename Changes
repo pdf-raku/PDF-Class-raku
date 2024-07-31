@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+0.5.20  2024-07-31T15:47:07+12:00
+   - Fix failing test in t/helloworld.t
+
 0.5.19  2024-07-23T06:08:16+12:00
    - Add PDF 2.0 references to README
    - Fix pdf-xobject-image.t for latest inline-image AST. Bump PDF,
