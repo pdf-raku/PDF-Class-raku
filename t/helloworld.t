@@ -123,8 +123,8 @@ is $page.Contents.Filter, 'FlateDecode', 'page stream is compressed';
 is $pdf.Info.Author, $*PROGRAM-NAME, '$pdf.Info.Author reload';
 
 my $contents-ast;
-lives-ok {$contents-ast =  $pdf.page(1).contents-parse}, 'page contents-parse - lives';
-isa-ok $contents-ast, Array, '.contents type';
+lives-ok {$contents-ast = $pdf.page(1).contents-parse}, 'page contents-parse - lives';
+isa-ok $contents-ast, List, '.contents type';
 ok +$contents-ast > 24, '.contents elems';
 is-deeply $contents-ast[0], (:q[]), '.contents first elem';
 is-deeply $contents-ast[*-1], (:ET[]), '.contents last elem';
