@@ -12,7 +12,7 @@ $new-page.gfx.say( 'New Last Page!!' );
 my $id = $*PROGRAM-NAME.fmt('%-16.16s');
 
 $pdf.id = $id++;
-ok $pdf.update(:!info), 'update';
+lives-ok { $pdf.update(:!info) }, 'update';
 
 $pdf .= open('t/update.pdf');
 is $pdf.page-count, 2, 'pdf now has two pages';
