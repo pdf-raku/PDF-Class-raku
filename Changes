@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+0.5.21  2024-09-07T04:55:34+12:00
+   - Fix flapping test in t/update.t
+   - Add PDF::Bread /Metadata entry (PDF 2.0)
+   - Fix PDF::Action::SubmitForm /Fields coercement
+
 0.5.20  2024-07-31T15:47:07+12:00
    - Fix failing test in t/helloworld.t
 
