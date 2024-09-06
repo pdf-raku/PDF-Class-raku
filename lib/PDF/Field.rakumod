@@ -63,9 +63,6 @@ multi sub coerce-field(PDF::COS::Dict() $dict, PDF::Field $field) is export(:coe
     my PDF::Field:U $class = $field.field-delegate( $dict );
     $class.COERCE: $dict;
 }
-method coerce-field(Hash $dict) {
-    coerce-field($dict, PDF::Field);
-}
 
 method type { 'Field' }
 has FieldSubtypeName $.FT is entry(:inherit, :alias<subtype>);  # Required for terminal fields; inheritable) The type of field that this dictionary describes
