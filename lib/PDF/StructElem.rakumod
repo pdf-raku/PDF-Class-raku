@@ -154,7 +154,7 @@ has PDF::COS::TextString $.ActualText is entry;               # (Optional; PDF 1
 
 has PDF::Filespec @.AF is entry; # (Optional; PDF 2.0) An array of one or more file specification dictionaries (7.11.3, "File specification dictionaries") which denote the associated files for the entire structure tree.
 
-has PDF::Namespace @.NS is entry(:indirect, :alias<namespace>); # Optional; PDF 2.0) An indirect reference to a namespace dictionary defining the namespace this element belongs to
+has PDF::Namespace $.NS is entry(:indirect, :alias<namespace>); # Optional; PDF 2.0) An indirect reference to a namespace dictionary defining the namespace this element belongs to
 
 my subset PhoneticAlphabet of PDF::COS::Name where 'ipa'|'x-sampa'|'zh-Latn-pinyin'|'zh-Latn-wadegile';
 has PhoneticAlphabet $.PhoneticAlphabet is entry; # (Optional; PDF 2.0) Property for a structure element that indicates the phonetic alphabet used by a Phoneme property. Applies to the structure element and its children, except where overridden by a child structure element.

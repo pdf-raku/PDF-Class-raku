@@ -13,7 +13,7 @@ use PDF::COS::TextString;
 
 use PDF::Filespec :FileRef;
 
-has PDF::COS::Name $.Type is entry where 'Namespace';
+has PDF::COS::Name $.Type is entry where 'Namespace'; # Optional; PDF 2.0) The type of PDF object that this dictionary describes. If present, shall be Namespace.
 
 has PDF::COS::TextString $.NS is entry(:required); # (Required; PDF 2.0) The string defining the namespace name which this entry identifies (conventionally a uniform resource identifier, or URI).
 

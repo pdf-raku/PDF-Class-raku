@@ -13,7 +13,7 @@ also does ISO_32000_2::Table_382-Standard_list_attributes;
 use PDF::COS::Tie;
 use PDF::COS::Name;
 
-my subset Numbering of PDF::COS::Name where 'None'|'Disc'|'Circle'|'Square'|'Decimal'|'UpperRoman'|'LowerRoman'|'UpperAlpha'|'LowerAlpha';
+my subset Numbering of PDF::COS::Name where 'None'|'Unordered'|'Description'|'Disc'|'Circle'|'Square'|'Decimal'|'UpperRoman'|'LowerRoman'|'UpperAlpha'|'LowerAlpha';
 
 has Numbering $.ListNumbering is entry(:default<None>);	# (Optional; inheritable) The numbering system used to generate the content of the Lbl (Label) elements in an autonumbered list, or the symbol used to identify each item in an unnumbered list. The value of the ListNumbering is one of the following, and is applied as described here.
 	# None No autonumbering; Lbl elements (if present) contain arbitrary text not subject to any numbering scheme
