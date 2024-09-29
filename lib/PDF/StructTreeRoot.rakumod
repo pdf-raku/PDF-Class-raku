@@ -90,7 +90,22 @@ our subset StandardStructureType of PDF::COS::Name where
 
 has StandardStructureType %.RoleMap  is entry;     # A dictionary that shall map the names of structure types used in the document to their approximate equivalents in the set of standard structure types.
 
-has PDF::Attributes %.ClassMap is entry(:coerce(&coerce-attributes));                      # A dictionary that shall map name objects designating attribute classes to the corresponding attribute objects
+my subset AttributeList of List where .elems == 0 || .[0] ~~ PDF::Attributes;
+my subset ClassMap where PDF::Attributes|AttributeList;
+
+multi sub coerce-classmap(List $l is rw, ClassMap) {
+    coerce-attributes($l[$_], PDF::Attributes) for (^$l.elems);
+}
+
+multi sub coerce-classmap(Hash $a is rw, ClassMap) {
+    coerce-attributes($a, PDF::Attributes);
+}
+
+multi sub coerce-classmap($_, ClassMap) {
+    fail "Unable to coerce .raku to a class-map";
+}
+
+has ClassMap %.ClassMap is entry(:coerce(&coerce-classmap));                      # A dictionary that shall map name objects designating attribute classes to the corresponding attribute objects
 
 has PDF::Namespace @.Namespaces is entry(:indirect); # (Required if any structure elements have namespace identifiers; PDF 2.0) An array of namespaces used within the document
 
