@@ -16,13 +16,33 @@ use PDF::COS::Name;
 
 use PDF::Namespace;
 
-has PDF::COS::Name $.O is entry(:alias<owner>, :required); # The name of the PDF processor creating the attribute data.
+# See PDF 2.0 Table 376 - Standard structure attribute owners
+my subset Owner of PDF::COS::Name where 'Layout'|
+'List'|
+'PrintField'|
+'Table'|
+'UserProperties'|
+'Artifact'|
+'XML-1.00'|
+'HTML-3.20'|
+'HTML-4.01'|
+'HTML-5.00'|
+'OEB-1.00'|
+'RTF-1.05'|
+'CSS-1'|
+'CSS-2'|
+'CSS-3'|
+'RDFa-1.10'|
+'ARIA-1.1'|
+'NSO';
+has Owner $.O is entry(:alias<owner>, :required); # The name of the PDF processor creating the attribute data.
 has PDF::Namespace $.NS is entry(:alias<namespace=>, :indirect); # (Required if the value of the O entry is NSO; not permitted otherwise; PDF 2.0) An indirect reference to a namespace dictionary defining the namespace that attributes with this attribute object dictionary belong to.
 
 method set-attribute($key, $value) { self{$key} = $value }
 method attributes-delegate( Hash $dict) {
-    with $dict<O> -> $owner {
-         PDF::COS.loader.find-delegate( 'Attributes', $owner, :base-class(PDF::Attributes) );
+    my $owner := $dict<O>;
+    if $owner ~~ 'Layout'|'List'|'PrintField'|'Table'|'UserProperties' {
+        PDF::COS.loader.find-delegate: 'Attributes', $owner, :base-class(PDF::Attributes)
     }
     else {
         PDF::Attributes;
