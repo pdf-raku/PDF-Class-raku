@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+0.5.22  2024-10-02T07:23:48+13:00
+   - Fix PDF 2.0 /NS entry in PDF::StructElem
+   - Fix /Subtype entry in PDF::EmbeddedFile
+   - Handle PDF 2.0 definitions PDF::Attributes
+
 0.5.21  2024-09-07T04:55:34+12:00
    - Fix flapping test in t/update.t
    - Add PDF::Bead /Metadata entry (PDF 2.0)
