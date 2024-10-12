@@ -220,7 +220,7 @@ method cb-init {
     # vivify pages root
     self<Type> //= PDF::COS::Name.COERCE: 'Catalog';
 
-    self<Pages> //= PDF::COS::Dict.COERCE: {
+    self<Pages> //= {
         :Type( :name<Pages> ),
         :Count(0),
         :Kids[],

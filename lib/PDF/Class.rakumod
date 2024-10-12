@@ -28,8 +28,10 @@ use PDF::Class::Type;
 use PDF::Info;
 use PDF::Content::Font::CoreFont;
 
+sub name(PDF::COS::Name() $_) { $_ }
+
 has PDF::Info $.Info is entry(:indirect);  #= (Optional; must be an indirect reference) The document’s information dictionary
-my subset CatalogLike of PDF::Class::Type where { .<Type> ~~ 'Catalog' };  # autoloaded PDF::Catalog
+my subset CatalogLike of Associative where { .<Type> ~~ 'Catalog' };  # autoloaded PDF::Catalog
 has CatalogLike $.Root is entry(:required, :indirect, :alias<catalog>); #= The catalog dictionary for the PDF document contained in the file
 
 has PDF::COS::Type::XRef $.XRefStm is entry; #= Only applicable to Hybrid cross reference streams 
@@ -41,8 +43,7 @@ method version is rw {
             Version.new: $.catalog<Version> // self.?reader.?version // '1.4'
         },
         STORE => -> $, Version $_ {
-            my PDF::COS::Name() $name = .Str;
-            $.catalog<Version> = $name;
+            $.catalog<Version> = name($_);
         },
     );
 }
@@ -92,8 +93,8 @@ method permitted(UInt $flag --> Bool) {
 
 method cb-init {
     unless self<Root> {
-        self<Root> = { :Type( :name<Catalog> ) };
-        self<Root>.cb-init;
+        self<Root> = { Type => name('Catalog') };
+        self<Root>.?cb-init;
     }
 }
 
