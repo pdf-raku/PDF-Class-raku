@@ -113,5 +113,6 @@ my role SeedValueDict
 }
 
 has SeedValueDict $.SV is entry(:indirect, :alias<seed-value>);           # (Optional; must be an indirect reference; PDF 1.5) A seed value dictionary (see Table 8.83) containing information that constrains the properties of a signature that is applied to this field.
-method DV is rw {$.SV}
+# not sure what this is for - DW Oct-2024
+method DV is DEPRECATED is rw {$.SV}
 
