@@ -111,5 +111,5 @@ PDF::COS.loader = class PDF::Class::Loader {
 	$base-class;
     }
 
-    method pdf-class { PDF::COS.required('PDF::Class') }
+    method target-class { 'PDF::Class' }
 }
