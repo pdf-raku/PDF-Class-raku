@@ -12,9 +12,9 @@ Note that this class does the following roles:
 
   * [PDF::Image](https://pdf-raku.github.io/PDF-Class-raku) - for low level manipulation of PDF Image objects.
 
-  * [PDF::Content](https://pdf-raku.github.io/PDF-Content-raku)::Image - for high-level image loading.
+  * [PDF::Content](https://pdf-raku.github.io/PDF-Content-raku/PDF/Content)::Image - for high-level image loading.
 
-The [PDF::Content](https://pdf-raku.github.io/PDF-Content-raku)::Image role enables PDF image objects to be loaded from image files. For example.
+The [PDF::Content](https://pdf-raku.github.io/PDF-Content-raku/PDF/Content)::Image role enables PDF image objects to be loaded from image files. For example.
 
     my PDF::XObject::Image $logo .= load: "logo.png":
 
