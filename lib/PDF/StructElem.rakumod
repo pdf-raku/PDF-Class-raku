@@ -61,7 +61,7 @@ multi sub coerce-child($_, StructElemChild) {
     warn "Unable to coerce {.raku} to a PDF::StructElem.K (child) element";
 }
 
-has StructElemParent $.P is entry(:required, :alias<struct-parent>, :coerce(&coerce-parent)); # (Required; shall be an indirect reference) The structure element that is the immediate parent of this one in the structure hierarchy.
+has StructElemParent $.P is entry(:alias<struct-parent>, :coerce(&coerce-parent)); # (Required; shall be an indirect reference) The structure element that is the immediate parent of this one in the structure hierarchy.
 has StructElemChild @.K is entry(:array-or-item, :alias<kids>, :coerce(&coerce-child));       # (Optional) The children of this structure element. The value of this entry may be one of the following objects or an array consisting of one or more of the following objects:
 # • A structure element dictionary denoting another structure element
 # • An integer marked-content identifier denoting a marked-content sequence
@@ -160,3 +160,7 @@ my subset PhoneticAlphabet of PDF::COS::Name where 'ipa'|'x-sampa'|'zh-Latn-piny
 has PhoneticAlphabet $.PhoneticAlphabet is entry; # (Optional; PDF 2.0) Property for a structure element that indicates the phonetic alphabet used by a Phoneme property. Applies to the structure element and its children, except where overridden by a child structure element.
 
 has PDF::COS::TextString $.Phoneme is entry; # (Optional; PDF 2.0) Property for a structure element that may be used as pronunciation hint. It is an exact replacement for content enclosed by the structure element and its children.
+
+method cb-check {
+    die "missing required field /P" without self.P;
+}
