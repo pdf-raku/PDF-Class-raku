@@ -17,9 +17,7 @@ use PDF::Class::Defs :BlendMode;
 use PDF::Appearance;
 use PDF::Border;
 use PDF::Filespec;
-use PDF::OCG;   # optional content group
-use PDF::OCMD;  # optional content membership dict
-my subset OCG-or-OCMD where PDF::OCG|PDF::OCMD;
+use PDF::Class::OptionalContent;
 use PDF::Page;
 
 use ISO_32000::Table_164-Entries_common_to_all_annotation_dictionaries;
@@ -69,7 +67,7 @@ role Border does PDF::COS::Tie::Array {
 has Border $.Border is entry(:default[0, 0, 1]);            # (Optional) An array specifying the characteristics of the annotation’s border. The border is specified as a rounded rectangle.
 has Numeric @.C is entry(:alias<color>);                    # (Optional; PDF 1.1) An array of numbers in the range 0.0 to 1.0, representing a color used for (*) background, when closed, (*) title bar of pop-up window, (*) link border
 has UInt $.StructParent is entry(:alias<struct-parent>);                           # (Required if the annotation is a structural content item; PDF 1.3) The integer key of the annotation’s entry in the structural parent tree
-has OCG-or-OCMD $.OC is entry(:alias<optional-content>);    # (Optional; PDF 1.5) An optional content group or optional content membership dictionary specifying the optional content properties for the annotation.
+has  PDF::Class::OptionalContent $.OC is entry(:alias<optional-content>);    # (Optional; PDF 1.5) An optional content group or optional content membership dictionary specifying the optional content properties for the annotation.
 
 has PDF::Filespec @.AF is entry(); # (Optional; PDF 2.0) An array of one or more file specification dictionaries, which denote the associated files for this annotation).
 

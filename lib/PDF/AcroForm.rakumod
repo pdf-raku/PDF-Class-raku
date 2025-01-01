@@ -78,13 +78,22 @@ has Str $.DA is entry(:alias<default-appearance>);                    # (Optiona
 has UInt $.Q is entry(:alias<quadding>);                              # (Optional) A document-wide default value for the Q attribute of variable text fields
 
 my subset XFA where .[0] ~~ TextOrStream;
-multi sub coerce-xfa-elem(TextOrStream $v) { $v }
-multi sub coerce-xfa-elem($v is rw) {
-    coerce-text-or-stream($v, TextOrStream);
+multi sub coerce-xfa-elem(PDF::COS::TextString $v, $ where $_ %% 2) {
+    $v;
 }
+multi sub coerce-xfa-elem($v is rw, $ where $_ %% 2) {
+    $v = PDF::COS::TextString.COERCE: $v;
+}
+multi sub coerce-xfa-elem(PDF::COS::Stream $s, $ where $_ !%% 2) {
+    $s
+}
+multi sub coerce-xfa-elem($e, $_) {
+    fail "Unable to coerece XFA element of type {$e.WHAT.raku} at index $_";
+}
+
 multi sub coerce-xfa(List $a, XFA) {
-   coerce-xfa-elem( $a[$_])
-        for 0, 2 ... +$a;
+   coerce-xfa-elem( $a[$_], $_)
+        for ^+$a;
 }
 multi sub coerce-xfa($_, $) { warn "unable to coerce to XFA forms: {.raku}" }
 has XFA $.XFA is entry(:coerce(&coerce-xfa));          # (Optional; PDF 1.5) A stream or array containing an XFA resource, whose format is described by the Data Package (XDP) Specification.

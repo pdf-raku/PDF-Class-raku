@@ -24,7 +24,7 @@ my role AppearanceStates
 
 my subset AppearEntry where FormLike | AppearanceStates;
 multi sub coerce(PDF::COS::Stream $dict is rw, AppearEntry) {
-    warn "Stream not of /Subtype /Form"
+    fail "Stream not of /Subtype /Form"
 }
 multi sub coerce(Hash $dict is rw, AppearEntry) {
     AppearanceStates.COERCE: $dict;
