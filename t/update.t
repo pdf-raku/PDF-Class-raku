@@ -9,7 +9,7 @@ my $new-page = $pdf.Pages.add-page;
 $new-page.gfx.say( 'New Last Page!!' );
 
 # ensure consistant document ID generation
-my $id = $*PROGRAM-NAME.fmt('%-16.16s');
+my $id = $*PROGRAM.basename.fmt('%-16.16s');
 
 $pdf.id = $id++;
 lives-ok { $pdf.update(:!info) }, 'update';

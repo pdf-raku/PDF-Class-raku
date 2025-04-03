@@ -116,6 +116,6 @@ $page.gfx.ops: [
     ];
 
 # ensure consistant document ID generation
-$pdf.id =  $*PROGRAM-NAME.fmt('%-16.16s');
+$pdf.id =  $*PROGRAM.basename.fmt('%-16.16s');
 
 $pdf.save-as('t/pdf-pattern.pdf', :!info);

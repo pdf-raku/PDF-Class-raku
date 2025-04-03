@@ -101,6 +101,6 @@ $page.graphics: {
 }
 
 # ensure consistant document ID generation
-$pdf.id =  $*PROGRAM-NAME.fmt('%-16.16s');
+$pdf.id =  $*PROGRAM.basename.fmt('%-16.16s');
 
 $pdf.save-as('t/pdf-xobject-form.pdf', :!info);

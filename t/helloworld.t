@@ -11,7 +11,7 @@ my PDF::Class $pdf .= new;
 my PDF::Page $page = $pdf.add-page;
 $page.media-box = [0, 0, 595, 842];
 
-my $id = $*PROGRAM-NAME.fmt: '%-16.16s';
+my $id = $*PROGRAM.basename.fmt: '%-16.16s';
 
 dies-ok { $page.media-box = [0, 595] }, 'media-box bad setter - dies';
 is-json-equiv $page.media-box, [0, 0, 595, 842], 'media-box bad setter - ignored';
@@ -104,7 +104,7 @@ $page.text: {
 }
 
 given $pdf.Info //= {} -> PDF::Info $info {
-    $info.Author = $*PROGRAM-NAME;
+    $info.Author = $*PROGRAM.basename;
     $info.CreationDate = DateTime.new: :year(2015), :month(12), :day(25);
 }
 skip '$pdf.Info<Author> - not completing';
@@ -120,7 +120,7 @@ isa-ok $pdf.reader.trailer, PDF, 'trailer type';
 $page = $pdf.page: 1;
 isa-ok $page, 'PDF::Page', 'first pages';
 is $page.Contents.Filter, 'FlateDecode', 'page stream is compressed';
-is $pdf.Info.Author, $*PROGRAM-NAME, '$pdf.Info.Author reload';
+is $pdf.Info.Author, $*PROGRAM.basename, '$pdf.Info.Author reload';
 
 my $contents-ast;
 lives-ok {$contents-ast = $pdf.page(1).contents-parse}, 'page contents-parse - lives';
