@@ -19,9 +19,11 @@ sub  MAIN(Str:D $md-file, :$class) {
                  %classes.keys
     }
     my $doc = $md-file.IO.slurp;
-    my @table = gather { gen-table(@classes) }
-    unshift @table, ('--------' xx 7) .join(' | ' );
-    unshift @table, ('Class', 'Types', 'Accessors', 'Methods', 'Description', 'PDF 1.7 References', 'PDF 2.0 References').join: ' | ';
+    my @table = map *.join(' | '), [
+        ('Class', 'Types', 'Accessors', 'Methods', 'Description', 'PDF 1.7 References', 'PDF 2.0 References'),
+        '--------' xx 7
+    ];
+    @table.append: gather gen-table(@classes);
     print $doc.subst(/^^[[\N+"|"\N+\n]+]$Anchor/, @table.join("\n") ~ "\n" ~ $Anchor);
 }
 
@@ -51,7 +53,11 @@ sub scan-classes($path) {
 }
 
 sub gen-table(@classes) {
-    for @classes.sort({ when 'PDF::Class' {'A'}; when 'PDF::Catalog' {'B'}; default {$_}}) -> $class-name {
+    for @classes.sort: {
+        when 'PDF::Class' {'A'};
+        when 'PDF::Catalog' {'B'};
+        default {$_};
+    } -> $class-name {
         $*ERR.print: ".";
         my $class = (require ::($class-name));
 
