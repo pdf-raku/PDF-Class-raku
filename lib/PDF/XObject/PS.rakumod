@@ -4,8 +4,10 @@ unit class PDF::XObject::PS;
 
 use PDF::XObject;
 use PDF::Content::XObject;
+use PDF::Content::Resourced;
 also is PDF::XObject;
 also does PDF::Content::XObject['PS'];
+also does PDF::Content::Resourced;
 
 use ISO_32000::Table_88-Additional_Entries_Specific_to_a_PostScript_XObject_Dictionary;
 also does ISO_32000::Table_88-Additional_Entries_Specific_to_a_PostScript_XObject_Dictionary;
@@ -24,7 +26,7 @@ has PDF::COS::Stream $.Level1 is entry; # (Optional) A stream whose contents are
 Beginning with PDF 1.1, a content stream may include PostScript language fragments. These fragments may
 be used only when printing to a PostScript output device; they have no effect either when viewing the
 document on-screen or when printing it to a non-PostScript device. In addition, conforming readers do
-do not interpret the PostScript fragments. Hence, this capability should be used with extreme caution and only
+not interpret the PostScript fragments. Hence, this capability should be used with extreme caution and only
 if there is no other way to achieve the same result. Inappropriate use of PostScript XObjects can cause PDF
 files to print incorrectly.
 

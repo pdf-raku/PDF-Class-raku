@@ -1,7 +1,7 @@
 unit role PDF::Field::Choice;
 
 use PDF::Field;
-also does PDF::Field;
+also does PDF::Field::_Instance;
 
 use ISO_32000::Table_231-Additional_entries_specific_to_a_choice_field;
 also does ISO_32000::Table_231-Additional_entries_specific_to_a_choice_field;
@@ -12,7 +12,7 @@ also does ISO_32000_2::Table_234-Additional_entries_specific_to_a_choice_field;
 use PDF::COS::Tie;
 use PDF::COS::TextString;
 
-has PDF::COS::TextString @.V is entry(:inherit, :array-or-item);
+has PDF::COS::TextString @.V is entry(:inherit, :array-or-item, :alias<value>);
 has PDF::COS::TextString @.DV is entry(:inherit, :array-or-item, :alias<default-value>);
 
 my subset FieldOptions is export(:FieldOptions) where { .[0] ~~ PDF::COS::TextString && (.elems == 1 || .[1] ~~ PDF::COS::TextString) }

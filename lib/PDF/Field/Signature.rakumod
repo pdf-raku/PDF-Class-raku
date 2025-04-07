@@ -1,7 +1,7 @@
 unit role PDF::Field::Signature;
 
 use PDF::Field;
-also does PDF::Field;
+also does PDF::Field::_Instance;
 
 use PDF::COS::Tie;
 use PDF::COS::Name;
@@ -16,6 +16,7 @@ use ISO_32000_2::Table_235-Additional_entries_specific_to_a_signature_field;
 also does ISO_32000_2::Table_235-Additional_entries_specific_to_a_signature_field;
 
 has PDF::Signature $.V is entry(:alias<value>);
+has PDF::Signature $.DV is entry(:alias<default-value>);
 
 my role LockDict
     does PDF::COS::Tie::Hash {
@@ -113,6 +114,5 @@ my role SeedValueDict
 }
 
 has SeedValueDict $.SV is entry(:indirect, :alias<seed-value>);           # (Optional; must be an indirect reference; PDF 1.5) A seed value dictionary (see Table 8.83) containing information that constrains the properties of a signature that is applied to this field.
-# not sure what this is for - DW Oct-2024
-method DV is DEPRECATED is rw {$.SV}
+
 
