@@ -35,6 +35,12 @@ sub key-sort($_) {
     default            {$_}
 }
 
+multi sub gisty(Str $v where .chars > 500) {
+    $v.substr(0..128) ~ '…' ~ $v.substr(*-1);
+}
+
+multi sub gisty($v) { $v }
+
 sub display-item($_) {
     when Hash|Array {
         my $obj-num = .?obj-num;
@@ -43,12 +49,11 @@ sub display-item($_) {
             !! '...';
     }
     when PDF::COS::TextString { .Str.raku }
-    when PDF::COS::TextString { .Str.raku }
     default {
         given to-ast($_) {
-            .isa(Pair) && .key ~~ 'hex-string'
+            gisty .isa(Pair) && .key ~~ 'hex-string'
                 ?? .value.raku
-                !! $*writer.write($_)
+                !! $*writer.write($_);
         }
     }
 }
