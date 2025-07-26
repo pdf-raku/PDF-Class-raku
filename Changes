@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.5.23  2025-07-27T10:47:58+12:00
    - Fix PDF::Mask /SMask coercement; failing test in
      t/pdf-resources.t
    - Fix PDF::Field /V and /DV definitions.
