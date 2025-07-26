@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+0.5.24  2025-07-27T11:20:57+12:00
+   - Fix a PDF::API6 regression in t/00-basic.t; version()
+     setter from a Version object.
+
 0.5.23  2025-07-27T10:47:58+12:00
    - Fix PDF::Mask /SMask coercement; failing test in
      t/pdf-resources.t

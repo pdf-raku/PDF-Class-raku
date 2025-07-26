@@ -1,7 +1,7 @@
 use v6;
 
 #| PDF entry-point. either a trailer dict or an XRef stream
-unit class PDF::Class:ver<0.5.23>;
+unit class PDF::Class:ver<0.5.24>;
 
 use PDF;
 also is PDF;
@@ -38,14 +38,14 @@ has PDF::COS::Type::XRef $.XRefStm is entry; #= Only applicable to Hybrid cross 
 
 method type { 'PDF' }
 method version is rw {
-    Proxy.new(
-        FETCH => {
-            Version.new: $.catalog<Version> // self.?reader.?version // '1.4'
-        },
-        STORE => -> $, Version $_ {
-            $.catalog<Version> = name($_);
-        },
-    );
+    sub FETCH($) {
+        Version.new: $.catalog<Version> // self.?reader.?version // '1.4'
+    }
+    sub STORE ($, Version $_) {
+        $.catalog<Version> = name(.Str);
+    }
+
+    Proxy.new: :&FETCH, :&STORE;
 }
 
 # make sure it really is a PDF, not an FDF file etc
