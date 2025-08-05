@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.5.25  2025-08-06T05:28:53+12:00
    - Rebase PDF::Class from PDF to PDF::Lite.
    - Also rebase PDF::Page, PDF::Pages, PDF::Font, and
      PDF::XObject on PDF::Lite objects. This helps with
