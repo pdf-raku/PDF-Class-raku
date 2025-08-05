@@ -1,16 +1,14 @@
 #| /Type /Pages - a node in the page tree
 unit class PDF::Pages;
 
-use PDF::COS::Dict;
+use PDF::Lite;
 use PDF::Class::Type;
-use PDF::Content::PageNode;
-use PDF::Content::PageTree;
+also is PDF::Lite::Pages;
 
-also is PDF::COS::Dict;
 also does PDF::Class::Type;
-also does PDF::Content::PageNode;
-also does PDF::Content::PageTree;
 
+
+use PDF::Content::PageNode;
 use PDF::COS::Tie;
 use PDF::COS::Name;
 use PDF::Resources;

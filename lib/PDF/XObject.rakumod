@@ -2,10 +2,10 @@
 #| PDF::XObject::Form, PDF::XObject::Image
 unit class PDF::XObject;
 
-use PDF::COS::Stream;
+use PDF::Lite;
 use PDF::Class::Type;
 
-also is PDF::COS::Stream;
+also is PDF::Lite::XObject;
 also does PDF::Class::Type::Subtyped;
 
 use PDF::COS::Tie;

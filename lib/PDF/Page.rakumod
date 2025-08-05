@@ -1,16 +1,11 @@
-
 #| /Type /Page - describes a single PDF page
 unit class PDF::Page;
 
-use PDF::COS::Dict;
+use PDF::Lite;
 use PDF::Class::Type;
-use PDF::Content::Page;
-use PDF::Content::PageNode;
 
-also is PDF::COS::Dict;
+also is PDF::Lite::Page;
 also does PDF::Class::Type;
-also does PDF::Content::Page;
-also does PDF::Content::PageNode;
 
 use PDF::Class::FieldContainer;
 also does PDF::Class::FieldContainer;

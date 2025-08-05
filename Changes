@@ -1,4 +1,10 @@
 {{$NEXT}}
+   - Rebase PDF::Class from PDF to PDF::Lite.
+   - Also rebase PDF::Page, PDF::Pages, PDF::Font, and
+     PDF::XObject on PDF::Lite objects. This helps with
+     https://github.com/pdf-raku/PDF-Lite-raku/issues/11
+     by providing a more conventional hierarchy and upgrade
+     path between the modules.
 
 0.5.24  2025-07-27T11:20:57+12:00
    - Fix a PDF::API6 regression in t/00-basic.t; version()

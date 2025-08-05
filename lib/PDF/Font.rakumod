@@ -1,12 +1,10 @@
 #| /Type /Font - Describes a font
 unit class PDF::Font;
 
-use PDF::COS::Dict;
-use PDF::Content::Font;
+use PDF::Lite;
 use PDF::Class::Type;
 
-also is PDF::COS::Dict;
-also does PDF::Content::Font;
+also is PDF::Lite::Font;
 also does PDF::Class::Type::Subtyped;
 
 use PDF::COS::Tie;

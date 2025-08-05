@@ -1,13 +1,8 @@
-use v6;
-
 #| PDF entry-point. either a trailer dict or an XRef stream
 unit class PDF::Class:ver<0.5.24>;
 
-use PDF;
-also is PDF;
-
-use PDF::Content::API;
-also does PDF::Content::API;
+use PDF::Lite;
+also is PDF::Lite;
 
 # base class declares: $.Size, $.Encrypt, $.ID
 use ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
@@ -19,6 +14,7 @@ also does ISO_32000_2::Table_15-Entries_in_the_file_trailer_dictionary;
 use ISO_32000_2::Table_19-Additional_entries_in_a_hybrid-reference_files_trailer_dictionary;
 also does ISO_32000_2::Table_19-Additional_entries_in_a_hybrid-reference_files_trailer_dictionary;
 
+use PDF;
 use PDF::COS::Util :&flag-is-set;
 use PDF::Content;
 use PDF::COS::Tie;
@@ -51,7 +47,11 @@ method version is rw {
 # make sure it really is a PDF, not an FDF file etc
 method open(|c) is hidden-from-backtrace { nextwith( :$.type, |c); }
 
-has Str @.creator = "PDF::Class-{PDF::Class.^ver}", "PDF::Content-{PDF::Content.^ver}", "PDF-{PDF.^ver}", "Raku-{$*RAKU.version}";
+has Str @.creator =
+    "PDF::Class-{PDF::Class.^ver}",
+    "PDF::Content-{PDF::Content.^ver}",
+    "PDF-{PDF.^ver}",
+    "Raku-{$*RAKU.version}";
 
 method save-as($spec, Bool :$info = True, |c) {
     if $info {
@@ -89,13 +89,6 @@ method permitted(UInt $flag --> Bool) {
     !$perms.defined || $.crypt.?is-owner
         ?? True
         !! $perms.&flag-is-set( $flag );
-}
-
-method cb-init {
-    unless self<Root> {
-        self<Root> = { Type => name('Catalog') };
-        self<Root>.?cb-init;
-    }
 }
 
 my subset PagesLike of PDF::Class::Type where { .<Type> ~~ 'Pages' }; # autoloaded PDF::Pages
