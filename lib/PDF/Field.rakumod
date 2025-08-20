@@ -46,6 +46,10 @@ role PDF::Field {
         my PDF::Field:U $class = $field.field-delegate( $dict );
         $class.COERCE: $dict;
     }
+    # used by FDF/t/field-imports.t
+    method coerce-field(Hash $dict) {
+        coerce-field($dict, PDF::Field);
+    }
 
     method type { 'Field' }
     has FieldSubtypeName $.FT is entry(:inherit, :alias<subtype>);  # Required for terminal fields; inheritable) The type of field that this dictionary describes
