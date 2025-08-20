@@ -118,10 +118,10 @@ has PDF::Outlines $.Outlines is entry(:indirect); # (Optional; must be an indire
 has PDF::Thread @.Threads is entry(:indirect);        # (Optional; PDF 1.1; must be an indirect reference) An array of thread dictionaries representing the document’s article threads
 
 my subset OpenAction where PDF::Action|DestRef;
-multi sub coerce-action(List $_ is rw, OpenAction) {
+multi sub coerce-action(List $_ is rw, OpenAction) is hidden-from-backtrace {
     coerce-dest($_, DestRef);
 }
-multi sub coerce-action($_, OpenAction) is default {
+multi sub coerce-action($_, OpenAction) is hidden-from-backtrace {
     warn "unable to coerce {.raku} to an open action";
 }
 has OpenAction $.OpenAction is entry(:coerce(&coerce-action));    # (Optional; PDF 1.1) A value specifying a destination to be displayed or an action to be performed when the document is opened.

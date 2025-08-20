@@ -48,6 +48,7 @@ lives-ok { $pdf.save-as("t/pdf-lite.pdf") }, 'save-as';
 throws-like { $pdf.unknown-method }, X::Method::NotFound, message => "No such method 'unknown-method' for invocant of type 'PDF::Lite'", '$pdf unknown method';
 
 lives-ok { $pdf .= open("t/pdf-lite.pdf") }, 'open';
+$pdf.page(1).&isa-ok('PDF::Page', 'class upgrade');
 is-json-equiv $pdf.page(1).render.content-dump.head(8).list, (
     "q",
     "BT",
