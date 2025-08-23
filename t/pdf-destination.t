@@ -68,4 +68,16 @@ is $d.is-page-ref, False, 'destination is not a page ref';
 is $d.page, 42, 'destination page';
 is $d.fit, FitBox, 'fit accessor';
 
+# check we can read destinations
+
+my PDF::Class $pdf .= open: "t/pdf/samples/embedded-files.pdf";
+
+my %dests = $pdf.catalog.destinations;
+
+is-deeply %dests.keys, ('foo',);
+given %dests<foo> {
+    .[0].&is-deeply: $pdf.page(2);
+    .[1].&is: 'Fit';
+}
+
 done-testing;
