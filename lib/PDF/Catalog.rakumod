@@ -72,11 +72,11 @@ role PageLabels does PDF::NumberTree[PageLabelNode] {
         $!nums //= [ self.number-tree.Hash.pairs.sort ];
     }
 
-    multi sub page-num('D', UInt $seq) { decimal-number($seq) }
-    multi sub page-num('R', UInt $seq) { to-roman($seq) }
-    multi sub page-num('r', UInt $seq) { to-roman($seq).lc }
-    multi sub page-num('A', UInt $seq) { alpha-number($seq) }
-    multi sub page-num('a', UInt $seq) { alpha-number($seq).lc }
+    multi sub page-num('D', UInt $seq) { $seq.&decimal-number }
+    multi sub page-num('R', UInt $seq) { $seq.&to-roman }
+    multi sub page-num('r', UInt $seq) { $seq.&to-roman.lc }
+    multi sub page-num('A', UInt $seq) { $seq.&alpha-number }
+    multi sub page-num('a', UInt $seq) { $seq.&alpha-number.lc }
     multi sub page-num($_,   UInt $seq) {
         warn "unknown page-label type: $_";
         decimal-number($seq)
@@ -99,7 +99,7 @@ role PageLabels does PDF::NumberTree[PageLabelNode] {
         self[$page-num - 1];
     }
 }
-has PageLabels $.PageLabels is entry;           # (Optional; PDF 1.3) A number tree defining the page labeling for the document.
+has PageLabels $.PageLabels is entry;   # (Optional; PDF 1.3) A number tree defining the page labeling for the document.
 
 has PDF::Names $.Names is entry;        # (Optional; PDF 1.2) The document’s name dictionary
 
