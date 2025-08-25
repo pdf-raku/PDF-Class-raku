@@ -73,7 +73,6 @@ is $d.fit, FitBox, 'fit accessor';
 my PDF::Class $pdf .= open: "t/pdf/samples/embedded-files.pdf";
 
 my %dests = $pdf.catalog.destinations;
-
 is-deeply %dests.keys, ('foo',);
 given %dests<foo> {
     .[0].&is-deeply: $pdf.page(2);

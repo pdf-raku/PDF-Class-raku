@@ -1,5 +1,8 @@
 {{$NEXT}}
-   - Rework catalog destinations method, to not be implementation dependant.
+
+0.5.27  2025-08-26T07:02:21+12:00
+   - Replace catalog destinations method with a more general-purpose
+     implementation; imported from PDF::API6.
 
 0.5.26  2025-08-21T06:33:34+12:00
    - Reintroduce PDF::Field coerce-field() method to unbreak
