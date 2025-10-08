@@ -86,6 +86,19 @@ our subset StandardStructureType of PDF::COS::Name where
     | 'Figure'    # (Figure) An item of graphical content. Its placement may be specified with the Placement layout attribute.
     | 'Formula'   # (Formula) A mathematical formula.
     | 'Form'      # (Form) A widget annotation representing an interactive form field
+    # ****** PDF 2.0 Additions ******
+    # + [PDF 32000-2 Table 364 — Document level structure types]
+    | 'DocumentFragment' # (PDF 2.0) Encloses a logical document fragment.
+    # + [PDF 32000-2 Table 365 — Grouping level structure types]
+    | 'Aside'     # (PDF 2.0) Encloses content that is distinct from other content within its parent structure element.
+    # + [PDF 32000-2 Table 366 — Block level structure types]
+    | 'Title'     # (PDF 2.0) Encloses content that is usually referred to as the title of a document or high-level division of content.
+    | 'FENote'    # (PDF 2.0) Used to markup footnotes and endnotes.
+    # + [PDF 32000-2 Table 367 — Sub-block level structure type]
+    | 'Sub'       # (PDF 2.0) (Sub-division of a block level element) Encloses content typically perceived as a sub-division inside a block level structure element.
+    # + [PDF 32000-2 Table 368 — General inline level structure types]
+    | 'Em'        # (PDF 2.0) (Emphasis) Encloses content for the purpose of emphasis.
+    | 'Strong'    # (PDF 2.0) Encloses content for the purpose of strong importance.
     ;
 
 has StandardStructureType %.RoleMap  is entry;     # A dictionary that shall map the names of structure types used in the document to their approximate equivalents in the set of standard structure types.

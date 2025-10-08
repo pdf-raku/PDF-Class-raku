@@ -3,8 +3,8 @@ use v6;
 role PDF::Destination {
 
     # See:
-    # - [PDF 32000 Table 151 - Destination syntax]
-    # - [PDF 32000-2 Table 149 - Destination syntax]
+    # - [PDF 32000 Table 149 - Destination syntax]
+    # - [PDF 32000-2 Table 151 - Destination syntax]
     use PDF::COS::Tie::Array;
     also does PDF::COS::Tie::Array;
 

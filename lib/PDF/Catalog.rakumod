@@ -103,7 +103,7 @@ has PageLabels $.PageLabels is entry;   # (Optional; PDF 1.3) A number tree defi
 
 has PDF::Names $.Names is entry;        # (Optional; PDF 1.2) The document’s name dictionary
 
-has DestNamed %.Dests is entry(:coerce(&coerce-dest));    # (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
+has DestNamed %.Dests is entry(:coerce(&coerce-dest), :indirect);    # (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
 
 method destinations is rw {
     do with self<Names> {
@@ -218,7 +218,7 @@ has Bool $.NeedsRendering is entry;         # (Optional; PDF 1.7) A flag used to
 
 has PDF::COS::Dict $.DSS is entry;          # (Optional; PDF 2.0) A DSS dictionary containing document-wide security information.
 
-has PDF::Filespec @.AF is entry;            # Optional; PDF 2.0) An array of one or more file specification dictionaries which denote the associated files for this PDF document.
+has PDF::Filespec @.AF is entry;            # (Optional; PDF 2.0) An array of one or more file specification dictionaries which denote the associated files for this PDF document.
 
 has PDF::COS::Dict $.DPartRoot is entry;    # (Optional; PDF 2.0) A DPartRoot dictionary used to describe the document parts hierarchy for this PDF document.
 
