@@ -45,7 +45,7 @@ sub display-item($_) {
     when Hash|Array {
         my $obj-num = .?obj-num;
         $obj-num && $obj-num > 0
-            ?? ref($_)
+            ?? .&ref
             !! '...';
     }
     when PDF::COS::TextString { .Str.raku }
@@ -68,7 +68,7 @@ multi sub display(List $obj) {
 
     '[ ' ~ (
         (0 ..^ $n).map({ $obj[$_] })
-            .map({display-item($_)})
+            .map(&display-item)
             .join: ' ') ~ $etc ~
         ~ ' ]';
 }
@@ -77,8 +77,7 @@ multi sub display(Hash $obj) {
     '<< ' ~ (
         $obj.keys.grep(* ne 'encoded').sort(&key-sort)
             .map(-> $name { :$name, $obj{$name} })
-            .flat
-            .map({display-item($_)}).join: ' ')
+            .map(&display-item).join: ' ')
         ~ ' >>';
 }
 
@@ -86,7 +85,7 @@ sub ref($obj) {
     my $obj-num = $obj.obj-num;
     $obj-num && $obj-num > 0
 	?? "{$obj.obj-num} {$obj.gen-num//0} R"
-        !! display($obj)
+        !! $obj.&display
 }
 
 #| check a PDF against PDF class definitions
@@ -132,7 +131,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     return
         if $obj-num && $obj-num > 0
            && %indobj-seen{"$obj-num {$obj.gen-num}"}++;
-    $*ERR.say: (" " x ($depth++*2)) ~ "$ent\:\t{display($obj)}\t% {show-type($obj)}"
+    $*ERR.say: (" " x ($depth++*2)) ~ "$ent\:\t{$obj.&display}\t% {$obj.&show-type}"
         if $*trace;
 
     my Hash $entries = $obj.entries;
@@ -157,7 +156,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 
 	    CATCH {
 		default {
-		    error("Error in {ref($obj)} ({show-type($obj)}) /$k entry: $_");
+		    error("Error in {$obj.&ref} ({$obj.&show-type}) /$k entry: $_");
 		}
 	    }
 	}
@@ -167,14 +166,14 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
     }
 
     if %required {
-        error("Error in {ref($obj)} ({show-type($obj)}), missing required field(s): {%required.keys.sort.join(', ')}")
+        error("Error in {$obj.&ref} ({$obj.&show-type}), missing required field(s): {%required.keys.sort.join(', ')}")
     }
     else {
         do {
             $obj.?cb-check();
             CATCH {
                 default {
-                    error("Error in {ref($obj)} ({show-type($obj)}) record: $_");
+                    error("Error in {$obj.&ref} ({$obj.&show-type}) record: $_");
                 }
             }
         }
@@ -182,7 +181,7 @@ multi sub check(Hash $obj, UInt :$depth is copy = 0, Str :$ent = '') {
 
     if @unknown-entries {
         @unknown-entries = suggest($obj, $entries, @unknown-entries);
-        warning("Unknown entries {ref($obj)} ({show-type($obj)}) struct: @unknown-entries[]");
+        warning("Unknown entries {$obj.&ref} ({$obj.&show-type}) struct: @unknown-entries[]");
     }
 
     check-contents($obj, :$depth)
@@ -197,7 +196,7 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
         if $obj-num && $obj-num > 0
            && %indobj-seen{"$obj-num {$obj.gen-num}"}++;
 
-    $*ERR.say: (" " x ($depth++*2)) ~ "$ent\:\t{display($obj)}\t% {show-type($obj)}"
+    $*ERR.say: (" " x ($depth++*2)) ~ "$ent\:\t{$obj.&display}\t% {$obj.&show-type}"
         if $*trace;
 
     my Array $index = $obj.index;
@@ -215,7 +214,7 @@ multi sub check(Array $obj, UInt :$depth is copy = 0, Str :$ent = '') {
                 && !($i == 0 && $accessor ~~ 'page'); # avoid recursing to page destinations
 	    CATCH {
 		default {
-		    error("error in {ref($obj)}\[$i\] ({show-type($obj)}) $ent: $_");
+		    error("error in {$obj.&ref}\[$i\] ({$obj.&show-type}) $ent: $_");
 		}
 	    }
 	}
@@ -264,7 +263,7 @@ sub check-contents( $obj, :$depth ) {
                 $*ERR.print: (" " x ($depth*2))
                     if $*trace;
                 $*ERR.print: "Rendering warning(s)";
-                $*ERR.print: " in {ref($obj)} ({show-type($obj)})"
+                $*ERR.print: " in {$obj.&ref} ({$obj.&show-type})"
                     unless $*trace;
                 $*ERR.say: ":";
             }
@@ -280,7 +279,7 @@ sub check-contents( $obj, :$depth ) {
 
     CATCH {
 	default {
-	    error("Unable to render {ref($obj)} contents: $_");
+	    error("Unable to render {$obj.&ref} contents: $_");
 	}
     }
 }
