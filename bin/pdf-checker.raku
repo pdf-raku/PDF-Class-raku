@@ -35,11 +35,11 @@ sub key-sort($_) {
     default            {$_}
 }
 
-multi sub gisty(Str $v where .chars > 500) {
+multi sub snippet(Str $v where .chars > 500) {
     $v.substr(0..128) ~ '…' ~ $v.substr(*-1);
 }
 
-multi sub gisty($v) { $v }
+multi sub snippet($v) { $v }
 
 sub display-item($_) {
     when Hash|Array {
@@ -51,7 +51,7 @@ sub display-item($_) {
     when PDF::COS::TextString { .Str.raku }
     default {
         given to-ast($_) {
-            gisty .isa(Pair) && .key ~~ 'hex-string'
+            snippet .isa(Pair) && .key ~~ 'hex-string'
                 ?? .value.raku
                 !! $*writer.write($_);
         }
@@ -61,7 +61,7 @@ sub display-item($_) {
 multi sub display(List $obj) {
     my $n = $obj.elems;
     my $etc = '';
-    if ($n > 50) {
+    if $n > 50 {
         $n = 40;
         $etc = ' ...';
     }
