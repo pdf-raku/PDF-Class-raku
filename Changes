@@ -1,5 +1,10 @@
 {{$NEXT}}
 
+0.5.28  2026-01-30T07:19:36+13:00
+   - Fix pdf-checker --trace option
+   - Make /Catalog /Dests an indirect object, as per spec.
+   - Add new PDF 2.0 structure types to PDF::StructTreeRoot
+
 0.5.27  2025-08-26T07:02:21+12:00
    - Replace catalog destinations method with a more general-purpose
      implementation; imported from PDF::API6.
