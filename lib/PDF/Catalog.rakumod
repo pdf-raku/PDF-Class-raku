@@ -41,7 +41,8 @@ use PDF::Class::Util :to-roman, :alpha-number, :decimal-number;
 
 has PDF::COS::Name $.Type is entry(:required, :alias<type>) where 'Catalog';
 
-has PDF::COS::Name $.Version is entry;               # (Optional; PDF 1.4) The version of the PDF specification to which the document conforms (for example, 1.4)
+my subset PDFVersion of PDF::COS::Name where !.defined || .Rat;
+has PDFVersion $.Version is entry;               # (Optional; PDF 1.4) The version of the PDF specification to which the document conforms (for example, 1.4)
 has Hash $.Extensions is entry;
 
 my subset PagesLike of PDF::Class::Type where { .<Type> ~~ 'Pages' }; # autoloaded PDF::Pages

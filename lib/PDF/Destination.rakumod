@@ -24,24 +24,26 @@ role PDF::Destination {
     use PDF::COS::Tie::Hash;
 
     my subset PageLike of Hash where { .<Type> ~~ 'Page' }; # autoloaded PDF::Page
+    my subset StructLike of Hash where { .<S>:exists };     # struct elem
     my subset PageRef where PageLike|UInt|Pair;
+    my subset Dest where PageLike|StructLike|UInt|Pair;
 
     has PageRef $.page is index(0);
     has PDF::COS::Name $.fit is index(1);
     method is-page-ref { self[0] ~~ PageLike }
 
-    multi sub is-dest-like(PageRef $page, 'XYZ', NumNull $left?,
+    multi sub is-dest-like(Dest $dest, 'XYZ', NumNull $left?,
                            NumNull $top?, NumNull $zoom?)          { True }
-    multi sub is-dest-like(PageRef $page,)                         { True }
-    multi sub is-dest-like(PageRef $page, 'Fit')                   { True }
-    multi sub is-dest-like(PageRef $page, 'FitH', NumNull $top?)   { True }
-    multi sub is-dest-like(PageRef $page, 'FitV', NumNull $left?)  { True }
-    multi sub is-dest-like(PageRef $page, 'FitR', Numeric $left,
+    multi sub is-dest-like(Dest $dest,)                         { True }
+    multi sub is-dest-like(Dest $dest, 'Fit')                   { True }
+    multi sub is-dest-like(Dest $dest, 'FitH', NumNull $top?)   { True }
+    multi sub is-dest-like(Dest $dest, 'FitV', NumNull $left?)  { True }
+    multi sub is-dest-like(Dest $dest, 'FitR', Numeric $left,
                            Numeric $bottom, Numeric $right,
                            Numeric $top )                          { True }
-    multi sub is-dest-like(PageRef $page, 'FitB')                  { True }
-    multi sub is-dest-like(PageRef $page, 'FitBH', NumNull $top?)  { True }
-    multi sub is-dest-like(PageRef $page, 'FitBV', NumNull $left?) { True }
+    multi sub is-dest-like(Dest $dest, 'FitB')                  { True }
+    multi sub is-dest-like(Dest $dest, 'FitBH', NumNull $top?)  { True }
+    multi sub is-dest-like(Dest $dest, 'FitBV', NumNull $left?) { True }
     multi sub is-dest-like(|c) { False }
 
     my subset ExplicitDestLike of List where is-dest-like(|$_);
@@ -59,23 +61,25 @@ role PDF::Destination {
 
     #| constructs a new PDF::Destination array object
     sub fit(Fit $f) { $f.value }
-    multi method construct(FitWindow,  PageRef :$page!, )                { self!dest: [$page, fit(FitWindow), ] }
-    multi method construct(FitHoriz,   PageRef :$page!, Numeric :$top )  { self!dest: [$page, fit(FitHoriz),    $top ] }
-    multi method construct(FitVert,    PageRef :$page!, Numeric :$left ) { self!dest: [$page, fit(FitVert),     $left ] }
-    multi method construct(FitBox,     PageRef :$page!, )                { self!dest: [$page, fit(FitBox),      ] }
-    multi method construct(FitBoxHoriz,PageRef :$page!, Numeric :$top )  { self!dest: [$page, fit(FitBoxHoriz), $top] }
-    multi method construct(FitBoxVert, PageRef :$page!, Numeric :$left ) { self!dest: [$page, fit(FitBoxVert),  $left] }
+    multi method construct(FitWindow,  Dest :$dest!, )                { self!dest: [$dest, fit(FitWindow), ] }
+    multi method construct(FitHoriz,   Dest :$dest!, Numeric :$top )  { self!dest: [$dest, fit(FitHoriz),    $top ] }
+    multi method construct(FitVert,    Dest :$dest!, Numeric :$left ) { self!dest: [$dest, fit(FitVert),     $left ] }
+    multi method construct(FitBox,     Dest :$dest!, )                { self!dest: [$dest, fit(FitBox),      ] }
+    multi method construct(FitBoxHoriz,Dest :$dest!, Numeric :$top )  { self!dest: [$dest, fit(FitBoxHoriz), $top] }
+    multi method construct(FitBoxVert, Dest :$dest!, Numeric :$left ) { self!dest: [$dest, fit(FitBoxVert),  $left] }
 
-    multi method construct(FitXYZoom,  PageRef :$page!, Numeric :$left,
-                           Numeric :$top, Numeric :$zoom )       { self!dest: [$page, fit(FitXYZoom), $left, $top, $zoom ] }
+    multi method construct(FitXYZoom,  Dest :$dest!, Numeric :$left,
+                           Numeric :$top, Numeric :$zoom )         { self!dest: [$dest, fit(FitXYZoom), $left, $top, $zoom ] }
 
-    multi method construct(FitRect,    PageRef :$page!,
+    multi method construct(FitRect,    Dest :$dest!,
                            Numeric :$left!,   Numeric :$bottom!,
-                           Numeric :$right!,  Numeric :$top!, )  { self!dest: [$page, fit(FitRect),   $left,
+                           Numeric :$right!,  Numeric :$top!, )    { self!dest: [$dest, fit(FitRect), $left,
                                                                                                       $bottom, $right, $top] }
 
-    multi method construct(PageRef :$page!, )                    { self!dest: [$page, fit(FitWindow), ] }
-    multi method construct(ExplicitDestLike $dest) { self.construct(|$dest) }
+    multi method construct(Dest :$dest!, )                         { self!dest: [$dest, fit(FitWindow), ] }
+    multi method construct(Str:D $fit, PageRef :$page!, *%c) { self.construct: $fit, :dest($page), |%c }
+    multi method construct(PageRef :$page!, )                      { self!dest: [$page, fit(FitWindow), ] }
+    multi method construct(ExplicitDestLike $dest)                 { self.construct(|$dest) }
     multi method construct(*@args) {
         fail "unable to construct destination: {@args.raku}";
     }
@@ -85,6 +89,7 @@ role PDF::Destination {
     my subset DestRef is export(:DestRef) where PDF::Destination|PDF::COS::Name|PDF::COS::ByteString;
     my subset LocalDestRef of DestRef is export(:LocalDestRef) where $_ ~~ PDF::Destination && .[0] ~~ PageLike:D || $_ ~~ Str;
     my subset RemoteDestRef of DestRef is export(:RemoteDestRef) where $_ ~~ PDF::Destination && .[0] ~~ UInt:D || $_ ~~ Str;
+    my subset StructDestRef of PDF::Destination where .[0] ~~ StructLike:D;
     proto sub coerce-dest($,$) is export(:coerce-dest) {*};
 
     # assume an array is an explicit destination
@@ -102,12 +107,15 @@ role PDF::Destination {
     }
 
     multi sub coerce-dest($_ is copy, DestRef) {
-        coerce-dest($_, DestRef);
+        .&coerce-dest(DestRef);
+    }
+    multi sub coerce-dest($_ is raw, StructDestRef) {
+        coerce-dest($_, DestRef)
     }
     # DestNamed coercement also allows an intermediate dictionary with a /D entry
     my role DestDict is export(:DestDict) does PDF::COS::Tie::Hash {
         has DestRef $.D is entry(:required, :alias<destination>, :coerce(&coerce-dest));
-        has PDF::COS::Array $.SD is entry; # (Optional; PDF 2.0) The structure destination to jump to. If present, the structure destination takes precedence over destination in the D entry.
+        has StructDestRef $.SD is entry(:coerce(&coerce-dest)); # (Optional; PDF 2.0) The structure destination to jump to. If present, the structure destination takes precedence over destination in the D entry.
     }
 
     my subset DestNamed is export(:DestNamed) where DestDict|DestRef;

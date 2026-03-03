@@ -21,7 +21,7 @@ clean :
 previews : test
 	@raku -M PDF::To::Cairo -c
 	@raku -M FontConfig -c
-	pdf-previews.raku tmp
+	pdf-previews tmp
 
 $(MD): docs/%.md: lib/%.rakumod
 	@raku -I . -c $<

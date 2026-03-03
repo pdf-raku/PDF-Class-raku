@@ -1,4 +1,5 @@
 {{$NEXT}}
+   - Implement PDF 2.0 Structure Destinations in PDF::Destination
 
 0.5.28  2026-01-30T07:19:36+13:00
    - Fix pdf-checker --trace option

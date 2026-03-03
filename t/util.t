@@ -14,6 +14,3 @@ for (1, 'A'), (2, 'B'), (26, 'Z'), (27, 'AA'), (28, 'BB') -> @ (UInt $n, Str $a)
 is 5.&decimal-number, '5', 'decimal-number';
 
 done-testing;
-
-
-
