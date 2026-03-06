@@ -9,6 +9,9 @@ use PDF::Class::Type;
 also is PDF::COS::Dict;
 also does PDF::Class::Type;
 
+use PDF::Class::PageRef;
+also does PDF::Class::PageRef;
+
 use ISO_32000::Table_325-Entries_in_an_object_reference_dictionary;
 also does ISO_32000::Table_325-Entries_in_an_object_reference_dictionary;
 

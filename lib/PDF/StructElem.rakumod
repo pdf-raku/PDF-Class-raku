@@ -14,6 +14,9 @@ use PDF::Namespace;
 use PDF::Page;
 use PDF::Attributes :&coerce-attributes;
 
+use PDF::Class::PageRef;
+also does PDF::Class::PageRef;
+
 use ISO_32000::Table_323-Entries_in_a_structure_element_dictionary;
 also does ISO_32000::Table_323-Entries_in_a_structure_element_dictionary;
 
@@ -75,7 +78,7 @@ use PDF::Attributes::UserProperties;
 my constant UserProperties is export(:UserProperties) = PDF::Attributes::UserProperties;
 my subset AttributesOrRev where PDF::Attributes|UInt;
 multi sub coerce-atts-or-rev(Hash $_ is raw, AttributesOrRev) {
-    coerce-attributes($_, PDF::Attributes);
+    .&coerce-attributes(PDF::Attributes);
 }
 multi sub coerce-atts-or-rev($_, AttributesOrRev) {
     fail "unable to coerce attributes: {.raku}";
@@ -92,13 +95,13 @@ method vivify-attributes(Str:D :$owner!) {
         given self<A> {
             when Hash {
                 if .<O> ~~ $owner {
-                    coerce-attributes($_, PDF::Attributes);
+                    .&coerce-attributes(PDF::Attributes);
                 }
                 else {
                     # need to start a list containing multiple owners
                     # convert singular attribute to a list and append
                     my UInt $rev = self.revision;
-                    my $new = new-atts $owner;
+                    my $new = $owner.&new-atts;
                     self<A> = [$_, $rev, $new, $rev];
                     $new;
                 }
@@ -107,18 +110,18 @@ method vivify-attributes(Str:D :$owner!) {
                 with .keys.reverse.first( -> $i {.[$i].isa(Hash) &&  .[$i].<O> ~~ $owner}) {
                     # owner already in the list
                     self<A>[$_+1] = self.revision;
-                    coerce-attributes(self<A>[$_], PDF::Attributes);
+                    self<A>[$_].&coerce-attributes(PDF::Attributes);
                 }
                 else {
                     # append owner to the list
                     my UInt $rev = self.revision;
-                    my $new = new-atts $owner;
+                    my $new = $owner.&new-atts;
                     self<A>.push($new);
                     self<A>.push: self.revision;
                     $new;
                 }
             }
-            default { $_ = new-atts $owner }
+            default { $_ = $owner.&new-atts }
         }
     }
 }
@@ -126,7 +129,7 @@ method attribute-dicts {
     given self<A> {
         when Hash { (coerce-attributes($_, PDF::Attributes),) }
         when List {
-            .keys.map(-> $i {.[$i]}).grep(Hash).map: { coerce-attributes($_, PDF::Attributes) }
+            .keys.map(-> $i {.[$i]}).grep(Hash).map: { .&coerce-attributes(PDF::Attributes) }
         }
         default { () }
     }

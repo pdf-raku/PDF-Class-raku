@@ -67,6 +67,7 @@
     "PDF::Class::Loader": "lib/PDF/Class/Loader.rakumod",
     "PDF::Class::OptionalContent": "lib/PDF/Class/OptionalContent.rakumod",
     "PDF::Class::OutlineNode": "lib/PDF/Class/OutlineNode.rakumod",
+    "PDF::Class::PageRef": "lib/PDF/Class/PageRef.rakumod",
     "PDF::Class::StructItem": "lib/PDF/Class/StructItem.rakumod",
     "PDF::Class::ThreeD": "lib/PDF/Class/ThreeD.rakumod",
     "PDF::Class::Type": "lib/PDF/Class/Type.rakumod",

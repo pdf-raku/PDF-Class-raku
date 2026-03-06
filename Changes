@@ -1,5 +1,7 @@
 {{$NEXT}}
    - Implement PDF 2.0 Structure Destinations in PDF::Destination
+   - Add PDF::Class::PageRef marker role for classes with a $.Pg method
+    (PDF::StructElem, PDF::OBJR, PDF::MCR)
 
 0.5.28  2026-01-30T07:19:36+13:00
    - Fix pdf-checker --trace option
