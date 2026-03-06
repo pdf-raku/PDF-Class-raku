@@ -104,7 +104,7 @@ has PageLabels $.PageLabels is entry;   # (Optional; PDF 1.3) A number tree defi
 
 has PDF::Names $.Names is entry;        # (Optional; PDF 1.2) The document’s name dictionary
 
-has DestNamed %.Dests is entry(:coerce(&coerce-dest), :indirect);    # (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
+has DestNamed %.Dests is entry(:coerce(&coerce-dest));    # (Optional; PDF 1.1; must be an indirect reference) A dictionary of names and corresponding destinations
 
 method destinations is rw {
     do with self<Names> {
