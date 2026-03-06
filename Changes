@@ -1,7 +1,11 @@
 {{$NEXT}}
+
+0.5.29  2026-03-07T09:42:39+13:00
    - Implement PDF 2.0 Structure Destinations in PDF::Destination
    - Add PDF::Class::PageRef marker role for classes with a $.Pg method
     (PDF::StructElem, PDF::OBJR, PDF::MCR)
+   - Revert: Make /Catalog /Dests an indirect object, as per spec. Already
+     handled in Catalog cb-finish() method.
 
 0.5.28  2026-01-30T07:19:36+13:00
    - Fix pdf-checker --trace option
