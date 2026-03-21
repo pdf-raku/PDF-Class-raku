@@ -126,9 +126,7 @@ role PDF::NumberTree {
         with $!number-tree {
             if .updated {
                 self<Kids>:delete;
-                my @nums;
-                @nums.append: .key, .value
-                    for .Hash.pairs.sort;
+                my @nums = flat .Hash.pairs.sort.map: {.key, .value};
                 self<Nums> = @nums;
                 .updated = False;
             }

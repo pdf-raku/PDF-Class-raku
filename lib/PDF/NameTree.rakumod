@@ -114,9 +114,7 @@ role PDF::NameTree {
         with $!name-tree {
             if .updated {
                 self<Kids>:delete;
-                my @names;
-                @names.append: .key, .value
-                    for .Hash.pairs.sort;
+                my @names = flat .Hash.pairs.sort.map: {.key, .value};
                 self<Names> = @names;
                 .updated = False;
             }
