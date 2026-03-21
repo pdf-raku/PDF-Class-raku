@@ -48,7 +48,7 @@ role PDF::Field {
     }
     # used by FDF/t/field-imports.t
     method coerce-field(Hash $dict) {
-        coerce-field($dict, PDF::Field);
+        $dict.&coerce-field(PDF::Field);
     }
 
     method type { 'Field' }

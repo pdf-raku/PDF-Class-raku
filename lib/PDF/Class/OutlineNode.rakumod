@@ -2,9 +2,9 @@ unit role PDF::Class::OutlineNode;
 
 use PDF::COS;
 use PDF::Destination :coerce-dest, :DestinationLike, :DestRef;
-sub siblings($first) is rw {
+sub siblings($first) {
     my class Siblings does Iterable {
-        has $.first is required;
+        has ::?ROLE:D $.first is required;
         my class Iteration does Iterator {
             has $.cur is required;
             method pull-one {
@@ -21,7 +21,7 @@ method add-kid(Hash $kid is copy = {}) {
     my DestRef $dest;
     with $kid<dest>:delete {
         when DestRef { $dest = $_; }
-        when DestinationLike|Str  { $dest = coerce-dest($_, DestRef); }
+        when DestinationLike|Str  { $dest = .&coerce-dest(DestRef); }
         default { warn "ignoring outline dest: {.gist}" }
     }
     $kid = (require PDF::Outline).COERCE: $kid;
@@ -46,10 +46,10 @@ method add-kid(Hash $kid is copy = {}) {
     $kid;
 }
 #| .get Proxy Fetch not working
-method get-kids { siblings(self.First) }
+method get-kids { self.First.&siblings }
 method kids is rw {
     Proxy.new(
-        FETCH => { siblings(self.First) },
+        FETCH => { self.First.&siblings },
         STORE => -> $, @kids {
             self<First Last>:delete;
             self.add-kid($_) for @kids;
@@ -65,3 +65,4 @@ method is-open is rw {
         }
     )
 }
+

@@ -38,12 +38,12 @@ sub coerce-struct-kids($obj, StructElemChild) is export(:coerce-struct-kids) {
     # /K can be a single element or an array of elements
     if $obj ~~ List {
         for $obj.keys {
-            coerce-child($_, StructElemChild)
+            .&coerce-child(StructElemChild)
                 with $obj[$_];
         }
     }
     else {
-        coerce-child($obj, StructElemChild)
+        $obj.&coerce-child(StructElemChild)
     }
     $obj;
 }
@@ -87,7 +87,7 @@ has AttributesOrRev @.A is entry(:array-or-item, :coerce(&coerce-atts-or-rev)); 
 sub new-atts($O) {
     my %atts = :$O;
     %atts<P> = [] if $O eq 'UserProperties';
-    coerce-attributes %atts, PDF::Attributes;
+    %atts.&coerce-attributes(PDF::Attributes);
 }
 has Attributes %!atts-by-owner;
 method vivify-attributes(Str:D :$owner!) {
@@ -127,7 +127,7 @@ method vivify-attributes(Str:D :$owner!) {
 }
 method attribute-dicts {
     given self<A> {
-        when Hash { (coerce-attributes($_, PDF::Attributes),) }
+        when Hash { (.&coerce-attributes(PDF::Attributes),) }
         when List {
             .keys.map(-> $i {.[$i]}).grep(Hash).map: { .&coerce-attributes(PDF::Attributes) }
         }

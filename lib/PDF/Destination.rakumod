@@ -110,7 +110,7 @@ role PDF::Destination {
         .&coerce-dest(DestRef);
     }
     multi sub coerce-dest($_ is raw, StructDestRef) {
-        coerce-dest($_, DestRef)
+        .&coerce-dest(DestRef)
     }
     # DestNamed coercement also allows an intermediate dictionary with a /D entry
     my role DestDict is export(:DestDict) does PDF::COS::Tie::Hash {
@@ -123,7 +123,7 @@ role PDF::Destination {
         DestDict.COERCE($dict);
     }
     multi sub coerce-dest($_, DestNamed) {
-        coerce-dest($_, DestRef);
+        .&coerce-dest(DestRef);
     }
 
 }

@@ -29,7 +29,7 @@ also does ISO_32000_2::Table_166-Entries_common_to_all_annotation_dictionaries;
 method cb-init {
     use PDF::Field :coerce-field, :FieldLike;
     # annots are also sometimes fields
-    coerce-field(self, PDF::Field)
+    self.&coerce-field(PDF::Field)
         if self ~~ FieldLike && self !~~ PDF::Field;
 }
 

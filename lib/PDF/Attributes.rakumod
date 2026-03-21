@@ -58,7 +58,7 @@ multi sub coerce-attributes($_, PDF::Attributes) {
     $_;
 }
 method coerce-attributes(Hash $dict) {
-    coerce-attributes($dict, PDF::Attributes);
+    $dict.&coerce-attributes(PDF::Attributes);
 }
 method Hash {
     my @keys = self.keys.grep: * ne 'O';

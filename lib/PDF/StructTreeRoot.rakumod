@@ -107,11 +107,11 @@ my subset AttributeList of List where .elems == 0 || .are ~~ PDF::Attributes;
 my subset ClassMap where PDF::Attributes|AttributeList;
 
 multi sub coerce-classmap(List $l is rw, ClassMap) {
-    coerce-attributes($l[$_], PDF::Attributes) for ^$l.elems;
+    $l[$_].&coerce-attributes(PDF::Attributes) for ^$l.elems;
 }
 
 multi sub coerce-classmap(Hash $a is rw, ClassMap) {
-    coerce-attributes($a, PDF::Attributes);
+    $a.&coerce-attributes(PDF::Attributes);
 }
 
 multi sub coerce-classmap($_, ClassMap) {

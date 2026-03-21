@@ -108,9 +108,7 @@ has DestNamed %.Dests is entry(:coerce(&coerce-dest));    # (Optional; PDF 1.1; 
 
 method destinations is rw {
     do with self<Names> {
-        do with .<Dests> {
-            .name-tree;
-        }
+        .name-tree with .<Dests>
     } // self<Dests>
 }
 
@@ -128,7 +126,7 @@ has PDF::Thread @.Threads is entry(:indirect);        # (Optional; PDF 1.1; must
 
 my subset OpenAction where PDF::Action|DestRef;
 multi sub coerce-action(List $_ is rw, OpenAction) is hidden-from-backtrace {
-    coerce-dest($_, DestRef);
+    .&coerce-dest(DestRef);
 }
 multi sub coerce-action($_, OpenAction) is hidden-from-backtrace {
     warn "unable to coerce {.raku} to an open action";
