@@ -15,8 +15,10 @@ $shading-class = PDF::Class.loader.load-delegate( :dict{ :ShadingType(7) });
 isa-ok $shading-class, 'PDF::Shading::Tensor', 'delegation by ShadingType';
 isa-ok $shading-class, 'PDF::COS::Stream', 'delegation by ShadingType';
 
-does-ok PDF::Class.loader.load-delegate( :dict{ :ShadingType(42) }), (require ::('PDF::Shading')), 'delegation by ShadingType (unknown)';
-isa-ok PDF::Class.loader.load-delegate( :dict{ :Type(:name<Unknown>) }, :base-class(Hash)), Hash, 'delegation base-class';
+quietly {
+    does-ok PDF::Class.loader.load-delegate( :dict{ :ShadingType(42) }), (require ::('PDF::Shading')), 'delegation by ShadingType (unknown)';
+    isa-ok PDF::Class.loader.load-delegate( :dict{ :Type(:name<Unknown>) }, :base-class(Hash)), Hash, 'delegation base-class';
+}
 isa-ok PDF::Class.loader.load-delegate( :dict{ :FunctionType(3) }, :base-class(Hash)), 'PDF::Function::Stitching', 'delegation by FunctionType';
 
 does-ok PDF::Class.loader.load-delegate( :dict{ :Subtype(:name<Link>) }, :base-class(Hash)),  (require ::('PDF::Annot::Link')), 'annot defaulted /Type - implemented';

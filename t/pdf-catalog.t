@@ -116,7 +116,7 @@ is-json-equiv $viewer-preferences.HideToolbar, True, '$.ViewerPreferences.HideTo
 is-json-equiv $viewer-preferences.Direction, 'R2L', '$.ViewerPreferences.Direction';
 
 my PDF::Page $page .= new: :dict{ :Type<Page> };
-dies-ok { $catalog.OpenAction = [$page, 'FitH', 'blah' ] }, '$catalog.OpenAction assignment - invalid';
+dies-ok { quietly $catalog.OpenAction = [$page, 'FitH', 'blah' ] }, '$catalog.OpenAction assignment - invalid';
 lives-ok { $catalog.OpenAction = [$page, 'FitH', 42 ] }, '$catalog.OpenAction assignment - numeric';
 is-json-equiv $catalog.OpenAction, [$page, 'FitH', 42 ], '$catalog.OpenAction assignment - numeric';
 

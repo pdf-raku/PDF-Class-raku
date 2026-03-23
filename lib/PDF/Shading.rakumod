@@ -38,7 +38,7 @@ method delegate-shading(Hash :$dict!, |c) {
     my UInt $type-int = from-ast $dict<ShadingType>;
 
     unless $type-int ~~ ShadingTypeInt {
-        note "unknown /ShadingType $dict<ShadingType> - supported range is 1..7";
+        warn "Unknown /ShadingType $dict<ShadingType> - supported range is 1..7";
         return self.WHAT;
     }
 

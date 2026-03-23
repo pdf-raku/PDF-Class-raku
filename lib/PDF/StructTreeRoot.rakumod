@@ -103,7 +103,7 @@ our subset StandardStructureType of PDF::COS::Name where
 
 has StandardStructureType %.RoleMap  is entry;     # A dictionary that shall map the names of structure types used in the document to their approximate equivalents in the set of standard structure types.
 
-my subset AttributeList of List where .elems == 0 || .are ~~ PDF::Attributes;
+my subset AttributeList of List where .are ~~ PDF::Attributes;
 my subset ClassMap where PDF::Attributes|AttributeList;
 
 multi sub coerce-classmap(List $l is rw, ClassMap) {

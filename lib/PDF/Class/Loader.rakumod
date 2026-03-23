@@ -20,7 +20,7 @@ PDF::COS.loader = class PDF::Class::Loader {
     multi method load-delegate(Hash :$dict! where {.<PatternType>:exists}) {
         my UInt $pt = from-ast $dict<PatternType>;
         my $sub-type = [Mu, 'Tiling', 'Shading'][$pt];
-        note "Unknown /PatternType $pt" without $sub-type;
+        warn "Unknown /PatternType $pt" without $sub-type;
 	$.find-delegate('Pattern', :base-class(PDF::COS::Dict), $sub-type);
     }
 
