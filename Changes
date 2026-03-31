@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.5.30  2026-03-31T14:35:07+13:00
    - Comment out numerous 'use ISO_ISO_32000*::Table_*-*; also does *'
      assertions. This leads to many open files, exceeding implementation
      limits on some platforms #18.
