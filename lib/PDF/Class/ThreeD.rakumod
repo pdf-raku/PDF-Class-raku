@@ -16,11 +16,11 @@ has DefaultView $.default-view is entry(:key<3DV>);      # (Optional) An object 
 
 my role Activation is PDF::COS::Tie::Hash {
 
-    use ISO_32000::Table_299-Entries_in_a_ThreeD_activation_dictionary;
-    also does ISO_32000::Table_299-Entries_in_a_ThreeD_activation_dictionary;
+##     use ISO_32000::Table_299-Entries_in_a_ThreeD_activation_dictionary;
+##     also does ISO_32000::Table_299-Entries_in_a_ThreeD_activation_dictionary;
 
-    use ISO_32000_2::Table_310-Entries_in_a_ThreeD_activation_dictionary;
-    also does ISO_32000_2::Table_310-Entries_in_a_ThreeD_activation_dictionary;
+##     use ISO_32000_2::Table_310-Entries_in_a_ThreeD_activation_dictionary;
+##     also does ISO_32000_2::Table_310-Entries_in_a_ThreeD_activation_dictionary;
 
     my subset ActiviationCircumstances of PDF::COS::Name where 'PO'|'PV'|'XA';
     has $.A is entry(:alias<activation>);	# [name] (Optional) A name specifying the circumstances under which the annotation is activated. Valid values are:

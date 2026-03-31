@@ -184,14 +184,14 @@ role PDF::Field {
 
 # Each instance has particular definitions for /V and /DV
 role PDF::Field::_Instance does PDF::Field {
-    use ISO_32000::Table_220-Entries_common_to_all_field_dictionaries;
-    also does ISO_32000::Table_220-Entries_common_to_all_field_dictionaries;
-    use ISO_32000::Table_222-Additional_entries_common_to_all_fields_containing_variable_text;
-    also does ISO_32000::Table_222-Additional_entries_common_to_all_fields_containing_variable_text;
+##     use ISO_32000::Table_220-Entries_common_to_all_field_dictionaries;
+##     also does ISO_32000::Table_220-Entries_common_to_all_field_dictionaries;
+##     use ISO_32000::Table_222-Additional_entries_common_to_all_fields_containing_variable_text;
+##     also does ISO_32000::Table_222-Additional_entries_common_to_all_fields_containing_variable_text;
 
-    use ISO_32000_2::Table_226-Entries_common_to_all_field_dictionaries;
-    also does ISO_32000_2::Table_226-Entries_common_to_all_field_dictionaries;
-    use ISO_32000_2::Table_228-Additional_entries_common_to_all_fields_containing_variable_text;
-    also does ISO_32000_2::Table_228-Additional_entries_common_to_all_fields_containing_variable_text;
+##     use ISO_32000_2::Table_226-Entries_common_to_all_field_dictionaries;
+##     also does ISO_32000_2::Table_226-Entries_common_to_all_field_dictionaries;
+##     use ISO_32000_2::Table_228-Additional_entries_common_to_all_fields_containing_variable_text;
+##     also does ISO_32000_2::Table_228-Additional_entries_common_to_all_fields_containing_variable_text;
 
 }

@@ -10,11 +10,11 @@ also does PDF::Class::StructItem;
 also does PDF::Content::XObject['Image'];
 also does PDF::COS::Tie::Hash;
 
-use ISO_32000::Table_89-Additional_Entries_Specific_to_an_Image_Dictionary;
-also does ISO_32000::Table_89-Additional_Entries_Specific_to_an_Image_Dictionary;
+## use ISO_32000::Table_89-Additional_Entries_Specific_to_an_Image_Dictionary;
+## also does ISO_32000::Table_89-Additional_Entries_Specific_to_an_Image_Dictionary;
 
-use ISO_32000_2::Table_87-Additional_entries_specific_to_an_image_dictionary;
-also does ISO_32000_2::Table_87-Additional_entries_specific_to_an_image_dictionary;
+## use ISO_32000_2::Table_87-Additional_entries_specific_to_an_image_dictionary;
+## also does ISO_32000_2::Table_87-Additional_entries_specific_to_an_image_dictionary;
 
 use PDF::COS::Tie;
 use PDF::COS::Stream;
@@ -43,10 +43,10 @@ has Numeric @.Decode is entry;                #= (Optional) An array of numbers 
 has Bool $.Interpolate is entry;              #= (Optional) A flag indicating whether image interpolation is to be performed
 my role AlternateImage
 does PDF::COS::Tie::Hash {
-    use ISO_32000::Table_91-Entries_in_an_Alternate_Image_Dictionary;
-    also does ISO_32000::Table_91-Entries_in_an_Alternate_Image_Dictionary;
-    use ISO_32000_2::Table_89-Entries_in_an_alternate_image_dictionary;
-    also does ISO_32000_2::Table_89-Entries_in_an_alternate_image_dictionary;
+##     use ISO_32000::Table_91-Entries_in_an_Alternate_Image_Dictionary;
+##     also does ISO_32000::Table_91-Entries_in_an_Alternate_Image_Dictionary;
+##     use ISO_32000_2::Table_89-Entries_in_an_alternate_image_dictionary;
+##     also does ISO_32000_2::Table_89-Entries_in_an_alternate_image_dictionary;
     has PDF::Image $.Image is entry(:required);
     has Bool $.DefaultForPrinting is entry;
     has PDF::Class::OptionalContent $.OC is entry;

@@ -7,11 +7,11 @@ use PDF::COS::Tie;
 use PDF::COS::Name;
 use PDF::COS::Stream;
 
-use ISO_32000::Table_124-Additional_font_descriptor_entries_for_CIDFonts;
-also does ISO_32000::Table_124-Additional_font_descriptor_entries_for_CIDFonts;
+## use ISO_32000::Table_124-Additional_font_descriptor_entries_for_CIDFonts;
+## also does ISO_32000::Table_124-Additional_font_descriptor_entries_for_CIDFonts;
 
-use ISO_32000_2::Table_122-Additional_font_descriptor_entries_for_CIDFonts;
-also does ISO_32000_2::Table_122-Additional_font_descriptor_entries_for_CIDFonts;
+## use ISO_32000_2::Table_122-Additional_font_descriptor_entries_for_CIDFonts;
+## also does ISO_32000_2::Table_122-Additional_font_descriptor_entries_for_CIDFonts;
 
 my role Style does PDF::COS::Tie::Hash {
     # The Style dictionary contains entries that define style attributes and values for the CIDFont.

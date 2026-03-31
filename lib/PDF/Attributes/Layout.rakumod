@@ -12,11 +12,11 @@ my subset NumericOrAuto where Numeric|Auto;
 my subset RGB of Numeric where 0.0 <= * <= 1.0;
 my subset TextAlign of PDF::COS::Name where 'Start'|'Center'|'End'|'Justify';
 
-use ISO_32000::Table_343-Standard_layout_attributes_common_to_all_standard_structure_types;
-also does ISO_32000::Table_343-Standard_layout_attributes_common_to_all_standard_structure_types;
+## use ISO_32000::Table_343-Standard_layout_attributes_common_to_all_standard_structure_types;
+## also does ISO_32000::Table_343-Standard_layout_attributes_common_to_all_standard_structure_types;
 
-use ISO_32000_2::Table_378-Standard_layout_attributes_common_to_all_standard_structure_types;
-also does ISO_32000_2::Table_378-Standard_layout_attributes_common_to_all_standard_structure_types;
+## use ISO_32000_2::Table_378-Standard_layout_attributes_common_to_all_standard_structure_types;
+## also does ISO_32000_2::Table_378-Standard_layout_attributes_common_to_all_standard_structure_types;
 
 my role Common_attributes {
 
@@ -63,11 +63,11 @@ my role Common_attributes {
 }
 also does Common_attributes;
 
-use ISO_32000::Table_344-Additional_standard_layout_attributes_specific_to_block-level_structure_elements;
-also does ISO_32000::Table_344-Additional_standard_layout_attributes_specific_to_block-level_structure_elements;
+## use ISO_32000::Table_344-Additional_standard_layout_attributes_specific_to_block-level_structure_elements;
+## also does ISO_32000::Table_344-Additional_standard_layout_attributes_specific_to_block-level_structure_elements;
 
-use ISO_32000_2::Table_379-Additional_standard_layout_attributes_specific_to_block-level_structure_elements;
-also does ISO_32000_2::Table_379-Additional_standard_layout_attributes_specific_to_block-level_structure_elements;
+## use ISO_32000_2::Table_379-Additional_standard_layout_attributes_specific_to_block-level_structure_elements;
+## also does ISO_32000_2::Table_379-Additional_standard_layout_attributes_specific_to_block-level_structure_elements;
 
 #| Table 344 – Additional standard layout attributes specific to block-level structure elements
 my role BLSE_Attributes {
@@ -124,11 +124,11 @@ my role BLSE_Attributes {
 }
 also does BLSE_Attributes;
 
-use ISO_32000::Table_345-Standard_layout_attributes_specific_to_inline-level_structure_elements;
-also does ISO_32000::Table_345-Standard_layout_attributes_specific_to_inline-level_structure_elements;
+## use ISO_32000::Table_345-Standard_layout_attributes_specific_to_inline-level_structure_elements;
+## also does ISO_32000::Table_345-Standard_layout_attributes_specific_to_inline-level_structure_elements;
 
-use ISO_32000_2::Table_380-Standard_layout_attributes_specific_to_inline-level_structure_elements;
-also does ISO_32000_2::Table_380-Standard_layout_attributes_specific_to_inline-level_structure_elements;
+## use ISO_32000_2::Table_380-Standard_layout_attributes_specific_to_inline-level_structure_elements;
+## also does ISO_32000_2::Table_380-Standard_layout_attributes_specific_to_inline-level_structure_elements;
 
 #| Table 345 – Standard layout attributes specific to inline-level structure elements
 my role ILSE_Attributes {
@@ -191,11 +191,11 @@ my role ILSE_Attributes {
 }
 also does ILSE_Attributes;
 
-use ISO_32000::Table_346-Standard_column_attributes;
-also does ISO_32000::Table_346-Standard_column_attributes;
+## use ISO_32000::Table_346-Standard_column_attributes;
+## also does ISO_32000::Table_346-Standard_column_attributes;
 
-use ISO_32000_2::Table_381-Standard_layout_attributes_specific_to_standard_column_attributes;
-also does ISO_32000_2::Table_381-Standard_layout_attributes_specific_to_standard_column_attributes;
+## use ISO_32000_2::Table_381-Standard_layout_attributes_specific_to_standard_column_attributes;
+## also does ISO_32000_2::Table_381-Standard_layout_attributes_specific_to_standard_column_attributes;
 
 my role Column_Attributes {
 

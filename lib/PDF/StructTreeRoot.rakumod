@@ -7,11 +7,11 @@ use PDF::Class::Type;
 also is PDF::COS::Dict;
 also does PDF::Class::Type;
 
-use ISO_32000::Table_322-Entries_in_the_structure_tree_root;
-also does ISO_32000::Table_322-Entries_in_the_structure_tree_root;
+## use ISO_32000::Table_322-Entries_in_the_structure_tree_root;
+## also does ISO_32000::Table_322-Entries_in_the_structure_tree_root;
 
-use ISO_32000_2::Table_354-Entries_in_the_structure_tree_root;
-also does ISO_32000_2::Table_354-Entries_in_the_structure_tree_root;
+## use ISO_32000_2::Table_354-Entries_in_the_structure_tree_root;
+## also does ISO_32000_2::Table_354-Entries_in_the_structure_tree_root;
 
 use PDF::COS::Tie;
 use PDF::COS::Name;

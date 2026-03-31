@@ -9,8 +9,8 @@ also is PDF::XObject;
 also does PDF::Content::XObject['PS'];
 also does PDF::Content::Resourced;
 
-use ISO_32000::Table_88-Additional_Entries_Specific_to_a_PostScript_XObject_Dictionary;
-also does ISO_32000::Table_88-Additional_Entries_Specific_to_a_PostScript_XObject_Dictionary;
+## use ISO_32000::Table_88-Additional_Entries_Specific_to_a_PostScript_XObject_Dictionary;
+## also does ISO_32000::Table_88-Additional_Entries_Specific_to_a_PostScript_XObject_Dictionary;
 
 # Deprecated in PDF 2.0
 

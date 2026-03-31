@@ -4,11 +4,11 @@ unit role PDF::Attributes::List;
 use PDF::Attributes;
 also does PDF::Attributes;
 
-use ISO_32000::Table_347-Standard_list_attribute;
-also does ISO_32000::Table_347-Standard_list_attribute;
+## use ISO_32000::Table_347-Standard_list_attribute;
+## also does ISO_32000::Table_347-Standard_list_attribute;
 
-use ISO_32000_2::Table_382-Standard_list_attributes;
-also does ISO_32000_2::Table_382-Standard_list_attributes;
+## use ISO_32000_2::Table_382-Standard_list_attributes;
+## also does ISO_32000_2::Table_382-Standard_list_attributes;
 
 use PDF::COS::Tie;
 use PDF::COS::Name;

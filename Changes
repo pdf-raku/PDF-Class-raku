@@ -1,4 +1,7 @@
 {{$NEXT}}
+   - Comment out numerous 'use ISO_ISO_32000*::Table_*-*; also does *'
+     assertions. This leads to many open files, exceeding implementation
+     limits on some platforms #18.
 
 0.5.29  2026-03-07T09:42:39+13:00
    - Implement PDF 2.0 Structure Destinations in PDF::Destination

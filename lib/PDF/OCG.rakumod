@@ -9,11 +9,11 @@ use PDF::Class::Type;
 also is PDF::COS::Dict;
 also does PDF::Class::Type;
 
-use ISO_32000::Table_98-Entries_in_an_Optional_Content_Group_Dictionary;
-also does ISO_32000::Table_98-Entries_in_an_Optional_Content_Group_Dictionary;
+## use ISO_32000::Table_98-Entries_in_an_Optional_Content_Group_Dictionary;
+## also does ISO_32000::Table_98-Entries_in_an_Optional_Content_Group_Dictionary;
 
-use ISO_32000_2::Table_96-Entries_in_an_optional_content_group_dictionary;
-also does ISO_32000_2::Table_96-Entries_in_an_optional_content_group_dictionary;
+## use ISO_32000_2::Table_96-Entries_in_an_optional_content_group_dictionary;
+## also does ISO_32000_2::Table_96-Entries_in_an_optional_content_group_dictionary;
 
 use PDF::COS::Tie;
 use PDF::COS::Tie::Hash;
@@ -29,10 +29,10 @@ has PDF::COS::Name @.Intent is entry(:array-or-item, :default<View>); # (Optiona
 
 role Usage
     does PDF::COS::Tie::Hash {
-    use ISO_32000::Table_102-Entries_in_an_Optional_Content_Usage_Dictionary;
-    also does ISO_32000::Table_102-Entries_in_an_Optional_Content_Usage_Dictionary;
-    use ISO_32000_2::Table_100-Entries_in_an_optional_content_usage_dictionary;
-    also does ISO_32000_2::Table_100-Entries_in_an_optional_content_usage_dictionary;
+##     use ISO_32000::Table_102-Entries_in_an_Optional_Content_Usage_Dictionary;
+##     also does ISO_32000::Table_102-Entries_in_an_Optional_Content_Usage_Dictionary;
+##     use ISO_32000_2::Table_100-Entries_in_an_optional_content_usage_dictionary;
+##     also does ISO_32000_2::Table_100-Entries_in_an_optional_content_usage_dictionary;
 
     my role CreatorInfo
         does PDF::COS::Tie::Hash {

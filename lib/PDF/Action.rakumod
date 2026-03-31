@@ -6,11 +6,11 @@ use PDF::Class::Type;
 also does PDF::COS::Tie::Hash;
 also does PDF::Class::Type::Subtyped;
 
-use ISO_32000::Table_193-Entries_common_to_all_action_dictionaries;
-also does ISO_32000::Table_193-Entries_common_to_all_action_dictionaries;
+## use ISO_32000::Table_193-Entries_common_to_all_action_dictionaries;
+## also does ISO_32000::Table_193-Entries_common_to_all_action_dictionaries;
 
-use ISO_32000_2::Table_196-Entries_common_to_all_action_dictionaries;
-also does ISO_32000_2::Table_196-Entries_common_to_all_action_dictionaries;
+## use ISO_32000_2::Table_196-Entries_common_to_all_action_dictionaries;
+## also does ISO_32000_2::Table_196-Entries_common_to_all_action_dictionaries;
 
 use PDF::COS::Tie;
 use PDF::COS::Name;

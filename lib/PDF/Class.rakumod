@@ -5,14 +5,14 @@ use PDF::Lite;
 also is PDF::Lite;
 
 # base class declares: $.Size, $.Encrypt, $.ID
-use ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
-also does ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
+## use ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
+## also does ISO_32000::Table_15-Entries_in_the_file_trailer_dictionary;
 
-use ISO_32000_2::Table_15-Entries_in_the_file_trailer_dictionary;
-also does ISO_32000_2::Table_15-Entries_in_the_file_trailer_dictionary;
+## use ISO_32000_2::Table_15-Entries_in_the_file_trailer_dictionary;
+## also does ISO_32000_2::Table_15-Entries_in_the_file_trailer_dictionary;
 
-use ISO_32000_2::Table_19-Additional_entries_in_a_hybrid-reference_files_trailer_dictionary;
-also does ISO_32000_2::Table_19-Additional_entries_in_a_hybrid-reference_files_trailer_dictionary;
+## use ISO_32000_2::Table_19-Additional_entries_in_a_hybrid-reference_files_trailer_dictionary;
+## also does ISO_32000_2::Table_19-Additional_entries_in_a_hybrid-reference_files_trailer_dictionary;
 
 use PDF;
 use PDF::COS::Util :&flag-is-set;

@@ -9,11 +9,11 @@ use PDF::COS::ByteString;
 use PDF::COS::DateString;
 use PDF::COS::TextString;
 
-use ISO_32000::Table_252-Entries_in_a_signature_dictionary;
-also does ISO_32000::Table_252-Entries_in_a_signature_dictionary;
+## use ISO_32000::Table_252-Entries_in_a_signature_dictionary;
+## also does ISO_32000::Table_252-Entries_in_a_signature_dictionary;
 
-use ISO_32000_2::Table_255-Entries_in_a_signature_dictionary;
-also does ISO_32000_2::Table_255-Entries_in_a_signature_dictionary;
+## use ISO_32000_2::Table_255-Entries_in_a_signature_dictionary;
+## also does ISO_32000_2::Table_255-Entries_in_a_signature_dictionary;
 
 my subset SigType of PDF::COS::Name where 'Sig';
 has SigType $.Type is entry; # (Optional) The type of PDF object that this dictionary describes; if present, shall be Sig for a signature dictionary.
@@ -32,10 +32,10 @@ method byte-ranges {
     }
 }
 my role Reference does PDF::COS::Tie::Hash {
-    use ISO_32000::Table_253-Entries_in_a_signature_reference_dictionary;
-    also does ISO_32000::Table_253-Entries_in_a_signature_reference_dictionary;
-    use ISO_32000_2::Table_256-Entries_in_a_signature_reference_dictionary;
-    also does ISO_32000_2::Table_256-Entries_in_a_signature_reference_dictionary;
+##     use ISO_32000::Table_253-Entries_in_a_signature_reference_dictionary;
+##     also does ISO_32000::Table_253-Entries_in_a_signature_reference_dictionary;
+##     use ISO_32000_2::Table_256-Entries_in_a_signature_reference_dictionary;
+##     also does ISO_32000_2::Table_256-Entries_in_a_signature_reference_dictionary;
     has PDF::COS::Name $.Type is entry where 'SigRef'; # (Optional) The type of PDF object that this dictionary describes; if present, shall be SigRef for a signature reference dictionary.
     my subset TransformMethod of PDF::COS::Name where 'DocMDP'|'R'|'UR'|'FieldMPD';
     has TransformMethod $.TransformMethod is entry(:required); # The name of the transform method (see Section that shall guide the modification analysis that takes place when the signature is validated.

@@ -7,11 +7,11 @@ use PDF::COS::Dict;
 also is PDF::COS::Dict;
 also does PDF::Action;
 
-use ISO_32000::Table_205-Additional_entries_specific_to_a_thread_action;
-also does ISO_32000::Table_205-Additional_entries_specific_to_a_thread_action;
+## use ISO_32000::Table_205-Additional_entries_specific_to_a_thread_action;
+## also does ISO_32000::Table_205-Additional_entries_specific_to_a_thread_action;
 
-use ISO_32000_2::Table_209-Additional_entries_specific_to_a_thread_action;
-also does ISO_32000_2::Table_209-Additional_entries_specific_to_a_thread_action;
+## use ISO_32000_2::Table_209-Additional_entries_specific_to_a_thread_action;
+## also does ISO_32000_2::Table_209-Additional_entries_specific_to_a_thread_action;
 
 use PDF::COS;
 use PDF::COS::Tie;

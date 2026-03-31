@@ -12,11 +12,11 @@ also does PDF::Class::Type;
 use PDF::Class::PageRef;
 also does PDF::Class::PageRef;
 
-use ISO_32000::Table_325-Entries_in_an_object_reference_dictionary;
-also does ISO_32000::Table_325-Entries_in_an_object_reference_dictionary;
+## use ISO_32000::Table_325-Entries_in_an_object_reference_dictionary;
+## also does ISO_32000::Table_325-Entries_in_an_object_reference_dictionary;
 
-use ISO_32000_2::Table_358-Entries_in_an_object_reference_dictionary;
-also does ISO_32000_2::Table_358-Entries_in_an_object_reference_dictionary;
+## use ISO_32000_2::Table_358-Entries_in_an_object_reference_dictionary;
+## also does ISO_32000_2::Table_358-Entries_in_an_object_reference_dictionary;
 
 use PDF::COS::Tie;
 use PDF::COS::Name;

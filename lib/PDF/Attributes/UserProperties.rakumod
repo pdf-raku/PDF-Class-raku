@@ -2,19 +2,19 @@ unit role PDF::Attributes::UserProperties;
 use PDF::Attributes;
 also does PDF::Attributes;
 
-use ISO_32000::Table_328-Additional_entries_in_an_attribute_object_dictionary_for_user_properties;
-also does ISO_32000::Table_328-Additional_entries_in_an_attribute_object_dictionary_for_user_properties;
+## use ISO_32000::Table_328-Additional_entries_in_an_attribute_object_dictionary_for_user_properties;
+## also does ISO_32000::Table_328-Additional_entries_in_an_attribute_object_dictionary_for_user_properties;
 
-use ISO_32000_2::Table_361-Additional_entries_in_an_attribute_object_dictionary_for_user_properties;
-also does ISO_32000_2::Table_361-Additional_entries_in_an_attribute_object_dictionary_for_user_properties;
+## use ISO_32000_2::Table_361-Additional_entries_in_an_attribute_object_dictionary_for_user_properties;
+## also does ISO_32000_2::Table_361-Additional_entries_in_an_attribute_object_dictionary_for_user_properties;
 
 use PDF::COS::Tie;
 use PDF::COS::Tie::Hash;
 my role UserProperty does PDF::COS::Tie::Hash {
-    use ISO_32000::Table_329-Entries_in_a_user_property_dictionary;
-    also does ISO_32000::Table_329-Entries_in_a_user_property_dictionary;
-    use ISO_32000_2::Table_362-Entries_in_a_user_property_dictionary;
-    also does ISO_32000_2::Table_362-Entries_in_a_user_property_dictionary;
+##     use ISO_32000::Table_329-Entries_in_a_user_property_dictionary;
+##     also does ISO_32000::Table_329-Entries_in_a_user_property_dictionary;
+##     use ISO_32000_2::Table_362-Entries_in_a_user_property_dictionary;
+##     also does ISO_32000_2::Table_362-Entries_in_a_user_property_dictionary;
     has Str $.N is entry(:required, :alias<key>); # The name of the user property.
     has $.V  is entry(:required, :alias<value>);    # The value of the user property.
     # While the value of this entry shall be any type of PDF object, conforming writers

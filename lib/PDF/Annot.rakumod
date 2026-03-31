@@ -20,11 +20,11 @@ use PDF::Filespec;
 use PDF::Class::OptionalContent;
 use PDF::Page;
 
-use ISO_32000::Table_164-Entries_common_to_all_annotation_dictionaries;
-also does ISO_32000::Table_164-Entries_common_to_all_annotation_dictionaries;
+## use ISO_32000::Table_164-Entries_common_to_all_annotation_dictionaries;
+## also does ISO_32000::Table_164-Entries_common_to_all_annotation_dictionaries;
 
-use ISO_32000_2::Table_166-Entries_common_to_all_annotation_dictionaries;
-also does ISO_32000_2::Table_166-Entries_common_to_all_annotation_dictionaries;
+## use ISO_32000_2::Table_166-Entries_common_to_all_annotation_dictionaries;
+## also does ISO_32000_2::Table_166-Entries_common_to_all_annotation_dictionaries;
 
 method cb-init {
     use PDF::Field :coerce-field, :FieldLike;

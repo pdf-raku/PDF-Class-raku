@@ -11,11 +11,11 @@ use PDF::COS::TextString;
 use PDF::COS::Dict;
 use PDF::COS::Stream;
 
-use ISO_32000::Table_44-Entries_in_a_file_specification_dictionary;
-also does ISO_32000::Table_44-Entries_in_a_file_specification_dictionary;
+## use ISO_32000::Table_44-Entries_in_a_file_specification_dictionary;
+## also does ISO_32000::Table_44-Entries_in_a_file_specification_dictionary;
 
-use ISO_32000_2::Table_43-Entries_in_a_file_specification_dictionary;
-also does ISO_32000_2::Table_43-Entries_in_a_file_specification_dictionary;
+## use ISO_32000_2::Table_43-Entries_in_a_file_specification_dictionary;
+## also does ISO_32000_2::Table_43-Entries_in_a_file_specification_dictionary;
 
 use PDF::Class::Image;
 use PDF::EmbeddedFile;
