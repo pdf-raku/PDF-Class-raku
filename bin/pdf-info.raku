@@ -7,12 +7,17 @@ use PDF::Info;
 use PDF::IO;
 
 multi sub pretty-print(DateTime $dt --> Str) {
-    sprintf('%s %s %02d %02d:%02d:%02d %04d',
+    my :($tz-s, $tz) := do given $dt.timezone {
+        when * < 0 {'-', -$_ }
+        default    {'+', $_ }
+    }
+    sprintf('%s %s %02d %02d:%02d:%02d %04d%s%02d:%02d',
 	    <Mon Tue Wed Thu Fri Sat Sun>[$dt.day-of-week - 1],
 	    <Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec>[$dt.month - 1],
 	    $dt.day-of-month,
 	    $dt.hour, $dt.minute, $dt.second,
-	    $dt.year)
+	    $dt.year,
+            $tz-s, $tz div 3600, $tz div 60 mod 60);
 }
 
 multi sub pretty-print(Mu $val --> Str) is default {
@@ -22,9 +27,8 @@ multi sub pretty-print(Mu $val --> Str) is default {
 # A port of pdfinfo.pl from the Perl 5 CAM::PDF module to Raku PDF
 
 multi sub MAIN(Bool :$version! where $_) {
-    # nyi in rakudo https://rt.perl.org/Ticket/Display.html?id=125017
-    say "PDF::Class {PDF::Class.^version}";
-    say "this script was ported from the CAM::PDF PDF Manipulation library";
+    say "PDF::Class {PDF::Class.^ver}";
+    say "This script was ported from the CAM::PDF PDF Manipulation library,";
     say "see - https://metacpan.org/pod/CAM::PDF";
 }
 
@@ -58,14 +62,11 @@ multi sub MAIN(Str $infile,           #= input PDF
     }
     my UInt $revisions = + $pdf.reader.revision-xrefs;
 
-    my UInt @page-size = $box
+    my Numeric @page-size = $box
 	?? ($box[2] - $box[0],  $box[3] - $box[1])
 	!! (0, 0);
 
-    say "File:         $infile";
-    say "File Size:    $size bytes";
-    say "Pages:        $pages";
-    say 'Outlines:     ' ~ yes-no(do with $catalog.Outlines {?.First} else {False});
+
     with $pdf-info {
 	for .keys.sort -> $key {
 	    my Str $prop = try {pretty-print( $pdf-info{$key} ) } // '???';
@@ -73,6 +74,11 @@ multi sub MAIN(Str $infile,           #= input PDF
 	        unless $prop ~~ '';
 	}
     }
+
+    say "File:         $infile";
+    say "File Size:    $size bytes";
+    say "Pages:        $pages";
+    say 'Outlines:     ' ~ yes-no(do with $catalog.Outlines {?.First} else {False});
     say 'Tagged:       ' ~ yes-no($tagged) ~ ($partial ?? ' (partial)' !! '');
     say 'Page Size:    ' ~ (@page-size[0] ?? "@page-size[0] x @page-size[1] pts" !! 'variable');
  ##   say 'Web Optimized:' ~ yes-no($pdf.is-Linearized);
