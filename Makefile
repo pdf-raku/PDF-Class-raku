@@ -4,10 +4,10 @@ DocLinker=../$(DocProj)/etc/resolve-links.raku
 RefMaker=etc/make-quick-ref.raku
 TEST_JOBS ?= 8
 
-POD = $(shell find lib -name \*.rakumod|xargs grep -le '=begin')
+POD = $(shell find lib -name \*.rakumod|xargs grep -le '\(#=\)\|\(=begin\)')
 MD = $(subst lib/,docs/,$(patsubst %.rakumod,%.md,$(POD)))
 
-all : doc
+all : md
 
 test :
 	prove6 -I . -j $(TEST_JOBS) t
@@ -33,7 +33,11 @@ $(MD): docs/%.md: lib/%.rakumod
 docs/index.md : README.md
 	cp $< $@
 
-doc-refs :
+# note: need to uncomment temporarily uncomment
+# 'use PDF::ISO_32000' ... 'also does PDF::ISO_32000'
+# these have been taken out of the dist due to
+# resource usage (open files).
+readme :
 	@raku -I . $(RefMaker) README.md > README.tmp;
 	@mv README.tmp README.md;
 
@@ -43,4 +47,6 @@ $(DocLinker) :
 Pod-To-Markdown-installed :
 	@raku -M Pod::To::Markdown -c
 
-doc : previews $(DocLinker) Pod-To-Markdown-installed $(MD) docs/index.md doc-refs
+md : previews $(DocLinker) Pod-To-Markdown-installed $(MD)
+
+doc : previews md readme docs/index.md
