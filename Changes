@@ -1,5 +1,9 @@
 {{$NEXT}}
 
+0.5.31  2026-10-14T08:18:33+13:00
+   - Improved Pod and generated mark-down; Remove some warnings; take advantage
+     of Rakudo 2026.09 improved Pod rendering capability.
+
 0.5.30  2026-03-31T14:35:07+13:00
    - Comment out numerous 'use ISO_ISO_32000*::Table_*-*; also does *'
      assertions. This was contributing to the number of open precomp files,
