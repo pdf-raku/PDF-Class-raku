@@ -6,6 +6,18 @@ class PDF::Class
 
 PDF entry-point. either a trailer dict or an XRef stream
 
+### has PDF::Info $.Info
+
+(Optional; must be an indirect reference) The document’s information dictionary
+
+### has PDF::Class::CatalogLike $.Root
+
+The catalog dictionary for the PDF document contained in the file
+
+### has PDF::COS::Type::XRef $.XRefStm
+
+Only applicable to Hybrid cross reference streams
+
 Synopsis
 --------
 

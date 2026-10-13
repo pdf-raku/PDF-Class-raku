@@ -13,15 +13,16 @@ use PDF::COS::TextString;
 
 use PDF::Filespec :FileRef;
 
-has PDF::COS::Name $.Type is entry where 'Namespace'; # Optional; PDF 2.0) The type of PDF object that this dictionary describes. If present, shall be Namespace.
+has PDF::COS::Name $.Type is entry where 'Namespace'; #= Optional; PDF 2.0) The type of PDF object that this dictionary describes. If present, shall be Namespace.
 
-has PDF::COS::TextString $.NS is entry(:required); # (Required; PDF 2.0) The string defining the namespace name which this entry identifies (conventionally a uniform resource identifier, or URI).
+has PDF::COS::TextString $.NS is entry(:required); #= (Required; PDF 2.0) The string defining the namespace name which this entry identifies (conventionally a uniform resource identifier, or URI).
 
-has FileRef $.Schema is entry; # Optional; PDF 2.0) A file specification identifying the schema file, which defines this namespace.
+has FileRef $.Schema is entry; #= Optional; PDF 2.0) A file specification identifying the schema file, which defines this namespace.
 
-has PDF::COS::Dict $.RoleMapNS is entry; # (Optional; PDF 2.0) A dictionary that shall, if present, map the names of
-# structure types used in the namespace to their approximate equivalents in
-# another namespace. The dictionary shall be comprised of a set of keys
+has PDF::COS::Dict $.RoleMapNS is entry; #= (Optional; PDF 2.0) A dictionary that shall, if present, map the names of
+#= structure types used in the namespace to their approximate equivalents in
+#= another namespace.
+# The dictionary shall be comprised of a set of keys
 # representing structure element types in the namespace defined within this
 # namespace dictionary. The corresponding value for each of these keys shall
 # either be a single name identifying a structure element type in the default

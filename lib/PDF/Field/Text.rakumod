@@ -18,4 +18,4 @@ use PDF::Class::Defs :TextOrStream;
 has TextOrStream $.V is entry(:coerce(&coerce-text-or-stream), :inherit, :alias<value>);
 has TextOrStream $.DV is entry(:coerce(&coerce-text-or-stream), :inherit, :alias<default-value>);
 
-has UInt $.MaxLen is entry; # (Optional; inheritable) The maximum length of the field’s text, in characters.
+has UInt $.MaxLen is entry; #= (Optional; inheritable) The maximum length of the field’s text, in characters.

@@ -15,7 +15,7 @@ use PDF::COS::TextString;
 ## also does ISO_32000_2::Table_383-PrintField_attributes;
 
 my subset Role of PDF::COS::Name where 'rb'|'cb'|'pb'|'tv';
-has Role $.Role is entry;	# (Optional; not inheritable) The type of form field represented by this graphic. The value of Role is one of the following, and a conforming reader interprets its meaning as defined herein.
+has Role $.Role is entry;	#= (Optional; not inheritable) The type of form field represented by this graphic. The value of Role is one of the following, and a conforming reader interprets its meaning as defined herein.
 	# rbRadio button
 	# cbCheck box
 	# pbPush button
@@ -25,10 +25,10 @@ has Role $.Role is entry;	# (Optional; not inheritable) The type of form field r
 
 my subset Checked of PDF::COS::Name where 'on'|'off'|'neutral';
 # PDF 1.7
-has Checked $.checked is entry;	# (Optional; not inheritable) The state of a radio button or check box field. The value is one of: on, off (default), or neutral.
-# NOTE 2 The case (capitalization) used for this key does not conform to the same conventions used elsewhere in this standard.
-# PDF 2.0
+has Checked $.checked is entry;	#= (Optional; not inheritable) The state of a radio button or check box field. The value is one of: on, off (default), or neutral.
+#= NOTE 2 The case (capitalization) used for this key does not conform to the same conventions used elsewhere in this standard.
+#= PDF 2.0
 has Checked $.Checked is entry;
 
-has PDF::COS::TextString $.Desc is entry;	# (Optional; not inheritable) The alternate name of the field.
+has PDF::COS::TextString $.Desc is entry;	#= (Optional; not inheritable) The alternate name of the field.
 	# NOTE 3 Similar to the value supplied in the TU entry of the field dictionary for interactive fields (see Table 220).

@@ -52,8 +52,8 @@ role PDF::Field {
     }
 
     method type { 'Field' }
-    has FieldSubtypeName $.FT is entry(:inherit, :alias<subtype>);  # Required for terminal fields; inheritable) The type of field that this dictionary describes
-    has PDF::Field $.Parent is entry(:indirect);      # (Required if this field is the child of another in the field hierarchy; absent otherwise) The field that is the immediate parent of this one (the field, if any, whose Kids array includes this field). A field can have at most one parent; that is, it can be included in the Kids array of at most one other field.
+    has FieldSubtypeName $.FT is entry(:inherit, :alias<subtype>);  #= Required for terminal fields; inheritable) The type of field that this dictionary describes
+    has PDF::Field $.Parent is entry(:indirect);      #= (Required if this field is the child of another in the field hierarchy; absent otherwise) The field that is the immediate parent of this one (the field, if any, whose Kids array includes this field). A field can have at most one parent; that is, it can be included in the Kids array of at most one other field.
 
     my subset FieldLike is export(:FieldLike) of Hash where { (.<FT>:exists) || (.<Kids>:exists) }
 
@@ -66,8 +66,8 @@ role PDF::Field {
         warn "unable to coerce {.raku} to an Annotation or Field";
     }
 
-    has AnnotOrField @.Kids is entry(:indirect, :coerce(&coerce-field)); # (Sometimes required, as described below) An array of indirect references to the immediate children of this field.
-                                                # In a non-terminal field, the Kids array is required to refer to field dictionaries that are immediate descendants of this field. In a terminal field, the Kids array ordinarily must refer to one or more separate widget annotations that are associated with this field. However, if there is only one associated widget annotation, and its contents have been merged into the field dictionary, Kids must be omitted.
+    has AnnotOrField @.Kids is entry(:indirect, :coerce(&coerce-field)); #= (Sometimes required, as described below) An array of indirect references to the immediate children of this field.
+                                                #= In a non-terminal field, the Kids array is required to refer to field dictionaries that are immediate descendants of this field. In a terminal field, the Kids array ordinarily must refer to one or more separate widget annotations that are associated with this field. However, if there is only one associated widget annotation, and its contents have been merged into the field dictionary, Kids must be omitted.
 
     #| return any terminal descendants, or self
     method fields {
@@ -127,7 +127,7 @@ role PDF::Field {
         @annots;
     }
 
-    has PDF::COS::TextString $.T is entry(:alias<key>);      # Optional) The partial field name
+    has PDF::COS::TextString $.T is entry(:alias<key>);      #= Optional) The partial field name
     multi method field-name($fld is copy:) {
         my @partial;
         while $fld.defined && $fld<T>.defined {
@@ -137,9 +137,9 @@ role PDF::Field {
         @partial ?? @partial.join('.') !! Str;
     }
 
-    has PDF::COS::TextString $.TU is entry(:alias<label>);     # (Optional; PDF 1.3) An alternate field name to be used in place of the actual field name wherever the field must be identified in the user interface (such as in error or status messages referring to the field). This text is also useful when extracting the document’s contents in support of accessibility to users with disabilities or for other purposes
+    has PDF::COS::TextString $.TU is entry(:alias<label>);     #= (Optional; PDF 1.3) An alternate field name to be used in place of the actual field name wherever the field must be identified in the user interface (such as in error or status messages referring to the field). This text is also useful when extracting the document’s contents in support of accessibility to users with disabilities or for other purposes
 
-    has PDF::COS::TextString $.TM is entry(:alias<tag>);     # (Optional; PDF 1.3) The mapping name to be used when exporting interactive form field data from the document.
+    has PDF::COS::TextString $.TM is entry(:alias<tag>);     #= (Optional; PDF 1.3) The mapping name to be used when exporting interactive form field data from the document.
 
     # See [ISO-32000 Table 221 - Field flags common to all field types]
     my Int enum FieldFlag is export(:FieldFlag) « :FieldReadonly(1) :FieldRequired(2) :FieldNoExport(3)»;
@@ -160,21 +160,21 @@ role PDF::Field {
     »;
 
     my subset FeildFlagsInt of UInt where 0 ..^ 2 +< 27;
-    has UInt $.Ff is entry(:inherit, :alias<field-flags>, :default(0));           # Optional; inheritable) A set of flags specifying various characteristics of the field
+    has UInt $.Ff is entry(:inherit, :alias<field-flags>, :default(0));           #= Optional; inheritable) A set of flags specifying various characteristics of the field
 
-    has PDF::Field::AdditionalActions $.AA is entry(:alias<additional-actions>);                     # (Optional; PDF 1.2) An additional-actions dictionary defining the field’s behavior in response to various trigger events. This entry has exactly the same meaning as the AA entry in an annotation dictionary
+    has PDF::Field::AdditionalActions $.AA is entry(:alias<additional-actions>);                     #= (Optional; PDF 1.2) An additional-actions dictionary defining the field’s behavior in response to various trigger events. This entry has exactly the same meaning as the AA entry in an annotation dictionary
 
-    has Str $.DA is entry(:inherit, :alias<default-appearance>);            # (Required; inheritable) The default appearance string containing a sequence of valid page-content graphics or text state operators that define such properties as the field’s text size and color.
+    has Str $.DA is entry(:inherit, :alias<default-appearance>);            #= (Required; inheritable) The default appearance string containing a sequence of valid page-content graphics or text state operators that define such properties as the field’s text size and color.
 
     my subset QuaddingFlags of UInt where ^3;
-    has QuaddingFlags $.Q is entry(:inherit, :alias<quadding>);   # (Optional; inheritable) A code specifying the form of quadding (justification) to be used in displaying the text:
-                                                # 0: Left-justified
-                                                # 1: Centered
-                                                # 2: Right-justified
+    has QuaddingFlags $.Q is entry(:inherit, :alias<quadding>);   #= (Optional; inheritable) A code specifying the form of quadding (justification) to be used in displaying the text:
+                                                #= 0: Left-justified
+                                                #= 1: Centered
+                                                #= 2: Right-justified
 
-    has PDF::COS::TextString $.DS is entry(:alias<default-style>);     # Optional; PDF 1.5) A default style string
+    has PDF::COS::TextString $.DS is entry(:alias<default-style>);     #= Optional; PDF 1.5) A default style string
 
-    has TextOrStream $.RV is entry(:coerce(&coerce-text-or-stream), :alias<rich-text>);  # (Optional; PDF 1.5) A rich text string
+    has TextOrStream $.RV is entry(:coerce(&coerce-text-or-stream), :alias<rich-text>);  #= (Optional; PDF 1.5) A rich text string
 
     method cb-check {
         die "Fields should have an /FT or /Kids entry"

@@ -7,7 +7,6 @@ also is PDF::Lite::Pages;
 
 also does PDF::Class::Type;
 
-
 use PDF::Content::PageNode;
 use PDF::COS::Tie;
 use PDF::COS::Name;
@@ -20,14 +19,19 @@ use PDF::Resources;
 ## also does ISO_32000_2::Table_30-Required_entries_in_a_page_tree_node;
 
 has PDF::COS::Name $.Type is entry(:required, :alias<type>) where 'Pages';
-has PDF::Pages $.Parent is entry(:indirect); # (Required except in root node; must be an indirect reference) The page tree node that is the immediate parent of this one.
-has PDF::Content::PageNode @.Kids is entry(:required, :indirect);  # (Required) An array of indirect references to the immediate children of this node. The children may be page objects or other page tree nodes.
-has UInt $.Count is entry(:required);   # (Required) The number of leaf nodes (page objects) that are descendants of this node within the page tree.
+has PDF::Pages $.Parent is entry(:indirect); #= (Required except in root node; must be an indirect reference) The page tree node that is the immediate parent of this one.
+has PDF::Content::PageNode @.Kids is entry(:required, :indirect);  #= (Required) An array of indirect references to the immediate children of this node. The children may be page objects or other page tree nodes.
+has UInt $.Count is entry(:required);   #= (Required) The number of leaf nodes (page objects) that are descendants of this node within the page tree.
 has PDF::Resources $.Resources is entry(:inherit);
-has Int $.Rotate is entry(:inherit, :alias<rotate>) where { $_ %% 90 };     # (Optional; inheritable) The number of degrees by which the page should be rotated clockwise when displayed or printed
+has Int $.Rotate is entry(:inherit, :alias<rotate>) where { $_ %% 90 };     #= (Optional; inheritable) The number of degrees by which the page should be rotated clockwise when displayed or printed
 #| inheritable page properties
-has Numeric @.MediaBox is entry(:inherit,:len(4));
-has Numeric @.CropBox is entry(:inherit,:len(4));
+has Numeric @.MediaBox is entry(:inherit,:len(4) ); #= (Required; inheritable) A rectangle (see 7.9.5, "Rectangles"), expressed
+    #= in default user space units, that define the boundaries of the
+    #= physical medium on which the page is displayed or printed.
+has Numeric @.CropBox is entry(:inherit,:len(4)); #= (Optional; Inheritable) A rectangle, expressed in default user space
+    #= units, that define the visible region of default user space. When
+    #= the page is displayed or printed, its contents are clipped (cropped)
+    #= to this rectangle. Default value: the value of MediaBox.
 
 method cb-init {
     self<Type> //= PDF::COS::Name.COERCE: 'Pages';

@@ -12,5 +12,5 @@ use PDF::COS::Name;
 ## use ISO_32000_2::Table_186-Additional_entries_specific_to_a_popup_annotation;
 ## also does ISO_32000_2::Table_186-Additional_entries_specific_to_a_popup_annotation;
 
-has PDF::Annot $.Parent is entry(:indirect); # (Optional; shall be an indirect reference) The parent annotation with which this pop-up annotation shall be associated.
-has Bool $.Open is entry; # Optional) A flag specifying whether the pop-up annotation shall initially be displayed open. Default value: false (closed).
+has PDF::Annot $.Parent is entry(:indirect); #= (Optional; shall be an indirect reference) The parent annotation with which this pop-up annotation shall be associated.
+has Bool $.Open is entry; #= Optional) A flag specifying whether the pop-up annotation shall initially be displayed open. Default value: false (closed).

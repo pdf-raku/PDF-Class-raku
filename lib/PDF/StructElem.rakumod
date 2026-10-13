@@ -23,12 +23,12 @@ also does PDF::Class::PageRef;
 ## use ISO_32000_2::Table_355-Entries_in_a_structure_element_dictionary;
 ## also does ISO_32000_2::Table_355-Entries_in_a_structure_element_dictionary;
 
-has PDF::COS::Name $.Type is entry where 'StructElem'; # (Optional) The type of PDF object that this dictionary describes; if present, shall be StructElem for a structure element.
+has PDF::COS::Name $.Type is entry where 'StructElem'; #= (Optional) The type of PDF object that this dictionary describes; if present, shall be StructElem for a structure element.
 
-has PDF::COS::Name $.S is entry(:required, :alias<tag>); # (Required) The structure type, a name object identifying the nature of the structure element and its role within the document, such as a chapter, paragraph, or footnote
-has Str $.ID is entry;    # (Optional) The element identifier, a byte string designating this structure element. The string shall be unique among all elements in the document’s structure hierarchy. The IDTree entry in the structure tree root defines the correspondence between element identifiers and the structure elements they denote.
-has PDF::StructElem @.Ref is entry(:indirect); # Optional; PDF 2.0) An array containing zero, one or more indirect references to structure elements. A Ref identifies the structure element or elements to which the item of content, contained within this structure element, refers (e.g. footnotes, endnotes, sidebars, etc.).
-has PDF::Page $.Pg is entry(:indirect, :alias<page>); # (Optional; shall be an indirect reference) A page object representing a page on which some or all of the content items designated by the K entry shall be rendered.
+has PDF::COS::Name $.S is entry(:required, :alias<tag>); #= (Required) The structure type, a name object identifying the nature of the structure element and its role within the document, such as a chapter, paragraph, or footnote
+has Str $.ID is entry;    #= (Optional) The element identifier, a byte string designating this structure element. The string shall be unique among all elements in the document’s structure hierarchy. The IDTree entry in the structure tree root defines the correspondence between element identifiers and the structure elements they denote.
+has PDF::StructElem @.Ref is entry(:indirect); #= Optional; PDF 2.0) An array containing zero, one or more indirect references to structure elements. A Ref identifies the structure element or elements to which the item of content, contained within this structure element, refers (e.g. footnotes, endnotes, sidebars, etc.).
+has PDF::Page $.Pg is entry(:indirect, :alias<page>); #= (Optional; shall be an indirect reference) A page object representing a page on which some or all of the content items designated by the K entry shall be rendered.
 my subset ReferenceLike of Hash where .<Type> ~~ 'MCR'|'OBJR'; # autoloaded PDF::MCR, PDF::OBJR
 my subset StructElemLike of Hash where .<S>:exists;
 my subset StructRootLike of Hash where { .<Type> ~~ 'StructTreeRoot' }; # autoloaded PDF::StructTreeRoot
@@ -64,8 +64,8 @@ multi sub coerce-child($_, StructElemChild) {
     warn "Unable to coerce {.raku} to a PDF::StructElem.K (child) element";
 }
 
-has StructElemParent $.P is entry(:alias<struct-parent>, :coerce(&coerce-parent)); # (Required; shall be an indirect reference) The structure element that is the immediate parent of this one in the structure hierarchy.
-has StructElemChild @.K is entry(:array-or-item, :alias<kids>, :coerce(&coerce-child));       # (Optional) The children of this structure element. The value of this entry may be one of the following objects or an array consisting of one or more of the following objects:
+has StructElemParent $.P is entry(:alias<struct-parent>, :coerce(&coerce-parent)); #= (Required; shall be an indirect reference) The structure element that is the immediate parent of this one in the structure hierarchy.
+has StructElemChild @.K is entry(:array-or-item, :alias<kids>, :coerce(&coerce-child));       #= (Optional) The children of this structure element. The value of this entry may be one of the following objects or an array consisting of one or more of the following objects:
 # • A structure element dictionary denoting another structure element
 # • An integer marked-content identifier denoting a marked-content sequence
 # • A marked-content reference dictionary denoting a marked-content sequence
@@ -83,7 +83,7 @@ multi sub coerce-atts-or-rev(Hash $_ is raw, AttributesOrRev) {
 multi sub coerce-atts-or-rev($_, AttributesOrRev) {
     fail "unable to coerce attributes: {.raku}";
 }
-has AttributesOrRev @.A is entry(:array-or-item, :coerce(&coerce-atts-or-rev));         # (Optional) A single attribute object or array of attribute objects associated with this structure element. Each attribute object shall be either a dictionary or a stream. If the value of this entry is an array, each attribute object in the array may be followed by an integer representing its revision number.
+has AttributesOrRev @.A is entry(:array-or-item, :coerce(&coerce-atts-or-rev));         #= (Optional) A single attribute object or array of attribute objects associated with this structure element. Each attribute object shall be either a dictionary or a stream. If the value of this entry is an array, each attribute object in the array may be followed by an integer representing its revision number.
 sub new-atts($O) {
     my %atts = :$O;
     %atts<P> = [] if $O eq 'UserProperties';
@@ -134,7 +134,7 @@ method attribute-dicts {
         default { () }
     }
 }
-has PDF::COS::Name @.C is entry( :alias<class>, :array-or-item);          # (Optional) An attribute class name or array of class names associated with this structure element. If the value of this entry is an array, each class name in the array may be followed by an integer representing its revision number.
+has PDF::COS::Name @.C is entry( :alias<class>, :array-or-item);          #= (Optional) An attribute class name or array of class names associated with this structure element. If the value of this entry is an array, each class name in the array may be followed by an integer representing its revision number.
 # If both the A and C entries are present and a given attribute is
 # specified by both, the one specified by the A entry shall take
 # precedence.
@@ -148,21 +148,21 @@ method class-map-keys() {
     }
 }
 
-has UInt $.R is entry(:alias<revision>, :default(0));         # (Optional) The current revision number of this structure element. The value shall be a non-negative integer. Default value: 0.
-has PDF::COS::TextString $.T  is entry(:alias<title>);        # (Optional) The title of the structure element, a text string representing it in human-readable form. The title should characterize the specific structure element, such as 'Chapter 1', rather than merely a generic element type, such as 'Chapter'.
-has PDF::COS::TextString $.Lang is entry;  # (Optional; PDF 1.4) A language identifier specifying the natural language for all text in the structure element except where overridden by language specifications for nested structure elements or marked content. If this entry is absent, the language (if any) specified in the document catalogue applies.
-has PDF::COS::TextString $.Alt is entry(:alias<alternative-description>); # (Optional) An alternate description of the structure element and its children in human-readable form, which is useful when extracting the document’s contents in support of accessibility to users with.
-has PDF::COS::TextString $.E is entry(:alias<expanded-form>); # (Optional; PDF 1.5) The expanded form of an abbreviation.
-has PDF::COS::TextString $.ActualText is entry;               # (Optional; PDF 1.4) Text that is an exact replacement for the structure element and its children. This replacement text (which should apply to as small a piece of content as possible) is useful when extracting the document’s contents in support of accessibility to users with disabilities or for other purposes
+has UInt $.R is entry(:alias<revision>, :default(0));         #= (Optional) The current revision number of this structure element. The value shall be a non-negative integer. Default value: 0.
+has PDF::COS::TextString $.T  is entry(:alias<title>);        #= (Optional) The title of the structure element, a text string representing it in human-readable form. The title should characterize the specific structure element, such as 'Chapter 1', rather than merely a generic element type, such as 'Chapter'.
+has PDF::COS::TextString $.Lang is entry;  #= (Optional; PDF 1.4) A language identifier specifying the natural language for all text in the structure element except where overridden by language specifications for nested structure elements or marked content. If this entry is absent, the language (if any) specified in the document catalogue applies.
+has PDF::COS::TextString $.Alt is entry(:alias<alternative-description>); #= (Optional) An alternate description of the structure element and its children in human-readable form, which is useful when extracting the document’s contents in support of accessibility to users with.
+has PDF::COS::TextString $.E is entry(:alias<expanded-form>); #= (Optional; PDF 1.5) The expanded form of an abbreviation.
+has PDF::COS::TextString $.ActualText is entry;               #= (Optional; PDF 1.4) Text that is an exact replacement for the structure element and its children. This replacement text (which should apply to as small a piece of content as possible) is useful when extracting the document’s contents in support of accessibility to users with disabilities or for other purposes
 
-has PDF::Filespec @.AF is entry; # (Optional; PDF 2.0) An array of one or more file specification dictionaries (7.11.3, "File specification dictionaries") which denote the associated files for the entire structure tree.
+has PDF::Filespec @.AF is entry; #= (Optional; PDF 2.0) An array of one or more file specification dictionaries (7.11.3, "File specification dictionaries") which denote the associated files for the entire structure tree.
 
-has PDF::Namespace $.NS is entry(:indirect, :alias<namespace>); # Optional; PDF 2.0) An indirect reference to a namespace dictionary defining the namespace this element belongs to
+has PDF::Namespace $.NS is entry(:indirect, :alias<namespace>); #= Optional; PDF 2.0) An indirect reference to a namespace dictionary defining the namespace this element belongs to
 
 my subset PhoneticAlphabet of PDF::COS::Name where 'ipa'|'x-sampa'|'zh-Latn-pinyin'|'zh-Latn-wadegile';
-has PhoneticAlphabet $.PhoneticAlphabet is entry; # (Optional; PDF 2.0) Property for a structure element that indicates the phonetic alphabet used by a Phoneme property. Applies to the structure element and its children, except where overridden by a child structure element.
+has PhoneticAlphabet $.PhoneticAlphabet is entry; #= (Optional; PDF 2.0) Property for a structure element that indicates the phonetic alphabet used by a Phoneme property. Applies to the structure element and its children, except where overridden by a child structure element.
 
-has PDF::COS::TextString $.Phoneme is entry; # (Optional; PDF 2.0) Property for a structure element that may be used as pronunciation hint. It is an exact replacement for content enclosed by the structure element and its children.
+has PDF::COS::TextString $.Phoneme is entry; #= (Optional; PDF 2.0) Property for a structure element that may be used as pronunciation hint. It is an exact replacement for content enclosed by the structure element and its children.
 
 method cb-check {
     die "missing required field /P" without self.P;

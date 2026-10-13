@@ -16,4 +16,4 @@ use PDF::COS::Name;
 
 has PDF::COS::Name $.Type is entry(:required, :alias<type>) where 'Metadata';
 has PDF::COS::Name $.Subtype is entry(:required, :alias<subtype>) where 'XML';
-has PDF::Metadata::XML $.Metadata is entry; # (Optional; PDF 1.4) A metadata stream containing metadata for the component.
+has PDF::Metadata::XML $.Metadata is entry; #= (Optional; PDF 1.4) A metadata stream containing metadata for the component.

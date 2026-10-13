@@ -18,22 +18,22 @@ use PDF::Class::Defs :ColorSpace;
 ## use ISO_32000_2::Table_34-Entries_in_a_resource_dictionary;
 ## also does ISO_32000_2::Table_34-Entries_in_a_resource_dictionary;
 
-has Hash %.ExtGState  is entry;  # (Optional) A dictionary that maps resource names to graphics state parameter dictionaries
+has Hash %.ExtGState  is entry;  #= (Optional) A dictionary that maps resource names to graphics state parameter dictionaries
 
-has ColorSpace %.ColorSpace is entry;  # (Optional) A dictionary that maps each resource name to either the name of a device-dependent color space or an array describing a color space
+has ColorSpace %.ColorSpace is entry;  #= (Optional) A dictionary that maps each resource name to either the name of a device-dependent color space or an array describing a color space
 
 my subset PatternLike of Hash where .<PatternType> ~~ UInt; # autoloaded PDF::Pattern
-has PatternLike %.Pattern is entry;  # (Optional) A dictionary that maps resource names to pattern objects
+has PatternLike %.Pattern is entry;  #= (Optional) A dictionary that maps resource names to pattern objects
 
 my subset ShadingLike of Hash where .<ShadingType> ~~ UInt; # autoloaded PDF::Shading
-has ShadingLike %.Shading is entry;  # (Optional; PDF 1.3) A dictionary that maps resource names to shading dictionaries
+has ShadingLike %.Shading is entry;  #= (Optional; PDF 1.3) A dictionary that maps resource names to shading dictionaries
 
 my subset XObjectLike of PDF::COS::Stream where .<Subtype> ~~ 'Image'|'Form'|'PS'; # autoloaded PDF::XObject
-has XObjectLike %.XObject is entry;  # (Optional) A dictionary that maps resource names to external objects
+has XObjectLike %.XObject is entry;  #= (Optional) A dictionary that maps resource names to external objects
 
 my subset FontLike of Hash where .<Type> ~~ 'Font'; # autoloaded PDF::Font
-has FontLike %.Font is entry;        # (Optional) A dictionary that maps resource names to font dictionaries
+has FontLike %.Font is entry;        #= (Optional) A dictionary that maps resource names to font dictionaries
 
-has PDF::COS::Name @.ProcSet is entry;  # (Optional) An array of predefined procedure set names
-has Hash %.Properties is entry;  # (Optional; PDF 1.2) A dictionary that maps resource names to property list dictionaries for marked content
+has PDF::COS::Name @.ProcSet is entry;  #= (Optional) An array of predefined procedure set names
+has Hash %.Properties is entry;  #= (Optional; PDF 1.2) A dictionary that maps resource names to property list dictionaries for marked content
 

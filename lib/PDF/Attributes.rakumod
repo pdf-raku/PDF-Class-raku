@@ -35,8 +35,8 @@ my subset Owner of PDF::COS::Name where 'Layout'|
 'RDFa-1.10'|
 'ARIA-1.1'|
 'NSO';
-has Owner $.O is entry(:alias<owner>, :required); # The name of the PDF processor creating the attribute data.
-has PDF::Namespace $.NS is entry(:alias<namespace=>, :indirect); # (Required if the value of the O entry is NSO; not permitted otherwise; PDF 2.0) An indirect reference to a namespace dictionary defining the namespace that attributes with this attribute object dictionary belong to.
+has Owner $.O is entry(:alias<owner>, :required); #= The name of the PDF processor creating the attribute data.
+has PDF::Namespace $.NS is entry(:alias<namespace=>, :indirect); #= (Required if the value of the O entry is NSO; not permitted otherwise; PDF 2.0) An indirect reference to a namespace dictionary defining the namespace that attributes with this attribute object dictionary belong to.
 
 method set-attribute($key, $value) { self{$key} = $value }
 method attributes-delegate( Hash $dict) {

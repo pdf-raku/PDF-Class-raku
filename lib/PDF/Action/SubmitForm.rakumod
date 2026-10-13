@@ -38,6 +38,6 @@ has FieldRef @.Fields is entry(:coerce(&coerce-field-ref));     #= (Optional) An
 
 =para If this entry is omitted, the Include/Exclude flag is ignored, and all fields in the document’s interactive form is submitted except those whose NoExport flag is set. Fields with no values may also be excluded, as dictated by the value of the IncludeNoValueFields flag.
 
-has UInt $.Flags is entry(:default(0));     #= (Optional; inheritable) A set of flags specifying various characteristics of the action (see Table 237). Default value: 0.
+has UInt $.Flags is entry(:default(0));      #= (Optional; inheritable) A set of flags specifying various characteristics of the action (see Table 237). Default value: 0.
 
-has PDF::COS::TextString $.CharSet is entry; # (Optional; inheritable; PDF 2.0) Supported values include: utf-8, utf-16, Shift-JIS, BigFive, GBK, or UHC.
+has PDF::COS::TextString $.CharSet is entry; #= (Optional; inheritable; PDF 2.0) Supported values include: utf-8, utf-16, Shift-JIS, BigFive, GBK, or UHC.

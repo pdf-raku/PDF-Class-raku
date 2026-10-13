@@ -67,7 +67,7 @@ multi sub display(List $obj) {
     }
 
     '[ ' ~ (
-        (0 ..^ $n).map({ $obj[$_] })
+        (^$n).map({ $obj[$_] })
             .map(&display-item)
             .join: ' ') ~ $etc ~
         ~ ' ]';
@@ -76,9 +76,8 @@ multi sub display(List $obj) {
 multi sub display(Hash $obj) {
     '<< ' ~ (
         $obj.keys.grep(* ne 'encoded').sort(&key-sort)
-            .map(-> $name { :$name, $obj{$name} })
-            .map(&display-item).join: ' ')
-        ~ ' >>';
+        .map(-> $name { '/' ~ $name ~ ' ' ~ $obj{$name}.&display-item }).join: ' ',
+    ) ~ ' >>';
 }
 
 sub ref($obj) {

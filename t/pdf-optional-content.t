@@ -52,7 +52,7 @@ is $ocg-obj.type, 'OCG', '$.type accessor';
 is $ocg-obj.Name, 'Watermark', '$.Name accessor';
 
 my $usage = $ocg-obj.Usage;
-does-ok $usage, PDF::OCG::Usage, 'Usage';
+does-ok $usage, PDF::OCG::OCUsage, 'Usage';
 
 my $export = $usage.Export;
 is $export.ExportState, 'ON', 'Usage.Export.ExportState';

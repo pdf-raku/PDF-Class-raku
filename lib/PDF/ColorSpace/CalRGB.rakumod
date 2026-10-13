@@ -6,6 +6,7 @@ also is PDF::ColorSpace;
 use PDF::COS::Tie;
 use PDF::COS::Tie::Hash;
 
+#| CalRGB Color space dictionary
 role CalRGBDict
    does PDF::COS::Tie::Hash {
 

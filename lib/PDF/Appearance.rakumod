@@ -30,6 +30,6 @@ multi sub coerce(Hash $dict is rw, AppearEntry) {
     AppearanceStates.COERCE: $dict;
 }
 
-has AppearEntry $.N is entry(:&coerce, :alias<normal>, :required); # (Required) The annotation’s normal appearance.
-has AppearEntry $.R is entry(:&coerce, :alias<rollover>);          # (Optional) The annotation’s rollover appearance. Default value: the value of the N entry.
-has AppearEntry $.D is entry(:&coerce, :alias<down>);              # (Optional) The annotation’s down appearance. Default value: the value of the N entry.
+has AppearEntry $.N is entry(:&coerce, :alias<normal>, :required); #= (Required) The annotation’s normal appearance.
+has AppearEntry $.R is entry(:&coerce, :alias<rollover>);          #= (Optional) The annotation’s rollover appearance. Default value: the value of the N entry.
+has AppearEntry $.D is entry(:&coerce, :alias<down>);              #= (Optional) The annotation’s down appearance. Default value: the value of the N entry.
