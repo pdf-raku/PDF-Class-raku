@@ -1,5 +1,6 @@
 {{$NEXT}}
    - Eliminate PDF::FontStream role; merge with the PDF::FontFile class.
+   - Create PDF::OCG subclasses PageElement and User
 
 0.5.31  2026-10-14T08:18:33+13:00
    - Improved Pod and generated mark-down; Remove some warnings; take advantage
