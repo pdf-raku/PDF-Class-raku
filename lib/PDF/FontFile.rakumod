@@ -3,11 +3,11 @@ unit class PDF::FontFile;
 use PDF::FontStream;
 also is PDF::FontStream;
 
-use ISO_32000::Table_127-Additional_entries_in_an_embedded_font_stream_dictionary;
-also does ISO_32000::Table_127-Additional_entries_in_an_embedded_font_stream_dictionary;
+# use ISO_32000::Table_127-Additional_entries_in_an_embedded_font_stream_dictionary;
+# also does ISO_32000::Table_127-Additional_entries_in_an_embedded_font_stream_dictionary;
 
-use ISO_32000_2::Table_125-Additional_entries_in_an_embedded_font_stream_dictionary;
-also does ISO_32000_2::Table_125-Additional_entries_in_an_embedded_font_stream_dictionary;
+# use ISO_32000_2::Table_125-Additional_entries_in_an_embedded_font_stream_dictionary;
+# also does ISO_32000_2::Table_125-Additional_entries_in_an_embedded_font_stream_dictionary;
 
 use PDF::COS::Name;
 use PDF::COS::Tie;
