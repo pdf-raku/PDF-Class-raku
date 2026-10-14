@@ -1,7 +1,7 @@
 unit class PDF::FontFile;
 
-use PDF::FontStream;
-also is PDF::FontStream;
+use PDF::COS::Stream;
+also is PDF::COS::Stream;
 
 # use ISO_32000::Table_127-Additional_entries_in_an_embedded_font_stream_dictionary;
 # also does ISO_32000::Table_127-Additional_entries_in_an_embedded_font_stream_dictionary;

@@ -18,7 +18,7 @@ PDF::COS.loader = class PDF::Class::Loader {
     }
 
     multi method load-delegate(Hash :$dict! where {.<PatternType>:exists}) {
-        my UInt $pt = from-ast $dict<PatternType>;
+        my UInt $pt = $dict<PatternType>.&from-ast;
         my $sub-type = [Mu, 'Tiling', 'Shading'][$pt];
         warn "Unknown /PatternType $pt" without $sub-type;
 	$.find-delegate('Pattern', :base-class(PDF::COS::Dict), $sub-type);
@@ -29,8 +29,8 @@ PDF::COS.loader = class PDF::Class::Loader {
    }
 
     multi method load-delegate( Hash :$dict! where {.<Type>:exists}, :$base-class!) {
-        my $type = from-ast($dict<Type>);
-        my $subtype = from-ast($_)
+        my $type = $dict<Type>.&from-ast;
+        my $subtype = .&from-ast
             with $dict<Subtype> // $dict<S>;
         with $subtype {
             when '3D'   { $_ = 'ThreeD' }
@@ -50,7 +50,7 @@ PDF::COS.loader = class PDF::Class::Loader {
 
     #| Reverse lookup for classes when /Subtype is required but /Type is optional
     multi method load-delegate(Hash :$dict! where {.<Subtype>:exists }, :$base-class!) {
-	my $subtype = from-ast $dict<Subtype>;
+	my $subtype = $dict<Subtype>.&from-ast;
 
 	my $type = do given $subtype {
             when '3D' { $subtype = 'ThreeD'; 'Annot' }
@@ -74,7 +74,7 @@ PDF::COS.loader = class PDF::Class::Loader {
 
     #| Reverse lookup for classes when /S (subtype) is required, but /Type is optional
     multi method load-delegate(Hash :$dict! where {.<S>:exists }, :$base-class!) {
-	my $subtype = from-ast $dict<S>;
+	my $subtype = $dict<S>.&from-ast;
 
 	my $type = do given $subtype {
             when 'Alpha'|'Luminosity' { 'Mask' }
@@ -103,11 +103,11 @@ PDF::COS.loader = class PDF::Class::Loader {
         where ('CalGray'|'CalRGB'|'Lab'|'ICCBased'|'Pattern' #| PDF Spec 1.7 Section 4.5.4 CIE-Based Color Spaces
                |'Indexed'|'Separation'|'DeviceN'); #| PDF Spec 1.7 Section 4.5.5 Special Color Spaces)
     my subset ColorSpace of List where {
-        .elems <= 5 && from-ast(.[0]) ~~ ColorSpaceName
+        .elems <= 5 && .[0].&from-ast ~~ ColorSpaceName
     }
 
     multi method load-delegate(ColorSpace :$array!, :$base-class!) {
-	my $color-type = from-ast $array[0];
+	my $color-type = $array[0].&from-ast;
 	$.find-delegate('ColorSpace', $color-type, :$base-class);
     }
 
