@@ -39,11 +39,10 @@ PDF::COS.loader = class PDF::Class::Loader {
                         { $_ = Nil }
         }
         $type ~~
-            'Ind'|'Ttl'|'Org'              # handled by PDF::OCG
-            |'SigRef'|'TransformParams'    # handled by PDF::Signature
-            |'Sig'|'PageLabel'             # handled by PDF::Catalog
-            |'EmbeddedFile'                # handled by PDF::Filespec
-            |'Stream'                      # MS print-driver fluff
+             'SigRef'|'TransformParams'          # handled by PDF::Signature
+            |'Sig'|'PageLabel'                   # handled by PDF::Catalog
+            |'EmbeddedFile'                      # handled by PDF::Filespec
+            |'Stream'                            # MS print-driver fluff
             ?? $base-class
             !! $.find-delegate( $type, $subtype, :$base-class );
     }

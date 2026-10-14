@@ -23,6 +23,9 @@ use PDF::COS::TextString;
 
 has PDF::COS::Name $.Type is entry(:required, :alias<type>) where 'OCG';
 
+use PDF::OCG::User;
+use PDF::OCG::PageElement;
+
 has PDF::COS::TextString $.Name is entry(:required);  #= (Required) The name of the optional content group, suitable for presentation in a reader’s user interface.
 has PDF::COS::Name @.Intent is entry(:array-or-item, :default<View>); #= (Optional) A single intent name or an array containing any combination of names. PDF defines two names, View and Design, that may indicate the intended use of the graphics in the group. A conforming reader may choose to use only groups that have a specific intent and ignore others.
 #= Default value: View.
@@ -94,17 +97,8 @@ role OCUsage
     has View $.View is entry; #= (Optional) A dictionary that shall have a single entry, ViewState, a name that has a value of either ON or OFF,
 
     #| Optional Content User info dictionary
-    my role User
-        does PDF::COS::Tie::Hash {
-        has PDF::COS::Name $.Type is entry; #= A name object that shall be either Ind (individual), Ttl (title), or Org (organization).
-        has PDF::COS::TextString @.Name is entry(:array-or-item);      #= A text string or array of text strings representing the name(s) of the individual, position or organization.
-    }
-    has User $.User is entry; #= Optional) A dictionary specifying one or more users for whom this optional content group is primarily intended
+    has PDF::OCG::User $.User is entry; #= Optional) A dictionary specifying one or more users for whom this optional content group is primarily intended
 
-    my role PageElement
-        does PDF::COS::Tie::Hash {
-        has PDF::COS::Name $.Subtype is entry where 'HF'|'FG'|'BG'|'L';
-    }
-    has PageElement $.PageElement is entry; #= A dictionary declaring that the group contains a pagination artifact. It shall contain one entry, Subtype, whose value shall be a name that is either HF (header/footer), FG (foreground image or graphic), BG (background image or graphic), or L (logo).
+    has PDF::OCG::PageElement $.PageElement is entry; #= A dictionary declaring that the group contains a pagination artifact. It shall contain one entry, Subtype, whose value shall be a name that is either HF (header/footer), FG (foreground image or graphic), BG (background image or graphic), or L (logo).
 }
 has OCUsage $.Usage is entry;

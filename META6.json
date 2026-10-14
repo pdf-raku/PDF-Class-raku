@@ -125,6 +125,8 @@
     "PDF::NumberTree": "lib/PDF/NumberTree.rakumod",
     "PDF::OBJR": "lib/PDF/OBJR.rakumod",
     "PDF::OCG": "lib/PDF/OCG.rakumod",
+    "PDF::OCG::User": "lib/PDF/OCG/User.rakumod",
+    "PDF::OCG::PageElement": "lib/PDF/OCG/PageElement.rakumod",
     "PDF::OCMD": "lib/PDF/OCMD.rakumod",
     "PDF::Outline": "lib/PDF/Outline.rakumod",
     "PDF::Outlines": "lib/PDF/Outlines.rakumod",
