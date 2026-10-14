@@ -1,4 +1,5 @@
 {{$NEXT}}
+   - Eliminate PDF::FontStream role; merge with PDF::FontFile.
 
 0.5.31  2026-10-14T08:18:33+13:00
    - Improved Pod and generated mark-down; Remove some warnings; take advantage

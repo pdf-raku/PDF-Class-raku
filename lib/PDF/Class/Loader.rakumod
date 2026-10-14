@@ -95,6 +95,10 @@ PDF::COS.loader = class PDF::Class::Loader {
         }
     }
 
+    multi method load-delegate(Hash :$dict! where {.<Length1>:exists }, :$base-class!) {
+        $.find-delegate('FontFile', Nil, :$base-class);
+    }
+
     my subset ColorSpaceName of PDF::COS::Name
         where ('CalGray'|'CalRGB'|'Lab'|'ICCBased'|'Pattern' #| PDF Spec 1.7 Section 4.5.4 CIE-Based Color Spaces
                |'Indexed'|'Separation'|'DeviceN'); #| PDF Spec 1.7 Section 4.5.5 Special Color Spaces)

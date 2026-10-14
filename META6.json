@@ -103,7 +103,6 @@
     "PDF::FontDescriptor": "lib/PDF/FontDescriptor.rakumod",
     "PDF::FontDescriptor::CID": "lib/PDF/FontDescriptor/CID.rakumod",
     "PDF::FontFile": "lib/PDF/FontFile.rakumod",
-    "PDF::FontStream": "lib/PDF/FontStream.rakumod",
     "PDF::Function": "lib/PDF/Function.rakumod",
     "PDF::Function::Exponential": "lib/PDF/Function/Exponential.rakumod",
     "PDF::Function::PostScript": "lib/PDF/Function/PostScript.rakumod",
