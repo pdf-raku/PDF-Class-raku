@@ -52,8 +52,10 @@ PDF::COS.loader = class PDF::Class::Loader {
 	my $subtype = $dict<Subtype>.&from-ast;
 
 	my $type = do given $subtype {
-            when '3D' { $subtype = 'ThreeD'; 'Annot' }
-	    when AnnotSubtype  { 'Annot' }
+	    when AnnotSubtype  {
+                $subtype .= subst(/^'3D'/, 'ThreeD');
+                'Annot'
+            }
             when 'Markup3D'    { 'ExData' }
 	    when 'PS'|'Image'|'Form' { 'XObject' }
             when FontFileType {

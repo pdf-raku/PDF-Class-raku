@@ -4,7 +4,6 @@ role PDF::Field {
     use PDF::Class::Type;
 
     also does PDF::COS::Tie::Hash;
-    also does PDF::Class::Type::Subtyped;
 
     use PDF::COS::Tie;
     use PDF::COS::TextString;
@@ -52,7 +51,7 @@ role PDF::Field {
     }
 
     method type { 'Field' }
-    has FieldSubtypeName $.FT is entry(:inherit, :alias<subtype>);  #= Required for terminal fields; inheritable) The type of field that this dictionary describes
+    has FieldSubtypeName $.FT is entry(:inherit, :alias<field-type>);  #= Required for terminal fields; inheritable) The type of field that this dictionary describes
     has PDF::Field $.Parent is entry(:indirect);      #= (Required if this field is the child of another in the field hierarchy; absent otherwise) The field that is the immediate parent of this one (the field, if any, whose Kids array includes this field). A field can have at most one parent; that is, it can be included in the Kids array of at most one other field.
 
     my subset FieldLike is export(:FieldLike) of Hash where { (.<FT>:exists) || (.<Kids>:exists) }
