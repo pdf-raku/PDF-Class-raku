@@ -1,6 +1,12 @@
 {{$NEXT}}
+
+0.5.32  2026-11-01T06:36:04+13:00
    - Eliminate PDF::FontStream role; merge with the PDF::FontFile class.
-   - Create PDF::OCG subclasses PageElement and User
+   - Create PDF::OCG subclasses PageElement and User.
+   - Rename PDF::Field type() alias to field-type(). PDF::Annot roles, which also
+     have a field-type() alias, are commonly mixed in with fields.
+   - Rename Annot content() method to contents(). content() is already a PDF::COS
+     method and should not be overridden.
 
 0.5.31  2026-10-14T08:18:33+13:00
    - Improved Pod and generated mark-down; Remove some warnings; take advantage
