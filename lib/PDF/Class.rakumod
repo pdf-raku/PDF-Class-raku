@@ -1,5 +1,5 @@
 #| PDF entry-point. either a trailer dict or an XRef stream
-unit class PDF::Class:ver<0.5.32>;
+unit class PDF::Class:ver<0.5.33>;
 
 use PDF::Lite;
 also is PDF::Lite;

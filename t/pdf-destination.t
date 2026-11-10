@@ -23,21 +23,21 @@ ok [$page, 'Blah'] !~~ DestinationLike, 'non-destination array';
 
 my PDF::Destination $d;
 is-destination $d=PDF::Destination.construct(FitWindow, :$page), [$page, FitWindow], 'FitWindow destination';
-is-deeply $d.page, $page, 'page accessor';
+is-deeply $d.dest, $page, 'dest accessor';
 is $d.fit, 'Fit', 'fit accessor';
 is $d.is-page-ref, True, 'destination is page ref';
 does-ok $d.fit, PDF::COS::Name, 'fit accessor';
 is-deeply $d.content, (:array($[:dict{:Type(:name<Page>)}, :name<Fit>])), 'destination content';
 
 is-destination $d=PDF::Destination.construct(:$page), [$page, FitWindow], 'Default destination';
-is-deeply $d.page, $page, 'page accessor';
+is-deeply $d.dest, $page, 'dest accessor';
 is $d.fit, 'Fit', 'fit accessor';
 is $d.is-page-ref, True, 'destination is page ref';
 does-ok $d.fit, PDF::COS::Name, 'fit accessor';
 is-deeply $d.content, (:array($[:dict{:Type(:name<Page>)}, :name<Fit>])), 'destination content';
 
 is-destination $d=PDF::Destination.construct(:page(3)), [3, FitWindow], 'page number destination';
-is-deeply $d.page, 3, 'page-number page accessor';
+is-deeply $d.dest, 3, 'page-number dest accessor';
 is $d.fit, 'Fit', 'page-number fit accessor';
 is $d.is-page-ref, False, 'destination is page ref';
 does-ok $d.fit, PDF::COS::Name, 'fit accessor';
@@ -65,7 +65,7 @@ is $d.fit, FitBox, 'fit accessor';
 
 is-destination $d=PDF::Destination.construct(FitBox, :page(42)), [42, FitBox], 'FitBox destination';
 is $d.is-page-ref, False, 'destination is not a page ref';
-is $d.page, 42, 'destination page';
+is $d.dest, 42, 'destination page';
 is $d.fit, FitBox, 'fit accessor';
 
 # check we can read destinations
