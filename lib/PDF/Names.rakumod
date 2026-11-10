@@ -11,9 +11,9 @@ also does PDF::COS::Tie::Hash;
 
 use PDF::COS::Tie;
 use PDF::NameTree;
-use PDF::Destination :DestNamed, :coerce-dest;
+use PDF::Destination :DestTarget, :coerce-dest;
 
-has PDF::NameTree[DestNamed, :coerce(&coerce-dest)] $.Dests is entry;  #= (Optional; PDF 1.2) A name tree mapping name strings to destinations.
+has PDF::NameTree[DestTarget, :coerce(&coerce-dest)] $.Dests is entry;  #= (Optional; PDF 1.2) A name tree mapping name strings to destinations.
 has PDF::NameTree $.AP is entry;                     #= (Optional; PDF 1.3) A name tree mapping name strings to annotation appearance streams.
 has PDF::NameTree $.JavaScript is entry;             #= (Optional; PDF 1.3) A name tree mapping name strings to document-level JavaScript actions.
 has PDF::NameTree $.Pages is entry;                  #= (Optional; PDF 1.3) A name tree mapping name strings to visible pages for use in interactive forms.

@@ -28,9 +28,15 @@ role PDF::Destination {
     my subset PageRef where PageLike|UInt|Pair;
     my subset Dest where PageLike|StructLike|UInt|Pair;
 
-    has PageRef $.page is index(0);
+    has Dest $.dest is index(0);
     has PDF::COS::Name $.fit is index(1);
     method is-page-ref { self[0] ~~ PageLike }
+    method page is DEPRECATED {
+        given self[0] {
+            when StructLike { .<Pg> }
+            default { $_ }
+        }
+    }
 
     multi sub is-dest-like(Dest $dest, 'XYZ', NumNull $left?,
                            NumNull $top?, NumNull $zoom?)          { True }
@@ -89,7 +95,6 @@ role PDF::Destination {
     my subset DestRef is export(:DestRef) where PDF::Destination|PDF::COS::Name|PDF::COS::ByteString;
     my subset LocalDestRef of DestRef is export(:LocalDestRef) where $_ ~~ PDF::Destination && .[0] ~~ PageLike:D || $_ ~~ Str;
     my subset RemoteDestRef of DestRef is export(:RemoteDestRef) where $_ ~~ PDF::Destination && .[0] ~~ UInt:D || $_ ~~ Str;
-    my subset StructDestRef of PDF::Destination where .[0] ~~ StructLike:D;
     proto sub coerce-dest($,$) is export(:coerce-dest) {*};
 
     # assume an array is an explicit destination
@@ -109,20 +114,24 @@ role PDF::Destination {
     multi sub coerce-dest($_ is copy, DestRef) {
         .&coerce-dest(DestRef);
     }
-    multi sub coerce-dest($_ is raw, StructDestRef) {
-        .&coerce-dest(DestRef)
+    my subset StructDestRef of PDF::Destination where .[0] ~~ StructLike:D;
+    sub coerce-struct-dest(List:D $_, StructDestRef) is export(:coerce-struct-dest) {
+        use PDF::StructElem;
+        PDF::StructElem.COERCE: .[0];
+        my $role = $?ROLE.delegate-destination($_);
+        $role.COERCE: $_;
     }
     # DestNamed coercement also allows an intermediate dictionary with a /D entry
     my role DestDict is export(:DestDict) does PDF::COS::Tie::Hash {
         has DestRef $.D is entry(:required, :alias<destination>, :coerce(&coerce-dest));
-        has StructDestRef $.SD is entry(:coerce(&coerce-dest)); # (Optional; PDF 2.0) The structure destination to jump to. If present, the structure destination takes precedence over destination in the D entry.
+        has StructDestRef $.SD is entry(:coerce(&coerce-struct-dest)); # (Optional; PDF 2.0) The structure destination to jump to. If present, the structure destination takes precedence over destination in the D entry.
     }
 
-    my subset DestNamed is export(:DestNamed) where DestDict|DestRef;
-    multi sub coerce-dest(Hash $dict, DestNamed) {
+    my subset DestTarget is export(:DestTarget) where DestDict|DestRef;
+    multi sub coerce-dest(Hash:D $dict, DestTarget) {
         DestDict.COERCE($dict);
     }
-    multi sub coerce-dest($_, DestNamed) {
+    multi sub coerce-dest($_, DestTarget) {
         .&coerce-dest(DestRef);
     }
 
