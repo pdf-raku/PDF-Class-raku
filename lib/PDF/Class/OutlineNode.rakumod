@@ -1,7 +1,7 @@
 unit role PDF::Class::OutlineNode;
 
 use PDF::COS;
-use PDF::Destination :coerce-dest, :DestinationLike, :DestRef;
+use PDF::Destination :coerce-dest, :DestinationLike, :DestTarget;
 sub siblings($first) {
     my class Siblings does Iterable {
         has ::?ROLE:D $.first is required;
@@ -18,10 +18,10 @@ sub siblings($first) {
 }
 method add-kid(Hash $kid is copy = {}) {
     my $grand-kids = $kid<kids>:delete;
-    my DestRef $dest;
+    my DestTarget $dest;
     with $kid<dest>:delete {
-        when DestRef { $dest = $_; }
-        when DestinationLike|Str  { $dest = .&coerce-dest(DestRef); }
+        when DestTarget { $dest = $_; }
+        when DestinationLike|Str  { $dest = .&coerce-dest(DestTarget); }
         default { warn "ignoring outline dest: {.gist}" }
     }
     $kid = (require PDF::Outline).COERCE: $kid;

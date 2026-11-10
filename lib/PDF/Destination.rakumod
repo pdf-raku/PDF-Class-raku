@@ -25,7 +25,6 @@ role PDF::Destination {
 
     my subset PageLike of Hash where { .<Type> ~~ 'Page' }; # autoloaded PDF::Page
     my subset StructLike of Hash where { .<S>:exists };     # struct elem
-    my subset PageRef where PageLike|UInt|Pair;
     my subset Dest where PageLike|StructLike|UInt|Pair;
 
     has Dest $.dest is index(0);
@@ -83,8 +82,9 @@ role PDF::Destination {
                                                                                                       $bottom, $right, $top] }
 
     multi method construct(Dest :$dest!, )                         { self!dest: [$dest, fit(FitWindow), ] }
-    multi method construct(Str:D $fit, PageRef :$page!, *%c) { self.construct: $fit, :dest($page), |%c }
-    multi method construct(PageRef :$page!, )                      { self!dest: [$page, fit(FitWindow), ] }
+    multi method construct(Str:D $fit, Dest :$dest!, *%c) { self.construct: $fit, :$dest, |%c }
+    multi method construct(Str:D $fit, Dest :$page!, *%c) { self.construct: $fit, :dest($page), |%c } # Deprecate?
+    multi method construct(Dest :$page!, )                      { self!dest: [$page, fit(FitWindow), ] } # Deprecate?
     multi method construct(ExplicitDestLike $dest)                 { self.construct(|$dest) }
     multi method construct(*@args) {
         fail "unable to construct destination: {@args.raku}";
@@ -93,7 +93,6 @@ role PDF::Destination {
     # Coercions for explicit and named destinations
     # a named destination may be either a byte-string or name object
     my subset DestRef is export(:DestRef) where PDF::Destination|PDF::COS::Name|PDF::COS::ByteString;
-    my subset LocalDestRef of DestRef is export(:LocalDestRef) where $_ ~~ PDF::Destination && .[0] ~~ PageLike:D || $_ ~~ Str;
     my subset RemoteDestRef of DestRef is export(:RemoteDestRef) where $_ ~~ PDF::Destination && .[0] ~~ UInt:D || $_ ~~ Str;
     proto sub coerce-dest($,$) is export(:coerce-dest) {*};
 

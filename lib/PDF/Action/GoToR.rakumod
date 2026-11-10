@@ -15,7 +15,7 @@ also does PDF::Action;
 
 use PDF::COS::Tie;
 use PDF::COS::Name;
-use PDF::Destination :DestRef, :RemoteDestRef, :DestinationLike, :&coerce-dest;
+use PDF::Destination :DestRef, :RemoteDestRef, :&coerce-dest;
 use PDF::Filespec :FileRef, :FileRefLike, :&to-file;
 use PDF::Page;
 
