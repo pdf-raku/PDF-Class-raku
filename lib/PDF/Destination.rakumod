@@ -30,7 +30,7 @@ role PDF::Destination {
     has Dest $.dest is index(0);
     has PDF::COS::Name $.fit is index(1);
     method is-page-ref { self[0] ~~ PageLike }
-    method page is DEPRECATED {
+    method page is DEPRECATED("PDF::Class.page") {
         given self[0] {
             when StructLike { .<Pg> }
             default { $_ }

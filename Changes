@@ -1,6 +1,8 @@
 {{$NEXT}}
-   - Backport Catalog page() method from PDF::API6. To provide a alternative
-     to the deprecated, incomplete, PDF::Destination page() method.
+
+0.6.0  2026-11-19T09:39:41+13:00
+   - Backport Catalog page() method from PDF::API6. To provide a fully
+     working alternative to the deprecated PDF::Destination page() method.
 
 0.5.33  2026-11-11T09:41:58+13:00
    - Fix handling of PDF 2.0 Structure destinations
