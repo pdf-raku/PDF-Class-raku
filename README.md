@@ -73,7 +73,7 @@ This module is a work in progress. It currently defines roles and classes for ma
 ```
     use PDF::Class;
     use PDF::Catalog;
-    use PDF::Viewer::Preferences;
+    use PDF::ViewerPreferences;
 
     my PDF::Class $pdf .= new;
 
@@ -81,7 +81,7 @@ This module is a work in progress. It currently defines roles and classes for ma
     $doc.PageLayout = 'TwoColumnLeft';
     $doc.PageMode   = 'UseThumbs';
 
-    given $doc.ViewerPreferences //= {} -> PDF::Viewer::Preferences $_ {
+    given $doc.ViewerPreferences //= {} -> PDF::ViewerPreferences $_ {
         .Duplex = 'DuplexFlipShortEdge';
         .NonFullScreenPageMode = 'UseOutlines';
     }

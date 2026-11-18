@@ -29,6 +29,7 @@ sub name(PDF::COS::Name() $_) { $_ }
 has PDF::Info $.Info is entry(:indirect);  #= (Optional; must be an indirect reference) The document’s information dictionary
 my subset CatalogLike of Associative where { .<Type> ~~ 'Catalog' };  # autoloaded PDF::Catalog
 has CatalogLike $.Root is entry(:required, :indirect, :alias<catalog>); #= The catalog dictionary for the PDF document contained in the file
+method page($_) is hidden-from-backtrace { self.Root.page($_) }
 
 has PDF::COS::Type::XRef $.XRefStm is entry; #= Only applicable to Hybrid cross reference streams 
 
@@ -92,7 +93,7 @@ method permitted(UInt $flag --> Bool) {
 }
 
 my subset PagesLike of PDF::Class::Type where { .<Type> ~~ 'Pages' }; # autoloaded PDF::Pages
-method Pages returns PagesLike handles <page pages add-page add-pages delete-page insert-page page-count media-box crop-box bleed-box trim-box art-box bleed use-font rotate iterate-pages> { self.Root.Pages }
+method Pages returns PagesLike handles <pages add-page add-pages delete-page insert-page page-count media-box crop-box bleed-box trim-box art-box bleed use-font rotate iterate-pages> { self.Root.Pages }
 
 method fields {
     do with self.Root.AcroForm { .fields } // [];

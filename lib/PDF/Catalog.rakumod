@@ -25,7 +25,7 @@ use PDF::AcroForm;
 use PDF::Action;
 use PDF::Bead-Thread; # Declares PDF::Bead & PDF::Thread
 use PDF::Catalog::AdditionalActions;
-use PDF::Destination :DestRef, :DestTarget, :coerce-dest;
+use PDF::Destination :DestDict, :DestRef, :DestTarget, :coerce-dest;
 use PDF::Filespec;
 use PDF::MarkInfo;
 use PDF::Metadata::XML;
@@ -36,6 +36,7 @@ use PDF::Outlines;
 use PDF::OutputIntent;
 use PDF::Resources;
 use PDF::Signature;
+use PDF::StructElem;
 use PDF::ViewerPreferences;
 use PDF::Class::Util :to-roman, :alpha-number, :decimal-number;
 
@@ -47,6 +48,48 @@ has Hash $.Extensions is entry;
 
 my subset PagesLike of PDF::Class::Type where { .<Type> ~~ 'Pages' }; #= autoloaded PDF::Pages
 has PagesLike $.Pages is entry(:required, :indirect);    #= (Required; must be an indirect reference) The page tree node that is the root of the document’s page tree
+multi method page(PDF::Page $_) {
+    $_;
+}
+multi method page(UInt:D $num) {
+    self.Pages.page($num);
+}
+multi method page(Str:D $name) {
+    do with $.destinations {
+        do with .{$name} -> PDF::Destination $_ {
+            return self.page: $_;
+        }
+    }
+    if $name ~~ m/^ '#'? 'page=' (\d+) $/ {
+        self.page: $0.Int;
+    }
+}
+multi method page(PDF::Destination:D $_) {
+    given .[0] {
+        when UInt { self.page($_+1); }
+        default   { self.page($_); }
+    }
+}
+multi sub inherited-page(PDF::StructElem:D $se) {
+    $se.Pg // $se.P.&inherited-page
+}
+multi sub inherited-page(Any:U) { PDF::Page }
+
+multi method page(PDF::StructElem:D $se) {
+    $se.&inherited-page // do given $se.kids[0] {
+        when PDF::Class::PageRef:D { self.page: $_; }
+        default { PDF::Page }
+    }
+}
+multi method page(PDF::Class::PageRef:D $_) {
+    .Pg;
+}
+multi method page(DestDict:D $_) {
+    self.page(.<SD> // .<D>);
+}
+multi method page(Any:U) {
+    PDF::Page;
+}
 
 #| Page Label dictionary
 role PageLabelNode does PDF::COS::Tie::Hash {
